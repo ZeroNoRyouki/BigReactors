@@ -4,10 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedstonePort;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
@@ -15,8 +16,8 @@ import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorRedstonePor
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 
 public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		implements ITickableMultiblockPart {
@@ -352,27 +353,44 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	}
 	
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may only be placed on a reactor's external side faces, not as part of the frame", xCoord, yCoord, zCoord));
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_frame", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may only be placed on a reactor's external side faces, not the top", xCoord, yCoord, zCoord));
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_top", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may only be placed on a reactor's external side faces, not the bottom", xCoord, yCoord, zCoord));
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_bottom", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may not be placed in a reactor's interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_interior", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override

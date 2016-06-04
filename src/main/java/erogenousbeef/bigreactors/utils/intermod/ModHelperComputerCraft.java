@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.utils.intermod;
 
-import cpw.mods.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional;
 import dan200.computercraft.api.ComputerCraftAPI;
 import erogenousbeef.bigreactors.common.BigReactors;
 

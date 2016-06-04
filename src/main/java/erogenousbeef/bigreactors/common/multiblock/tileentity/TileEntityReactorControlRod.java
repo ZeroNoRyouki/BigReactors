@@ -3,14 +3,15 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	public final static short maxInsertion = 100;
@@ -47,7 +48,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		
 		this.name = newName;
 		if(!this.worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}
 	
@@ -101,32 +102,54 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	
 	// TileEntityReactorPart
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Control rods may only be placed on the top face", xCoord, yCoord, zCoord));
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Control rods may only be placed on the top face", xCoord, yCoord, zCoord));
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
 		// Check that the space below us is a fuel rod
-		TileEntity teBelow = this.worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		BlockPos position = this.getPos();
+		TileEntity teBelow = this.worldObj.getTileEntity(position.down());
+
 		if(!(teBelow instanceof TileEntityReactorFuelRod)) {
-			throw new MultiblockValidationException(String.format("%d, %d, %d - Control rods may only be placed on the top face, atop a column of fuel rods", xCoord, yCoord, zCoord));
+
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_column", position.getX(), position.getY(), position.getZ());
+			return false;
 		}
+
+		return true;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Control rods may only be placed on the top face", xCoord, yCoord, zCoord));
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Control rods may only be placed on the top face", xCoord, yCoord, zCoord));
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override

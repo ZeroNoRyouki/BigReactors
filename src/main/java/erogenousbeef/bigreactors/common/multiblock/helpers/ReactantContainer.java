@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.common.multiblock.helpers;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.data.ReactantStack;

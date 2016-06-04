@@ -1,16 +1,16 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IMultiblockGuiHandler;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
 public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IMultiblockGuiHandler, 
 		IActivateable, IBeefDebuggableTile {
@@ -78,12 +78,12 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	// IActivateable
 	// IActivateable
 	@Override
-	public CoordTriplet getReferenceCoord() {
+	public BlockPos getReferenceCoord() {
 		if(isConnected()) {
 			return getMultiblockController().getReferenceCoord();
 		}
 		else {
-			return new CoordTriplet(xCoord, yCoord, zCoord);
+			return this.getPos();
 		}
 	}
 	

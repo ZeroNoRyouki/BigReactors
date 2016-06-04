@@ -1,15 +1,16 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityTurbineRotorBearing extends
 		TileEntityTurbinePartStandard {
@@ -52,8 +53,8 @@ public class TileEntityTurbineRotorBearing extends
 	private void calculateRotorInfo() {
 		// Calculate bounding box
 		MultiblockTurbine turbine = getTurbine();
-		CoordTriplet minCoord = turbine.getMinimumCoord();
-		CoordTriplet maxCoord = turbine.getMaximumCoord();
+		BlockPos minCoord = turbine.getMinimumCoord();
+		BlockPos maxCoord = turbine.getMaximumCoord();
 
 		boundingBox = AxisAlignedBB.getBoundingBox(minCoord.x, minCoord.y, minCoord.z, maxCoord.x + 1, maxCoord.y + 1, maxCoord.z + 1);
 		
@@ -76,8 +77,8 @@ public class TileEntityTurbineRotorBearing extends
 					rotorInfo.rotorLength = maxCoord.z - minCoord.z - 1;
 					break;
 			}
-			
-			CoordTriplet currentCoord = getWorldLocation();
+
+			BlockPos currentCoord = this.getPos();
 			CoordTriplet bladeCoord = new CoordTriplet(0,0,0);
 
 			ForgeDirection[] dirsToCheck = StaticUtils.neighborsBySide[rotorInfo.rotorDirection.ordinal()];

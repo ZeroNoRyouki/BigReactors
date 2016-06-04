@@ -1,19 +1,19 @@
 package erogenousbeef.bigreactors.net.message.base;
 
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPartBase;
-import erogenousbeef.core.common.CoordTriplet;
 
 public abstract class ReactorMessageClient extends WorldMessageClient {
 	protected MultiblockReactor reactor;
 	
 	protected ReactorMessageClient() { super(); reactor = null; }
-	protected ReactorMessageClient(MultiblockReactor reactor, CoordTriplet referenceCoord) {
-		super(referenceCoord.x, referenceCoord.y, referenceCoord.z);
+	protected ReactorMessageClient(MultiblockReactor reactor, BlockPos referenceCoord) {
+		super(referenceCoord.getX(), referenceCoord.getY(), referenceCoord.getZ());
 		this.reactor = reactor;
 	}
 	protected ReactorMessageClient(MultiblockReactor reactor) {
@@ -31,7 +31,8 @@ public abstract class ReactorMessageClient extends WorldMessageClient {
 					return handleMessage(message, ctx, reactor);
 				}
 				else {
-					BRLog.error("Received ReactorMessageClient for a reactor part @ %d, %d, %d which has no attached reactor", te.xCoord, te.yCoord, te.zCoord);
+					BlockPos tePosition = te.getPos();
+					BRLog.error("Received ReactorMessageClient for a reactor part @ %d, %d, %d which has no attached reactor", tePosition.getX(), tePosition.getY(), tePosition.getZ());
 				}
 			}
 			else {

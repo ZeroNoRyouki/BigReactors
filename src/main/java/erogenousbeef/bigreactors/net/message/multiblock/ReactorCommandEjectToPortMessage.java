@@ -1,12 +1,12 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
 import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import erogenousbeef.bigreactors.net.message.base.ReactorMessageServer;
-import erogenousbeef.core.common.CoordTriplet;
 
 public class ReactorCommandEjectToPortMessage extends ReactorMessageServer {
 	protected boolean ejectFuel;
@@ -53,7 +53,7 @@ public class ReactorCommandEjectToPortMessage extends ReactorMessageServer {
 	public static class Handler extends ReactorMessageServer.Handler<ReactorCommandEjectToPortMessage> {
 		@Override
 		public IMessage handleMessage(ReactorCommandEjectToPortMessage message, MessageContext ctx, MultiblockReactor reactor) {
-			CoordTriplet dest = new CoordTriplet(message.portX, message.portY, message.portZ);
+			BlockPos dest = new BlockPos(message.portX, message.portY, message.portZ);
 			if(message.ejectFuel) {
 				reactor.ejectFuel(message.dumpExcess, dest);
 			}

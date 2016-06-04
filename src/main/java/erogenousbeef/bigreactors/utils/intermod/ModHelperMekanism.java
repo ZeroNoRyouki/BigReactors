@@ -3,7 +3,7 @@ package erogenousbeef.bigreactors.utils.intermod;
 import java.lang.reflect.Method;
 
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.item.ItemIngot;
 

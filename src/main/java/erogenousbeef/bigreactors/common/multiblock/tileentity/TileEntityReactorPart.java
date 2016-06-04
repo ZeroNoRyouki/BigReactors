@@ -1,14 +1,16 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorStatus;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorController;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorPart extends TileEntityReactorPartBase {
 
@@ -17,31 +19,40 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	}
 
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		if(BlockReactorPart.isCasing(metadata)) { return; }
-		
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Only casing may be used as part of a reactor's frame", xCoord, yCoord, zCoord));
+		if(BlockReactorPart.isCasing(metadata)) { return true; }
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_frame_block", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
 		// All parts are valid for sides, by default
+		return true;
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
 		// All parts are valid for the top, by default
+		return true;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
 		// All parts are valid for the bottom, by default
+		return true;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - This reactor part may not be placed in the reactor's interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_part_for_interior", this.getPos());
+		return false;
 	}
 
 	@Override
@@ -62,6 +73,7 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 				int metadata = this.getBlockMetadata();
 				if(BlockReactorPart.isController(metadata)) {
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					//WorldHelper.notifyBlockUpdate(worldObj);
 				}
 			}
 		}

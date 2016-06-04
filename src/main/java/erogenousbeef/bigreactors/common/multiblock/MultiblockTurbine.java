@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -21,9 +22,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import cofh.api.energy.IEnergyProvider;
 import cofh.lib.util.helpers.ItemHelper;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import erogenousbeef.bigreactors.api.data.CoilPartData;
 import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.BRLog;
@@ -43,11 +42,11 @@ import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.IMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
-import erogenousbeef.core.multiblock.rectangular.RectangularMultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.IMultiblockPart;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
 
@@ -124,7 +123,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	private Set<TileEntityTurbinePartGlass> attachedGlass; 
 	
 	// Data caches for validation
-	private Set<CoordTriplet> foundCoils;
+	private Set<BlockPos> foundCoils;
 
 	private FloatUpdateTracker rpmUpdateTracker;
 	
@@ -164,7 +163,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		fluidConsumedLastTick = 0;
 		rotorEfficiencyLastTick = 1f;
 		
-		foundCoils = new HashSet<CoordTriplet>();
+		foundCoils = new HashSet<BlockPos>();
 		
 		rpmUpdateTracker = new FloatUpdateTracker(100, 5, 10f, 100f); // Minimum 10RPM difference for slow updates, if change > 100 RPM, update every 5 ticks
 	}
@@ -287,15 +286,17 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	// Validation code
 	@Override
-	protected void isMachineWhole() throws MultiblockValidationException {
+	protected boolean isMachineWhole(IMultiblockValidator validatorCallback) {
 		if(attachedRotorBearings.size() != 1) {
-			throw new MultiblockValidationException("Turbines require exactly 1 rotor bearing");
+			validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_count");
+			return false;
 		}
 		
 		// Set up validation caches
 		foundCoils.clear();
 		
-		super.isMachineWhole();
+		if (!super.isMachineWhole(validatorCallback))
+			return false;
 		
 		// Now do additional validation based on the coils/blades/rotors that were found
 		
@@ -307,10 +308,10 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		
 		// Find out which way the rotor runs. Obv, this is inwards from the bearing.
 		ForgeDirection rotorDir = rotorPart.getOutwardsDir().getOpposite();
-		CoordTriplet rotorCoord = rotorPart.getWorldLocation();
-		
-		CoordTriplet minRotorCoord = getMinimumCoord();
-		CoordTriplet maxRotorCoord = getMaximumCoord();
+		BlockPos rotorCoord = rotorPart.getPos();
+
+		BlockPos minRotorCoord = getMinimumCoord();
+		BlockPos maxRotorCoord = getMaximumCoord();
 		
 		// Constrain min/max rotor coords to where the rotor bearing is and the block opposite it
 		if(rotorDir.offsetX == 0) {
@@ -324,7 +325,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		}
 
 		// Figure out where the rotor ends and which directions are normal to the rotor's 4 faces (this is where blades emit from)
-		CoordTriplet endRotorCoord = rotorCoord.equals(minRotorCoord) ? maxRotorCoord : minRotorCoord;
+		BlockPos endRotorCoord = rotorCoord.equals(minRotorCoord) ? maxRotorCoord : minRotorCoord;
 		endRotorCoord.translate(rotorDir.getOpposite());
 
 		ForgeDirection[] bladeDirections;
@@ -338,15 +339,15 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			bladeDirections = RotorZBladeDirections;
 		}
 
-		Set<CoordTriplet> rotorShafts = new HashSet<CoordTriplet>(attachedRotorShafts.size());
-		Set<CoordTriplet> rotorBlades = new HashSet<CoordTriplet>(attachedRotorBlades.size());
+		Set<BlockPos> rotorShafts = new HashSet<BlockPos>(attachedRotorShafts.size());
+		Set<BlockPos> rotorBlades = new HashSet<BlockPos>(attachedRotorBlades.size());
 		
 		for(TileEntityTurbineRotorPart part : attachedRotorShafts) {
-			rotorShafts.add(part.getWorldLocation());
+			rotorShafts.add(part.getPos());
 		}
 
 		for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
-			rotorBlades.add(part.getWorldLocation());
+			rotorBlades.add(part.getPos());
 		}
 		
 		// Move along the length of the rotor, 1 block at a time
@@ -356,11 +357,12 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			
 			// Ensure we find a rotor block along the length of the entire rotor
 			if(!rotorShafts.remove(rotorCoord)) {
-				throw new MultiblockValidationException(String.format("%s - This block must contain a rotor. The rotor must begin at the bearing and run the entire length of the turbine", rotorCoord));
+				validatorCallback.setLastError("multiblock.validation.turbine.block_must_be_rotor", rotorCoord);
+				return false;
 			}
 			
 			// Now move out in the 4 rotor normals, looking for blades and coils
-			CoordTriplet checkCoord = rotorCoord.copy();
+			BlockPos checkCoord = rotorCoord.copy();
 			boolean encounteredBlades = false;
 			for(ForgeDirection bladeDir : bladeDirections) {
 				checkCoord.copy(rotorCoord);
@@ -371,7 +373,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				while(rotorBlades.remove(checkCoord)) {
 					// We found a coil already?! NOT ALLOWED.
 					if(encounteredCoils) {
-						throw new MultiblockValidationException(String.format("%s - Rotor blades must be placed closer to the rotor bearing than all other parts inside a turbine", checkCoord));
+						validatorCallback.setLastError("multiblock.validation.turbine.blades_too_far", checkCoord);
+						return false;
 					}
 					foundABlade = encounteredBlades = true;
 					checkCoord.translate(bladeDir);
@@ -384,11 +387,12 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 						// We cannot have blades and coils intermix. This prevents intermixing, depending on eval order.
 						if(encounteredBlades) {
-							throw new MultiblockValidationException(String.format("%s - Metal blocks must by placed further from the rotor bearing than all rotor blades", checkCoord));
+							validatorCallback.setLastError("multiblock.validation.turbine.metal_too_near", checkCoord);
+							return false;
 						}
 						
 						// Check the two coil spots in the 'corners', which are permitted if they're connected to the main rotor coil somehow
-						CoordTriplet coilCheck = checkCoord.copy();
+						BlockPos coilCheck = checkCoord.copy();
 						coilCheck.translate(bladeDir.getRotation(rotorDir));
 						foundCoils.remove(coilCheck);
 						coilCheck.copy(checkCoord);
@@ -401,43 +405,50 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		}
 		
 		if(!rotorCoord.equals(endRotorCoord)) {
-			throw new MultiblockValidationException("The rotor shaft must extend the entire length of the turbine interior.");
+			validatorCallback.setLastError("multiblock.validation.turbine.shaft_too_short");
+			return false;
 		}
 		
 		// Ensure that we encountered all the rotor, blade and coil blocks. If not, there's loose stuff inside the turbine.
 		if(!rotorShafts.isEmpty()) {
-			throw new MultiblockValidationException(String.format("Found %d rotor blocks that are not attached to the main rotor. All rotor blocks must be in a column extending the entire length of the turbine, starting from the bearing.", rotorShafts.size()));
+			validatorCallback.setLastError("multiblock.validation.turbine.found_loose_rotor_blocks", rotorShafts.size());
+			return false;
 		}
 
 		if(!rotorBlades.isEmpty()) {
-			throw new MultiblockValidationException(String.format("Found %d rotor blades that are not attached to the rotor. All rotor blades must extend continuously from the rotor's shaft.", rotorBlades.size()));
+			validatorCallback.setLastError("multiblock.validation.turbine.found_loose_rotor_blades", rotorBlades.size());
+			return false;
 		}
 		
 		if(!foundCoils.isEmpty()) {
-			throw new MultiblockValidationException(String.format("Found %d metal blocks which were not in a ring around the rotor. All metal blocks must be in rings, or partial rings, around the rotor.", foundCoils.size()));
+			validatorCallback.setLastError("multiblock.validation.turbine.invalid_metals_shape", foundCoils.size());
+			return false;
 		}
 
 		// A-OK!
+		return true;
 	}
-	
+
 	@Override
-	protected void isBlockGoodForInterior(World world, int x, int y, int z) throws MultiblockValidationException {
+	protected boolean isBlockGoodForInterior(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 		// We only allow air and functional parts in turbines.
+		BlockPos position = new BlockPos(x, y, z);
 
 		// Air is ok
-		if(world.isAirBlock(x, y, z)) { return; }
+		if(world.isAirBlock(position)) { return true; }
 
 		Block block = world.getBlock(x, y, z);
 		int metadata = world.getBlockMetadata(x,y,z);
 
 		// Coil windings below here:
 		if(getCoilPartData(x, y, z, block, metadata) != null) {
-			foundCoils.add(new CoordTriplet(x,y,z));
-			return;
+			foundCoils.add(position);
+			return true;
 		}
 
 		// Everything else, gtfo
-		throw new MultiblockValidationException(String.format("%d, %d, %d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed.", x, y, z));
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_interior", x, y, z);
+		return false;
 	}
 
 	@Override
@@ -951,25 +962,23 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				if(this.active) { part.onMachineActivated(); }
 				else { part.onMachineDeactivated(); }
 			}
-			
-			CoordTriplet referenceCoord = getReferenceCoord();
-			worldObj.markBlockForUpdate(referenceCoord.x, referenceCoord.y, referenceCoord.z);
 
+			WorldHelper.notifyBlockUpdate(worldObj, this.getReferenceCoord(), null, null);
 			markReferenceCoordDirty();
 		}
 		
 		if(worldObj.isRemote) {
 			// Force controllers to re-render on client
 			for(IMultiblockPart part : attachedControllers) {
-				worldObj.markBlockForUpdate(part.xCoord, part.yCoord, part.zCoord);
+				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
 			}
 			
 			for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
-				worldObj.markBlockForUpdate(part.xCoord, part.yCoord, part.zCoord);
+				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
 			}
 			
 			for(TileEntityTurbineRotorPart part : attachedRotorShafts) {
-				worldObj.markBlockForUpdate(part.xCoord, part.yCoord, part.zCoord);
+				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
 			}
 		}
 	}
@@ -1018,11 +1027,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	 * Recalculate rotor and coil parameters
 	 */
 	private void recalculateDerivedStatistics() {
-		CoordTriplet minInterior, maxInterior;
-		minInterior = getMinimumCoord();
-		maxInterior = getMaximumCoord();
-		minInterior.x++; minInterior.y++; minInterior.z++;
-		maxInterior.x--; maxInterior.y--; maxInterior.z--;
+		BlockPos minInterior, maxInterior;
+		minInterior = getMinimumCoord().add(1, 1, 1);
+		maxInterior = getMaximumCoord().add(-1, -1, -1);
 		
 		rotorMass = 0;
 		bladeSurfaceArea = 0;
@@ -1123,14 +1130,14 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	protected void markReferenceCoordDirty() {
 		if(worldObj == null || worldObj.isRemote) { return; }
 
-		CoordTriplet referenceCoord = getReferenceCoord();
+		BlockPos referenceCoord = getReferenceCoord();
 		if(referenceCoord == null) { return; }
 
 		rpmUpdateTracker.onExternalUpdate();
 		
 		TileEntity saveTe = worldObj.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
 		worldObj.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
-		worldObj.markBlockForUpdate(referenceCoord.x, referenceCoord.y, referenceCoord.z);
+		WorldHelper.notifyBlockUpdate(worldObj, referenceCoord, null, null);
 	}
 	
 	// For client usage only

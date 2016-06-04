@@ -6,7 +6,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 
 public class BRWorldGenerator implements IWorldGenerator {

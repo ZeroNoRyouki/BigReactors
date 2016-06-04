@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
@@ -14,16 +14,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
 import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.BRLoader;
@@ -38,10 +36,8 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorP
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTap;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.IMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.rectangular.PartPosition;
+import zero.mods.zerocore.api.multiblock.IMultiblockPart;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
@@ -102,7 +98,7 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 	public BlockReactorPart(Material material) {
 		super(material);
 		
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 		setHardness(2.0f);
 		setBlockName("blockReactorPart");
 		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockReactorPart");
@@ -194,6 +190,7 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 		}
 	}
 
+	@Deprecated // use blockstate compliant variant
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		switch(metadata) {
@@ -602,8 +599,8 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 	private IIcon getCasingEdgeIcon(TileEntityReactorPart part, MultiblockReactor reactor, int side) {
 		if(reactor == null || !reactor.isAssembled()) { return _icons[METADATA_CASING][DEFAULT]; }
 
-		CoordTriplet minCoord = reactor.getMinimumCoord();
-		CoordTriplet maxCoord = reactor.getMaximumCoord();
+		BlockPos minCoord = reactor.getMinimumCoord();
+		BlockPos maxCoord = reactor.getMaximumCoord();
 
 		boolean xExtreme, yExtreme, zExtreme;
 		xExtreme = yExtreme = zExtreme = false;

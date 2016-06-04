@@ -1,7 +1,8 @@
 package erogenousbeef.bigreactors.net.message.base;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * A user-generated message to the server which is grounded in world-space.
@@ -10,7 +11,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
  */
 public abstract class WorldMessageServer extends WorldMessage {
 	protected WorldMessageServer() { super(); }
-	protected WorldMessageServer(int x, int y, int z) { super(x, y, z); }
+	protected WorldMessageServer(BlockPos position) { super(position.getX(), position.getY(), position.getZ()); }
 
 	public abstract static class Handler<M extends WorldMessageServer> extends WorldMessage.Handler<M> {
 		@Override 

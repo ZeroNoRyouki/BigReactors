@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
@@ -21,7 +20,6 @@ import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeInductorMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeMaxIntakeMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeVentMessage;
-import erogenousbeef.core.common.CoordTriplet;
 
 public class GuiTurbineController extends BeefGuiBase {
 

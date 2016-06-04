@@ -2,12 +2,12 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.net.message.base.WorldMessageServer;
-import erogenousbeef.core.common.CoordTriplet;
 
 /**
  * Send a "setActive" command to any IActivateable machine.
@@ -20,8 +20,8 @@ public class MachineCommandActivateMessage extends WorldMessageServer {
 	protected boolean setActive;
 	public MachineCommandActivateMessage() { super(); setActive = true; }
 
-	protected MachineCommandActivateMessage(CoordTriplet coord, boolean setActive) {
-		super(coord.x, coord.y, coord.z);
+	protected MachineCommandActivateMessage(BlockPos coord, boolean setActive) {
+		super(coord.getX(), coord.getY(), coord.getZ());
 		this.setActive = setActive;
 	}
 

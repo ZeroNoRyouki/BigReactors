@@ -1,9 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.common.BRLog;
@@ -13,9 +10,12 @@ import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IMultiblockGuiHandler;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityReactorPartBase extends
 		RectangularMultiblockTileEntityBase implements IMultiblockGuiHandler, IHeatEntity,
@@ -26,9 +26,6 @@ public abstract class TileEntityReactorPartBase extends
 	}
 
 	public MultiblockReactor getReactorController() { return (MultiblockReactor)this.getMultiblockController(); }
-	
-	@Override
-	public boolean canUpdate() { return false; }
 
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
@@ -44,7 +41,7 @@ public abstract class TileEntityReactorPartBase extends
 		
 		// Re-render this block on the client
 		if(worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
 	}
 
@@ -54,7 +51,7 @@ public abstract class TileEntityReactorPartBase extends
 		
 		// Re-render this block on the client
 		if(worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
 	}
 	
@@ -94,12 +91,12 @@ public abstract class TileEntityReactorPartBase extends
 	
 	// IActivateable
 	@Override
-	public CoordTriplet getReferenceCoord() {
+	public BlockPos getReferenceCoord() {
 		if(isConnected()) {
 			return getMultiblockController().getReferenceCoord();
 		}
 		else {
-			return new CoordTriplet(xCoord, yCoord, zCoord);
+			return this.getPos();
 		}
 	}
 	
@@ -119,7 +116,9 @@ public abstract class TileEntityReactorPartBase extends
 			getReactorController().setActive(active);
 		}
 		else {
-			BRLog.error("Received a setActive command at %d, %d, %d, but not connected to a multiblock controller!", xCoord, yCoord, zCoord);
+			BlockPos position = this.getPos();
+			BRLog.error("Received a setActive command at %d, %d, %d, but not connected to a multiblock controller!",
+					position.getX(), position.getY(), position.getZ());
 		}
 	}
 	

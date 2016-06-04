@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard implements IFluidHandler, INeighborUpdatableEntity, ITickableMultiblockPart {
 

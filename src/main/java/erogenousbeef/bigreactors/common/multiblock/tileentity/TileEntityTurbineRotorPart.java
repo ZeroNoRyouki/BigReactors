@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 
 public class TileEntityTurbineRotorPart extends TileEntityTurbinePartBase {
 
@@ -9,27 +9,36 @@ public class TileEntityTurbineRotorPart extends TileEntityTurbinePartBase {
 	}
 
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
-		throw new MultiblockValidationException("Rotor parts may only be placed in the turbine interior");
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_position");
+		return false;
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
-		throw new MultiblockValidationException("Rotor parts may only be placed in the turbine interior");
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_position");
+		return false;
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
-		throw new MultiblockValidationException("Rotor parts may only be placed in the turbine interior");
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_position");
+		return false;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
-		throw new MultiblockValidationException("Rotor parts may only be placed in the turbine interior");
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_position");
+		return false;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	public boolean isRotorShaft() {

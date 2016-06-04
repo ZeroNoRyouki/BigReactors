@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
@@ -16,14 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.BRLoader;
@@ -38,9 +32,12 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineP
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTap;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.IMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import zero.mods.zerocore.api.multiblock.IMultiblockPart;
+
+import static com.sun.xml.internal.ws.policy.sourcemodel.wspolicy.XmlToken.Optional;
+
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
 })
@@ -181,7 +178,7 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 	}
 	
 	private int getSubIconForHousing(IBlockAccess blockAccess, int x, int y, int z, MultiblockTurbine turbine, int side) {
-		CoordTriplet minCoord, maxCoord;
+		BlockPos minCoord, maxCoord;
 		minCoord = turbine.getMinimumCoord();
 		maxCoord = turbine.getMaximumCoord();
 		
@@ -190,16 +187,16 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 		}
 		
 		int extremes = 0;
-		boolean xExtreme, yExtreme, zExtreme;
-		xExtreme = yExtreme = zExtreme = false;
+		/*boolean xExtreme, yExtreme, zExtreme;
+		xExtreme = yExtreme = zExtreme = false;*/
 
-		if(x == minCoord.x) { extremes++; xExtreme = true; }
-		if(y == minCoord.y) { extremes++; yExtreme = true; }
-		if(z == minCoord.z) { extremes++; zExtreme = true; }
+		if(x == minCoord.getX()) { extremes++; /*xExtreme = true;*/ }
+		if(y == minCoord.getY()) { extremes++; /*yExtreme = true;*/ }
+		if(z == minCoord.getZ()) { extremes++; /*zExtreme = true;*/ }
 		
-		if(x == maxCoord.x) { extremes++; xExtreme = true; }
-		if(y == maxCoord.y) { extremes++; yExtreme = true; }
-		if(z == maxCoord.z) { extremes++; zExtreme = true; }
+		if(x == maxCoord.getX()) { extremes++; /*xExtreme = true;*/ }
+		if(y == maxCoord.getY()) { extremes++; /*yExtreme = true;*/ }
+		if(z == maxCoord.getZ()) { extremes++; /*zExtreme = true;*/ }
 
 		if(extremes >= 3) {
 			return SUBICON_HOUSING_CORNER;
@@ -447,11 +444,9 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
     				// Spawn particles!
     				int numParticles = Math.min(20, Math.max(1, turbine.getFluidConsumedLastTick() / 40));
     				ForgeDirection inwardsDir = bearing.getOutwardsDir().getOpposite();
-    				CoordTriplet minCoord, maxCoord;
-    				minCoord = turbine.getMinimumCoord();
-    				maxCoord = turbine.getMaximumCoord();
-    				minCoord.x++; minCoord.y++; minCoord.z++;
-    				maxCoord.x--; maxCoord.y--; maxCoord.z--;
+					BlockPos minCoord, maxCoord;
+    				minCoord = turbine.getMinimumCoord().add(1, 1, 1);
+    				maxCoord = turbine.getMaximumCoord().add(-1, -1, -1);
     				if(inwardsDir.offsetX != 0) {
     					minCoord.x = maxCoord.x = bearing.xCoord + inwardsDir.offsetX;
     				}

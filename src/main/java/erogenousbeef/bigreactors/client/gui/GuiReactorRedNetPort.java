@@ -22,7 +22,7 @@ import erogenousbeef.bigreactors.gui.controls.grab.RedNetConfigGrabbable;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
 import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
-import erogenousbeef.core.common.CoordTriplet;
+import net.minecraft.util.math.BlockPos;
 
 public class GuiReactorRedNetPort extends BeefGuiBase {
 
@@ -61,7 +61,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 	
 	BeefGuiRedNetChannelSelector[] channelSelectors = new BeefGuiRedNetChannelSelector[numChannels];
 	RedNetConfigGrabTarget[] grabTargets = new RedNetConfigGrabTarget[numChannels];
-	private CoordTriplet[] subSettingCoords = new CoordTriplet[numChannels];
+	private BlockPos[] subSettingCoords = new BlockPos[numChannels];
 	private boolean[] pulseActivated = new boolean[numChannels];
 	
 	private int selectedChannel = 0;
@@ -303,12 +303,12 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		updateSubSettingValueText();
 	}
 	
-	private String getControlRodLabelFromLocation(CircuitType circuitType, CoordTriplet location) {
+	private String getControlRodLabelFromLocation(CircuitType circuitType, BlockPos location) {
 		if(location == null) {
 			return "-- ALL --";
 		}
 		else {
-			TileEntity te = port.getWorldObj().getTileEntity(location.x, location.y, location.z);
+			TileEntity te = port.getWorld().getTileEntity(location);
 			if( te instanceof TileEntityReactorControlRod ) {
 				TileEntityReactorControlRod rod = (TileEntityReactorControlRod)te;
 				if( rod.getName().equals("")) {
@@ -329,7 +329,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 
 		if( CircuitType.hasCoordinate(circuitType) ) {
 			// Select a new control rod
-			CoordTriplet[] controlRodLocations = port.getReactorController().getControlRodLocations();
+			BlockPos[] controlRodLocations = port.getReactorController().getControlRodLocations();
 			int newIdx = 0;
 			// Locate current idx; will be -1 if not found, which is expected.
 			int oldIdx = Arrays.asList(controlRodLocations).indexOf( subSettingCoords[selectedChannel] );

@@ -2,12 +2,13 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiTurbineController;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbinePart;
 import erogenousbeef.bigreactors.gui.container.ContainerSlotless;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 
 public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 
@@ -16,28 +17,39 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 	}
 
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
 		if(getBlockMetadata() != BlockTurbinePart.METADATA_HOUSING) {
-			throw new MultiblockValidationException(String.format("%d, %d, %d - only turbine housing may be used as part of the turbine's frame", xCoord, yCoord, zCoord));
+
+			BlockPos position = this.getPos();
+
+			validatorCallback.setLastError("multiblock.validation.turbine.invalid_part_for_frame", position.getX(), position.getY(), position.getZ());
+			return false;
 		}
 	}
 
 	@Override
-	public void isGoodForSides() {
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForTop() {
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForBottom() {
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
 		if(getBlockMetadata() != BlockTurbinePart.METADATA_HOUSING) {
-			throw new MultiblockValidationException(String.format("%d, %d, %d - this part is not valid for the interior of a turbine", xCoord, yCoord, zCoord));
+
+			BlockPos position = this.getPos();
+
+			validatorCallback.setLastError("multiblock.validation.turbine.invalid_part_for_interior", position.getX(), position.getY(), position.getZ());
+			return false;
 		}
 	}
 	

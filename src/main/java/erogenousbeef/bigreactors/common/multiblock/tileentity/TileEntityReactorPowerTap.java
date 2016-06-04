@@ -4,11 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityReactorPowerTap extends TileEntityReactorPart implements IEnergyProvider, INeighborUpdatableEntity {
 	IEnergyReceiver	rfNetwork;

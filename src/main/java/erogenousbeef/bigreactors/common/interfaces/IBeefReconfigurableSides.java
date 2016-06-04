@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.interfaces;
 
-import net.minecraft.util.IIcon;
 import cofh.api.tileentity.IReconfigurableSides;
 
 public interface IBeefReconfigurableSides extends IReconfigurableSides {

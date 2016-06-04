@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -20,7 +21,6 @@ import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
 
 /**
  * Helper for reactor radiation game logic
@@ -85,7 +85,7 @@ public class RadiationHelper {
 		data.environmentRfChange = 0f;
 
 		// Propagate radiation to others
-		CoordTriplet originCoord = source.getWorldLocation();
+		BlockPos originCoord = source.getPos();
 		CoordTriplet currentCoord = new CoordTriplet(0, 0, 0);
 		
 		effectiveRadIntensity *= 0.25f; // We're going to do this four times, no need to repeat

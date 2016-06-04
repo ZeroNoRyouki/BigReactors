@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.utils.intermod;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 /**
  * Helper class for sending IMC messages to other mods.

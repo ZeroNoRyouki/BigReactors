@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -20,7 +21,6 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
-import erogenousbeef.core.common.CoordTriplet;
 
 public class StaticUtils {
 
@@ -218,12 +218,12 @@ public class StaticUtils {
 		 * @param maximum Maximum coordinate.
 		 * @return The cube's volume, in blocks.
 		 */
-		public static int Volume(CoordTriplet minimum, CoordTriplet maximum) {
+		public static int Volume(BlockPos minimum, BlockPos maximum) {
 			if(minimum == null || maximum == null) { return 0; }
 
-			int xsize = Math.abs(maximum.x - minimum.x) + 1;
-			int ysize = Math.abs(maximum.y - minimum.y) + 1;
-			int zsize = Math.abs(maximum.z - minimum.z) + 1;
+			int xsize = Math.abs(maximum.getX() - minimum.getX()) + 1;
+			int ysize = Math.abs(maximum.getY() - minimum.getY()) + 1;
+			int zsize = Math.abs(maximum.getZ() - minimum.getZ()) + 1;
 			return xsize * ysize * zsize;
 		}
 	}

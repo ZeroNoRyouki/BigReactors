@@ -11,13 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.data.SourceProductMapping;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
@@ -27,7 +25,10 @@ import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.utils.AdjacentInventoryHelper;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorAccessPort extends TileEntityReactorPart implements IInventory, ISidedInventory, INeighborUpdatableEntity {
 
@@ -330,11 +331,12 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		BlockPos position = this.getPos();
+		if(worldObj.getTileEntity(position) != this)
 		{
 			return false;
 		}
-		return entityplayer.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
+		return entityplayer.getDistanceSq((double)position.getX() + 0.5D, (double)position.getY() + 0.5D, (double)position.getZ() + 0.5D) <= 64D;
 	}
 
 	@Override
@@ -408,9 +410,9 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		if(isInlet == shouldBeInlet) { return; }
 
 		isInlet = shouldBeInlet;
-		
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		
+
+		WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
+
 		if(!worldObj.isRemote) {
 			distributeItems();
 			markChunkDirty();

@@ -17,14 +17,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.multiblock.IMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.IMultiblockPart;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class BlockMultiblockGlass extends BlockContainer {
 

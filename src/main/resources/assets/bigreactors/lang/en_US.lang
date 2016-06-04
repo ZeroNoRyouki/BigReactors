@@ -62,3 +62,40 @@ fluid.steam=Steam
 tile.fluid.yellorium.still.name=Fluid Yellorium
 tile.fluid.cyanite.still.name=Fluid Cyanite
 tile.fluid.blutonium.still.name=Fluid Blutonium
+
+# 1.9 stuff from there one ...
+
+# Multiblock validation errors (reactors)
+multiblock.validation.reactor.invalid_fuelrod_position=%1$d, %2$d, %3$d - fuel rods may only be placed in the reactor interior
+multiblock.validation.reactor.invalid_fuelrod_column=Fuel rod at %1$d, %2$d, %3$d must be part of a vertical column that reaches the entire height of the reactor, with a control rod on top
+multiblock.validation.reactor.invalid_part_for_interior=%1$d, %2$d, %3$d - This reactor part may not be placed in the reactor's interior
+multiblock.validation.reactor.invalid_fluid_for_interior=%1$d, %2$d, %3$d - The fluid %4$s is not valid for the reactor's interior
+multiblock.validation.reactor.invalid_block_for_interior=%1$d, %2$d, %3$d - %4$s is not valid for the reactor's interior
+multiblock.validation.reactor.null_block_found=%1$d, %2$d, %3$d - Null block found, not valid for the reactor's interior
+multiblock.validation.reactor.too_few_rods=Not enough control rods. Reactors require at least 1.
+multiblock.validation.reactor.too_few_controllers=Not enough controllers. Reactors require at least 1.
+multiblock.validation.reactor.invalid_control_rods_position=%1$d, %2$d, %3$d - Control rods may only be placed on the top face
+multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - Control rods may only be placed on the top face, atop a column of fuel rods
+multiblock.validation.reactor.invalid_glass_position=%1$d, %2$d, %3$d - Reactor glass may only be used on the exterior faces, not as part of a reactor's frame or interior
+multiblock.validation.reactor.invalid_frame_block=%1$d, %2$d, %3$d - Only casing may be used as part of a reactor's frame
+multiblock.validation.reactor.redstoneport_invalid_on_frame=%1$d, %2$d, %3$d - Redstone ports may only be placed on a reactor's external side faces, not as part of the frame
+multiblock.validation.reactor.redstoneport_invalid_on_top=%1$d, %2$d, %3$d - Redstone ports may only be placed on a reactor's external side faces, not the top
+multiblock.validation.reactor.redstoneport_invalid_on_bottom=%1$d, %2$d, %3$d - Redstone ports may only be placed on a reactor's external side faces, not the bottom
+multiblock.validation.reactor.redstoneport_invalid_on_interior=%1$d, %2$d, %3$d - Redstone ports may not be placed in a reactor's interior
+
+
+# Multiblock validation errors (turbines)
+multiblock.validation.turbine.invalid_block_for_interior=%1$d, %2$d, %3$d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed.
+multiblock.validation.turbine.invalid_rotor_count=Turbines require exactly 1 rotor bearing
+multiblock.validation.turbine.block_must_be_rotor=%1$s - This block must contain a rotor. The rotor must begin at the bearing and run the entire length of the turbine
+multiblock.validation.turbine.blades_too_far=%1$s - Rotor blades must be placed closer to the rotor bearing than all other parts inside a turbine
+multiblock.validation.turbine.metal_too_near=%1$s - Metal blocks must by placed further from the rotor bearing than all rotor blades
+multiblock.validation.turbine.shaft_too_short=The rotor shaft must extend the entire length of the turbine interior.
+multiblock.validation.turbine.found_loose_rotor_blocks=Found %1$d rotor blocks that are not attached to the main rotor. All rotor blocks must be in a column extending the entire length of the turbine, starting from the bearing.
+multiblock.validation.turbine.found_loose_rotor_blades=Found %1$d rotor blades that are not attached to the rotor. All rotor blades must extend continuously from the rotor's shaft.
+multiblock.validation.turbine.invalid_metals_shape=Found %1$d metal blocks which were not in a ring around the rotor. All metal blocks must be in rings, or partial rings, around the rotor.
+multiblock.validation.turbine.glass_invalid_on_frame=%1$d, %2$d, %3$d - Glass cannot be used as part of a turbine's frame
+multiblock.validation.turbine.glass_invalid_on_interior=%1$d, %2$d, %3$d - Glass can only be used as part of a turbine's exterior
+multiblock.validation.turbine.invalid_part_for_interior=%1$d, %2$d, %3$d - this part is not valid for the interior of a turbine
+multiblock.validation.turbine.invalid_part_for_frame=%1$d, %2$d, %3$d - only turbine housing may be used as part of the turbine's frame
+multiblock.validation.turbine.invalid_rotor_position=Rotor parts may only be placed in the turbine interior

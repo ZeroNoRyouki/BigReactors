@@ -8,14 +8,15 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +24,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 import cofh.api.energy.IEnergyProvider;
 import cofh.lib.util.helpers.ItemHelper;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
@@ -50,11 +50,11 @@ import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.IMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
-import erogenousbeef.core.multiblock.rectangular.RectangularMultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.IMultiblockPart;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class MultiblockReactor extends RectangularMultiblockControllerBase implements IEnergyProvider, IReactorFuelInfo, IMultipleFluidHandler, IActivateable {
 	public static final int FuelCapacityPerFuelRod = 4 * Reactants.standardSolidReactantAmount; // 4 ingots per rod
@@ -197,7 +197,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			currentFuelRod = attachedFuelRods.iterator();
 
 			if(worldObj.isRemote) {
-				worldObj.markBlockForUpdate(fuelRod.xCoord, fuelRod.yCoord, fuelRod.zCoord);
+				WorldHelper.notifyBlockUpdate(worldObj, fuelRod.getPos(), null, null);
 			}
 		}
 		
@@ -248,19 +248,21 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			attachedGlass.remove((TileEntityReactorGlass)part);
 		}
 	}
-	
+
 	@Override
-	protected void isMachineWhole() throws MultiblockValidationException {
+	protected boolean isMachineWhole(IMultiblockValidator validatorCallback) {
 		// Ensure that there is at least one controller and control rod attached.
 		if(attachedControlRods.size() < 1) {
-			throw new MultiblockValidationException("Not enough control rods. Reactors require at least 1.");
+			validatorCallback.setLastError("multiblock.validation.reactor.too_few_rods");
+			return false;
 		}
 		
 		if(attachedControllers.size() < 1) {
-			throw new MultiblockValidationException("Not enough controllers. Reactors require at least 1.");
+			validatorCallback.setLastError("multiblock.validation.reactor.too_few_controllers");
+			return false;
 		}
 		
-		super.isMachineWhole();
+		return super.isMachineWhole();
 	}
 
 	@Override
@@ -518,24 +520,27 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	// Static validation helpers
 	// Water, air, and metal blocks
 	@Override
-	protected void isBlockGoodForInterior(World world, int x, int y, int z) throws MultiblockValidationException {
-		if(world.isAirBlock(x, y, z)) { return; } // Air is OK
+	protected boolean isBlockGoodForInterior(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		Material material = world.getBlock(x, y, z).getMaterial();
-		if(material == net.minecraft.block.material.MaterialLiquid.water) {
-			return;
-		}
-		
-		Block block = world.getBlock(x, y, z);
-		if(block == Blocks.iron_block || block == Blocks.gold_block || block == Blocks.diamond_block || block == Blocks.emerald_block) {
-			return;
+		BlockPos position = new BlockPos(x, y, z);
+
+		if(world.isAirBlock(position)) { return true; } // Air is OK
+
+		IBlockState blockState = this.worldObj.getBlockState(position);
+		Block block = blockState.getBlock();
+
+		Material material = block.getMaterial(blockState);
+		if(material == net.minecraft.block.material.MaterialLiquid.water ||
+				block == Blocks.iron_block || block == Blocks.gold_block ||
+				block == Blocks.diamond_block || block == Blocks.emerald_block) {
+			return true;
 		}
 		
 		// Permit registered moderator blocks
 		int metadata = world.getBlockMetadata(x, y, z);
 
 		if(ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata))) != null) {
-			return;
+			return true;
 		}
 
 		// Permit TE fluids
@@ -543,16 +548,21 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			if(block instanceof IFluidBlock) {
 				Fluid fluid = ((IFluidBlock)block).getFluid();
 				String fluidName = fluid.getName();
-				if(ReactorInterior.getFluidData(fluidName) != null) { return; }
+				if(ReactorInterior.getFluidData(fluidName) != null) { return true; }
 
-				throw new MultiblockValidationException(String.format("%d, %d, %d - The fluid %s is not valid for the reactor's interior", x, y, z, fluidName));
+				validatorCallback.setLastError("multiblock.validation.reactor.invalid_fluid_for_interior", x, y, z, fluidName);
+				return false;
 			}
 			else {
-				throw new MultiblockValidationException(String.format("%d, %d, %d - %s is not valid for the reactor's interior", x, y, z, block.getLocalizedName()));
+
+				validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_interior", x, y, z, block.getLocalizedName());
+				return false;
 			}
 		}
 		else {
-			throw new MultiblockValidationException(String.format("%d, %d, %d - Null block found, not valid for the reactor's interior", x, y, z));
+
+			validatorCallback.setLastError("multiblock.validation.reactor.null_block_found", x, y, z);
+			return false;
 		}
 	}
 	
@@ -876,7 +886,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @param dumpAll If true, any waste remaining after ejection will be discarded.
 	 * @param destination If set, waste will only be ejected to ports with coordinates matching this one.
 	 */
-	public void ejectWaste(boolean dumpAll, CoordTriplet destination)
+	public void ejectWaste(boolean dumpAll, BlockPos destination)
 	{
 		// For now, we can optimize by only running this when we have enough waste to product an ingot
 		int amtEjected = 0;
@@ -895,7 +905,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 				}
 				
 				if(!port.isConnected()) { continue; }
-				if(destination != null && !destination.equals(port.xCoord, port.yCoord, port.zCoord)) {
+				if(destination != null && !destination.equals(port.getPos())) {
 					continue;
 				}
 				
@@ -939,7 +949,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @param dumpAll If true, any remaining fuel will simply be lost.
 	 * @param destination If not null, then fuel will only be distributed to a port matching these coordinates.
 	 */
-	public void ejectFuel(boolean dumpAll, CoordTriplet destination) {
+	public void ejectFuel(boolean dumpAll, BlockPos destination) {
 		// For now, we can optimize by only running this when we have enough waste to product an ingot
 		int amtEjected = 0;
 
@@ -957,7 +967,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 				}
 				
 				if(!port.isConnected()) { continue; }
-				if(destination != null && !destination.equals(port.xCoord, port.yCoord, port.zCoord)) {
+				if(destination != null && !destination.equals(port.getPos())) {
 					continue;
 				}
 				
@@ -1000,7 +1010,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	private void recalculateDerivedValues() {
 		// Recalculate size of fuel/waste tank via fuel rods
-		CoordTriplet minCoord, maxCoord;
+		BlockPos minCoord, maxCoord;
 		minCoord = getMinimumCoord();
 		maxCoord = getMaximumCoord();
 		
@@ -1016,9 +1026,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		// Calculate heat transfer to coolant system based on reactor interior surface area.
 		// This is pretty simple to start with - surface area of the rectangular prism defining the interior.
-		int xSize = maxCoord.x - minCoord.x - 1;
-		int ySize = maxCoord.y - minCoord.y - 1;
-		int zSize = maxCoord.z - minCoord.z - 1;
+		int xSize = maxCoord.getX() - minCoord.getX() - 1;
+		int ySize = maxCoord.getY() - minCoord.getY() - 1;
+		int zSize = maxCoord.getZ() - minCoord.getZ() - 1;
 		
 		int surfaceArea = 2 * (xSize * ySize + xSize * zSize + ySize * zSize);
 		
@@ -1156,11 +1166,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 	}
 
-	public CoordTriplet[] getControlRodLocations() {
-		CoordTriplet[] coords = new CoordTriplet[this.attachedControlRods.size()];
+	public BlockPos[] getControlRodLocations() {
+		BlockPos[] coords = new BlockPos[this.attachedControlRods.size()];
 		int i = 0;
 		for(TileEntityReactorControlRod cr : attachedControlRods) {
-			coords[i++] = cr.getWorldLocation();
+			coords[i++] = cr.getPos();
 		}
 		return coords;
 	}
@@ -1227,15 +1237,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 	
 	protected void calculateReactorVolume() {
-		CoordTriplet minInteriorCoord = getMinimumCoord();
-		minInteriorCoord.x += 1;
-		minInteriorCoord.y += 1;
-		minInteriorCoord.z += 1;
-		
-		CoordTriplet maxInteriorCoord = getMaximumCoord();
-		maxInteriorCoord.x -= 1;
-		maxInteriorCoord.y -= 1;
-		maxInteriorCoord.z -= 1;
+		BlockPos minInteriorCoord = getMinimumCoord().add(1, 1, 1);
+		BlockPos maxInteriorCoord = getMaximumCoord().add(-1, -1, -1);
 		
 		reactorVolume = StaticUtils.ExtraMath.Volume(minInteriorCoord, maxInteriorCoord);
 	}
@@ -1260,16 +1263,16 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 	
 	protected void markReferenceCoordForUpdate() {
-		CoordTriplet rc = getReferenceCoord();
+		BlockPos rc = getReferenceCoord();
 		if(worldObj != null && rc != null) {
-			worldObj.markBlockForUpdate(rc.x, rc.y, rc.z);
+			WorldHelper.notifyBlockUpdate(worldObj, rc, null, null);
 		}
 	}
 	
 	protected void markReferenceCoordDirty() {
 		if(worldObj == null || worldObj.isRemote) { return; }
 
-		CoordTriplet referenceCoord = getReferenceCoord();
+		BlockPos referenceCoord = getReferenceCoord();
 		if(referenceCoord == null) { return; }
 
 		TileEntity saveTe = worldObj.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);

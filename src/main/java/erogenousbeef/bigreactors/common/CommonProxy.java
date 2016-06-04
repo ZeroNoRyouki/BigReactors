@@ -6,13 +6,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import cofh.api.modhelpers.ThermalExpansionHelper;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.item.ItemIngot;
@@ -22,7 +22,7 @@ import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
-import erogenousbeef.core.multiblock.MultiblockServerTickHandler;
+import zero.mods.zerocore.api.multiblock.MultiblockServerTickHandler;
 
 public class CommonProxy {
 

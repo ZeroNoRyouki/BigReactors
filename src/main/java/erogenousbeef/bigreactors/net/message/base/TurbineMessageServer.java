@@ -1,19 +1,19 @@
 package erogenousbeef.bigreactors.net.message.base;
 
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
-import erogenousbeef.core.common.CoordTriplet;
 
 public class TurbineMessageServer extends WorldMessageServer {
 	protected MultiblockTurbine turbine;
 	
 	protected TurbineMessageServer() { super(); turbine = null; }
-	protected TurbineMessageServer(MultiblockTurbine turbine, CoordTriplet referenceCoord) {
-		super(referenceCoord.x, referenceCoord.y, referenceCoord.z);
+	protected TurbineMessageServer(MultiblockTurbine turbine, BlockPos referenceCoord) {
+		super(referenceCoord);
 		this.turbine = turbine;
 	}
 	protected TurbineMessageServer(MultiblockTurbine turbine) {
@@ -31,7 +31,9 @@ public class TurbineMessageServer extends WorldMessageServer {
 					return handleMessage(message, ctx, reactor);
 				}
 				else {
-					BRLog.error("Received TurbineMessageServer for a turbine part @ %d, %d, %d which has no attached turbine", te.xCoord, te.yCoord, te.zCoord);
+					BlockPos tePosition = te.getPos();
+					BRLog.error("Received TurbineMessageServer for a turbine part @ %d, %d, %d which has no attached turbine",
+							tePosition.getX(), tePosition.getY(), tePosition.getZ());
 				}
 			}
 			else {

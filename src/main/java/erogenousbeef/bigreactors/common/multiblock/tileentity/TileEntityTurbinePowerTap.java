@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard implements IEnergyProvider, INeighborUpdatableEntity {
 

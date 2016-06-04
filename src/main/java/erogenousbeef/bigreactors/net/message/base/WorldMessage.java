@@ -2,10 +2,11 @@ package erogenousbeef.bigreactors.net.message.base;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 
 /**
@@ -53,7 +54,7 @@ public abstract class WorldMessage implements IMessage {
 				return null;
 			}
 			
-			TileEntity te = world.getTileEntity(message.x, message.y, message.z);
+			TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
 			if(te == null) {
 				BRLog.error("Unable to find tile entity for WorldMessage at %d, %d, %d", message.x, message.y, message.z);
 				return null;

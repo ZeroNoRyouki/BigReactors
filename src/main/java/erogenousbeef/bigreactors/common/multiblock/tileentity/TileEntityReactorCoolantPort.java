@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -13,7 +12,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements IFluidHandler, INeighborUpdatableEntity, ITickableMultiblockPart {
 
@@ -33,7 +33,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		if(inlet == shouldBeInlet) { return; }
 
 		inlet = shouldBeInlet;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		
 		if(!worldObj.isRemote) {
 			if(!inlet) {
@@ -79,7 +79,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		// Re-render on the client
 		if(worldObj.isRemote) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		pumpDestination = null;
 		
 		if(worldObj.isRemote) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
 	}
 	

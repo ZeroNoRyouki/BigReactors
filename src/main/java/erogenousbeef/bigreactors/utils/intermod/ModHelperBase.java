@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.utils.intermod;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModAPIManager;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModAPIManager;
 
 public class ModHelperBase {
 
