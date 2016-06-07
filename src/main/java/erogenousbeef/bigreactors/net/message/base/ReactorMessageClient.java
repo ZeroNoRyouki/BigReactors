@@ -13,7 +13,7 @@ public abstract class ReactorMessageClient extends WorldMessageClient {
 	
 	protected ReactorMessageClient() { super(); reactor = null; }
 	protected ReactorMessageClient(MultiblockReactor reactor, BlockPos referenceCoord) {
-		super(referenceCoord.getX(), referenceCoord.getY(), referenceCoord.getZ());
+		super(referenceCoord);
 		this.reactor = reactor;
 	}
 	protected ReactorMessageClient(MultiblockReactor reactor) {
