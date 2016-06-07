@@ -9,6 +9,7 @@ import erogenousbeef.bigreactors.client.gui.GuiTurbineController;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbinePart;
 import erogenousbeef.bigreactors.gui.container.ContainerSlotless;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 
@@ -25,6 +26,7 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 			validatorCallback.setLastError("multiblock.validation.turbine.invalid_part_for_frame", position.getX(), position.getY(), position.getZ());
 			return false;
 		}
+		return true;
 	}
 
 	@Override
@@ -51,6 +53,7 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 			validatorCallback.setLastError("multiblock.validation.turbine.invalid_part_for_interior", position.getX(), position.getY(), position.getZ());
 			return false;
 		}
+		return true;
 	}
 	
 	@Override
@@ -83,7 +86,7 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 	public void onMachineActivated() {
 		// Re-render controller as active state has changed
 		if(worldObj.isRemote && getBlockMetadata() == BlockTurbinePart.METADATA_CONTROLLER) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}
 
@@ -91,7 +94,7 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 	public void onMachineDeactivated() {
 		// Re-render controller as active state has changed
 		if(worldObj.isRemote && getBlockMetadata() == BlockTurbinePart.METADATA_CONTROLLER) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}	
 }
