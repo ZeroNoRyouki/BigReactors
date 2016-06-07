@@ -1,3 +1,4 @@
+/* TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import java.util.Random;
@@ -5,11 +6,10 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,7 +27,8 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorR
 })
 public class BlockReactorRedstonePort extends BlockContainer implements IRedNetOmniNode {
 
-	protected IIcon blockIconLit;
+	// TODO blockstate
+	//protected IIcon blockIconLit;
 	
 	public static final int META_REDSTONE_LIT = 1;
 	public static final int META_REDSTONE_UNLIT = 0;
@@ -44,12 +45,12 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName());
 		setCreativeTab(BigReactors.TAB);
 	}
-	
+
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityReactorRedstonePort();
 	}
-	
+
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
@@ -98,9 +99,9 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 		return false;
 	}
 	
-    /**
+    /* *
      * A randomly called display update to be able to add particles or other items for display
-     */
+     * /
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random par5Random)
     {
@@ -219,3 +220,4 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 		return false;
     }
 }
+*/
