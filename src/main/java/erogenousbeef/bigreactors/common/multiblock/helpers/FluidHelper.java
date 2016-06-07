@@ -161,7 +161,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 	protected boolean canAddToStack(int idx, Fluid incoming) {
 		if(idx < 0 || idx >= fluids.length || incoming == null) { return false; }
 		else if(fluids[idx] == null) { return isFluidValidForStack(idx, incoming); }
-		return fluids[idx].getFluid().getID() == incoming.getID();
+		return fluids[idx].getFluid() == incoming;
 	}
 	
 	protected boolean canAddToStack(int idx, FluidStack incoming) {
@@ -190,7 +190,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 	protected int drainFluidFromStack(int idx, Fluid fluid, int amount) {
 		if(fluids[idx] == null) { return 0; }
 		
-		if(fluids[idx].getFluid().getID() != fluid.getID()) { return 0; }
+		if(fluids[idx].getFluid() != fluid) { return 0; }
 
 		return drainFluidFromStack(idx, amount);
 	}
@@ -300,7 +300,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 		if(resource == null || resource.amount <= 0 || idx < 0 || idx >= fluids.length) { return null; }
 		
 		Fluid existingFluid = getFluidType(idx);
-		if(existingFluid == null || existingFluid.getID() != resource.getFluid().getID()) { return null; }
+		if(existingFluid == null || existingFluid != resource.getFluid()) { return null; }
 		
 		FluidStack drained = resource.copy();
 		if(!doDrain) {
@@ -339,7 +339,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 
 		if(fluids[idx] == null) { return false; }
 		
-		return fluids[idx].getFluid().getID() == fluid.getID();
+		return fluids[idx].getFluid() == fluid;
 	}
 	
 	private static FluidTankInfo[] emptyTankArray = new FluidTankInfo[0];
