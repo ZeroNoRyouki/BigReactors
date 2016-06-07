@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
@@ -20,30 +21,33 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import dan200.computercraft.api.peripheral.IPeripheralProvider;
+//import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+//import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
+//import dan200.computercraft.api.peripheral.IPeripheral;
+//import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
+//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTap;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
+//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
+/*	TODO put back in when ComputerCraft is available for MC 1.9.x
+	TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")	
 })
-public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode, IPeripheralProvider {
+*/
+public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNode, IPeripheralProvider*/ {
 	
 	public static final int METADATA_CASING = 0;
 	public static final int METADATA_CONTROLLER = 1;
@@ -82,9 +86,10 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 		{"default"},					// RedNet Port
 		{"default"},					// Computer Port
 	};
-	private IIcon[][] _icons = new IIcon[_states.length][];
+	// TODO blockstate
+	//private IIcon[][] _icons = new IIcon[_states.length][];
 
-	private IIcon[] _redNetPortConfigIcons = new IIcon[TileEntityReactorRedNetPort.CircuitType.values().length - 1];
+	//private IIcon[] _redNetPortConfigIcons = new IIcon[TileEntityReactorRedNetPort.CircuitType.values().length - 1];
 	
 	public static boolean isCasing(int metadata) { return metadata == METADATA_CASING; }
 	public static boolean isController(int metadata) { return metadata == METADATA_CONTROLLER; }
@@ -100,11 +105,14 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 		
 		setStepSound(SoundType.METAL);
 		setHardness(2.0f);
-		setBlockName("blockReactorPart");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockReactorPart");
+		setRegistryName("blockReactorPart");
+		setUnlocalizedName("blockReactorPart");
+		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockReactorPart");
 		setCreativeTab(BigReactors.TAB);
 	}
 
+	// TODO blockstate
+	/*
 	@Override
     public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
 		IIcon icon = null;
@@ -189,6 +197,7 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 			return _redNetPortConfigIcons[circuitType.ordinal() - 1];
 		}
 	}
+	*/
 
 	@Deprecated // use blockstate compliant variant
 	@Override
@@ -198,10 +207,12 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 				return new TileEntityReactorPowerTap();
 			case METADATA_ACCESSPORT:
 				return new TileEntityReactorAccessPort();
+			/*
 			case METADATA_REDNETPORT:
 				return new TileEntityReactorRedNetPort();
 			case METADATA_COMPUTERPORT:
 				return new TileEntityReactorComputerPort();
+			*/
 			case METADATA_COOLANTPORT:
 				return new TileEntityReactorCoolantPort();
 			case METADATA_CONTROLROD:
@@ -296,10 +307,9 @@ public class BlockReactorPart extends BlockContainer implements IRedNetOmniNode,
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return true;
 	}
 
@@ -408,6 +418,7 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 		return false;
     }
 
+	/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 	// IConnectableRedNet
 	@Optional.Method(modid = "MineFactoryReloaded")
 	@Override
@@ -468,7 +479,10 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 			ForgeDirection side, int inputValue) {
 		return;
 	}
-	
+	*/
+
+
+	/* TODO put back in when ComputerCraft is available for MC 1.9.x
 	// IPeripheralProvider
 	@Optional.Method(modid ="ComputerCraft")
 	@Override
@@ -480,8 +494,11 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 		
 		return null;
 	}
+	*/
 	
 	//// UGLY UI CODE HERE ////
+	// TODO textures
+	/*
 	private IIcon getCoolantPortIcon(IBlockAccess blockAccess, int x, int y,
 			int z, int side) {
 		TileEntity te = blockAccess.getTileEntity(x, y, z);
@@ -639,6 +656,7 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 		}
 		return this.blockIcon;
 	}
+	*/
 	
 	/**
 	 * @param part The part whose sides we're checking
