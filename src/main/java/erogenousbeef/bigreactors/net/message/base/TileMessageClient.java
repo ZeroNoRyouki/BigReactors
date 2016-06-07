@@ -9,7 +9,7 @@ public class TileMessageClient<TE extends TileEntity> extends WorldMessageClient
 
 	protected TileMessageClient() {}
 	protected TileMessageClient(TE te) {
-		super(te.xCoord, te.yCoord, te.zCoord);
+		super(te.getPos());
 	}
 	
 	protected abstract static class Handler<MESSAGE extends TileMessageClient, TE extends TileEntity> extends WorldMessageClient.Handler<MESSAGE> {

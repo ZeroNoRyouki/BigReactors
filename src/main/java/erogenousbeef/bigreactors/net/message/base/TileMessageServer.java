@@ -8,7 +8,7 @@ import erogenousbeef.bigreactors.common.BRLog;
 public class TileMessageServer<TE extends TileEntity> extends WorldMessageServer {
 	protected TileMessageServer() {}
 	protected TileMessageServer(TE te) {
-		super(te.xCoord, te.yCoord, te.zCoord);
+		super(te.getPos());
 	}
 	
 	protected abstract static class Handler<MESSAGE extends TileMessageServer, TE extends TileEntity> extends WorldMessageServer.Handler<MESSAGE> {
