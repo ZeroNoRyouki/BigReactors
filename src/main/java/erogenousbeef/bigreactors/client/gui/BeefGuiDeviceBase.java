@@ -2,13 +2,13 @@ package erogenousbeef.bigreactors.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
-import cofh.lib.util.helpers.BlockHelper;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.block.BlockBRDevice;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
 import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.DeviceChangeExposureMessage;
+import zero.temp.BlockHelper;
 
 public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 
@@ -71,7 +71,7 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 		super.actionPerformed(button);
 		if(button.id >= EXPOSURE_BUTTON_ID_BASE && button.id < EXPOSURE_BUTTON_ID_BASE + 6) {
 			// TODO: Figure out how to detect rightclicks
-            CommonPacketHandler.INSTANCE.sendToServer(new DeviceChangeExposureMessage(_entity.xCoord, _entity.yCoord, _entity.zCoord, button.id - EXPOSURE_BUTTON_ID_BASE, true));
+            CommonPacketHandler.INSTANCE.sendToServer(new DeviceChangeExposureMessage(_entity.getPos(), button.id - EXPOSURE_BUTTON_ID_BASE, true));
 		}
 	}
 	
