@@ -1,3 +1,4 @@
+/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.block.Block;
@@ -254,10 +255,10 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		checkForConnections(world, x, y, z);
 	}
 	
-	/**
+	/* *
 	 * Updates the connected RedNet network, if there is one.
 	 * Will only send one update per N ticks, where N is a configurable setting.
-	 */
+	 * /
 	public void onMultiblockServerTick() {
 		if(!this.isConnected()) { return; }
 
@@ -423,13 +424,13 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		}
 	}
 	
-	/**
+	/* *
 	 * Check for a world connection, if we're assembled.
 	 * @param world
 	 * @param x
 	 * @param y
 	 * @param z
-	 */
+	 * /
 	protected void checkForConnections(IBlockAccess world, int x, int y, int z) {
 		ForgeDirection out = getOutwardsDir();
 
@@ -458,3 +459,4 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	public static boolean isInput(CircuitType type) { return type.ordinal() >= minInputEnumValue && type.ordinal() <= maxInputEnumValue; }
 	public static boolean isOutput(CircuitType type) { return type.ordinal() >= minOutputEnumValue && type.ordinal() <= maxOutputEnumValue; }
 }
+*/
