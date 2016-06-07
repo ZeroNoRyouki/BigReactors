@@ -23,9 +23,12 @@ public class ReactorCommandEjectToPortMessage extends ReactorMessageServer {
 											boolean ejectFuel,
 											boolean dumpExcess) {
 		super(destination.getReactorController());
-		this.portX = destination.xCoord;
-		this.portY = destination.yCoord;
-		this.portZ = destination.zCoord;
+
+		BlockPos position = destination.getPos();
+
+		this.portX = position.getX();
+		this.portY = position.getY();
+		this.portZ = position.getZ();
 		this.ejectFuel = ejectFuel;
 		this.dumpExcess = dumpExcess;
 	}
