@@ -3,23 +3,21 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
 
-public class BlockTurbineRotorPart extends BlockContainer {
+public class BlockTurbineRotorPart extends Block {
 
 	public static final int METADATA_SHAFT = 0;
 	public static final int METADATA_BLADE = 1;
@@ -29,21 +27,27 @@ public class BlockTurbineRotorPart extends BlockContainer {
 															  "blade",
 															};
 
+	// TODO blockstate
+	/*
 	private IIcon[] _icons = new IIcon[_subBlocks.length];
 	private IIcon[] _subIcons = new IIcon[1];
+	*/
 
 	public BlockTurbineRotorPart(Material material) {
 		super(material);
 
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 		setLightLevel(0.9f);
 		setHardness(2.0f);
-		setBlockName("blockTurbineRotorPart");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockTurbineRotorPart");
+		setRegistryName("blockTurbineRotorPart");
+		setUnlocalizedName("blockTurbineRotorPart");
+		// TODO blockstate
+		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockTurbineRotorPart");
 		setCreativeTab(BigReactors.TAB);
 	}
-	
-	
+
+	// TODO blockstate
+	/*
 	@Override
 	public int getRenderType() {
 		return renderId;
@@ -69,15 +73,29 @@ public class BlockTurbineRotorPart extends BlockContainer {
 	public IIcon getRotorConnectorIcon() {
 		return _subIcons[0];
 	}
+	*/
+
+	/**
+	 * Called throughout the code as a replacement for block instanceof BlockContainer
+	 * Moving this to the Block base class allows for mods that wish to extend vanilla
+	 * blocks, and also want to have a tile entity on that block, may.
+	 *
+	 * Return true from this function to specify this block has a tile entity.
+	 *
+	 * @param state State of the current block
+	 * @return True if block has a tile entity, false otherwise
+	 */
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTurbineRotorPart();
 	}
 
 	@Override
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
@@ -88,9 +106,10 @@ public class BlockTurbineRotorPart extends BlockContainer {
 	}
 
 	@Override
-	public int damageDropped(int metadata)
-	{
-		return metadata;
+	public int damageDropped(IBlockState state) {
+		// TODO fix metadata
+		// return metadata;
+		return super.damageDropped(state);
 	}
 	
 	public ItemStack getItemStack(String name) {
@@ -136,10 +155,9 @@ public class BlockTurbineRotorPart extends BlockContainer {
 	public static boolean isRotorShaft(int metadata) {
 		return metadata == METADATA_SHAFT;
 	}
-	
+
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
 		return false;
-    }
+	}
 }
