@@ -3,6 +3,13 @@ package erogenousbeef.bigreactors.common.block;
 import java.util.ArrayList;
 import java.util.List;
 
+import cofh.api.block.IDismantleable;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import net.minecraft.block.material.Material;
@@ -15,15 +22,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.core.block.BlockCoFHBase;
-import cofh.core.util.CoreUtils;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
@@ -32,29 +34,36 @@ import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
 import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import zero.mods.zerocore.util.WorldHelper;
 
-public class BlockBRDevice extends BlockCoFHBase {
+public class BlockBRDevice extends Block implements IDismantleable {
 
 	public static final int META_CYANITE_REPROCESSOR = 0;
 	
 	public static final String[] _subBlocks = {
 		"cyaniteReprocessor"
 	};
-	
+
+	/* TODO blockstate
 	private IIcon[] _icons = new IIcon[_subBlocks.length];
 	private IIcon[] _activeIcons = new IIcon[_subBlocks.length];
+	*/
 	
 	public BlockBRDevice(Material material) {
 		super(material);
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 		setHardness(1.0f);
-		setBlockName("blockBRDevice");
-		setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockBRDevice");
+		setRegistryName("blockBRDevice");
+		setUnlocalizedName("blockBRDevice");
+		//TODO blockstate
+		//setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockBRDevice");
 		setCreativeTab(BigReactors.TAB);
 	}
-	
-	public static final int SIDE_FRONT = ForgeDirection.NORTH.ordinal();
 
+	// TODO blockstate?
+	//public static final int SIDE_FRONT = ForgeDirection.NORTH.ordinal();
+
+	/* TODO blockstate
 	private IIcon safeGetIcon(IIcon[] list, int idx, int x, int y, int z) {
 		if(idx < 0 || idx >= list.length) {
 			BRLog.warning("Invalid metadata (%d) for block at %d, %d, %d!", idx, x, y, z);
@@ -122,15 +131,20 @@ public class BlockBRDevice extends BlockCoFHBase {
 			_activeIcons[i] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + "." + _subBlocks[i] + ".active");
 		}
 	}
+	*/
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		// TODO blockstate
+		return null;
+		/*
 		switch(metadata) {
 		case META_CYANITE_REPROCESSOR:
 			return new TileEntityCyaniteReprocessor();
 		default:
 			throw new IllegalArgumentException("Unknown metadata for tile entity");
 		}
+		*/
 	}
 
 	public ItemStack getCyaniteReprocessorItemStack() {
@@ -144,8 +158,10 @@ public class BlockBRDevice extends BlockCoFHBase {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(x, y, z);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer,
+									EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+		TileEntity te = world.getTileEntity(pos);
 		if(te == null) { return false; }
 
 		if(entityPlayer.isSneaking()) {
@@ -153,7 +169,7 @@ public class BlockBRDevice extends BlockCoFHBase {
 			// Wrench + Sneak = Dismantle
 			if(StaticUtils.Inventory.isPlayerHoldingWrench(entityPlayer)) {
 				// Pass simulate == true on the client to prevent creation of "ghost" item stacks
-				dismantleBlock(entityPlayer, null, world, x, y, z, false, world.isRemote);
+				dismantleBlock(entityPlayer, world, pos.getX(), pos.getY(), pos.getZ(), false);
 				return true;
 			}
 
@@ -169,7 +185,7 @@ public class BlockBRDevice extends BlockCoFHBase {
 		{
 			if(FluidContainerRegistry.isEmptyContainer(entityPlayer.inventory.getCurrentItem())) {
 				IFluidHandler fluidHandler = (IFluidHandler)te;
-				FluidTankInfo[] infoz = fluidHandler.getTankInfo(ForgeDirection.UNKNOWN);
+				FluidTankInfo[] infoz = fluidHandler.getTankInfo(side);
 				for(FluidTankInfo info : infoz) {
 					if(StaticUtils.Fluids.fillContainerFromTank(world, fluidHandler, entityPlayer, info.fluid)) {
 						return true;
@@ -187,7 +203,7 @@ public class BlockBRDevice extends BlockCoFHBase {
 		// Show GUI
 		if(te instanceof TileEntityBeefBase) {
 			if(!world.isRemote) {
-				entityPlayer.openGui(BRLoader.instance, 0, world, x, y, z);
+				entityPlayer.openGui(BRLoader.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return true;
 		}
@@ -196,16 +212,23 @@ public class BlockBRDevice extends BlockCoFHBase {
 	}
 
 	// IDismantleable
+
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, NBTTagCompound blockTag,
-			World world, int x, int y, int z, boolean returnDrops, boolean simulate) {
+	public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
+		return true;
+	}
+
+	@Override
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
-		int metadata = world.getBlockMetadata(x, y, z);
-		stacks.add(new ItemStack(getItemDropped(metadata, world.rand, 0), 1, damageDropped(metadata)));
+		BlockPos position = new BlockPos(x, y, z);
+		IBlockState blockState = world.getBlockState(position);
+
+		stacks.add(new ItemStack(getItemDropped(blockState, world.rand, 0), 1, damageDropped(blockState)));
 		
-		if(returnDrops && !simulate)
-		{
-			TileEntity te = world.getTileEntity(x, y, z);
+		if(returnDrops) {
+			TileEntity te = world.getTileEntity(position);
 			
 			if(te instanceof IInventory) {
 				IInventory invTe = (IInventory)te;
@@ -219,27 +242,14 @@ public class BlockBRDevice extends BlockCoFHBase {
 			}
 		}
 
-		if(!simulate) {
-			world.setBlockToAir(x, y, z);
-		
-			if(!returnDrops) {
-				for(ItemStack stack: stacks) {
-					CoreUtils.dropItemStackIntoWorldWithVelocity(stack, world, x, y, z);
-				}
+		world.setBlockToAir(position);
+
+		if(!returnDrops) {
+			for(ItemStack stack: stacks) {
+				WorldHelper.spawnItemStack(stack, world, x, y, z, true);
 			}
 		}
 
 		return stacks;
-	}
-	
-	// IInitializer (unused)
-	@Override
-	public boolean initialize() {
-		return false;
-	}
-
-	@Override
-	public boolean postInit() {
-		return false;
 	}
 }
