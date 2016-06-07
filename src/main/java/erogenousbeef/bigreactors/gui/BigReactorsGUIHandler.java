@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IMultiblockGuiHandler;
@@ -12,7 +13,7 @@ public class BigReactorsGUIHandler implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
 		
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		if(te == null) {
 			return null;
 		}
@@ -29,7 +30,7 @@ public class BigReactorsGUIHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		if(te == null) {
 			return null;
 		}
