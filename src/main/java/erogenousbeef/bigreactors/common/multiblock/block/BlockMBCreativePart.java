@@ -1,19 +1,21 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import java.util.List;
-
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
@@ -21,7 +23,7 @@ import erogenousbeef.bigreactors.utils.StaticUtils;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
-public class BlockMBCreativePart extends BlockContainer {
+public class BlockMBCreativePart extends Block {
 
 	public static final int REACTOR_CREATIVE_COOLANT_PORT = 0;
 	public static final int TURBINE_CREATIVE_FLUID_PORT = 1;
@@ -30,20 +32,27 @@ public class BlockMBCreativePart extends BlockContainer {
 	private static String[] subIconNames = new String[] { "reactor.coolantPort.outlet" };
 	
 	private static final int SUBICON_CREATIVE_COOLANT_OUTLET = 0;
-	
+
+	// TODO blockstate
+	/*
 	private IIcon[] icons = new IIcon[subBlocks.length];
 	private IIcon[] subIcons = new IIcon[subIconNames.length];
-	
+	*/
+
 	public BlockMBCreativePart(Material material) {
 		super(material);
 
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 		setHardness(1.0f);
-		setBlockName("blockMBCreativePart");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockMBCreativePart");
+		setRegistryName("blockMBCreativePart");
+		setUnlocalizedName("blockMBCreativePart");
+		// TODO blockstate
+		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockMBCreativePart");
 		setCreativeTab(BigReactors.TAB);
 	}
 
+	// TODO blockstate
+	/*
 	@Override
     public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
 		int metadata = blockAccess.getBlockMetadata(x, y, z);
@@ -83,7 +92,24 @@ public class BlockMBCreativePart extends BlockContainer {
 			subIcons[i] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + "." + subIconNames[i]);
 		}
 	}
-	
+	*/
+
+	/**
+	 * Called throughout the code as a replacement for block instanceof BlockContainer
+	 * Moving this to the Block base class allows for mods that wish to extend vanilla
+	 * blocks, and also want to have a tile entity on that block, may.
+	 *
+	 * Return true from this function to specify this block has a tile entity.
+	 *
+	 * @param state State of the current block
+	 * @return True if block has a tile entity, false otherwise
+	 */
+	public boolean hasTileEntity(IBlockState state) {
+		// TODO blockstate
+		return true; // fix!
+	}
+
+	// TODO blockstate + use createTileEntity(World world, IBlockState state)
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		switch(metadata) {
@@ -97,17 +123,17 @@ public class BlockMBCreativePart extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+									ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		if(player.isSneaking()) {
 			return false;
 		}
 
-		ItemStack currentEquippedItem = player.getCurrentEquippedItem();
-		
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof TileEntityReactorCreativeCoolantPort) {
 			TileEntityReactorCreativeCoolantPort cp = (TileEntityReactorCreativeCoolantPort)te;
-			if(currentEquippedItem == null || StaticUtils.Inventory.isPlayerHoldingWrench(player)) {
+			if(heldItem == null || StaticUtils.Inventory.isPlayerHoldingWrench(player)) {
 				// Use wrench to change inlet/outlet state
 				cp.setInlet(!cp.isInlet(), true);
 			}
@@ -119,11 +145,12 @@ public class BlockMBCreativePart extends BlockContainer {
 		
 		return false;
 	}
-	
+
 	@Override
-	public int damageDropped(int metadata)
-	{
-		return metadata;
+	public int damageDropped(IBlockState state) {
+		// TODO fix metadata
+		// return metadata;
+		return super.damageDropped(state);
 	}
 
 	public ItemStack getReactorCoolantPort() {
@@ -141,6 +168,8 @@ public class BlockMBCreativePart extends BlockContainer {
 		par3List.add(getTurbineFluidPort());
 	}
 
+	// TODO textures
+	/*
 	private IIcon getIconFromTileEntity(RectangularMultiblockTileEntityBase rte, int metadata) {
 		if(rte instanceof TileEntityReactorCreativeCoolantPort) {
 			if(!((TileEntityReactorCreativeCoolantPort)rte).isInlet()) {
@@ -151,10 +180,10 @@ public class BlockMBCreativePart extends BlockContainer {
 		metadata = metadata % icons.length;
 		return icons[metadata];
 	}
-	
+	*/
+
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
 		return false;
-    }
+	}
 }
