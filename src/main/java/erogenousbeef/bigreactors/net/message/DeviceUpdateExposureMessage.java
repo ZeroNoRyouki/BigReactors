@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
@@ -16,8 +17,8 @@ public class DeviceUpdateExposureMessage extends WorldMessageClient {
 		exposures = null;
 	}
 	
-	public DeviceUpdateExposureMessage(int x, int y, int z, int[] exposures) {
-		super(x, y, z);
+	public DeviceUpdateExposureMessage(BlockPos position, int[] exposures) {
+		super(position);
 		this.exposures = new int[exposures.length];
 		System.arraycopy(exposures, 0, this.exposures, 0, this.exposures.length);
 	}

@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
@@ -20,8 +21,8 @@ public class DeviceChangeExposureMessage extends WorldMessageServer {
 	
 	public DeviceChangeExposureMessage() {}
 
-	public DeviceChangeExposureMessage(int x, int y, int z, int side, boolean increment) {
-		super(x, y, z);
+	public DeviceChangeExposureMessage(BlockPos position, int side, boolean increment) {
+		super(position);
 		this.side = side;
 		this.increment = increment;
 	}
@@ -53,7 +54,9 @@ public class DeviceChangeExposureMessage extends WorldMessageServer {
 				}
 			}
 			else {
-				BRLog.warning("Received SideChangeMessage for TE at %d, %d, %d, but it was not a TE with an iterable side exposure!", te.xCoord, te.yCoord, te.zCoord);
+				BlockPos position = te.getPos();
+				BRLog.warning("Received SideChangeMessage for TE at %d, %d, %d, but it was not a TE with an iterable side exposure!",
+						position.getX(), position.getY(), position.getZ());
 			}
 			return null;
 		}

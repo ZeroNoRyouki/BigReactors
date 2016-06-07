@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -13,8 +14,8 @@ public class ControlRodChangeNameMessage extends WorldMessageServer {
 
     public ControlRodChangeNameMessage() { super(); name = null; }
     
-    public ControlRodChangeNameMessage(int x, int y, int z, String name) {
-    	super(x, y, z);
+    public ControlRodChangeNameMessage(BlockPos position, String name) {
+    	super(position);
         this.name = name;
     }
 

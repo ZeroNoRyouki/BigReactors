@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
@@ -12,8 +13,8 @@ public class ControlRodUpdateMessage extends WorldMessageClient {
 
     public ControlRodUpdateMessage() { super(); insertion = 0; }
     
-    public ControlRodUpdateMessage(int x, int y, int z, short controlRodInsertion) {
-    	super(x, y, z);
+    public ControlRodUpdateMessage(BlockPos position, short controlRodInsertion) {
+    	super(position);
         this.insertion = controlRodInsertion;
     }
 

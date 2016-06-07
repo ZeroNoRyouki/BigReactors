@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.net.message;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -14,8 +15,8 @@ public class DeviceUpdateMessage extends WorldMessageClient {
 
     public DeviceUpdateMessage() { super(); compound = null; }
     
-    public DeviceUpdateMessage(int x, int y, int z, NBTTagCompound compound) {
-    	super(x, y, z);
+    public DeviceUpdateMessage(BlockPos position, NBTTagCompound compound) {
+    	super(position);
         this.compound = compound;
     }
 

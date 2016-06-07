@@ -20,8 +20,8 @@ public class MachineCommandActivateMessage extends WorldMessageServer {
 	protected boolean setActive;
 	public MachineCommandActivateMessage() { super(); setActive = true; }
 
-	protected MachineCommandActivateMessage(BlockPos coord, boolean setActive) {
-		super(coord.getX(), coord.getY(), coord.getZ());
+	protected MachineCommandActivateMessage(BlockPos position, boolean setActive) {
+		super(position);
 		this.setActive = setActive;
 	}
 
