@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
@@ -14,7 +15,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -351,9 +352,10 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 	}
 
 	@Override
-	public int damageDropped(int metadata)
-	{
-		return metadata;
+	public int damageDropped(IBlockState state) {
+		// TODO fix metadata
+		// return metadata;
+		return super.damageDropped(state);
 	}
 	
 	public ItemStack getItemStack(String name) {
