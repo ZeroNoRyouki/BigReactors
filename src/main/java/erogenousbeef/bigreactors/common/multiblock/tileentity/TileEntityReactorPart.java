@@ -72,8 +72,7 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 			if(getBlockType() == BigReactors.blockReactorPart) {
 				int metadata = this.getBlockMetadata();
 				if(BlockReactorPart.isController(metadata)) {
-					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-					//WorldHelper.notifyBlockUpdate(worldObj);
+					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 				}
 			}
 		}
@@ -86,7 +85,7 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 			if(getBlockType() == BigReactors.blockReactorPart) {
 				int metadata = this.getBlockMetadata();
 				if(BlockReactorPart.isController(metadata)) {
-					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 				}
 			}
 		}
