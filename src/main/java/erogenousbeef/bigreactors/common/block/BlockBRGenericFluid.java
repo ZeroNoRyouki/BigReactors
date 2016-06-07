@@ -9,15 +9,21 @@ import erogenousbeef.bigreactors.common.BigReactors;
 
 public class BlockBRGenericFluid extends BlockFluidClassic {
 
+	// TODO blockstate
+	/*
 	private IIcon _iconFlowing;
 	private IIcon _iconStill;
-	
+	*/
+
 	public BlockBRGenericFluid(Fluid fluid, String unlocalizedName) {
 		super(fluid, Material.water);
 
-		setBlockName("fluid." + unlocalizedName + ".still");
+		setRegistryName(unlocalizedName);
+		setUnlocalizedName("fluid." + unlocalizedName + ".still");
 	}
 
+	// TODO blockstate
+	/*
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegistry) {
@@ -32,4 +38,5 @@ public class BlockBRGenericFluid extends BlockFluidClassic {
 	public IIcon getIcon(int side, int metadata) {
 		return side <= 1 ? _iconStill : _iconFlowing;
 	}
+	*/
 }
