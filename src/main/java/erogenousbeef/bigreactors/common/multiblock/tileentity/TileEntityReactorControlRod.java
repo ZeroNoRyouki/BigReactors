@@ -8,6 +8,7 @@ import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
@@ -64,7 +65,11 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	protected void sendControlRodUpdate() {
 		if(this.worldObj == null || this.worldObj.isRemote) { return; }
 
-        CommonPacketHandler.INSTANCE.sendToAllAround(new ControlRodUpdateMessage(xCoord, yCoord, zCoord, controlRodInsertion), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+		BlockPos position = this.getPos();
+
+        CommonPacketHandler.INSTANCE.sendToAllAround(new ControlRodUpdateMessage(position, controlRodInsertion),
+				new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(),
+						position.getX(), position.getY(), position.getZ(), 50));
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -106,7 +111,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 		BlockPos position = this.getPos();
 
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
+				position.getX(), position.getY(), position.getZ());
 		return false;
 	}
 
@@ -115,7 +121,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 		BlockPos position = this.getPos();
 
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
+				position.getX(), position.getY(), position.getZ());
 		return false;
 	}
 
@@ -127,7 +134,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 		if(!(teBelow instanceof TileEntityReactorFuelRod)) {
 
-			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_column", position.getX(), position.getY(), position.getZ());
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_column",
+					position.getX(), position.getY(), position.getZ());
 			return false;
 		}
 
@@ -139,7 +147,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 		BlockPos position = this.getPos();
 
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
+				position.getX(), position.getY(), position.getZ());
 		return false;
 	}
 
@@ -148,7 +157,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 		BlockPos position = this.getPos();
 
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position", position.getX(), position.getY(), position.getZ());
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
+				position.getX(), position.getY(), position.getZ());
 		return false;
 	}
 
@@ -169,7 +179,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 			this.readLocalDataFromNBT(localData);
 			
 			if(worldObj != null && worldObj.isRemote) {
-				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 			}
 		}
 	}
