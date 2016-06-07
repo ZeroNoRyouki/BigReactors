@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
@@ -26,7 +26,7 @@ public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 				tooltip[i+3] = extraTooltip[i];
 			}
 		}
-		tooltip[0] = EnumChatFormatting.AQUA + tooltipTitle;
+		tooltip[0] = TextFormatting.AQUA + tooltipTitle;
 		tooltip[1] = "";
 	}
 
