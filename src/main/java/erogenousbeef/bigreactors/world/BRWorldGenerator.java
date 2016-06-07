@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import erogenousbeef.bigreactors.utils.StaticUtils;
@@ -19,10 +20,10 @@ public class BRWorldGenerator implements IWorldGenerator {
 		}
 		oreGenerators.add(newGenerator);
 	}
-	
+
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world,
-			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+						 IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 		generateChunk(random, chunkX, chunkZ, world);
 	}
 	
@@ -33,7 +34,7 @@ public class BRWorldGenerator implements IWorldGenerator {
 
 		// Ignore negative dimension IDs if we're disallowing negative dimensions
 		// OR if this dimensionID is not on the whitelist.
-		if(!StaticUtils.WorldGen.shouldGenerateInDimension(world.provider.dimensionId)) {
+		if(!StaticUtils.WorldGen.shouldGenerateInDimension(world.provider.getDimension())) {
 			return;
 		}
 
