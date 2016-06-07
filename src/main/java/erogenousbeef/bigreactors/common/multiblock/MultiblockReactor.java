@@ -50,6 +50,7 @@ import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
@@ -262,7 +263,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			return false;
 		}
 		
-		return super.isMachineWhole();
+		return super.isMachineWhole(validatorCallback);
 	}
 
 	@Override
@@ -290,7 +291,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 			// Radiate from that control rod
 			TileEntityReactorFuelRod source  = currentFuelRod.next();
-			TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)worldObj.getTileEntity(source.xCoord, getMaximumCoord().y, source.zCoord);
+			BlockPos sourcePosition = source.getPos();
+			BlockPos controlRodPosition = new BlockPos(sourcePosition.getX(), getMaximumCoord().getY(), sourcePosition.getZ());
+			TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)worldObj.getTileEntity(controlRodPosition);
 			if(sourceControlRod != null)
 			{
 				RadiationData radData = radiationHelper.radiate(worldObj, fuelContainer, source, sourceControlRod, getFuelHeat(), getReactorHeat(), attachedControlRods.size());
@@ -468,7 +471,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(worldObj.isRemote) {
 			// Force controllers to re-render on client
 			for(IMultiblockPart part : attachedControllers) {
-				worldObj.markBlockForUpdate(part.xCoord, part.yCoord, part.zCoord);
+				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
 			}
 		}
 		else {
@@ -1248,7 +1251,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(worldObj.isRemote) {
 			// On the client, re-render all the fuel rod blocks when the fuel status changes
 			for(TileEntityReactorFuelRod fuelRod : attachedFuelRods) {
-				worldObj.markBlockForUpdate(fuelRod.xCoord, fuelRod.yCoord, fuelRod.zCoord);
+				WorldHelper.notifyBlockUpdate(this.worldObj, fuelRod.getPos(), null, null);
 			}
 		}
 	}
