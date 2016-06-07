@@ -1,3 +1,4 @@
+/* TODO put back in when ComputerCraft is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import java.util.HashMap;
@@ -202,9 +203,9 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 
 			BlockPos rodCoord = getControlRodCoordFromArguments(reactor, arguments, 0);
 			BlockPos reactorMinCoord = reactor.getMinimumCoord();
-			return new Object[] { rodCoord.x - reactorMinCoord.x,
-								  rodCoord.y - reactorMinCoord.y,
-								  rodCoord.z - reactorMinCoord.z };
+			return new Object[] { rodCoord.getX() - reactorMinCoord.getX(),
+								  rodCoord.getY() - reactorMinCoord.getY(),
+								  rodCoord.getZ() - reactorMinCoord.getZ() };
 		}
 
 		case setActive:
@@ -371,3 +372,4 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		return hashCode() == other.hashCode();
 	}
 }
+*/
