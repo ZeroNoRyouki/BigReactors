@@ -11,6 +11,7 @@ import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IMultiblockGuiHandler;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IMultiblockGuiHandler, 
 		IActivateable, IBeefDebuggableTile {
@@ -34,7 +35,7 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 		
 		// Re-render this block on the client
 		if(worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}
 
@@ -44,7 +45,7 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 		
 		// Re-render this block on the client
 		if(worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}
 
@@ -76,7 +77,6 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	}
 	
 	// IActivateable
-	// IActivateable
 	@Override
 	public BlockPos getReferenceCoord() {
 		if(isConnected()) {
@@ -103,7 +103,8 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 			getTurbine().setActive(active);
 		}
 		else {
-			BRLog.error("Received a setActive command at %d, %d, %d, but not connected to a multiblock controller!", xCoord, yCoord, zCoord);
+			BlockPos position = this.getPos();
+			BRLog.error("Received a setActive command at %d, %d, %d, but not connected to a multiblock controller!", position.getX(), position.getY(), position.getZ());
 		}
 	}
 	
