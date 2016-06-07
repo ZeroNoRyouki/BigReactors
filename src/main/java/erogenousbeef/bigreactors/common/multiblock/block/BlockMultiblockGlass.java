@@ -4,29 +4,29 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
-import erogenousbeef.bigreactors.utils.StaticUtils;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.validation.ValidationError;
 
-public class BlockMultiblockGlass extends BlockContainer {
+public class BlockMultiblockGlass extends BlockContainer { // TODO remove BlockContainer
 
 	public static final int METADATA_REACTOR = 0;
 	public static final int METADATA_TURBINE = 1;
@@ -34,21 +34,43 @@ public class BlockMultiblockGlass extends BlockContainer {
 	private static final String textureBaseName = "multiblockGlass";
 	
 	private static String[] subBlocks = new String[] { "reactor", "turbine" };
+	// TODO blockstate
+	/*
 	private IIcon[][] icons = new IIcon[subBlocks.length][16];
 	private IIcon transparentIcon;
-	
+	*/
+
 	public BlockMultiblockGlass(Material material) {
 		super(material);
 		
-		setStepSound(soundTypeGlass);
+		setStepSound(SoundType.GLASS);
 		setHardness(2.0f);
-		setBlockName("brMultiblockGlass");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + textureBaseName);
+		setRegistryName("brMultiblockGlass");
+		setUnlocalizedName("brMultiblockGlass");
+		// TODO blockstate
+		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + textureBaseName);
 		setCreativeTab(BigReactors.TAB);
 	}
 
+	/**
+	 * Called throughout the code as a replacement for block instanceof BlockContainer
+	 * Moving this to the Block base class allows for mods that wish to extend vanilla
+	 * blocks, and also want to have a tile entity on that block, may.
+	 *
+	 * Return true from this function to specify this block has a tile entity.
+	 *
+	 * @param state State of the current block
+	 * @return True if block has a tile entity, false otherwise
+	 */
+	public boolean hasTileEntity(IBlockState state) {
+		// TODO blockstate
+		return true; // fix!
+	}
+
+	// TODO blockstate + use createTileEntity(World world, IBlockState state)
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
+		// TODO blockstate
 		switch(metadata) {
 		case METADATA_REACTOR:
 			return new TileEntityReactorGlass();
@@ -58,7 +80,9 @@ public class BlockMultiblockGlass extends BlockContainer {
 			throw new IllegalArgumentException("Unrecognized metadata");
 		}
 	}
-	
+
+	// TODO blockstate
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -107,17 +131,18 @@ public class BlockMultiblockGlass extends BlockContainer {
 	public IIcon getIcon(int side, int metadata) {
 		return icons[metadata][0];
 	}
+	*/
 
 	@Override
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-	public int damageDropped(int metadata)
-	{
-		return metadata;
+	public int damageDropped(IBlockState state) {
+		// TODO fix metadata
+		//return metadata;
+		return super.damageDropped(state);
 	}
 
 	public ItemStack getItemStack(String name) {
@@ -142,27 +167,29 @@ public class BlockMultiblockGlass extends BlockContainer {
 			par3List.add(new ItemStack(this, 1, i));
 		}
 	}
-	
+
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+									ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		if(player.isSneaking()) {
 			return false;
 		}
 
 		// If the player's hands are empty and they rightclick on a multiblock, they get a 
 		// multiblock-debugging message if the machine is not assembled.
-		if(!world.isRemote && player.getCurrentEquippedItem() == null) {
-			TileEntity te = world.getTileEntity(x, y, z);
+		if(!world.isRemote && heldItem == null) {
+			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof IMultiblockPart) {
 				MultiblockControllerBase controller = ((IMultiblockPart)te).getMultiblockController();
 
 				if(controller == null) {
-					player.addChatMessage(new ChatComponentText(String.format("SERIOUS ERROR - server part @ %d, %d, %d has no controller!", x, y, z))); //TODO Localize
+					player.addChatMessage(new TextComponentString(String.format("SERIOUS ERROR - server part @ %d, %d, %d has no controller!", pos.getX(), pos.getY(), pos.getZ()))); //TODO Localize
 				}
 				else {
-					Exception e = controller.getLastValidationException();
-					if(e != null) {
-						player.addChatMessage(new ChatComponentText(e.getMessage()));
+					ValidationError lastError = controller.getLastError();
+					if(lastError != null) {
+						player.addChatMessage(new TextComponentString(e.getMessage()));
 						return true;
 					}
 				}
@@ -171,10 +198,9 @@ public class BlockMultiblockGlass extends BlockContainer {
 		
 		return false;
 	}
-	
+
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
 		return false;
-    }
+	}
 }
