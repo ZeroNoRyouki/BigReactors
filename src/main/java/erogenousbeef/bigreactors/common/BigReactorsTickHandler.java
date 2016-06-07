@@ -39,7 +39,7 @@ public class BigReactorsTickHandler {
 
             if(event.world.isRemote) { return; }
 
-            int dimensionId = event.world.provider.dimensionId;
+            int dimensionId = event.world.provider.getDimension();
 
             if(chunkRegenMap.containsKey(dimensionId)) {
                 // Split up regen so it takes at most 16 millisec per frame to allow for ~55-60 FPS
