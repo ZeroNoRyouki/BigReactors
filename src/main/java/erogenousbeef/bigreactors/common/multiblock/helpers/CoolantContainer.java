@@ -33,9 +33,8 @@ public class CoolantContainer extends FluidHelper {
 	
 	public boolean isAcceptedCoolant(Fluid fluid) {
 		if(fluid == null) { return false; }
-		
-		// TODO: Lookup
-		return fluid.getID() == FluidRegistry.WATER.getID();
+
+		return fluid == FluidRegistry.WATER;
 	}
 
 	public int addCoolant(FluidStack incoming) {
