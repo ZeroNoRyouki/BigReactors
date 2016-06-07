@@ -29,13 +29,15 @@ public class BREventHandler {
 				loadData.getInteger("BigReactorsUserWorldGen") == BigReactors.userWorldGenVersion) {
 			return;
 		}
+
+		int dimensionId = loadEvent.getWorld().provider.getDimension();
 		
-		if(!StaticUtils.WorldGen.shouldGenerateInDimension(loadEvent.world.provider.dimensionId)) {
+		if(!StaticUtils.WorldGen.shouldGenerateInDimension(dimensionId)) {
 			return;
 		}
 		
 		ChunkCoordIntPair coordPair = loadEvent.getChunk().getChunkCoordIntPair();
-		BigReactors.tickHandler.addRegenChunk(loadEvent.world.provider.dimensionId, coordPair);
+		BigReactors.tickHandler.addRegenChunk(dimensionId, coordPair);
 	}
 	
 }
