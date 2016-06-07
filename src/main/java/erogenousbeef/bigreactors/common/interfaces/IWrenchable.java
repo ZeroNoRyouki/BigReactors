@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Implement this class on tile entities which can be activated by a wrench or
@@ -15,5 +16,5 @@ public interface IWrenchable {
 	 * @param hitSide The side on which the machine was hit.
 	 * @return True if the machine handled the wrench hit, false otherwise.
 	 */
-	public boolean onWrench(EntityPlayer player, int hitSide);
+	public boolean onWrench(EntityPlayer player, EnumFacing hitSide);
 }
