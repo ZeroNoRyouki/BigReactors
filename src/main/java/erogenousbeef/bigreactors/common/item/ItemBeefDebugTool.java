@@ -17,7 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemBeefDebugTool extends ItemBase {
@@ -33,8 +33,8 @@ public class ItemBeefDebugTool extends ItemBase {
 		super.addInformation(stack, player, infoList, advancedTooltips);
 		infoList.add("Rightclick a block to show debug info");
 		infoList.add("");
-		infoList.add(EnumChatFormatting.ITALIC + "Queries on server, by default.");
-		infoList.add(EnumChatFormatting.GREEN + "Shift:" + EnumChatFormatting.GRAY + EnumChatFormatting.ITALIC + " Query on client");
+		infoList.add(TextFormatting.ITALIC + "Queries on server, by default.");
+		infoList.add(TextFormatting.GREEN + "Shift:" + TextFormatting.GRAY + TextFormatting.ITALIC + " Query on client");
 	}
 
 	@Override
