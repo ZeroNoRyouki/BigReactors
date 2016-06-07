@@ -6,8 +6,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -146,7 +144,7 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	@Override
 	protected boolean isFluidValidForTank(int tankIdx, FluidStack type) {
 		if(type == null) { return false; }
-		return type.getFluid().getID() == FluidRegistry.getFluid("water").getID();
+		return type.getFluid() == FluidRegistry.WATER;
 	}
 	
 	/// BeefGUI
@@ -163,13 +161,15 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	
 	@Override
 	protected int getDefaultTankForFluid(Fluid fluid) {
-		if(fluid.getName() == "water")
+		if(FluidRegistry.WATER == fluid)
 			return 0;
 		else
 			return FLUIDTANK_NONE;
 	}
 	
 	// IReconfigurableSides & IBeefReconfigurableSides
+	//TODO textures
+	/*
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconForSide(int side) {
 		if(side == facing) {
@@ -190,6 +190,7 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 			return ClientProxy.CommonBlockIcons.getIcon(ClientProxy.CommonBlockIcons.DEFAULT);
 		}
 	}
+	*/
 	
 	@Override
 	public int getNumConfig(int side) {
