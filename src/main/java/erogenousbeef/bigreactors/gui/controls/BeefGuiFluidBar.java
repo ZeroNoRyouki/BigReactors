@@ -23,6 +23,7 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 		this.tankIdx = tankIdx;
 	}
 
+	// TODO icon texture
 	@Override
 	protected IIcon getProgressBarIcon() {
 		FluidTankInfo[] tanks = this._entity.getTankInfo();
@@ -55,10 +56,10 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 			FluidStack tankFluid = tanks[tankIdx].fluid;
 			if(tankFluid != null) {
 				String fluidName = tankFluid.getFluid().getLocalizedName(tankFluid);
-				if(tankFluid.getFluid().getID() == FluidRegistry.WATER.getID()) {
+				if(tankFluid.getFluid() == FluidRegistry.WATER) {
 					fluidName = "Water";
 				}
-				else if(tankFluid.getFluid().getID() == FluidRegistry.LAVA.getID()) {
+				else if(tankFluid.getFluid() == FluidRegistry.LAVA) {
 					fluidName = "Lava";
 				}
 
