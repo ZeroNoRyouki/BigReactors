@@ -1,25 +1,28 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 
-public class BlockFuelRod extends BlockContainer {
+public class BlockFuelRod extends Block {
 
 	public static int renderId;
 
+	// TODO blockstate
+	/*
 	@SideOnly(Side.CLIENT)
 	private IIcon iconFuelRodSide;
 	@SideOnly(Side.CLIENT)
 	private IIcon iconFuelRodTopBottom;
-	
+	*/
+
 	public BlockFuelRod(Material material) {
 		super(material);
 		
@@ -27,10 +30,14 @@ public class BlockFuelRod extends BlockContainer {
 		setLightLevel(0.9f);
 		setLightOpacity(1);
 		setCreativeTab(BigReactors.TAB);
-		setBlockName("yelloriumFuelRod");
-		setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "yelloriumFuelRod");
+		setRegistryName("yelloriumFuelRod");
+		setUnlocalizedName("yelloriumFuelRod");
+		// TODO blockstate
+		//setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "yelloriumFuelRod");
 	}
 
+	// TODO blockstate
+	/*
 	@Override
 	public int getRenderType() {
 		return renderId;
@@ -59,21 +66,37 @@ public class BlockFuelRod extends BlockContainer {
 		this.iconFuelRodSide = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + "fuelRod.side");
 		this.iconFuelRodTopBottom = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + "fuelRod.end");
 	}
-	
-	@Override
-	public boolean isOpaqueCube() { return false; }
+	*/
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	/**
+	 * Called throughout the code as a replacement for block instanceof BlockContainer
+	 * Moving this to the Block base class allows for mods that wish to extend vanilla
+	 * blocks, and also want to have a tile entity on that block, may.
+	 *
+	 * Return true from this function to specify this block has a tile entity.
+	 *
+	 * @param state State of the current block
+	 * @return True if block has a tile entity, false otherwise
+	 */
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityReactorFuelRod();
 	}
-	
+
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
 		return false;
-    }
-	
+	}
+
 	/*
 	 * TODO Have to make my own particle for this. :/
     @SideOnly(Side.CLIENT)
