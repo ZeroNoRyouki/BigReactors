@@ -42,10 +42,13 @@ import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.api.multiblock.validation.ValidationError;
 import zero.mods.zerocore.util.WorldHelper;
 
 public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
@@ -362,7 +365,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			}
 			
 			// Now move out in the 4 rotor normals, looking for blades and coils
-			BlockPos checkCoord = rotorCoord.copy();
+			BlockPos checkCoord = rotorCoord.copy(); // TODO is a copy really needed here?
 			boolean encounteredBlades = false;
 			for(ForgeDirection bladeDir : bladeDirections) {
 				checkCoord.copy(rotorCoord);
@@ -392,7 +395,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 						}
 						
 						// Check the two coil spots in the 'corners', which are permitted if they're connected to the main rotor coil somehow
-						BlockPos coilCheck = checkCoord.copy();
+						BlockPos coilCheck = checkCoord.copy(); // TODO is a copy really needed here?
 						coilCheck.translate(bladeDir.getRotation(rotorDir));
 						foundCoils.remove(coilCheck);
 						coilCheck.copy(checkCoord);
@@ -1158,9 +1161,10 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	
 	public String getDebugInfo() {
 		StringBuilder sb = new StringBuilder();
+		ValidationError lastError = this.getLastError();
 		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
 		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
-		if(getLastValidationException() != null) {
+		if(lastError != null) {
 			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
 		}
 		
