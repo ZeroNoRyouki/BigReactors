@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,16 +23,19 @@ public class BlockBRMetal extends Block {
 	
 	private static final String[] _subBlocks = new String[] { "blockYellorium", "blockCyanite", "blockGraphite", "blockBlutonium", "blockLudicrite" };
 	private static final String[] _materials = new String[] { "Yellorium", "Cyanite", "Graphite", "Blutonium", "Ludicrite" };
-	private IIcon[] _icons = new IIcon[_subBlocks.length];
+	// TODO blockstate
+	//private IIcon[] _icons = new IIcon[_subBlocks.length];
 	private static final int NUM_BLOCKS = _subBlocks.length;
 	
 	public BlockBRMetal() {
 		super(Material.iron);
 		this.setCreativeTab(BigReactors.TAB);
-		this.setBlockName("brMetal");
+		this.setRegistryName("brMetal");
 		this.setHardness(2f);
 	}
 
+	// TODO blockstate
+	/*
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
@@ -46,11 +50,12 @@ public class BlockBRMetal extends Block {
 			_icons[i] = iconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + "." + _subBlocks[i]);
 		}
 	}
+	*/
 
 	@Override
-	public int damageDropped(int metadata)
-	{
-		return metadata;
+	public int damageDropped(IBlockState state) {
+		// TODO blockstate
+		return super.damageDropped(state);
 	}
 
 	@Override
