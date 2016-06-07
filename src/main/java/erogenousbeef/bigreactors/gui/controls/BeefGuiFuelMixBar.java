@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
@@ -99,7 +99,7 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 			}
 		}
 		return new String[] {
-				EnumChatFormatting.AQUA + "Core Fuel Status",
+				TextFormatting.AQUA + "Core Fuel Status",
 				String.format(" %2.1f%% full", fullness),
 				String.format(" %2.1f%% depleted", depletion),
 				"",
