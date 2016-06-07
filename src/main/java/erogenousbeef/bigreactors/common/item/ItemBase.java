@@ -6,14 +6,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 
 public class ItemBase extends Item {
-	protected IIcon[] icons;
+	// TODO textures
+	//protected IIcon[] icons;
 
 	public ItemBase(String name)
 	{
 		super();
+		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(BigReactors.TAB);
-		icons = new IIcon[getNumberOfSubItems()];
+		// TODO textures
+		//icons = new IIcon[getNumberOfSubItems()];
 	}
 
 	protected int getNumberOfSubItems() {
@@ -23,7 +26,9 @@ public class ItemBase extends Item {
 	protected String[] getSubItemNames() {
 		return null;
 	}
-	
+
+	// TODO textures
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister)
@@ -50,7 +55,8 @@ public class ItemBase extends Item {
 
 		return super.getIconFromDamage(damage);
 	}
-	
+	*/
+
 	@Override
 	public int getMetadata(int metadata) {
 		return metadata;
