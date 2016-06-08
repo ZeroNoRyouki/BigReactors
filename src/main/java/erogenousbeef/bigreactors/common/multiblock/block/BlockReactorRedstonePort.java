@@ -1,31 +1,38 @@
-/* TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
-import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+// TODO put back in when Minefactory Reloaded is available for MC 1.9.x
+//import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+//import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
+//import net.minecraftforge.fml.common.Optional;
+//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 
+// TODO put back in when Minefactory Reloaded is available for MC 1.9.x
+/*
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")	
 })
-public class BlockReactorRedstonePort extends BlockContainer implements IRedNetOmniNode {
+*/
+public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNode */ {
 
 	// TODO blockstate
 	//protected IIcon blockIconLit;
@@ -39,10 +46,12 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 	public BlockReactorRedstonePort(Material material) {
 		super(material);
 		
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 		setHardness(2.0f);
-		setBlockName("blockReactorRedstonePort");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName());
+        setRegistryName("blockReactorRedstonePort");
+        setUnlocalizedName("blockReactorRedstonePort");
+		// TODO textures
+        //this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName());
 		setCreativeTab(BigReactors.TAB);
 	}
 
@@ -51,6 +60,7 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 		return new TileEntityReactorRedstonePort();
 	}
 
+    /* TODO blockstate
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
@@ -69,21 +79,24 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 		this.blockIcon = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + ".unlit");
 		this.blockIconLit = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + ".lit");
 	}
-	
-	
+	*/
+
+    // TODO blockstate
 	@Override
 	public int damageDropped(int metadata)
 	{
 		return META_REDSTONE_UNLIT;
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+                                    ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		if(player.isSneaking()) {
 			return false;
 		}
 
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof TileEntityReactorRedstonePort) {
 			if(!((TileEntityReactorRedstonePort)te).isConnected()) { return false; }
 			
@@ -91,21 +104,21 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 				((TileEntityReactorRedstonePort)te).sendRedstoneUpdate();
 
 			if(!world.isRemote) {
-				player.openGui(BRLoader.instance, 0, world, x, y, z);
+				player.openGui(BRLoader.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return true;
 		}
 
 		return false;
 	}
-	
-    /* *
+
+    /**
      * A randomly called display update to be able to add particles or other items for display
-     * /
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random par5Random)
-    {
-    	TileEntity te = world.getTileEntity(x, y, z);
+     */
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos position, Random rand) {
+
+    	TileEntity te = world.getTileEntity(position);
         if (te instanceof TileEntityReactorRedstonePort)
         {
         	TileEntityReactorRedstonePort port = (TileEntityReactorRedstonePort)te;
@@ -114,43 +127,45 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
                 
                 if(out != ForgeDirection.UNKNOWN) {
                     double particleX, particleY, particleZ;
-                    particleY = y + 0.45D + par5Random.nextFloat() * 0.1D;
+                    particleY = y + 0.45D + rand.nextFloat() * 0.1D;
 
                     if(out.offsetX > 0)
-                    	particleX = x + par5Random.nextFloat() * 0.1D + 1.1D;
+                    	particleX = x + rand.nextFloat() * 0.1D + 1.1D;
                     else
-                    	particleX = x + 0.45D + par5Random.nextFloat() * 0.1D;
+                    	particleX = x + 0.45D + rand.nextFloat() * 0.1D;
                     
                     if(out.offsetZ > 0)
-                    	particleZ = z + par5Random.nextFloat() * 0.1D + 1.1D;
+                    	particleZ = z + rand.nextFloat() * 0.1D + 1.1D;
                     else
-                    	particleZ = z + 0.45D + par5Random.nextFloat() * 0.1D;
+                    	particleZ = z + 0.45D + rand.nextFloat() * 0.1D;
 
-                    world.spawnParticle("reddust", particleX, particleY, particleZ, 0.0D, par5Random.nextFloat() * 0.1D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.REDSTONE, particleX, particleY, particleZ, 0.0D, rand.nextFloat() * 0.1D, 0.0D);
                 }
         	}
         }
     }
-	
-    @Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
-    	super.onNeighborBlockChange(world, x, y,z, neighborBlock);
 
-    	TileEntity te = world.getTileEntity(x, y, z);
+    @Override
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+    	super.onNeighborBlockChange(world, pos, state, neighborBlock);
+
+    	TileEntity te = world.getTileEntity(pos);
     	if(te instanceof TileEntityReactorRedstonePort) {
-    		((TileEntityReactorRedstonePort)te).onNeighborBlockChange(x, y, z, neighborBlock);
+    		((TileEntityReactorRedstonePort)te).onNeighborBlockChange(pos, neighborBlock);
     	}
     }
     
 	// Redstone API
-	@Override
-	public boolean canProvidePower() { return true; }
-	
-	@Override
+    @Override
+    public boolean canProvidePower(IBlockState state) {
+        return true;
+    }
+
+    @Override
 	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
 		return isProvidingWeakPower(world, x, y, z, side);
 	}
-	
+
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
 		if(side == 0 || side == 1) { return REDSTONE_VALUE_OFF; }
@@ -167,6 +182,8 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 		return REDSTONE_VALUE_OFF;
 	}
 
+    // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
+    /*
 	// IRedNetOmniNode - for pretty cable connections
 	@Optional.Method(modid = "MineFactoryReloaded")
 	@Override
@@ -213,11 +230,10 @@ public class BlockReactorRedstonePort extends BlockContainer implements IRedNetO
 			port.onRedNetUpdate(inputValue);
 		}
 	}
-	
-	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
-		return false;
+	*/
+
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
+        return false;
     }
 }
-*/
