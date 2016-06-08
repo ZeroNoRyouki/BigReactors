@@ -1,12 +1,12 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedstonePort;
@@ -14,15 +14,18 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorRedstonePort;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.lib.BlockFacings;
 
 public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		implements ITickableMultiblockPart {
 
-	protected CircuitType circuitType;
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	//protected CircuitType circuitType;
 	protected int outputLevel;
 	protected boolean activeOnPulse;
 	protected boolean greaterThan; // if false, less than
@@ -34,12 +37,15 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	
 	public TileEntityReactorRedstonePort() {
 		super();
-		
-		circuitType = circuitType.DISABLED;
+
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		//circuitType = circuitType.DISABLED;
 		isExternallyPowered = false;
 		ticksSinceLastUpdate = 0;
 	}
-	
+
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	/*
 	// Redstone methods
 	public boolean isRedstoneActive() {
 		if(!this.isConnected()) { return false; }
@@ -73,7 +79,8 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	public boolean isOutput() {
 		return TileEntityReactorRedNetPort.isOutput(this.circuitType);
 	}
-	
+	*/
+
 	protected boolean checkVariable(int value) {
 		if(this.greaterThan) {
 			return value > getOutputLevel();
@@ -87,6 +94,8 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		if(this.worldObj != null && !this.worldObj.isRemote) {
 			int md;
 
+			// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+			/*
 			if(this.isOutput()) {
 				md = isRedstoneActive() ? BlockReactorRedstonePort.META_REDSTONE_LIT : BlockReactorRedstonePort.META_REDSTONE_UNLIT;
 			}
@@ -97,15 +106,20 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			if(md != this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) {
 				this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, md, 3);
 			}
+			*/
 		}
 	}
 	
-	public void onNeighborBlockChange(int x, int y, int z, Block neighborBlock) {
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
 		if(!this.isConnected()) { return; }
 
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		if(this.isInput()) {
-			ForgeDirection out = getOutwardsDir();
-			boolean nowPowered = isReceivingRedstonePowerFrom(worldObj, xCoord+out.offsetX, yCoord+out.offsetY, zCoord+out.offsetZ, out, neighborBlock);
+			BlockFacings out = getOutwardsDir();
+			BlockPos tilePos = this.getPos();
+			boolean nowPowered = isReceivingRedstonePowerFrom(worldObj, tilePos.getX() + out.offsetX,
+					tilePos.getY() + out.offsetY, tilePos.getZ() + out.offsetZ, out, neighborBlock);
 
 			if(this.isExternallyPowered != nowPowered) {
 				this.isExternallyPowered = nowPowered;
@@ -116,12 +130,15 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		else {
 			this.isExternallyPowered = false;
 		}
+		*/
 	}
 
 	// Called to do business logic when the redstone value has changed
 	protected void onRedstoneInputUpdated() {
 		if(!this.isConnected()) { return; }
 
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		MultiblockReactor reactor = (MultiblockReactor)getMultiblockController();
 		switch(this.circuitType) {
 		case inputActive:
@@ -164,6 +181,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		default:
 			break;
 		}
+		*/
 	}
 	
 	public int getOutputLevel() { return outputLevel; }
@@ -192,6 +210,8 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	 * @param greaterThan For outputs, whether to activate when greater than or less than the outputLevel value. For input/control rods, whether to set (true) or change (false) the values.
 	 */
 	public void onReceiveUpdatePacket(int newType, int outputLevel, boolean greaterThan, boolean activeOnPulse) {
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		this.circuitType = CircuitType.values()[newType];
 		this.outputLevel = outputLevel;
 		this.greaterThan = greaterThan;
@@ -221,14 +241,20 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			this.worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
 		}
+		*/
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public boolean getGreaterThan() { return this.greaterThan; }
-	
-	public CircuitType getCircuitType() { return this.circuitType; }
+
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	//public CircuitType getCircuitType() { return this.circuitType; }
+
+
 	private boolean shouldSetControlRodsInsteadOfChange() { return !greaterThan; }
 
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	/*
 	public void onRedNetUpdate(int powerLevel) {
 		if(this.isInput()) {
 			boolean wasPowered = this.isExternallyPowered;
@@ -239,6 +265,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			}
 		}
 	}
+	*/
 	
 	/**
 	 * Call with the coordinates of the block to check and the direction
@@ -246,11 +273,14 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	 * If the block towards which this block is emitting power lies north,
 	 * then pass in south.
 	 */
+	/* TODO Commented temporarily to allow this thing to compile...
 	private boolean isReceivingRedstonePowerFrom(World world, int x, int y, int z, ForgeDirection dir) {
 		// This is because of bugs in vanilla redstone wires
 		Block block = world.getBlock(x, y, z);
 		return isReceivingRedstonePowerFrom(world, x, y, z, dir, block);
 	}
+	*/
+
 	
 	/**
 	 * Call with the coordinates of the block to check and the direction
@@ -258,6 +288,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	 * If the block towards which this block is emitting power lies north,
 	 * then pass in south.
 	 */
+	/* TODO Commented temporarily to allow this thing to compile...
 	private boolean isReceivingRedstonePowerFrom(World world, int x, int y, int z, ForgeDirection dir, Block neighborBlock) {
 		if(neighborBlock == Blocks.redstone_wire) {
 			// Use metadata because of vanilla redstone wire bugs
@@ -267,17 +298,19 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			return world.getIndirectPowerOutput(x, y, z, dir.ordinal()) || world.isBlockProvidingPowerTo(x, y, z, dir.ordinal()) > 0;
 		}
 	}
+	*/
 	
 	// TileEntity overrides
 
 	// Only refresh if we're switching functionality
 	// Warning: dragonz!
 	@Override
-    public boolean shouldRefresh(Block oldID, Block newID, int oldMeta, int newMeta, World world, int x, int y, int z)
-    {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		/* TODO Commented temporarily to allow this thing to compile...
 		if(oldID != newID) {
 			return true;
 		}
+		*/
 	
 		// All redstone ports are the same, we just use metadata to easily signal changes.
 		return false;
@@ -294,18 +327,24 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		ticksSinceLastUpdate++;
 		if(ticksSinceLastUpdate < BigReactors.ticksPerRedstoneUpdate) { return; }
 
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		if(this.isOutput()) {
 			// Will no-op if there's no change.
 			this.sendRedstoneUpdate();
 		}
+		*/
 		ticksSinceLastUpdate = 0;
 	}
 	
 	// MultiblockTileEntityBase methods
 	private void readData(NBTTagCompound data) {
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		if(data.hasKey("circuitType")) {
 			this.circuitType = circuitType.values()[data.getInteger("circuitType")];
 		}
+		*/
 		
 		if(data.hasKey("outputLevel")) {
 			this.outputLevel = data.getInteger("outputLevel");
@@ -321,7 +360,8 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	}
 	
 	private void writeData(NBTTagCompound data) {
-		data.setInteger("circuitType", this.circuitType.ordinal());
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		//data.setInteger("circuitType", this.circuitType.ordinal());
 		data.setInteger("outputLevel", this.outputLevel);
 		data.setBoolean("greaterThan", this.greaterThan);
 		data.setBoolean("activeOnPulse", this.activeOnPulse);
@@ -427,7 +467,10 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		return new ContainerBasic();
 	}
 
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	/*
 	public static boolean isAlwaysActiveOnPulse(CircuitType circuitType) {
 		return circuitType == CircuitType.inputEjectWaste;
 	}
+	*/
 }
