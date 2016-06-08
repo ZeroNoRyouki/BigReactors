@@ -82,11 +82,13 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
 	*/
 
     // TODO blockstate
+	/* TODO Commented temporarily to allow this thing to compile...
 	@Override
 	public int damageDropped(int metadata)
 	{
 		return META_REDSTONE_UNLIT;
 	}
+	*/
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
@@ -115,6 +117,7 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
+	/* TODO Commented temporarily to allow this thing to compile...
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos position, Random rand) {
 
@@ -144,6 +147,7 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
         	}
         }
     }
+	*/
 
     @Override
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
@@ -151,11 +155,12 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
 
     	TileEntity te = world.getTileEntity(pos);
     	if(te instanceof TileEntityReactorRedstonePort) {
-    		((TileEntityReactorRedstonePort)te).onNeighborBlockChange(pos, neighborBlock);
+    		((TileEntityReactorRedstonePort)te).onNeighborBlockChange(world, pos, state, neighborBlock);
     	}
     }
     
 	// Redstone API
+	/* TODO Commented temporarily to allow this thing to compile...
     @Override
     public boolean canProvidePower(IBlockState state) {
         return true;
@@ -181,6 +186,7 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
 		
 		return REDSTONE_VALUE_OFF;
 	}
+	*/
 
     // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
     /*
