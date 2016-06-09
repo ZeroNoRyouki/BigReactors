@@ -1,3 +1,5 @@
+// TODO Commented temporarily to allow this thing to compile...
+/*
 package erogenousbeef.bigreactors.world;
 
 import java.util.Random;
@@ -45,3 +47,4 @@ public class BRWorldGenerator implements IWorldGenerator {
 		}
 	}
 }
+*/
