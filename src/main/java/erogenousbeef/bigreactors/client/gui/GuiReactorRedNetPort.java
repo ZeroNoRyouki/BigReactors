@@ -1,3 +1,5 @@
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+/*
 package erogenousbeef.bigreactors.client.gui;
 
 import java.util.Arrays;
@@ -379,3 +381,4 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		}
 	}
 }
+*/
