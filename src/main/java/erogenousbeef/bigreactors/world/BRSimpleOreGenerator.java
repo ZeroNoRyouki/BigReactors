@@ -1,3 +1,5 @@
+// TODO Commented temporarily to allow this thing to compile...
+/*
 package erogenousbeef.bigreactors.world;
 
 import java.util.Random;
@@ -11,11 +13,11 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
-/**
+/ **
  * This class handles simple ore generation.
  * @author Erogenous Beef
  *
- */
+ * /
 public class BRSimpleOreGenerator extends WorldGenMinable {
 
 	protected Block blockToGenerate;
@@ -54,14 +56,14 @@ public class BRSimpleOreGenerator extends WorldGenMinable {
 		dimensionBlacklist.add(dimensionId);
 	}
 	
-	/**
+	/ **
 	 * Call to generate in the given chunk in the given world.
 	 * Performs no validation as to whether this generator should run (per user settings).
 	 * @param world
 	 * @param random
 	 * @param chunkX
 	 * @param chunkZ
-	 */
+	 * /
 	public void generateChunk(World world, Random random, int chunkX, int chunkZ) {
 		int clustersToGen = minClustersPerChunk;
 		if(maxClustersPerChunk > minClustersPerChunk) {
@@ -79,11 +81,11 @@ public class BRSimpleOreGenerator extends WorldGenMinable {
 		}
 	}
 	
-	/**
+	/ **
 	 * Call to discover if this generator WISHES to generate in this world.
 	 * @param world
 	 * @return
-	 */
+	 * /
 	public boolean shouldGenerateInWorld(World world) {
 		IChunkProvider chunkProvider = world.getChunkProvider();
 		if(dimensionBlacklist.contains(world.provider.dimensionId)) {
@@ -118,3 +120,4 @@ public class BRSimpleOreGenerator extends WorldGenMinable {
 		}
 	}
 }
+*/
