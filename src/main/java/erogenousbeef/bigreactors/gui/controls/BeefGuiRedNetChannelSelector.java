@@ -61,11 +61,14 @@ public class BeefGuiRedNetChannelSelector extends BeefGuiControlBase implements 
 		this.drawRect(absoluteX, absoluteY, absoluteX+height, absoluteY+height, borderColor);
 		this.drawRect(absoluteX+width-height, absoluteY, absoluteX+width, absoluteY+height, borderColor);
 		this.drawRect(absoluteX+height, barTop, absoluteX+width-height, barTop+barHeight, borderColor);
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		float[] color = EntitySheep.fleeceColorTable[this.channelIdx];
 		
 		this.drawRect(absoluteX+1, absoluteY+1, absoluteX+height-1, absoluteY+height-1, color[0], color[1], color[2], 1.0f);
 		this.drawRect(absoluteX+width-height+1, absoluteY+1, absoluteX+width-1, absoluteY+height-1, 0xff777777);
+		*/
 	}
 
 	@Override
