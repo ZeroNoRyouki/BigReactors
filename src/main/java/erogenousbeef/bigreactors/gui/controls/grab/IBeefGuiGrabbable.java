@@ -1,9 +1,8 @@
 package erogenousbeef.bigreactors.gui.controls.grab;
 
-import net.minecraft.util.IIcon;
-
 public interface IBeefGuiGrabbable {
 
-	public IIcon getIcon();
+	// TODO Commented out IIcon stuff
+	public /*IIcon*/Object getIcon();
 	public String getName();
 }
