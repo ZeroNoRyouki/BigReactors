@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 
@@ -12,17 +11,21 @@ public abstract class BeefGuiIconProgressBar extends BeefGuiVerticalProgressBar 
 		super(container, x, y);
 		
 	}
-	
-	protected abstract IIcon getProgressBarIcon();
+
+	// TODO Commented out IIcon stuff
+	protected abstract /*IIcon*/Object getProgressBarIcon();
 	protected abstract ResourceLocation getResourceLocation();
 	
 	@Override
 	protected void drawProgressBar(Tessellator tessellator, TextureManager renderEngine, int barMinX, int barMaxX, int barMinY, int barMaxY, int zLevel) {
-		IIcon progressBarIcon = getProgressBarIcon();
+		// TODO Commented out IIcon stuff
+		/*IIcon*/Object progressBarIcon = getProgressBarIcon();
 		if(progressBarIcon == null) {
 			return;
 		}
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		double minU = progressBarIcon.getMinU();
 		double minV = progressBarIcon.getMinV();
 		double maxU = progressBarIcon.getMaxU();
@@ -40,5 +43,6 @@ public abstract class BeefGuiIconProgressBar extends BeefGuiVerticalProgressBar 
 			tessellator.addVertexWithUV(barMinX, slicedBarY - slicedBarHeight, zLevel, minU, minV);
 			tessellator.draw();
 		}
+		*/
 	}	
 }
