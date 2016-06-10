@@ -1,12 +1,8 @@
 package erogenousbeef.bigreactors.client;
 
 import java.util.HashMap;
-
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-
 import com.google.common.collect.Maps;
-
 import erogenousbeef.bigreactors.common.BigReactors;
 
 /**
@@ -22,7 +18,8 @@ public abstract class BeefIconManager {
 	public static final int ITEM_TEXTURE = 1;
 	
 	private HashMap<String, Integer> nameToIdMap;
-	private HashMap<Integer, IIcon> idToIconMap;
+	// TODO Commented out IIcon stuff
+	//private HashMap<Integer, IIcon> idToIconMap;
 	
 	public String[] iconNames = null;
 
@@ -31,7 +28,8 @@ public abstract class BeefIconManager {
 	
 	public BeefIconManager() {
 		nameToIdMap = Maps.newHashMap();
-        idToIconMap = Maps.newHashMap();
+		// TODO Commented out IIcon stuff
+        //idToIconMap = Maps.newHashMap();
         iconNames = getIconNames();
 	}
 	
@@ -40,10 +38,13 @@ public abstract class BeefIconManager {
 
 		for(int i = 0; i < iconNames.length; i++) {
 			nameToIdMap.put(iconNames[i], i);
-			idToIconMap.put(i, textureMap.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getPath() + iconNames[i]));
+			// TODO Commented out IIcon stuff
+			//idToIconMap.put(i, textureMap.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getPath() + iconNames[i]));
 		}
 	}
-	
+
+	// TODO Commented out IIcon stuff
+	/*
 	public IIcon getIcon(String name) {
 		if(name == null || name.isEmpty()) { return null; }
 		
@@ -58,7 +59,16 @@ public abstract class BeefIconManager {
 	public IIcon getIcon(int id) {
 		return idToIconMap.get(id);
 	}
-	
+	*/
+	@Deprecated // TODO switch to blockstate / ResourceLocation
+	public Object getIcon(String unused) {
+		return null;
+	}
+	@Deprecated // TODO switch to blockstate / ResourceLocation
+	public Object getIcon(int unused) {
+		return null;
+	}
+
 	public int getTextureType() { return TERRAIN_TEXTURE; }
 	
 }
