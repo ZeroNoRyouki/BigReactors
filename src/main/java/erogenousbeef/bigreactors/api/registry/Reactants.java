@@ -10,8 +10,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.core.util.oredict.OreDictionaryArbiter;
+//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IReactorFuel;
 import erogenousbeef.bigreactors.api.data.FluidToReactantMapping;
 import erogenousbeef.bigreactors.api.data.OreDictToReactantMapping;
@@ -20,6 +20,7 @@ import erogenousbeef.bigreactors.api.data.SourceProductMapping;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.data.ReactorSolidMapping;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class Reactants {
 	
@@ -87,8 +88,9 @@ public class Reactants {
 		if(!_reactants.containsKey(reactantName)) {
 			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
 		}
-		
-		ArrayList<String> oreDictNames = OreDictionaryArbiter.getAllOreNames(itemStack);
+
+		// TODO Commented temporarily to allow this thing to compile...
+		ArrayList<String> oreDictNames = null;//OreDictionaryArbiter.getAllOreNames(itemStack);
 		if(oreDictNames == null || oreDictNames.size() < 1) {
 			BRLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
 			return null;
@@ -121,7 +123,8 @@ public class Reactants {
 			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
 		}
 
-		ArrayList<String> oreDictNames = OreDictionaryArbiter.getAllOreNames(itemStack);
+		// TODO Commented temporarily to allow this thing to compile...
+		ArrayList<String> oreDictNames = null;//OreDictionaryArbiter.getAllOreNames(itemStack);
 		if(oreDictNames == null || oreDictNames.size() < 1) {
 			BRLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
 			return null;
@@ -208,6 +211,14 @@ public class Reactants {
 	 * @param reactantName The name of the created reactant.
 	 */
 	public static void registerFluid(Fluid fluid, String reactantName) {
+
+		// TODO Commented temporarily to allow this thing to compile...
+		if (null == fluid) {
+			FMLLog.info("TEMP - Skipping registration of NULL fluid for reactant %s",reactantName );
+			return;
+		}
+
+
 		if(!_reactants.containsKey(reactantName)) {
 			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
 		}
@@ -229,7 +240,8 @@ public class Reactants {
 	}
 	
 	public static OreDictToReactantMapping getSolidToReactant(ItemStack item) {
-		return _solidToReactant.get(ItemHelper.oreProxy.getOreName(item));
+		// TODO Commented temporarily to allow this thing to compile...
+		return _solidToReactant.get(""/*ItemHelper.oreProxy.getOreName(item)*/);
 	}
 	
 	public static FluidToReactantMapping getFluidToReactant(FluidStack fluid) {
