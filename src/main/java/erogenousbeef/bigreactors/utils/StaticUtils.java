@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.utils;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -8,22 +9,24 @@ import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.item.IToolHammer;
+//import buildcraft.api.tools.IToolWrench;
+//import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 
 public class StaticUtils {
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	public static final ForgeDirection[] CardinalDirections = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH, ForgeDirection.WEST };
 	
 	public static final ForgeDirection neighborsBySide[][] = new ForgeDirection[][] {
@@ -34,6 +37,7 @@ public class StaticUtils {
 		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH},
 		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.SOUTH, ForgeDirection.NORTH}
 	};
+	*/
 	
 	public static class Inventory {
 		/**
@@ -80,12 +84,16 @@ public class StaticUtils {
 		 * @return True if the player is holding a goddamn wrench. BC only, screw you.
 		 */
 		public static boolean isPlayerHoldingWrench(EntityPlayer player) {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			if(player.inventory.getCurrentItem() == null) { 
 				return false;
 			}
 			Item currentItem = player.inventory.getCurrentItem().getItem();
 			return (ModHelperBase.useCofh && currentItem instanceof IToolHammer) ||
 					(ModHelperBase.useBuildcraftTools && currentItem instanceof IToolWrench);
+					*/
+			return false;
 		}
 		
 		/**
@@ -123,17 +131,27 @@ public class StaticUtils {
                 return true;
         }
 
-        private static final ForgeDirection[] chestDirections = new ForgeDirection[] { ForgeDirection.NORTH,
-        																				ForgeDirection.SOUTH,
-        																				ForgeDirection.EAST,
-        																				ForgeDirection.WEST};
+        private static final EnumFacing[] chestDirections = new EnumFacing[] { EnumFacing.NORTH,
+				EnumFacing.SOUTH,
+				EnumFacing.EAST,
+				EnumFacing.WEST};
 
 		public static IInventory checkForDoubleChest(World worldObj, IInventory te, int x, int y, int z) {
-			for(ForgeDirection dir : chestDirections) {
-				if(worldObj.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == Blocks.chest) {
-					TileEntity otherTe = worldObj.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+			IBlockState state;
+			BlockPos position, originalPosition = new BlockPos(x, y, z);
+
+			for(EnumFacing dir : chestDirections) {
+
+				position = originalPosition.offset(dir);
+				state = worldObj.getBlockState(position);
+
+				if(state.getBlock() == Blocks.chest) {
+					TileEntity otherTe = worldObj.getTileEntity(position);
 					if(otherTe instanceof IInventory) {
-						return new InventoryLargeChest("Large Chest", te, (IInventory)otherTe);
+						// TODO Commented temporarily to allow this thing to compile...
+						//return new InventoryLargeChest("Large Chest", te, (IInventory)otherTe);
+						return te;
 					}
 				}
 			}
@@ -147,6 +165,8 @@ public class StaticUtils {
 		/* Below stolen from COFHLib because COFHLib itself still relies on cofh.core */
 		public static boolean fillTankWithContainer(World world, IFluidHandler handler, EntityPlayer player) {
 
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 	        ItemStack container = player.getCurrentEquippedItem();
 	        FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(container);
 
@@ -163,10 +183,13 @@ public class StaticUtils {
 	                        return true;
 	                }
 	        }
+	        */
 	        return false;
 		}
 
 		public static boolean fillContainerFromTank(World world, IFluidHandler handler, EntityPlayer player, FluidStack tankFluid) {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			ItemStack container = player.getCurrentEquippedItem();
 			
 			if (FluidContainerRegistry.isEmptyContainer(container)) {
@@ -194,6 +217,7 @@ public class StaticUtils {
 			        }
 			        return true;
 			}
+			*/
 			return false;
 		}
 	}
@@ -309,21 +333,23 @@ public class StaticUtils {
 		 * @param entity The entity whose facing you wish to query.
 		 * @return The ForgeDirection which entity is facing (north/south/east/west)
 		 */
-		protected ForgeDirection getFacingDirection(Entity entity) {
+		protected EnumFacing getFacingDirection(Entity entity) {
 			int facingAngle = (MathHelper.floor_double((entity.rotationYaw * 4F) / 360F + 0.5D) & 3);
 			switch(facingAngle) {
 			case 1:
-				return ForgeDirection.EAST;
+				return EnumFacing.EAST;
 			case 2:
-				return ForgeDirection.SOUTH;
+				return EnumFacing.SOUTH;
 			case 3:
-				return ForgeDirection.WEST;
+				return EnumFacing.WEST;
 			default:
-				return ForgeDirection.NORTH;
+				return EnumFacing.NORTH;
 			}
 		}
 	}
-	
+
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	public static class TE {
 		public static TileEntity getTileEntityUnsafe(IBlockAccess iba, int x, int y, int z) {
 			TileEntity te = null;
@@ -334,7 +360,7 @@ public class StaticUtils {
 			}
 			else {
 				// Should never happen, generally
-				te = iba.getTileEntity(x, y, z);
+				te = iba.getTileEntity(new BlockPos(x, y ,z));
 			}
 			
 			return te;
@@ -346,11 +372,14 @@ public class StaticUtils {
 			Chunk chunk = world.getChunkFromBlockCoords(x, z);
 			if(chunk != null) {
 				te = chunk.getTileEntityUnsafe(x & 0x0F, y, z & 0x0F);
+				// getTileEntityMap
+
 			}
 			
 			return te;
 		}
 	}
+	*/
 	
 	public static class WorldGen {
 		/**
