@@ -53,7 +53,6 @@ public class BlockBRDevice extends Block implements IDismantleable {
 		super(material);
 		setStepSound(SoundType.METAL);
 		setHardness(1.0f);
-		setRegistryName("blockBRDevice");
 		setUnlocalizedName("blockBRDevice");
 		//TODO blockstate
 		//setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockBRDevice");

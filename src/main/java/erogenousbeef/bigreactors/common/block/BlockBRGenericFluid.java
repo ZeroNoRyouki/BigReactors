@@ -18,7 +18,7 @@ public class BlockBRGenericFluid extends BlockFluidClassic {
 	public BlockBRGenericFluid(Fluid fluid, String unlocalizedName) {
 		super(fluid, Material.water);
 
-		setRegistryName(unlocalizedName);
+		//setRegistryName(unlocalizedName);
 		setUnlocalizedName("fluid." + unlocalizedName + ".still");
 	}
 

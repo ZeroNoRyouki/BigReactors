@@ -18,7 +18,6 @@ public class BlockBROre extends Block {
 	{
 		super(Material.rock);
 		this.setCreativeTab(BigReactors.TAB);
-		this.setRegistryName("brOre");
 		this.setUnlocalizedName("brOre");
 		// TODO blockstate
 		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "oreYellorite");

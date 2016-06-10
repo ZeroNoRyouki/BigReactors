@@ -30,7 +30,6 @@ public class BlockBRMetal extends Block {
 	public BlockBRMetal() {
 		super(Material.iron);
 		this.setCreativeTab(BigReactors.TAB);
-		this.setRegistryName("brMetal");
 		this.setHardness(2f);
 	}
 
