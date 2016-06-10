@@ -6,15 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
+//import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.client.renderer.RotorSimpleRenderer;
+// TODO Commented temporarily to allow this thing to compile...
+//import erogenousbeef.bigreactors.client.renderer.RotorSimpleRenderer;
 import erogenousbeef.bigreactors.client.renderer.RotorSpecialRenderer;
-import erogenousbeef.bigreactors.client.renderer.SimpleRendererFuelRod;
+//import erogenousbeef.bigreactors.client.renderer.SimpleRendererFuelRod;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
@@ -49,6 +50,8 @@ public class ClientProxy extends CommonProxy {
 		FMLCommonHandler.instance().bus().register(new MultiblockClientTickHandler());
         FMLCommonHandler.instance().bus().register(new BRRenderTickHandler());
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		BlockFuelRod.renderId = RenderingRegistry.getNextAvailableRenderId();
 		ISimpleBlockRenderingHandler fuelRodISBRH = new SimpleRendererFuelRod();
 		RenderingRegistry.registerBlockHandler(BlockFuelRod.renderId, fuelRodISBRH);
@@ -56,12 +59,14 @@ public class ClientProxy extends CommonProxy {
 		BlockTurbineRotorPart.renderId = RenderingRegistry.getNextAvailableRenderId();
 		ISimpleBlockRenderingHandler rotorISBRH = new RotorSimpleRenderer();
 		RenderingRegistry.registerBlockHandler(BlockTurbineRotorPart.renderId, rotorISBRH);	
-		
+		*/
 		if(BigReactors.blockTurbinePart != null) {
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
 		}
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -84,11 +89,15 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 	}
-	
+	*/
+
+	// TODO Commented out IIcon stuff
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void setIcons(TextureStitchEvent.Post event) {
 		BigReactors.setNonBlockFluidIcons();
 	}
+	*/
 }
