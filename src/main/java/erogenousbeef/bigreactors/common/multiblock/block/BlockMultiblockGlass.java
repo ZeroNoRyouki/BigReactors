@@ -45,7 +45,7 @@ public class BlockMultiblockGlass extends BlockContainer { // TODO remove BlockC
 		
 		setStepSound(SoundType.GLASS);
 		setHardness(2.0f);
-		setRegistryName("brMultiblockGlass");
+		//setRegistryName("brMultiblockGlass");
 		setUnlocalizedName("brMultiblockGlass");
 		// TODO blockstate
 		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + textureBaseName);
@@ -189,7 +189,10 @@ public class BlockMultiblockGlass extends BlockContainer { // TODO remove BlockC
 				else {
 					ValidationError lastError = controller.getLastError();
 					if(lastError != null) {
-						player.addChatMessage(new TextComponentString(e.getMessage()));
+						// TODO Commented temporarily to allow this thing to compile...
+						/*
+						player.addChatMessage(new TextComponentString(lastError.getMessage()));
+						*/
 						return true;
 					}
 				}
