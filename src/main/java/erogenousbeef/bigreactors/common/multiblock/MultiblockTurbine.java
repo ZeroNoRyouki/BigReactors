@@ -6,22 +6,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import cofh.api.energy.IEnergyProvider;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.lib.util.helpers.ItemHelper;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import erogenousbeef.bigreactors.api.data.CoilPartData;
 import erogenousbeef.bigreactors.api.registry.TurbineCoil;
@@ -130,8 +131,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	private FloatUpdateTracker rpmUpdateTracker;
 	
-	private static final ForgeDirection[] RotorXBladeDirections = new ForgeDirection[] { ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.DOWN, ForgeDirection.NORTH };
-	private static final ForgeDirection[] RotorZBladeDirections = new ForgeDirection[] { ForgeDirection.UP, ForgeDirection.EAST, ForgeDirection.DOWN, ForgeDirection.WEST };
+	private static final EnumFacing[] RotorXBladeDirections = new EnumFacing[] { EnumFacing.UP, EnumFacing.SOUTH, EnumFacing.DOWN, EnumFacing.NORTH };
+	private static final EnumFacing[] RotorZBladeDirections = new EnumFacing[] { EnumFacing.UP, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.WEST };
 	
 	public MultiblockTurbine(World world) {
 		super(world);
@@ -308,14 +309,18 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		
 		// Rotor bearing must calculate outwards dir, as this is normally only calculated in onMachineAssembled().
 		rotorPart.recalculateOutwardsDirection(getMinimumCoord(), getMaximumCoord());
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
+
 		// Find out which way the rotor runs. Obv, this is inwards from the bearing.
 		ForgeDirection rotorDir = rotorPart.getOutwardsDir().getOpposite();
+		*/
 		BlockPos rotorCoord = rotorPart.getPos();
 
 		BlockPos minRotorCoord = getMinimumCoord();
 		BlockPos maxRotorCoord = getMaximumCoord();
-		
+		/*
 		// Constrain min/max rotor coords to where the rotor bearing is and the block opposite it
 		if(rotorDir.offsetX == 0) {
 			minRotorCoord.x = maxRotorCoord.x = rotorCoord.x;
@@ -326,12 +331,15 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(rotorDir.offsetZ == 0) {
 			minRotorCoord.z = maxRotorCoord.z = rotorCoord.z;
 		}
+		*/
+
 
 		// Figure out where the rotor ends and which directions are normal to the rotor's 4 faces (this is where blades emit from)
 		BlockPos endRotorCoord = rotorCoord.equals(minRotorCoord) ? maxRotorCoord : minRotorCoord;
+		/*
 		endRotorCoord.translate(rotorDir.getOpposite());
 
-		ForgeDirection[] bladeDirections;
+		EnumFacing[] bladeDirections;
 		if(rotorDir.offsetY != 0) { 
 			bladeDirections = StaticUtils.CardinalDirections;
 		}
@@ -341,6 +349,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		else {
 			bladeDirections = RotorZBladeDirections;
 		}
+
+		*/
 
 		Set<BlockPos> rotorShafts = new HashSet<BlockPos>(attachedRotorShafts.size());
 		Set<BlockPos> rotorBlades = new HashSet<BlockPos>(attachedRotorBlades.size());
@@ -352,7 +362,11 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
 			rotorBlades.add(part.getPos());
 		}
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
+
+
 		// Move along the length of the rotor, 1 block at a time
 		boolean encounteredCoils = false;
 		while(!rotorShafts.isEmpty() && !rotorCoord.equals(endRotorCoord)) {
@@ -406,6 +420,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				}
 			}
 		}
+
+		*/
 		
 		if(!rotorCoord.equals(endRotorCoord)) {
 			validatorCallback.setLastError("multiblock.validation.turbine.shaft_too_short");
@@ -440,6 +456,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		// Air is ok
 		if(world.isAirBlock(position)) { return true; }
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		Block block = world.getBlock(x, y, z);
 		int metadata = world.getBlockMetadata(x,y,z);
 
@@ -448,9 +466,51 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			foundCoils.add(position);
 			return true;
 		}
+		*/
 
 		// Everything else, gtfo
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_interior", x, y, z);
+		return false;
+	}
+
+
+	@Override
+	protected boolean isBlockGoodForFrame(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
+	@Override
+	protected boolean isBlockGoodForTop(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
+	@Override
+	protected boolean isBlockGoodForBottom(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
+	@Override
+	protected boolean isBlockGoodForSides(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
 		return false;
 	}
 
@@ -713,7 +773,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				inputFluidAmt = 0;
 			}
 			else {
-				inputFluidID = inputFluid.getFluid().getID();
+				// TODO Commented temporarily to allow this thing to compile...
+				inputFluidID = -1/*inputFluid.getFluid().getID()*/;
 				inputFluidAmt = inputFluid.amount;
 			}
 			
@@ -722,7 +783,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				outputFluidAmt = 0;
 			}
 			else {
-				outputFluidID = outputFluid.getFluid().getID();
+				// TODO Commented temporarily to allow this thing to compile...
+				outputFluidID = -1/*outputFluid.getFluid().getID()*/;
 				outputFluidAmt = outputFluid.amount;
 			}
 		}
@@ -832,7 +894,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		
 		FluidStack fluidStack = tanks[tank].getFluid();
 		if(fluidStack != null) {
-			return fluidStack.getFluid().getID() == fluid.getID();
+			return fluidStack.getFluid() == fluid;
 		}
 		else if(tank == TANK_INPUT) {
 			// TODO: Input tank can only be filled with compatible fluids from a registry
@@ -851,7 +913,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			return false;
 		}
 		
-		return fluidStack.getFluid().getID() == fluid.getID();
+		return fluidStack.getFluid() == fluid;
 	}
 
 	public FluidTankInfo[] getTankInfo() {
@@ -870,7 +932,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	// IEnergyProvider
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 		int energyExtracted = Math.min((int)energyStored, maxExtract);
 		
 		if(!simulate) {
@@ -881,17 +943,17 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 		return true;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 		return (int)energyStored;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 		return (int)maxEnergyStored;
 	}
 
@@ -1022,7 +1084,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(block == BigReactors.blockMetal && metadata == BlockBRMetal.METADATA_LUDICRITE) { return TurbineCoil.getBlockData("blockLudicrite"); }
 		
 		// Check the oredict to see if it's copper, or a funky kind of gold/iron block
-		String oreName = ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata));
+		// TODO Commented temporarily to allow this thing to compile...
+		String oreName = null;//ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata));
 		return TurbineCoil.getBlockData(oreName);
 	}
 	
@@ -1041,6 +1104,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		float coilBonus = 0f;
 		float coilDragCoefficient = 0f;
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		// Loop over interior space. Calculate mass and blade area of rotor and size of coils
 		for(int x = minInterior.x; x <= maxInterior.x; x++) {
 			for(int y = minInterior.y; y <= maxInterior.y; y++) {
@@ -1066,6 +1131,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				} // end z
 			} // end y
 		} // end x loop - looping over interior
+		*/
 		
 		// Precalculate some stuff now that we know how big the rotor and blades are
 		frictionalDrag = rotorMass * rotorDragCoefficient * BigReactors.turbineMassDragMultiplier;
@@ -1137,12 +1203,17 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(referenceCoord == null) { return; }
 
 		rpmUpdateTracker.onExternalUpdate();
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		TileEntity saveTe = worldObj.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
 		worldObj.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
+		*/
 		WorldHelper.notifyBlockUpdate(worldObj, referenceCoord, null, null);
 	}
-	
+
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	// For client usage only
 	public ForgeDirection getRotorDirection() {
 		if(attachedRotorBearings.size() < 1) {
@@ -1156,7 +1227,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		TileEntityTurbineRotorBearing rotorBearing = attachedRotorBearings.iterator().next();
 		return rotorBearing.getOutwardsDir().getOpposite();
 	}
-	
+	*/
+
 	public boolean hasGlass() { return attachedGlass.size() > 0; }
 	
 	public String getDebugInfo() {
@@ -1164,9 +1236,13 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		ValidationError lastError = this.getLastError();
 		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
 		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(lastError != null) {
 			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
 		}
+		*/
 		
 		if(isAssembled()) {
 			sb.append("\nActive: ").append(Boolean.toString(getActive()));
