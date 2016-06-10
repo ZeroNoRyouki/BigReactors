@@ -44,7 +44,7 @@ public class BlockMBCreativePart extends Block {
 
 		setStepSound(SoundType.METAL);
 		setHardness(1.0f);
-		setRegistryName("blockMBCreativePart");
+		//setRegistryName("blockMBCreativePart");
 		setUnlocalizedName("blockMBCreativePart");
 		// TODO blockstate
 		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockMBCreativePart");
@@ -111,7 +111,9 @@ public class BlockMBCreativePart extends Block {
 
 	// TODO blockstate + use createTileEntity(World world, IBlockState state)
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		switch(metadata) {
 			case REACTOR_CREATIVE_COOLANT_PORT:
 				return new TileEntityReactorCreativeCoolantPort();
@@ -120,6 +122,7 @@ public class BlockMBCreativePart extends Block {
 			default:
 				return null;
 		}
+		*/return null;
 	}
 
 	@Override
