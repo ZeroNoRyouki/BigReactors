@@ -3,10 +3,7 @@ package erogenousbeef.bigreactors.gui.controls;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-
 import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 
@@ -14,14 +11,17 @@ public class GuiSelectableButton extends GuiButton implements IBeefTooltipContro
 
 	private boolean selected;
 	private int selectedColor;
-	private IIcon icon;
+	// TODO Commented out IIcon stuff
+	//private IIcon icon;
 	
 	private BeefGuiBase window;
 
-	public GuiSelectableButton(int id, int x, int y, IIcon icon, int selectedColor, BeefGuiBase containingWindow) {
+	// TODO Commented out IIcon stuff
+	public GuiSelectableButton(int id, int x, int y, /*IIcon*/Object icon, int selectedColor, BeefGuiBase containingWindow) {
 		super(id, x, y, 24, 24, "");
 		selected = false;
-		this.icon = icon;
+		// TODO Commented out IIcon stuff
+		//this.icon = icon;
 		this.selectedColor = selectedColor;
 		window = containingWindow;
 	}
@@ -36,6 +36,8 @@ public class GuiSelectableButton extends GuiButton implements IBeefTooltipContro
 	public void drawButton(Minecraft minecraft, int par2, int par3) {
         if (this.visible)
         {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
             minecraft.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
             this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
             
@@ -56,6 +58,7 @@ public class GuiSelectableButton extends GuiButton implements IBeefTooltipContro
             this.drawTexturedModelRectFromIcon(this.xPosition+1, this.yPosition+1, this.icon, this.width-2, this.height-2);
             
             this.mouseDragged(minecraft, par2, par3);
+            */
         }
 	}
 
