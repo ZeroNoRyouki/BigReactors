@@ -6,11 +6,14 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import cofh.core.util.oredict.OreDictionaryArbiter;
+//import cofh.core.util.oredict.OreDictionaryArbiter;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.registry.Reactants;
@@ -44,10 +47,13 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 		return NUM_SLOTS;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public String getInventoryName() {
 		return "Cyanite Reprocessor";
 	}
+	*/
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
@@ -108,7 +114,8 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 		}
 		else {
 			// TODO: Make this query the input for the right type of output to create.
-			ArrayList<ItemStack> candidates = OreDictionaryArbiter.getOres("ingotBlutonium");
+			// TODO Commented temporarily to allow this thing to compile...
+			ArrayList<ItemStack> candidates = null;// OreDictionaryArbiter.getOres("ingotBlutonium");
 			if(candidates == null || candidates.isEmpty()) {
 				// WTF?
 				return;
@@ -216,4 +223,59 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 		if(exposure == 1) { return SLOT_OUTLET; }
 		return SLOT_NONE;
 	}
+
+
+	// TODO fake imp! (start)
+
+	@Override
+	public Object getIconForSide(int referenceSide) {
+		return null;
+	}
+
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		return new int[0];
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		return null;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
+	}
+
+	@Override
+	protected void loadFromNBT(NBTTagCompound nbt) {
+
+	}
+
+	@Override
+	protected void saveToNBT(NBTTagCompound nbt) {
+
+	}
+
+	// fake imp (end)
 }
