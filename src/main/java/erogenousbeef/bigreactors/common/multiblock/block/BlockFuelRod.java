@@ -30,7 +30,6 @@ public class BlockFuelRod extends Block {
 		setLightLevel(0.9f);
 		setLightOpacity(1);
 		setCreativeTab(BigReactors.TAB);
-		setRegistryName("yelloriumFuelRod");
 		setUnlocalizedName("yelloriumFuelRod");
 		// TODO blockstate
 		//setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "yelloriumFuelRod");

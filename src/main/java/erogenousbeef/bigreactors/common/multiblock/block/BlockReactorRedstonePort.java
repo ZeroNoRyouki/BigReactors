@@ -48,7 +48,7 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
 		
 		setStepSound(SoundType.METAL);
 		setHardness(2.0f);
-        setRegistryName("blockReactorRedstonePort");
+        //setRegistryName("blockReactorRedstonePort");
         setUnlocalizedName("blockReactorRedstonePort");
 		// TODO textures
         //this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName());
