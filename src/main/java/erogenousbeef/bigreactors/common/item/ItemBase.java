@@ -12,7 +12,6 @@ public class ItemBase extends Item {
 	public ItemBase(String name)
 	{
 		super();
-		this.setRegistryName(name);
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(BigReactors.TAB);
 		// TODO textures
