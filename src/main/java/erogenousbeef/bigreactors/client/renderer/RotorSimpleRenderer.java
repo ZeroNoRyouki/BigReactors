@@ -1,3 +1,5 @@
+// TODO Commented temporarily to allow this thing to compile...
+/*
 package erogenousbeef.bigreactors.client.renderer;
 
 import java.util.ArrayList;
@@ -7,10 +9,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
@@ -242,14 +241,14 @@ public class RotorSimpleRenderer implements ISimpleBlockRenderingHandler {
         renderer.setRenderBounds(0D, 0D, 0D, 1D, 1D, 1D);
 	}
 	
-	/**
+	/ **
 	 * @param world
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @param block
 	 * @return The major axis of the rotor. This is always one of the positive directions.
-	 */
+	 * /
 	private static ForgeDirection findRotorMajorAxis(IBlockAccess world, int x, int y, int z, Block block) {
 		ForgeDirection retDir = ForgeDirection.UP;
 		
@@ -402,3 +401,4 @@ public class RotorSimpleRenderer implements ISimpleBlockRenderingHandler {
 			{3, 2, 6, 7}, // "right irregular rectangle
 	};
 }
+*/
