@@ -54,6 +54,8 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 		if(!this.visible) { return; }
 
 		// Draw the background
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		renderEngine.bindTexture(controlResource);
 		Tessellator tessellator = Tessellator.instance;
@@ -63,7 +65,7 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY, 0, backgroundRightU, 0);
 		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 0, backgroundLeftU, 0);
 		tessellator.draw();
-		
+
 		float progress = getProgress();
 		// Draw the bar itself, on top of the background
 		if(progress > 0.0) {
@@ -86,6 +88,7 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 2, gradationLeftU, 0);
 			tessellator.draw();
 		}
+		*/
 	}
 
 	@Override
