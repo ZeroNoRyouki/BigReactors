@@ -5,9 +5,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,17 +17,22 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import dan200.computercraft.api.peripheral.IPeripheralProvider;
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+//import dan200.computercraft.api.peripheral.IPeripheral;
+//import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort.FluidFlow;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
@@ -36,13 +43,18 @@ import erogenousbeef.bigreactors.utils.StaticUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
+import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.validation.ValidationError;
 
 import static com.sun.xml.internal.ws.policy.sourcemodel.wspolicy.XmlToken.Optional;
 
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+/*
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
 })
-public class BlockTurbinePart extends BlockContainer implements IPeripheralProvider {
+*/
+public class BlockTurbinePart extends BlockContainer /*implements IPeripheralProvider*/ {
 
 	public static final int METADATA_HOUSING = 0;
 	public static final int METADATA_CONTROLLER = 1;
@@ -83,20 +95,25 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 		"powerTap.connected",
 		"fluidPort.outlet"
 	};
-	
+
+	/* TODO Commented out IIcon stuff
 	private IIcon[] _icons = new IIcon[_subBlocks.length];
 	private IIcon[] _subIcons = new IIcon[_subIconNames.length];
-	
+	*/
+
 	public BlockTurbinePart(Material material) {
 		super(material);
 
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 		setHardness(2.0f);
-		setBlockName("blockTurbinePart");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockTurbinePart");
+		//setRegistryName("blockTurbinePart");
+		setUnlocalizedName("blockTurbinePart");
+		// TODO textuers
+		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockTurbinePart");
 		setCreativeTab(BigReactors.TAB);
 	}
 
+	/* TODO Commented out IIcon stuff
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -188,16 +205,14 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 		}
 		
 		int extremes = 0;
-		/*boolean xExtreme, yExtreme, zExtreme;
-		xExtreme = yExtreme = zExtreme = false;*/
 
-		if(x == minCoord.getX()) { extremes++; /*xExtreme = true;*/ }
-		if(y == minCoord.getY()) { extremes++; /*yExtreme = true;*/ }
-		if(z == minCoord.getZ()) { extremes++; /*zExtreme = true;*/ }
+		if(x == minCoord.getX()) { extremes++; }
+		if(y == minCoord.getY()) { extremes++; }
+		if(z == minCoord.getZ()) { extremes++; }
 		
-		if(x == maxCoord.getX()) { extremes++; /*xExtreme = true;*/ }
-		if(y == maxCoord.getY()) { extremes++; /*yExtreme = true;*/ }
-		if(z == maxCoord.getZ()) { extremes++; /*zExtreme = true;*/ }
+		if(x == maxCoord.getX()) { extremes++; }
+		if(y == maxCoord.getY()) { extremes++; }
+		if(z == maxCoord.getZ()) { extremes++; }
 
 		if(extremes >= 3) {
 			return SUBICON_HOUSING_CORNER;
@@ -237,6 +252,7 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 		metadata = Math.max(0, Math.min(metadata, _subBlocks.length-1));
 		return _icons[metadata];
 	}
+	*/
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
@@ -250,45 +266,58 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 			// Does jack-all different except for store display lists on the client
 			return new TileEntityTurbineRotorBearing();
 		}
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		else if(metadata == METADATA_COMPUTERPORT) {
 			return new TileEntityTurbineComputerPort();
 		}
+		*/
 		else {
 			return new TileEntityTurbinePartStandard();
 		}
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		TileEntity te = StaticUtils.TE.getTileEntityUnsafe(world, x, y, z);
 
 		// Signal power taps when their neighbors change, etc.
 		if(te instanceof INeighborUpdatableEntity) {
 			((INeighborUpdatableEntity)te).onNeighborBlockChange(world, x, y, z, neighborBlock);
 		}
+		*/
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		TileEntity te = StaticUtils.TE.getTileEntityUnsafe(world, x, y, z);
 
 		// Signal power taps when their neighbors change, etc.
 		if(te instanceof INeighborUpdatableEntity) {
 			((INeighborUpdatableEntity)te).onNeighborTileChange(world, x, y, z, neighborX, neighborY, neighborZ);
 		}
+		*/
 	}
 
-
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+									ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		if(player.isSneaking()) {
 			return false;
 		}
-		
-		int metadata = world.getBlockMetadata(x, y, z);
+
+		// TODO Commented temporarily to allow this thing to compile...
+		int metadata = -1;/*world.getBlockMetadata(x, y, z);*/
 		
 		if(metadata == METADATA_FLUIDPORT && StaticUtils.Inventory.isPlayerHoldingWrench(player)) {
-			TileEntity te = world.getTileEntity(x, y, z);
+			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof TileEntityTurbineFluidPort) {
 				TileEntityTurbineFluidPort fluidPort = (TileEntityTurbineFluidPort)te; 
 				FluidFlow flow = fluidPort.getFlowDirection();
@@ -303,18 +332,19 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 		
 		// If the player's hands are empty and they rightclick on a multiblock, they get a 
 		// multiblock-debugging message if the machine is not assembled.
-		if(player.getCurrentEquippedItem() == null) {
-			TileEntity te = world.getTileEntity(x, y, z);
+		if(heldItem == null) {
+			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof IMultiblockPart) {
 				MultiblockControllerBase controller = ((IMultiblockPart)te).getMultiblockController();
 
 				if(controller == null) {
-					player.addChatMessage(new ChatComponentText(String.format("SERIOUS ERROR - server part @ %d, %d, %d has no controller!", x, y, z))); //TODO Localize
+					player.addChatMessage(new TextComponentString(String.format("SERIOUS ERROR - server part @ %d, %d, %d has no controller!", pos.getX(), pos.getY(), pos.getZ()))); //TODO Localize
 				}
 				else {
-					Exception e = controller.getLastValidationException();
+					ValidationError e = controller.getLastError();
 					if(e != null) {
-						player.addChatMessage(new ChatComponentText(e.getMessage() + " - controller " + Integer.toString(controller.hashCode()))); //Would it be worth it to localize one word?
+						// TODO Commented temporarily to allow this thing to compile...
+						//player.addChatMessage(new ChatComponentText(e.getMessage() + " - controller " + Integer.toString(controller.hashCode()))); //Would it be worth it to localize one word?
 						return true;
 					}
 				}
@@ -325,7 +355,7 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 		if(metadata != METADATA_CONTROLLER) { return false; }
 
 		// Check to see if machine is assembled
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if(!(te instanceof IMultiblockPart)) {
 			return false;
 		}
@@ -335,21 +365,24 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 			return false;
 		}
 		
-		player.openGui(BRLoader.instance, 0, world, x, y, z);
+		player.openGui(BRLoader.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
+
 
 	@Override
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return true;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return true;
 	}
+	*/
 
 	@Override
 	public int damageDropped(IBlockState state) {
@@ -381,12 +414,12 @@ public class BlockTurbinePart extends BlockContainer implements IPeripheralProvi
 			par3List.add(new ItemStack(this, 1, i));
 		}
 	}
-	
+
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+
 		// Drop everything inside inventory blocks
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof IInventory)
 		{
 			IInventory inventory = ((IInventory)te);
@@ -400,6 +433,7 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 				float xOffset = world.rand.nextFloat() * 0.8F + 0.1F;
 				float yOffset = world.rand.nextFloat() * 0.8F + 0.1F;
 				float zOffset = world.rand.nextFloat() * 0.8F + 0.1F;
+				float x = pos.getX(), y = pos.getY(), z = pos.getZ();
 				do
 				{
 					if(itemstack.stackSize <= 0)
@@ -412,7 +446,7 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 						amountToDrop = itemstack.stackSize;
 					}
 					itemstack.stackSize -= amountToDrop;
-					EntityItem entityitem = new EntityItem(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemStack(itemstack.getItem(), amountToDrop, itemstack.getItemDamage()));
+					EntityItem entityitem = new EntityItem(world, x + xOffset, y + yOffset, z + zOffset, new ItemStack(itemstack.getItem(), amountToDrop, itemstack.getItemDamage()));
 					if(itemstack.getTagCompound() != null)
 					{
 						entityitem.getEntityItem().setTagCompound(itemstack.getTagCompound());
@@ -426,15 +460,17 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 			}
 		}
 
-		super.breakBlock(world, x, y, z, block, meta);
+		super.breakBlock(world, pos, state);
 	}
-	
-    /**
+
+	/**
      * A randomly called display update to be able to add particles or other items for display
      */
+	@Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random par5Random)
-    {
+	public void randomDisplayTick(IBlockState world, World pos, BlockPos state, Random rand) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
     	int metadata = world.getBlockMetadata(x, y, z);
     	if(metadata == METADATA_BEARING) {
         	TileEntity te = world.getTileEntity(x, y, z);
@@ -472,7 +508,11 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
     			}
     		}
     	}
+    	*/
     }
+
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
     
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
@@ -490,13 +530,15 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
     	
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
+    */
 
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
 		return false;
-    }
+	}
 
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	/*
     // IPeripheralProvider
 	@Optional.Method(modid = "ComputerCraft")
 	@Override
@@ -508,5 +550,6 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 		
 		return null;
 	}
+	*/
 	
 }
