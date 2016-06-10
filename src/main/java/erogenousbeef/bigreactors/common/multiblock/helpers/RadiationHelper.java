@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
@@ -85,6 +86,9 @@ public class RadiationHelper {
 
 		// Propagate radiation to others
 		BlockPos originCoord = source.getPos();
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		CoordTriplet currentCoord = new CoordTriplet(0, 0, 0);
 		
 		effectiveRadIntensity *= 0.25f; // We're going to do this four times, no need to repeat
@@ -99,9 +103,10 @@ public class RadiationHelper {
 			while(ttl > 0 && radPacket.intensity > 0.0001f) {
 				ttl--;
 				currentCoord.translate(dir);
-				performIrradiation(world, data, radPacket, currentCoord.x, currentCoord.y, currentCoord.z);
+				performIrradiation(world, data, radPacket, currentCoord);
 			}
 		}
+		*/
 
 		// Apply changes
 		fertility += data.fuelAbsorbedRadiation;
@@ -122,16 +127,17 @@ public class RadiationHelper {
 		fertility = Math.max(0f, fertility - Math.max(0.1f, fertility/denominator));
 	}
 	
-	private void performIrradiation(World world, RadiationData data, RadiationPacket radiation, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+	private void performIrradiation(World world, RadiationData data, RadiationPacket radiation, BlockPos position) {
+		TileEntity te = world.getTileEntity(position);
 		if(te instanceof IRadiationModerator) {
 			((IRadiationModerator)te).moderateRadiation(data, radiation);
 		}
-		else if (world.isAirBlock(x, y, z)) {
+		else if (world.isAirBlock(position)) {
 			moderateByAir(data, radiation);
 		}
 		else {
-			Block block = world.getBlock(x, y, z);
+			IBlockState blockState = world.getBlockState(position);
+			Block block = blockState.getBlock();
 			if(block != null) {
 				
 				if(block instanceof IFluidBlock) {
@@ -139,7 +145,10 @@ public class RadiationHelper {
 				}
 				else {
 					// Go by block
+					// TODO Commented temporarily to allow this thing to compile...
+					/*
 					moderateByBlock(data, radiation, block, world.getBlockMetadata(x, y, z));
+					*/
 				}
 			}
 			else {
@@ -171,7 +180,10 @@ public class RadiationHelper {
 		}
 		else {
 			// Check the ore dictionary.
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			moderatorData = ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));
+			*/
 		}
 		
 		if(moderatorData == null) {
