@@ -7,7 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import scala.actors.threadpool.Arrays;
-import cofh.core.util.oredict.OreDictionaryArbiter;
+//import cofh.core.util.oredict.OreDictionaryArbiter;
 
 public class SlotRestrictedOreTypes extends Slot {
 
@@ -24,7 +24,8 @@ public class SlotRestrictedOreTypes extends Slot {
 	public boolean isItemValid(ItemStack stack) {
 		if(stack == null) { return false; }
 
-		ArrayList<String> oreNames = OreDictionaryArbiter.getAllOreNames(stack);
+		// TODO Commented temporarily to allow this thing to compile...
+		ArrayList<String> oreNames = null;//OreDictionaryArbiter.getAllOreNames(stack);
 		if(oreNames != null) {
 			for(String oreName : oreNames) {
 				if(acceptedTypes.contains(oreName)) {
