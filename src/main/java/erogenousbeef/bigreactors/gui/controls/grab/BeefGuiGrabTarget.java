@@ -24,9 +24,12 @@ public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 	@Override
 	public void drawForeground(TextureManager renderEngine, int mouseX, int mouseY) {
 		if(grabbable != null) {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 			GL11.glColor4f(1f, 1f, 1f, 1f);
 			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
+			*/
 		}
 		
 		if(this.isMouseOver(mouseX, mouseY)) {

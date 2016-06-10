@@ -28,9 +28,12 @@ public class BeefGuiGrabSource extends BeefGuiControlBase implements IBeefToolti
 	@Override
 	public void drawForeground(TextureManager renderEngine, int mouseX, int mouseY) {
 		if(this.grabbable != null) {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			renderEngine.bindTexture( TextureMap.locationBlocksTexture );
 			GL11.glColor4f(1f, 1f, 1f, 1f);
 			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
+			*/
 		}
 		else {
 			this.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, 0x66ff0000); // Red error spot			
