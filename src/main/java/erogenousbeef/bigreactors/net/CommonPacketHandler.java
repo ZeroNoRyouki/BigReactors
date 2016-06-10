@@ -13,7 +13,8 @@ import erogenousbeef.bigreactors.net.message.DeviceUpdateMessage;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateRotationMessage;
 import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
 import erogenousbeef.bigreactors.net.message.ReactorAccessPortChangeDirectionMessage;
-import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+//import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
 import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorChangeWasteEjectionMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorCommandEjectMessage;
@@ -62,7 +63,8 @@ public class CommonPacketHandler {
         INSTANCE.registerMessage(DeviceChangeExposureMessage.Handler.class, DeviceChangeExposureMessage.class, 2, Side.SERVER);
         INSTANCE.registerMessage(ControlRodChangeNameMessage.Handler.class, ControlRodChangeNameMessage.class, 4, Side.SERVER);
         INSTANCE.registerMessage(ControlRodChangeInsertionMessage.Handler.class, ControlRodChangeInsertionMessage.class, 6, Side.SERVER);
-        INSTANCE.registerMessage(ReactorRedNetPortChangeMessage.Handler.class, ReactorRedNetPortChangeMessage.class, 8, Side.SERVER);
+        // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+        //INSTANCE.registerMessage(ReactorRedNetPortChangeMessage.Handler.class, ReactorRedNetPortChangeMessage.class, 8, Side.SERVER);
         INSTANCE.registerMessage(ReactorRedstonePortChangeMessage.Handler.class, ReactorRedstonePortChangeMessage.class, 10, Side.SERVER);
         INSTANCE.registerMessage(ReactorCommandEjectMessage.Handler.class, ReactorCommandEjectMessage.class, 12, Side.SERVER);
         INSTANCE.registerMessage(ReactorCommandEjectToPortMessage.Handler.class, ReactorCommandEjectToPortMessage.class, 14, Side.SERVER);
