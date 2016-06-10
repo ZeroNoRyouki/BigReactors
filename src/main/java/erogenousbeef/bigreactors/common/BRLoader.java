@@ -3,7 +3,6 @@ package erogenousbeef.bigreactors.common;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -27,8 +26,8 @@ import zero.mods.zerocore.api.multiblock.MultiblockEventHandler;
 public class BRLoader {
 
 	public static final String MOD_ID = BigReactors.MODID;
-    public static final String DEPENDENCIES = "required-after:Forge@[10.13.2.1291,);required-after:CoFHCore;after:ThermalExpansion";
-	
+    public static final String DEPENDENCIES = "required-after:Forge@[12.16.1.1887,);required-after:zerocore";
+
 	@Instance(MOD_ID)
 	public static BRLoader instance;
 
@@ -87,6 +86,8 @@ public class BRLoader {
 	// GAME EVENT HANDLERS
 	// FORGE EVENT HANDLERS
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	// Handle bucketing of reactor fluids
 	@SubscribeEvent
     public void onBucketFill(FillBucketEvent e)
@@ -103,7 +104,7 @@ public class BRLoader {
             e.setResult(Result.ALLOW);
         }
     }
-    
+
     private ItemStack fillBucket(World world, MovingObjectPosition mop)
     {
         Block block = world.getBlock(mop.blockX, mop.blockY, mop.blockZ);
@@ -111,4 +112,5 @@ public class BRLoader {
         else if(block == BigReactors.fluidYelloriumStill) return new ItemStack(BigReactors.fluidYelloriumBucketItem);
         else return null;
     }
+    */
 }
