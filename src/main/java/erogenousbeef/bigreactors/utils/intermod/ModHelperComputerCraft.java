@@ -1,3 +1,5 @@
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+/*
 package erogenousbeef.bigreactors.utils.intermod;
 
 import net.minecraftforge.fml.common.Optional;
@@ -13,3 +15,4 @@ public class ModHelperComputerCraft extends ModHelperBase {
 		ComputerCraftAPI.registerPeripheralProvider(BigReactors.blockTurbinePart);
 	}
 }
+*/
