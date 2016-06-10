@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
