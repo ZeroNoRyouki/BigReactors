@@ -23,8 +23,11 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 
 		BlockPos position = this.getPos();
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		if(BlockReactorPart.isCasing(metadata)) { return true; }
+		*/
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_frame_block", position.getX(), position.getY(), position.getZ());
 		return false;
@@ -100,11 +103,14 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 		if(!this.isConnected()) {
 			return null;
 		}
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);		
 		if(BlockReactorPart.isController(metadata)) {
 			return new ContainerReactorController(this, inventoryPlayer.player);
 		}
+		*/
 		return null;
 	}
 
@@ -114,11 +120,14 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 		if(!this.isConnected()) {
 			return null;
 		}
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		if(BlockReactorPart.isController(metadata)) {
 			return new GuiReactorStatus(new ContainerReactorController(this, inventoryPlayer.player), this);
 		}
+		*/
 		return null;
 	}
 }
