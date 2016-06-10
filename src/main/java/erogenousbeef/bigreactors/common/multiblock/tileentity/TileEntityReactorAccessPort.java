@@ -11,11 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.lib.util.helpers.BlockHelper;
+//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.data.SourceProductMapping;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
@@ -167,7 +169,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		int reactantConsumed = bestMapping.getSourceAmount(itemsToProduce);
 		itemsToProduce = bestMapping.getProductAmount(reactantConsumed);
 
-		ItemStack newItem = ItemHelper.getOre(bestMapping.getProduct());
+		// TODO Commented temporarily to allow this thing to compile...
+		ItemStack newItem = null;//ItemHelper.getOre(bestMapping.getProduct());
 		if(newItem == null) {
 			BRLog.warning("Could not find item for oredict entry %s, using cyanite instead.", bestMapping.getSource());
 			newItem = BigReactors.ingotGeneric.getItemStackForType("ingotCyanite");
@@ -188,8 +191,11 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public void onMachineAssembled(MultiblockControllerBase controller) {
 		super.onMachineAssembled(controller);
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		adjacencyHelper = new AdjacentInventoryHelper(this.getOutwardsDir());
 		checkForAdjacentInventories();
+		*/
 	}
 	
 	@Override
@@ -261,7 +267,76 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 	
 	// IInventory
-	
+
+	// TODO fake imp!
+	@Override
+	public void closeInventory(EntityPlayer player) {
+
+	}
+
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		return new int[0];
+	}
+
+	@Override
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+		return false;
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		return null;
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
+	}
+	// end fake imp!
+
+
+
 	@Override
 	public int getSizeInventory() {
 		return NUM_SLOTS;
@@ -298,10 +373,13 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		}
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		return null;
 	}
+	*/
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemstack) {
@@ -314,6 +392,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
         markDirty();
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public String getInventoryName() {
 		return "Access Port";
@@ -323,6 +403,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public boolean hasCustomInventoryName() {
 		return false;
 	}
+	*/
+
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -339,6 +421,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		return entityplayer.getDistanceSq((double)position.getX() + 0.5D, (double)position.getY() + 0.5D, (double)position.getZ() + 0.5D) <= 64D;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public void openInventory() {
 	}
@@ -346,6 +430,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	@Override
 	public void closeInventory() {
 	}
+	*/
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
@@ -363,7 +448,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 
 	// ISidedInventory
-	
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 		if(isInlet()) {
@@ -383,6 +469,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
 		return isItemValidForSlot(slot, itemstack);
 	}
+	*/
 
 	// IMultiblockGuiHandler
 	@Override
@@ -432,6 +519,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 	
 	protected void checkForAdjacentInventories() {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection outDir = getOutwardsDir();
 
 		if(adjacencyHelper == null && outDir != ForgeDirection.UNKNOWN) {
@@ -444,10 +533,14 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 				distributeItems();
 			}
 		}
+		*/
 	}
 	
 	protected void markChunkDirty() {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+		*/
 	}
 
 	// INeighborUpdateableEntity
@@ -460,9 +553,12 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, int x, int y, int z,
 			int neighborX, int neighborY, int neighborZ) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		int side = BlockHelper.determineAdjacentSide(this, neighborX, neighborY, neighborZ);
 		if(side == getOutwardsDir().ordinal()) {
 			checkForAdjacentInventories();
 		}
+		*/
 	}
 }
