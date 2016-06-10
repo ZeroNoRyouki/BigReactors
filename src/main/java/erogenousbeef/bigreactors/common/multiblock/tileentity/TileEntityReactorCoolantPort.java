@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -112,32 +113,35 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	// IFluidHandler
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		if(!isConnected() || !inlet || from != getOutwardsDir()) { return 0; }
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//if(!isConnected() || !inlet || from != getOutwardsDir()) { return 0; }
 		
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.fill(getConnectedTank(), resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource,
-			boolean doDrain) {
-		if(!isConnected() || from != getOutwardsDir()) { return null; }
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//if(!isConnected() || from != getOutwardsDir()) { return null; }
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.drain(getConnectedTank(), resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		if(!isConnected() || from != getOutwardsDir()) { return null; }
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//if(!isConnected() || from != getOutwardsDir()) { return null; }
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.drain(getConnectedTank(), maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if(!isConnected() || from != getOutwardsDir()) { return false; }
+	public boolean canFill(EnumFacing from, Fluid fluid) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//if(!isConnected() || from != getOutwardsDir()) { return false; }
 
 		if(!inlet) { return false; } // Prevent pipes from filling up the output tank inadvertently
 
@@ -146,8 +150,9 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		if(!isConnected() || from != getOutwardsDir()) { return false; }
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//if(!isConnected() || from != getOutwardsDir()) { return false; }
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.canDrain(getConnectedTank(), fluid);
 	}
@@ -155,8 +160,9 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	private static FluidTankInfo[] emptyTankArray = new FluidTankInfo[0];
 	
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		if(!isConnected() || from != getOutwardsDir()) { return emptyTankArray; }
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//if(!isConnected() || from != getOutwardsDir()) { return emptyTankArray; }
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.getTankInfo(getConnectedTank());
@@ -175,8 +181,11 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		
 		if(fluidToDrain != null && fluidToDrain.amount > 0)
 		{
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			fluidToDrain.amount = pumpDestination.fill(getOutwardsDir().getOpposite(), fluidToDrain, true);
 			cc.drain(CoolantContainer.HOT, fluidToDrain, true);
+			*/
 		}
 	}
 
@@ -208,6 +217,8 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			return;
 		}
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection outDir = getOutwardsDir();
 		if(outDir == ForgeDirection.UNKNOWN) {
 			return;
@@ -217,6 +228,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		if(neighbor instanceof IFluidHandler) {
 			pumpDestination = (IFluidHandler)neighbor;
 		}
+		*/
 	}
 
 }
