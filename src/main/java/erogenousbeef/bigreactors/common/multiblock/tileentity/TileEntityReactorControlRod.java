@@ -3,7 +3,8 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
+// TODO Commented temporarily to allow this thing to compile...
+//import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
@@ -102,7 +103,9 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		return new GuiReactorControlRod(new ContainerBasic(), this);
+		// TODO Commented temporarily to allow this thing to compile...
+		//return new GuiReactorControlRod(new ContainerBasic(), this);
+		return null;
 	}
 	
 	// TileEntityReactorPart
