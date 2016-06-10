@@ -2,14 +2,12 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityTurbineRotorBearing extends
@@ -55,6 +53,9 @@ public class TileEntityTurbineRotorBearing extends
 		MultiblockTurbine turbine = getTurbine();
 		BlockPos minCoord = turbine.getMinimumCoord();
 		BlockPos maxCoord = turbine.getMaximumCoord();
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 
 		boundingBox = AxisAlignedBB.getBoundingBox(minCoord.x, minCoord.y, minCoord.z, maxCoord.x + 1, maxCoord.y + 1, maxCoord.z + 1);
 		
@@ -109,5 +110,7 @@ public class TileEntityTurbineRotorBearing extends
 				currentCoord.translate(rotorInfo.rotorDirection);
 			}
 		}
+
+		*/
 	}
 }
