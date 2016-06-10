@@ -39,7 +39,7 @@ public class BlockTurbineRotorPart extends Block {
 		setStepSound(SoundType.METAL);
 		setLightLevel(0.9f);
 		setHardness(2.0f);
-		setRegistryName("blockTurbineRotorPart");
+		//setRegistryName("blockTurbineRotorPart");
 		setUnlocalizedName("blockTurbineRotorPart");
 		// TODO blockstate
 		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockTurbineRotorPart");
@@ -99,11 +99,14 @@ public class BlockTurbineRotorPart extends Block {
 		return false;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
+	*/
 
 	@Override
 	public int damageDropped(IBlockState state) {
