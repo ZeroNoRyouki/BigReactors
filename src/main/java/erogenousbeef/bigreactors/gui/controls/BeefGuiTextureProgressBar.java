@@ -41,7 +41,9 @@ public abstract class BeefGuiTextureProgressBar extends BeefGuiVerticalProgressB
 
 		double barMaxV = 1;
 		double barMinV = 1 - Math.min(1, Math.max(0, barHeight / this.height));
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		renderEngine.bindTexture(getBarTexture());
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height, zLevel, barLeftU, barMaxV);
@@ -49,6 +51,7 @@ public abstract class BeefGuiTextureProgressBar extends BeefGuiVerticalProgressB
 		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - barHeight, zLevel, barRightU, barMinV);
 		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - barHeight, zLevel, barLeftU, barMinV);
 		tessellator.draw();
+		*/
 	}
 
 	protected double getBarMinHeight() {
