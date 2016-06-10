@@ -1,3 +1,5 @@
+// TODO Commented temporarily to allow this thing to compile...
+/*
 package erogenousbeef.bigreactors.client.gui;
 
 import java.util.HashMap;
@@ -13,8 +15,9 @@ import org.lwjgl.input.Keyboard;
 
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
+//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.GuiSelectableButton;
@@ -46,7 +49,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 	BeefGuiLabel subOutputValueLabel;
 	private GuiTextField subOutputValue;
 	// End Subsetting display
-	
+
 	private Map<CircuitType, GuiSelectableButton> btnMap;
 	private int outputLevel;
 	private boolean greaterThan;
@@ -61,7 +64,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		port = tileentity;
 		
 		ySize = 204;
-		
+
 		btnMap = new HashMap<CircuitType, GuiSelectableButton>();
 		outputLevel = tileentity.getOutputLevel();
 		greaterThan = tileentity.getGreaterThan();
@@ -103,6 +106,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		BlockReactorPart reactorPartBlock = (BlockReactorPart)BigReactors.blockReactorPart;
 		int buttonOrdinal = MINIMUM_SETTING_SELECTOR_ID;
 		leftX = guiLeft + 16;
+
 		CircuitType currentCircuitType = port.getCircuitType();
 		for(CircuitType ct : CircuitType.values()) {
 			if(ct == CircuitType.DISABLED) { continue; }
@@ -628,3 +632,4 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		return CircuitType.DISABLED;
 	}
 }
+*/
