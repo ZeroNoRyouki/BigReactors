@@ -1,3 +1,5 @@
+// TODO Commented temporarily to allow this thing to compile...
+/*
 package erogenousbeef.bigreactors.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
@@ -178,3 +180,4 @@ public class GuiReactorControlRod extends BeefGuiBase {
 	}
 	
 }
+*/
