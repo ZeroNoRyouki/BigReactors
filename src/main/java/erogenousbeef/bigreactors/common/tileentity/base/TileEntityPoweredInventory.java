@@ -153,6 +153,8 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 	}
 	
 	/* IEnergyHandler */
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 		if(!m_ReceivesEnergy) { return 0; }
@@ -164,6 +166,7 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		if(!m_ProvidesEnergy) { return 0; }
 		return energyStorage.extractEnergy(maxExtract, simulate);
 	}
+	*/
 
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
