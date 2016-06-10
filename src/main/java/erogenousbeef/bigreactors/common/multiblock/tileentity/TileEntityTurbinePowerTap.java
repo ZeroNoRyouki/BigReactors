@@ -2,13 +2,15 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard implements IEnergyProvider, INeighborUpdatableEntity {
 
@@ -42,8 +44,9 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard imp
 	@Override
 	public void onAttached(MultiblockControllerBase newController) {
 		super.onAttached(newController);
-		
-		checkForConnections(this.worldObj, xCoord, yCoord, zCoord);
+
+		BlockPos position = this.getPos();
+		checkForConnections(this.worldObj, position.getX(), position.getY(), position.getZ());
 		
 		this.notifyNeighborsOfTileChange();
 	}
@@ -52,8 +55,8 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard imp
 	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
 		super.onMachineAssembled(multiblockControllerBase);
 
-		
-		checkForConnections(this.worldObj, xCoord, yCoord, zCoord);
+		BlockPos position = this.getPos();
+		checkForConnections(this.worldObj, position.getX(), position.getY(), position.getZ());
 		
 		this.notifyNeighborsOfTileChange();
 	}
@@ -67,6 +70,8 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard imp
 	 */
 	protected void checkForConnections(IBlockAccess world, int x, int y, int z) {
 		boolean wasConnected = (rfNetwork != null);
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection out = getOutwardsDir();
 		if(out == ForgeDirection.UNKNOWN) {
 			wasConnected = false;
@@ -87,11 +92,11 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard imp
 				}
 			}
 		}
-		
+		*/
 		boolean isConnected = (rfNetwork != null);
 		if(wasConnected != isConnected && worldObj.isRemote) {
 			// Re-render on clients
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}
 
@@ -103,39 +108,42 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePartStandard imp
 			return units;
 		}
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection approachDirection = getOutwardsDir().getOpposite();
 		int energyConsumed = rfNetwork.receiveEnergy(approachDirection, (int)units, false);
 		units -= energyConsumed;
-		
+		*/
 		return units;
 	}
 
 	// IEnergyConnection
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 		if(!this.isConnected()) { return false; }
 
-		return from == getOutwardsDir();
+		// TODO Commented temporarily to allow this thing to compile...
+		//return from == getOutwardsDir();
+		return false;
 	}
 	
 	// IEnergyProvider
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract,
-			boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 		if(!this.isConnected()) { return 0; }
 
 		return getTurbine().extractEnergy(from, maxExtract, simulate);
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 		if(!this.isConnected()) { return 0; }
 		
 		return getTurbine().getEnergyStored(from);
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 		if(!this.isConnected()) { return 0; }
 
 		return getTurbine().getMaxEnergyStored(from);
