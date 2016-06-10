@@ -1,14 +1,17 @@
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+/*
 package erogenousbeef.bigreactors.gui.controls.grab;
 
-import net.minecraft.util.IIcon;
+
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 
 public class RedNetConfigGrabbable implements IBeefGuiGrabbable {
 
 	protected String name;
-	protected IIcon icon;
+	// TODO Commented out IIcon stuff
+	//protected IIcon icon;
 	protected TileEntityReactorRedNetPort.CircuitType circuitType;
-	
+
 	public RedNetConfigGrabbable(String name, IIcon icon, TileEntityReactorRedNetPort.CircuitType circuitType) {
 		this.name = name;
 		this.icon = icon;
@@ -36,3 +39,4 @@ public class RedNetConfigGrabbable implements IBeefGuiGrabbable {
 		return name;
 	}
 }
+*/
