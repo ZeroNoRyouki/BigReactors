@@ -55,7 +55,8 @@ public class BigReactorsTickHandler {
                     long zSeed = fmlRandom.nextLong() >> 2 + 1L;
                     fmlRandom.setSeed((xSeed * nextChunk.chunkXPos + zSeed * nextChunk.chunkZPos) ^ event.world.getSeed());
 
-                    BigReactors.worldGenerator.generateChunk(fmlRandom, nextChunk.chunkXPos, nextChunk.chunkZPos, event.world);
+                    // TODO Commented temporarily to allow this thing to compile...
+                    //BigReactors.worldGenerator.generateChunk(fmlRandom, nextChunk.chunkXPos, nextChunk.chunkZPos, event.world);
                 }
 
                 if(chunksToGen.isEmpty()) {
