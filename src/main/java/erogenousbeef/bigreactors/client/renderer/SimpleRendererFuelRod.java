@@ -1,14 +1,13 @@
+// TODO Commented temporarily to allow this thing to compile...
+/*
 package erogenousbeef.bigreactors.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
-
 import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import erogenousbeef.bigreactors.api.data.ReactantData;
 import erogenousbeef.bigreactors.api.registry.Reactants;
@@ -256,3 +255,5 @@ public class SimpleRendererFuelRod implements ISimpleBlockRenderingHandler {
 		return min + (max-min)*value;
 	}
 }
+
+*/
