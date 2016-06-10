@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
@@ -217,7 +217,8 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 			interiorData = ReactorInterior.getBlockData("blockEmerald");
 		}
 		else {
-			interiorData = ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));
+			// TODO Commented temporarily to allow this thing to compile...
+			interiorData = null; /*ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));*/
 
 			if(interiorData == null && block instanceof IFluidBlock) {
 				Fluid fluid = ((IFluidBlock)block).getFluid();
