@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,11 +24,14 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 
 	// TODO icon texture
 	@Override
-	protected IIcon getProgressBarIcon() {
+	// TODO Commented out IIcon stuff
+	protected /*IIcon*/Object getProgressBarIcon() {
 		FluidTankInfo[] tanks = this._entity.getTankInfo();
 		if(tanks != null && tankIdx < tanks.length) {
 			if(tanks[tankIdx].fluid != null) {
-				return tanks[tankIdx].fluid.getFluid().getIcon();
+				// TODO Commented out IIcon stuff
+				//return tanks[tankIdx].fluid.getFluid().getIcon();
+				return null;
 			}
 		}
 		return null;
