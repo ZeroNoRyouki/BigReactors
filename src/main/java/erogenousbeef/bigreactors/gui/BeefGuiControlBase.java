@@ -1,10 +1,7 @@
 package erogenousbeef.bigreactors.gui;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-
 import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 
 public abstract class BeefGuiControlBase implements IBeefGuiControl {
@@ -77,6 +74,8 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
 			yMax = temp;
 		}
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		Tessellator tessellator = Tessellator.instance;
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -90,10 +89,13 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
 		tessellator.draw();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_BLEND);
+		*/
 	}
-	
-    protected static void drawTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height)
-    {
+
+	// TODO Commented out IIcon stuff
+    protected static void drawTexturedModelRectFromIcon(int x, int y, /*IIcon*/Object icon, int width, int height) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV((double)(x + 0), (double)(y + height), 0.0D, (double)icon.getMinU(), (double)icon.getMaxV());
@@ -101,6 +103,7 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
         tessellator.addVertexWithUV((double)(x + width), (double)(y + 0), 0.0D, (double)icon.getMaxU(), (double)icon.getMinV());
         tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), 0.0D, (double)icon.getMinU(), (double)icon.getMinV());
         tessellator.draw();
+        */
     }
 	
     public boolean isVisible() { return visible; }
