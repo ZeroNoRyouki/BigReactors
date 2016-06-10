@@ -5,7 +5,7 @@ import java.util.Calendar;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import cofh.api.modhelpers.ThermalExpansionHelper;
+//import cofh.api.modhelpers.ThermalExpansionHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -20,7 +20,7 @@ import erogenousbeef.bigreactors.gui.BigReactorsGUIHandler;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
+//import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
 import zero.mods.zerocore.api.multiblock.MultiblockServerTickHandler;
 
@@ -74,27 +74,39 @@ public class CommonProxy {
 
 			// TODO: Remove ThermalExpansionHelper once addSmelterRecipe and addPulverizerRecipe aren't broken
 			if(ingots[YELLORIUM] != null) {
+				// TODO Commented temporarily to allow this thing to compile...
+				/*
 				ThermalExpansionHelper.addFurnaceRecipe(400, yelloriteOre, ingots[YELLORIUM]);
 				ThermalExpansionHelper.addSmelterRecipe(1600, yelloriteOre, sandStack, doubleYellorium);
+				*/
 			}
 
 			if(doubledYelloriumDust != null) {
+				// TODO Commented temporarily to allow this thing to compile...
+				/*
 				ThermalExpansionHelper.addPulverizerRecipe(4000, yelloriteOre, doubledYelloriumDust);
 				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYellorium);
+				*/
 			}
 
 			for(int i = 0; i < ingots.length; i++) {
 				if(ingots[i] == null || dusts[i] == null) { continue; }
 
+				// TODO Commented temporarily to allow this thing to compile...
+				/*
 				ThermalExpansionHelper.addPulverizerRecipe(2400, ingots[i], dusts[i]);
 				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYellorium);
+				*/
 
 				ItemStack doubleDust = dusts[i].copy();
 				doubleDust.stackSize = 2;
 				ItemStack doubleIngot = ingots[i].copy();
 				doubleIngot.stackSize = 2;
 
+				// TODO Commented temporarily to allow this thing to compile...
+				/*
 				ThermalExpansionHelper.addSmelterRecipe(200, doubleDust, sandStack, doubleIngot);
+				*/
 			}
 		} // END: IsModLoaded - ThermalExpansion
 		
@@ -153,9 +165,12 @@ public class CommonProxy {
 		ModHelperBase modHelper;
 		
 		ModHelperBase.detectMods();
-		
+
+		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+		/*
 		modHelper = new ModHelperComputerCraft();
 		modHelper.register();
+		*/
 		
 		modHelper = new ModHelperMekanism();
 		modHelper.register();
