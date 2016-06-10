@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyProvider;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
@@ -20,14 +19,18 @@ public class BeefGuiPowerBar extends BeefGuiTextureProgressBar implements
 	
 	@Override
 	protected float getProgress() {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		float val = Math.min(1f, Math.max(0f, (float)_entity.getEnergyStored(ForgeDirection.UNKNOWN) / (float)_entity.getMaxEnergyStored(ForgeDirection.UNKNOWN)));
 		return val;
+		*/return 0;
 	}
 
 	@Override
 	public String[] getTooltip() {
-		int energyStored = _entity.getEnergyStored(ForgeDirection.UNKNOWN);
-		int energyMax = _entity.getMaxEnergyStored(ForgeDirection.UNKNOWN);
+		// TODO Commented temporarily to allow this thing to compile...
+		int energyStored = -1;//_entity.getEnergyStored(ForgeDirection.UNKNOWN);
+		int energyMax = -1;//_entity.getMaxEnergyStored(ForgeDirection.UNKNOWN);
 		float fullness = (float)energyStored / (float)energyMax * 100f;
 		return new String[] { "Energy Buffer", 
 				String.format("%d / %d RF", energyStored, energyMax),
