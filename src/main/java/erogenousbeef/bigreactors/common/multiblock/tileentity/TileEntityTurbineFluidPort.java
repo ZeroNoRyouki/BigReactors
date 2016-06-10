@@ -3,9 +3,9 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -14,6 +14,7 @@ import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard implements IFluidHandler, INeighborUpdatableEntity, ITickableMultiblockPart {
 
@@ -46,7 +47,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 			notifyNeighborsOfTileChange();
 		}
 
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 	}
 	
 	@Override
@@ -94,8 +95,11 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(!isConnected() || from != getOutwardsDir()) { return 0; }
+		*/
 
 		if(flowSetting != FluidFlow.In) {
 			return 0;
@@ -105,24 +109,29 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource,
-			boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(resource == null || !isConnected() || from != getOutwardsDir()) { return resource; }
-
+		*/
 		return getTurbine().drain(getTankIndex(), resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(!isConnected() || from != getOutwardsDir()) { return null; }
-
+		*/
 		return getTurbine().drain(getTankIndex(), maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(!isConnected() || from != getOutwardsDir()) { return false; }
-		
+		*/
 		if(flowSetting != FluidFlow.In) {
 			return false;
 		}
@@ -131,17 +140,22 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(!isConnected() || from != getOutwardsDir()) { return false; }
-		
+		*/
 		return getTurbine().canDrain(getTankIndex(), fluid);
 	}
 
 	protected static final FluidTankInfo[] emptyTankInfoArray = new FluidTankInfo[0];
 	
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(!isConnected() || from != getOutwardsDir()) { return emptyTankInfoArray; }
+		*/
 		return new FluidTankInfo[] { getTurbine().getTankInfo(getTankIndex()) };
 	}
 	
@@ -165,8 +179,11 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 		
 		if(fluidToDrain != null && fluidToDrain.amount > 0)
 		{
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			fluidToDrain.amount = pumpDestination.fill(getOutwardsDir().getOpposite(), fluidToDrain, true);
 			turbine.drain(MultiblockTurbine.TANK_OUTPUT, fluidToDrain, true);
+			*/
 		}
 	}
 	
@@ -193,6 +210,8 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 			return;
 		}
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection outDir = getOutwardsDir();
 		if(outDir == ForgeDirection.UNKNOWN) {
 			return;
@@ -202,5 +221,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 		if(neighbor instanceof IFluidHandler) {
 			pumpDestination = (IFluidHandler)neighbor;
 		}
+		*/
 	}
 }
