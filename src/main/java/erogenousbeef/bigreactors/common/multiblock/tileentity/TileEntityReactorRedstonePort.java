@@ -9,7 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.client.gui.GuiReactorRedstonePort;
+// TODO Commented temporarily to allow this thing to compile...
+//import erogenousbeef.bigreactors.client.gui.GuiReactorRedstonePort;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorRedstonePort;
@@ -206,7 +207,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 
 	/**
 	 * @param newType The type of the new circuit.
-	 * @param param1 For input/control rods, the level(s) to change or set. For outputs, the numerical value
+	 * @param outputLevel For input/control rods, the level(s) to change or set. For outputs, the numerical value
 	 * @param greaterThan For outputs, whether to activate when greater than or less than the outputLevel value. For input/control rods, whether to set (true) or change (false) the values.
 	 */
 	public void onReceiveUpdatePacket(int newType, int outputLevel, boolean greaterThan, boolean activeOnPulse) {
@@ -459,7 +460,9 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	@SideOnly(Side.CLIENT)
 	@Override
 	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		return new GuiReactorRedstonePort(new ContainerBasic(), this);
+		// TODO Commented temporarily to allow this thing to compile...
+		//return new GuiReactorRedstonePort(new ContainerBasic(), this);
+		return null;
 	}
 
 	@Override
