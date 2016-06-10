@@ -8,6 +8,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +16,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -105,7 +108,7 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 		
 		setStepSound(SoundType.METAL);
 		setHardness(2.0f);
-		setRegistryName("blockReactorPart");
+		//setRegistryName("blockReactorPart");
 		setUnlocalizedName("blockReactorPart");
 		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockReactorPart");
 		setCreativeTab(BigReactors.TAB);
@@ -221,17 +224,22 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 				return new TileEntityReactorPart();
 		}
 	}
-	
+
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		TileEntity te = StaticUtils.TE.getTileEntityUnsafe(world, x, y, z);
 
 		// Signal power taps when their neighbors change, etc.
 		if(te instanceof INeighborUpdatableEntity) {
 			((INeighborUpdatableEntity)te).onNeighborBlockChange(world, x, y, z, neighborBlock);
 		}
+		*/
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
 		TileEntity te = StaticUtils.TE.getTileEntityUnsafe(world, x, y, z);
@@ -241,14 +249,19 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 			((INeighborUpdatableEntity)te).onNeighborTileChange(world, x, y, z, neighborX, neighborY, neighborZ);
 		}
 	}
-
+	*/
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+									ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+	//public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if(player.isSneaking()) {
 			return false;
 		}
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		int metadata = world.getBlockMetadata(x, y, z);
 		TileEntity te = world.getTileEntity(x, y, z);
 		IMultiblockPart part = null;
@@ -262,7 +275,7 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 		if(isCasing(metadata) || isPowerTap(metadata) || isComputerPort(metadata)) {
 			// If the player's hands are empty and they rightclick on a multiblock, they get a 
 			// multiblock-debugging message if the machine is not assembled.
-			if(player.getCurrentEquippedItem() == null) {
+			if(heldItem == null) {
 				if(controller != null) {
 					Exception e = controller.getLastValidationException();
 					if(e != null) {
@@ -305,6 +318,9 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 		if(!world.isRemote) {
 			player.openGui(BRLoader.instance, 0, world, x, y, z);
 		}
+
+		*/
+
 		return true;
 	}
 
@@ -313,18 +329,21 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 		return true;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return true;
 	}
-	
+
 	@Override
 	public int damageDropped(int metadata)
 	{
 		return metadata;
 	}
-	
+	*/
+
 	public ItemStack getReactorCasingItemStack() {
 		return new ItemStack(this, 1, METADATA_CASING);
 	}
@@ -366,10 +385,12 @@ public class BlockReactorPart extends BlockContainer /*implements IRedNetOmniNod
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+
+	//public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+
 		// Drop everything inside inventory blocks
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof IInventory)
 		{
 			IInventory inventory = ((IInventory)te);
@@ -383,6 +404,7 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 				float xOffset = world.rand.nextFloat() * 0.8F + 0.1F;
 				float yOffset = world.rand.nextFloat() * 0.8F + 0.1F;
 				float zOffset = world.rand.nextFloat() * 0.8F + 0.1F;
+				float x = pos.getX(), y = pos.getY(), z = pos.getZ();
 				do
 				{
 					if(itemstack.stackSize <= 0)
@@ -395,7 +417,7 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 						amountToDrop = itemstack.stackSize;
 					}
 					itemstack.stackSize -= amountToDrop;
-					EntityItem entityitem = new EntityItem(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemStack(itemstack.getItem(), amountToDrop, itemstack.getItemDamage()));
+					EntityItem entityitem = new EntityItem(world, x + xOffset, y + yOffset, z + zOffset, new ItemStack(itemstack.getItem(), amountToDrop, itemstack.getItemDamage()));
 					if(itemstack.getTagCompound() != null)
 					{
 						entityitem.getEntityItem().setTagCompound(itemstack.getTagCompound());
@@ -409,14 +431,13 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 			}
 		}
 
-		super.breakBlock(world, x, y, z, block, meta);
+		super.breakBlock(world, pos, state);
 	}
-	
+
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
 		return false;
-    }
+	}
 
 	/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 	// IConnectableRedNet
@@ -663,6 +684,8 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 	 * @param side The side to compare to the part
 	 * @return True if `side` is the outwards-facing face of `part`
 	 */
+	// TODO Commented temporarily to allow this thing to compile...
+	/* are this used?
 	private boolean isOutwardsSide(TileEntityReactorPart part, int side) {
 		ForgeDirection outDir = part.getOutwardsDir();
 		return outDir.ordinal() == side;
@@ -672,4 +695,5 @@ inv:		for(int i = 0; i < inventory.getSizeInventory(); i++)
 		MultiblockReactor reactor = part.getReactorController();
 		return reactor != null && reactor.isAssembled();
 	}
+	*/
 }
