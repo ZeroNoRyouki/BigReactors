@@ -3,8 +3,16 @@ package erogenousbeef.bigreactors.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.core.util.oredict.OreDictionaryArbiter;
+//import cofh.lib.util.helpers.ItemHelper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BRLog;
@@ -16,8 +24,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemBeefDebugTool extends ItemBase {
@@ -38,56 +44,60 @@ public class ItemBeefDebugTool extends ItemBase {
 	}
 
 	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world,
-			int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side,
+										   float hitX, float hitY, float hitZ, EnumHand hand) {
+
 		if(player.isSneaking() != world.isRemote) {
-			return false;
+			return EnumActionResult.PASS;
 		}
 		
 		String clientOrServer = world.isRemote ? "CLIENT":"SERVER";
 
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof IBeefDebuggableTile) {
 			String result = ((IBeefDebuggableTile)te).getDebugInfo();
 			if(result != null && !result.isEmpty()) {
 				String[] results = result.split("\n");
 				String initialMessage = String.format("[%s] Beef Debug Tool:", clientOrServer);
-				player.addChatMessage(new ChatComponentText(initialMessage));
+				player.addChatMessage(new TextComponentString(initialMessage));
 				for(String r : results) {
-					player.addChatMessage(new ChatComponentText(r));
+					player.addChatMessage(new TextComponentString(r));
 				}
-				return true;
+				return EnumActionResult.SUCCESS;
 			}
 		}
 
-		Block b = world.getBlock(x, y, z);
+		IBlockState state = world.getBlockState(pos);
+		Block b = state.getBlock();
 		if(b != null) {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			ItemStack blockStack = new ItemStack(b, 1, world.getBlockMetadata(x,y,z));
 			String oreName = ItemHelper.oreProxy.getOreName(blockStack);
-			player.addChatMessage(new ChatComponentText(String.format("[%s] Canonical ore name for %s: %s", world.isRemote?"CLIENT":"SERVER", b.getUnlocalizedName(), oreName)));
+			player.addChatMessage(new TextComponentString(String.format("[%s] Canonical ore name for %s: %s", world.isRemote?"CLIENT":"SERVER", b.getUnlocalizedName(), oreName)));
 
 			ArrayList<String> allOreNames = OreDictionaryArbiter.getAllOreNames(blockStack);
 			if(allOreNames != null) {
-				player.addChatMessage(new ChatComponentText(String.format("[%s] All ore names (%d):", clientOrServer, allOreNames.size())));
+				player.addChatMessage(new TextComponentString(String.format("[%s] All ore names (%d):", clientOrServer, allOreNames.size())));
 				for(String on : allOreNames) {
-					player.addChatMessage(new ChatComponentText(on));
+					player.addChatMessage(new TextComponentString(on));
 				}
 			}
 			else {
-				player.addChatMessage(new ChatComponentText("getAllOreNames returned null"));
+				player.addChatMessage(new TextComponentString("getAllOreNames returned null"));
 			}
+			*/
 		}
 
 		// Consume clicks by default
-		return true;
+		return EnumActionResult.PASS;
 	}
 
 	@Override
-	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
-	{
+	public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
 		return false;
 	}
-	
+
 	/*
 	@Override
 	public boolean canHarvestBlock(Block block, ItemStack stack)
