@@ -2,14 +2,11 @@ package erogenousbeef.bigreactors.client.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.RenderBlocks;
+//import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
@@ -17,15 +14,14 @@ import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
 
 public class RotorSpecialRenderer extends TileEntitySpecialRenderer {
 
-	RenderBlocks renderBlocks = new RenderBlocks();
-	
+	// TODO Commented temporarily to allow this thing to compile...
+	//RenderBlocks renderBlocks = new RenderBlocks();
+
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double x, double y,
-			double z, float f) {
+	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float partialTicks, int destroyStage) {
 		TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)tileentity;
 		
 		if(bearing == null || !bearing.isConnected()) { return; }
@@ -33,7 +29,9 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer {
 		MultiblockTurbine turbine = bearing.getTurbine();
 		
 		if(!turbine.isAssembled() || !turbine.getActive() || !turbine.hasGlass()) { return; }
-		
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		Integer displayList = bearing.getDisplayList();
 		ForgeDirection rotorDir = bearing.getOutwardsDir().getOpposite();
 		
@@ -78,8 +76,11 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopAttrib();
 		GL11.glPopMatrix();
+		*/
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	int generateRotor(RotorInfo rotorInfo) {
 		int list = GLAllocation.generateDisplayLists(1);
 		GL11.glNewList(list,  GL11.GL_COMPILE);
@@ -134,5 +135,6 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer {
 		GL11.glEndList();
 		return list;
 	}
+	*/
 	
 }
