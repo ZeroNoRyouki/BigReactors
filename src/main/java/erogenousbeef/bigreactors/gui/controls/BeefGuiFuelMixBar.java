@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
@@ -50,12 +50,15 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 		if(fuelProportion > 0) {
 			double fuelMinV = 1.0 - fullness*maxV;
 			double fuelMaxV = maxV;
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - 1, zLevel, fuelLeftU, fuelMaxV);
 			tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - 1, zLevel, fuelRightU, fuelMaxV);
 			tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - barHeight, zLevel, fuelRightU, fuelMinV);
 			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - barHeight, zLevel, fuelLeftU, fuelMinV);
 			tessellator.draw();
+			*/
 		}
 		
 		if(wasteProportion > 0) {
@@ -65,13 +68,16 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 			
 			if(wasteHeight > 0) {
 				double wasteTop = this.absoluteY + this.height - 1 - wasteHeight;
-				
+
+				// TODO Commented temporarily to allow this thing to compile...
+				/*
 				tessellator.startDrawingQuads();
 				tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - 1, zLevel+1, wasteLeftU, wasteMaxV);
 				tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - 1, zLevel+1, wasteRightU, wasteMaxV);
 				tessellator.addVertexWithUV(this.absoluteX + this.width, wasteTop, zLevel+1, wasteRightU, wasteMinV);
 				tessellator.addVertexWithUV(this.absoluteX, wasteTop, zLevel+1, wasteLeftU, wasteMinV);
 				tessellator.draw();
+				*/
 			}
 		}
 	}
