@@ -71,6 +71,7 @@ multiblock.validation.reactor.invalid_fuelrod_column=Fuel rod at %1$d, %2$d, %3$
 multiblock.validation.reactor.invalid_part_for_interior=%1$d, %2$d, %3$d - This reactor part may not be placed in the reactor's interior
 multiblock.validation.reactor.invalid_fluid_for_interior=%1$d, %2$d, %3$d - The fluid %4$s is not valid for the reactor's interior
 multiblock.validation.reactor.invalid_block_for_interior=%1$d, %2$d, %3$d - %4$s is not valid for the reactor's interior
+multiblock.validation.reactor.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s is not valid for the reactor's exterior
 multiblock.validation.reactor.null_block_found=%1$d, %2$d, %3$d - Null block found, not valid for the reactor's interior
 multiblock.validation.reactor.too_few_rods=Not enough control rods. Reactors require at least 1.
 multiblock.validation.reactor.too_few_controllers=Not enough controllers. Reactors require at least 1.
@@ -86,6 +87,7 @@ multiblock.validation.reactor.redstoneport_invalid_on_interior=%1$d, %2$d, %3$d 
 
 # Multiblock validation errors (turbines)
 multiblock.validation.turbine.invalid_block_for_interior=%1$d, %2$d, %3$d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed.
+multiblock.validation.turbine.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s is not valid for a turbine's exterior
 multiblock.validation.turbine.invalid_rotor_count=Turbines require exactly 1 rotor bearing
 multiblock.validation.turbine.block_must_be_rotor=%1$s - This block must contain a rotor. The rotor must begin at the bearing and run the entire length of the turbine
 multiblock.validation.turbine.blades_too_far=%1$s - Rotor blades must be placed closer to the rotor bearing than all other parts inside a turbine
