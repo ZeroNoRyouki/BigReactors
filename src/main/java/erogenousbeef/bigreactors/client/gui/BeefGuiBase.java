@@ -114,13 +114,16 @@ public abstract class BeefGuiBase extends GuiContainer {
 			// Render grabbed item next to mouse
             this.mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             GL11.glColor4f(1f, 1f, 1f, 1f);
-            this.drawTexturedModelRectFromIcon(absoluteX+1, absoluteY+1, this.grabbedItem.getIcon(), 16, 16);
+			// TODO Commented temporarily to allow this thing to compile...
+            //this.drawTexturedModelRectFromIcon(absoluteX+1, absoluteY+1, this.grabbedItem.getIcon(), 16, 16);
 		}
 	}
 	
 	@Override
 	protected void mouseClicked(int x, int y, int buttonIndex) {
-		super.mouseClicked(x, y, buttonIndex);
+		// TODO Commented temporarily to allow this thing to compile...
+		//super.mouseClicked(x, y, buttonIndex);
+
 		for(GuiTextField field : textFields) {
 			field.mouseClicked(x, y, buttonIndex);
 		}
@@ -147,8 +150,11 @@ public abstract class BeefGuiBase extends GuiContainer {
 	}
 	
 	public void onControlClicked(IBeefGuiControl control) {}
-	
+
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	protected static boolean isAltKeyDown() {
 		return Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU);
 	}
+	*/
 }
