@@ -2,12 +2,15 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorPowerTap extends TileEntityReactorPart implements IEnergyProvider, INeighborUpdatableEntity {
 	IEnergyReceiver	rfNetwork;
@@ -36,15 +39,17 @@ public class TileEntityReactorPowerTap extends TileEntityReactorPart implements 
 	@Override
 	public void onAttached(MultiblockControllerBase newController) {
 		super.onAttached(newController);
-		
-		checkForConnections(this.worldObj, xCoord, yCoord, zCoord);
+
+		BlockPos position = this.getPos();
+		checkForConnections(this.worldObj, position.getX(), position.getY(), position.getZ());
 	}
 	
 	@Override
 	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
 		super.onMachineAssembled(multiblockControllerBase);
 
-		checkForConnections(this.worldObj, xCoord, yCoord, zCoord);
+		BlockPos position = this.getPos();
+		checkForConnections(this.worldObj, position.getX(), position.getY(), position.getZ());
 		
 		// Force a connection to the power taps
 		this.notifyNeighborsOfTileChange();
@@ -60,6 +65,8 @@ public class TileEntityReactorPowerTap extends TileEntityReactorPart implements 
 	 */
 	protected void checkForConnections(IBlockAccess world, int x, int y, int z) {
 		boolean wasConnected = (rfNetwork != null);
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection out = getOutwardsDir();
 		if(out == ForgeDirection.UNKNOWN) {
 			wasConnected = false;
@@ -81,10 +88,11 @@ public class TileEntityReactorPowerTap extends TileEntityReactorPart implements 
 			}
 			
 		}
+		*/
 		
 		boolean isConnected = (rfNetwork != null);
 		if(wasConnected != isConnected) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 	}
 
@@ -95,36 +103,41 @@ public class TileEntityReactorPowerTap extends TileEntityReactorPart implements 
 		if(rfNetwork == null) {
 			return units;
 		}
-		
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		ForgeDirection approachDirection = getOutwardsDir().getOpposite();
 		int energyConsumed = rfNetwork.receiveEnergy(approachDirection, (int)units, false);
 		units -= energyConsumed;
-		
+		*/
 		return units;
 	}
 
 	// IEnergyConnection
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-		return from == getOutwardsDir();
+	public boolean canConnectEnergy(EnumFacing from) {
+		// TODO Commented temporarily to allow this thing to compile...
+		//return from == getOutwardsDir();
+		return false;
 	}
 	
 	// IEnergyProvider
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract,
-			boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 		if(!this.isConnected())
 			return 0;
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(from == getOutwardsDir()) {
 			return this.getReactorController().extractEnergy(from, maxExtract, simulate);
 		}
+		*/
 
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 		if(!this.isConnected())
 			return 0;
 
@@ -132,7 +145,7 @@ public class TileEntityReactorPowerTap extends TileEntityReactorPart implements 
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 		if(!this.isConnected())
 			return 0;
 
