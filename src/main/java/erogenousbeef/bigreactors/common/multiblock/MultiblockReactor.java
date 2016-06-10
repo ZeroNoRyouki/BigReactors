@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -23,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 import cofh.api.energy.IEnergyProvider;
-import cofh.lib.util.helpers.ItemHelper;
+//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
@@ -540,11 +541,14 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 		
 		// Permit registered moderator blocks
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		int metadata = world.getBlockMetadata(x, y, z);
 
 		if(ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata))) != null) {
 			return true;
 		}
+		*/
 
 		// Permit TE fluids
 		if(block != null) {
@@ -568,7 +572,47 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			return false;
 		}
 	}
-	
+
+	@Override
+	protected boolean isBlockGoodForFrame(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
+	@Override
+	protected boolean isBlockGoodForTop(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
+	@Override
+	protected boolean isBlockGoodForBottom(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
+	@Override
+	protected boolean isBlockGoodForSides(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
+
+		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		Block block = blockState.getBlock();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
+		return false;
+	}
+
 	@Override
 	public void writeToNBT(NBTTagCompound data) {
 		data.setBoolean("reactorActive", this.active);
@@ -645,9 +689,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		{
 			Fluid coolantType, vaporType;
 			coolantType = coolantContainer.getCoolantType();
-			vaporType = coolantContainer.getVaporType();			
-			coolantTypeID = coolantType == null ? -1 : coolantType.getID();
-			vaporTypeID = vaporType == null ? -1 : vaporType.getID();
+			vaporType = coolantContainer.getVaporType();
+			// TODO Commented temporarily to allow this thing to compile...
+			coolantTypeID = coolantType == null ? -1 :/* coolantType.getID()*/-1;
+			vaporTypeID = vaporType == null ? -1 : /*vaporType.getID()*/-1;
 		}
 
 		// Basic data
@@ -1124,7 +1169,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	// IEnergyProvider
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract,
+	public int extractEnergy(EnumFacing from, int maxExtract,
 			boolean simulate) {
 		int amtRemoved = (int)Math.min(maxExtract, this.energyStored);
 		if(!simulate) {
@@ -1134,17 +1179,17 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 		return false;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 		return (int)energyStored;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 		return maxEnergyStored;
 	}
 
@@ -1278,8 +1323,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		BlockPos referenceCoord = getReferenceCoord();
 		if(referenceCoord == null) { return; }
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		TileEntity saveTe = worldObj.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
 		worldObj.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
+		*/
 	}
 
 	@Override
@@ -1291,9 +1339,13 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		StringBuilder sb = new StringBuilder();
 		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
 		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
+
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		if(getLastValidationException() != null) {
 			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
 		}
+		*/
 		
 		if(isAssembled()) {
 			sb.append("\nActive: ").append(Boolean.toString(getActive()));
