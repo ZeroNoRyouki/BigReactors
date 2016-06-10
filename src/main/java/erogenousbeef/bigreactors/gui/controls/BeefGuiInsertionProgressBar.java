@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -49,6 +49,8 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 	public void drawBackground(TextureManager renderEngine, int mouseX, int mouseY) {
 		if(!this.visible) { return; }
 
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
 		// Draw the background
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		renderEngine.bindTexture(controlResource);
@@ -74,6 +76,7 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 2, rodLeftU, rodTopV);
 			tessellator.draw();
 		}
+		*/
 	}
 
 	@Override
