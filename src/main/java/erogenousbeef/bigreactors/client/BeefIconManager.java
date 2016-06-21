@@ -1,9 +1,12 @@
 package erogenousbeef.bigreactors.client;
 
 import java.util.HashMap;
+
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import com.google.common.collect.Maps;
 import erogenousbeef.bigreactors.common.BigReactors;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Manages Icons that are not registered via blocks or items.
@@ -13,39 +16,40 @@ import erogenousbeef.bigreactors.common.BigReactors;
  * 
  */
 public abstract class BeefIconManager {
-
-	public static final int TERRAIN_TEXTURE = 0;
-	public static final int ITEM_TEXTURE = 1;
 	
 	private HashMap<String, Integer> nameToIdMap;
-	// TODO Commented out IIcon stuff
-	//private HashMap<Integer, IIcon> idToIconMap;
+	private HashMap<Integer, /*TextureAtlasSprite*/ResourceLocation> idToIconMap;
 	
-	public String[] iconNames = null;
+	public String[] iconNames;
 
 	protected abstract String[] getIconNames();
 	protected abstract String getPath();
 	
 	public BeefIconManager() {
 		nameToIdMap = Maps.newHashMap();
-		// TODO Commented out IIcon stuff
-        //idToIconMap = Maps.newHashMap();
+        idToIconMap = Maps.newHashMap();
         iconNames = getIconNames();
 	}
 	
 	public void registerIcons(TextureMap textureMap) {
 		if(iconNames == null) { return; }
 
+		ResourceLocation location;
+		String path = this.getPath();
+
 		for(int i = 0; i < iconNames.length; i++) {
+
+			location = BigReactors.createResourceLocation(path + iconNames[i]);
+
 			nameToIdMap.put(iconNames[i], i);
-			// TODO Commented out IIcon stuff
-			//idToIconMap.put(i, textureMap.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getPath() + iconNames[i]));
+			//idToIconMap.put(i, textureMap.registerSprite(location));
+
+			textureMap.registerSprite(location);
+			idToIconMap.put(i, location);
 		}
 	}
 
-	// TODO Commented out IIcon stuff
-	/*
-	public IIcon getIcon(String name) {
+	public ResourceLocation getIcon(String name) {
 		if(name == null || name.isEmpty()) { return null; }
 		
 		Integer id = nameToIdMap.get(name);
@@ -56,19 +60,7 @@ public abstract class BeefIconManager {
 		return idToIconMap.get(id);
 	}
 	
-	public IIcon getIcon(int id) {
+	public ResourceLocation getIcon(int id) {
 		return idToIconMap.get(id);
 	}
-	*/
-	@Deprecated // TODO switch to blockstate / ResourceLocation
-	public Object getIcon(String unused) {
-		return null;
-	}
-	@Deprecated // TODO switch to blockstate / ResourceLocation
-	public Object getIcon(int unused) {
-		return null;
-	}
-
-	public int getTextureType() { return TERRAIN_TEXTURE; }
-	
 }
