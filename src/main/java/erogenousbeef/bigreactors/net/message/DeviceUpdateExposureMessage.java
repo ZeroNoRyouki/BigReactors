@@ -53,7 +53,6 @@ public class DeviceUpdateExposureMessage extends WorldMessageClient {
 				TileEntityBeefBase beefTe = (TileEntityBeefBase)te;
 				beefTe.setSides(message.exposures);
 			}
-			// TODO Auto-generated method stub
 			return null;
 		}
 		

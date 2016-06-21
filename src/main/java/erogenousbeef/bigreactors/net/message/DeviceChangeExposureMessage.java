@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -46,11 +47,12 @@ public class DeviceChangeExposureMessage extends WorldMessageServer {
 		protected IMessage handleMessage(DeviceChangeExposureMessage message, MessageContext ctx, TileEntity te) {
 			if(te instanceof TileEntityBeefBase) {
 				TileEntityBeefBase beefTe = (TileEntityBeefBase)te;
+				EnumFacing side = EnumFacing.VALUES[message.side];
 				if(message.increment) {
-					beefTe.incrSide(message.side);
+					beefTe.incrSide(side);
 				}
 				else {
-					beefTe.decrSide(message.side);
+					beefTe.decrSide(side);
 				}
 			}
 			else {
