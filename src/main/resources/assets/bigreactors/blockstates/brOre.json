@@ -1,0 +1,21 @@
+{  
+    "forge_marker":1,
+    "defaults":{  
+        "textures":{  
+            "all":"bigreactors:blocks/oreYellorite"
+        },
+        "model":"cube_all"
+    },
+    "variants":{  
+        "ore":{  
+            "yellorite":{  
+                "textures":{
+					"all":"bigreactors:blocks/oreYellorite"
+                }
+            }
+        },
+        "inventory":{  
+            "transform":"forge:default-block"
+        }
+    }
+}

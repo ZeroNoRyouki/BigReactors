@@ -1,0 +1,13 @@
+{
+    "__comment": "Model file for four connected sides at an angle (rotated per state, default connected on the 'up/down/west/nort' facing)",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "bigreactors:blocks/tile.multiblockGlass.turbine.0",
+        "down": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"up": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"north": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"south": "bigreactors:blocks/tile.multiblockGlass.turbine.7",
+		"west": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"east": "bigreactors:blocks/tile.multiblockGlass.turbine.11"
+    }
+}

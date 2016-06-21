@@ -1,0 +1,21 @@
+{  
+   "forge_marker":1,
+   "defaults":{  
+      "textures":{  
+         "up":"bigreactors:blocks/fuelRod.end",
+         "down":"bigreactors:blocks/fuelRod.end",
+         "east":"bigreactors:blocks/fuelRod.side",
+         "west":"bigreactors:blocks/fuelRod.side",
+         "north":"bigreactors:blocks/fuelRod.side",
+         "south":"bigreactors:blocks/fuelRod.side"
+      }
+   },
+   "variants":{  
+      "normal":{  
+         "model":"cube"
+      },
+      "inventory":{  
+         "model":"cube"
+      }
+   }
+}

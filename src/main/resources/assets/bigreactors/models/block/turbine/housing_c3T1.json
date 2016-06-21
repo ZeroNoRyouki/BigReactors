@@ -1,0 +1,13 @@
+{
+    "__comment": "Model file for three adjacent connected sides in a T shape (rotated per state, default connected on the 'up/down/west' facing)",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "bigreactors:blocks/tile.multiblockGlass.turbine.0",
+        "down": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"up": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"north": "bigreactors:blocks/tile.multiblockGlass.turbine.11",
+		"south": "bigreactors:blocks/tile.multiblockGlass.turbine.7",
+		"west": "bigreactors:blocks/tile.multiblockGlass.turbine.15",
+		"east": "bigreactors:blocks/tile.multiblockGlass.turbine.3"
+    }
+}

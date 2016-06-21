@@ -1,0 +1,29 @@
+{  
+    "forge_marker":1,
+    "defaults":{  
+        "model":"cube",
+        "textures":{  
+            "side":"bigreactors:blocks/tile.blockReactorPart",
+            "particle":"bigreactors:blocks/tile.blockReactorPart.controlRod.top",
+            "down":"bigreactors:blocks/tile.blockReactorPart",
+            "up":"bigreactors:blocks/tile.blockReactorPart.controlRod.top",
+            "north":"bigreactors:blocks/tile.blockReactorPart",
+            "south":"bigreactors:blocks/tile.blockReactorPart",
+            "west":"bigreactors:blocks/tile.blockReactorPart",
+            "east":"bigreactors:blocks/tile.blockReactorPart"
+        },
+        "transform":"forge:default-block"
+    },
+    "variants":{  
+        "normal":[  
+            {  
+
+            }
+        ],
+        "inventory":[  
+            {  
+
+            }
+        ]
+    }
+}

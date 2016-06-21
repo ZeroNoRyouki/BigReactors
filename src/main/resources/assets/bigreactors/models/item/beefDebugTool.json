@@ -1,0 +1,6 @@
+{  
+   "parent":"bigreactors:item/itemBase",
+   "textures":{  
+      "layer0":"bigreactors:items/beefDebugTool"
+   }
+}
