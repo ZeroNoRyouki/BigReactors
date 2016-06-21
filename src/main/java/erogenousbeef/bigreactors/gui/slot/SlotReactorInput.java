@@ -4,14 +4,16 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import erogenousbeef.bigreactors.api.registry.Reactants;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class SlotReactorInput extends Slot {
+public class SlotReactorInput extends /*Slot*/SlotItemHandler {
 
 	boolean fuel = true;
 	
-	public SlotReactorInput(IInventory par1iInventory, int par2, int par3,
-			int par4, boolean fuel) {
-		super(par1iInventory, par2, par3, par4);
+	public SlotReactorInput(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean fuel) {
+
+		super(itemHandler, index, xPosition, yPosition);
 		this.fuel = fuel;
 	}
 

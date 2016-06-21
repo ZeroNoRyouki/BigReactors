@@ -1,5 +1,7 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.common.BigReactors;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
@@ -31,7 +33,13 @@ public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 	}
 
 	@Override
-	protected String getBackgroundTexture() { return "controls/RpmBar.png"; }
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == s_bgTexture)
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/RpmBar.png");
+
+		return s_bgTexture;
+	}
 	
 	@Override
 	public String[] getTooltip() {
@@ -52,4 +60,5 @@ public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 		return Math.min(1f, turbine.getRotorSpeed() / (turbine.getMaxRotorSpeed()*1.1f)); // Give a little extra warning
 	}
 
+	private static ResourceLocation s_bgTexture;
 }

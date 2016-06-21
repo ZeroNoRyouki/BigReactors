@@ -8,24 +8,32 @@ import net.minecraft.item.ItemStack;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import erogenousbeef.bigreactors.gui.slot.SlotReactorInput;
 import erogenousbeef.bigreactors.gui.slot.SlotRemoveOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 public class ContainerReactorAccessPort extends Container {
 
 	protected TileEntityReactorAccessPort _port;
+	protected IItemHandler _itemHandler;
 	
 	public ContainerReactorAccessPort(TileEntityReactorAccessPort port, InventoryPlayer inv) {
 		super();
-		_port = port;
+		this._port = port;
+		this._itemHandler = null;
 		addSlots();
 		addPlayerInventory(inv);
 	}
 
 	protected void addSlots() {
+
+		IItemHandler handler = this._itemHandler = this._port.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
 		// Input Slot
-		addSlotToContainer(new SlotReactorInput(_port, 0, 44, 18, true));
-	
+		addSlotToContainer(new SlotReactorInput(handler, 0, 44, 18, true));
+
 		// Output Slot
-		addSlotToContainer(new SlotRemoveOnly(_port, 1, 116, 18));
+		addSlotToContainer(new SlotRemoveOnly(handler, 1, 116, 18));
 	}
 	
 	protected int getPlayerInventoryVerticalOffset()
@@ -50,8 +58,7 @@ public class ContainerReactorAccessPort extends Container {
 	}	
 	
 	@Override
-	public boolean canInteractWith(EntityPlayer player)
-	{
+	public boolean canInteractWith(EntityPlayer player)	{
 		return _port.isUseableByPlayer(player);
 	}
 	
@@ -60,7 +67,7 @@ public class ContainerReactorAccessPort extends Container {
 	{
 		ItemStack stack = null;
 		Slot slotObject = (Slot) inventorySlots.get(slot);
-		int numSlots = _port.getSizeInventory();
+		int numSlots = this._itemHandler.getSlots();
 
 		if(slotObject != null && slotObject.getHasStack())
 		{
@@ -106,7 +113,8 @@ public class ContainerReactorAccessPort extends Container {
 	{
 		boolean successful = false;
 		int slotIndex = slotStart;
-		int maxStack = Math.min(stack.getMaxStackSize(), _port.getInventoryStackLimit());
+		//int maxStack = Math.min(stack.getMaxStackSize(), _port.getInventoryStackLimit());
+		int maxStack = stack.getMaxStackSize();
 
 		if(reverse)
 		{

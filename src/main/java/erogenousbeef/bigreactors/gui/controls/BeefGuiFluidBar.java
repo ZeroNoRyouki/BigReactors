@@ -1,6 +1,9 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.common.BigReactors;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -22,23 +25,28 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 		this.tankIdx = tankIdx;
 	}
 
-	// TODO icon texture
 	@Override
-	// TODO Commented out IIcon stuff
-	protected /*IIcon*/Object getProgressBarIcon() {
+	protected ResourceLocation getProgressBarIcon() {
+
 		FluidTankInfo[] tanks = this._entity.getTankInfo();
-		if(tanks != null && tankIdx < tanks.length) {
-			if(tanks[tankIdx].fluid != null) {
-				// TODO Commented out IIcon stuff
-				//return tanks[tankIdx].fluid.getFluid().getIcon();
-				return null;
-			}
-		}
-		return null;
+		FluidStack stack = null != tanks && tankIdx < tanks.length ? tanks[tankIdx].fluid : null;
+		Fluid fluid = null != stack ? stack.getFluid() : null;
+
+		return null != fluid ? fluid.getStill(stack) : null;
 	}
-	
+
+	@Override
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == s_bgTexture)
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/FluidTank.png");
+
+		return s_bgTexture;
+	}
+
 	@Override
 	protected float getProgress() {
+
 		FluidTankInfo[] tanks = this._entity.getTankInfo();
 		if(tanks != null && tankIdx < tanks.length) {
 			FluidStack tankFluid = tanks[tankIdx].fluid;
@@ -81,4 +89,6 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 	
 	@Override
 	protected boolean drawGradationMarks() { return true; }
+
+	private static ResourceLocation s_bgTexture;
 }

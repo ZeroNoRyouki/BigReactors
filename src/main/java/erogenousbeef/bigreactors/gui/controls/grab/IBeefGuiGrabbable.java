@@ -1,8 +1,10 @@
 package erogenousbeef.bigreactors.gui.controls.grab;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ResourceLocation;
+
 public interface IBeefGuiGrabbable {
 
-	// TODO Commented out IIcon stuff
-	public /*IIcon*/Object getIcon();
+	public ResourceLocation getIcon();
 	public String getName();
 }

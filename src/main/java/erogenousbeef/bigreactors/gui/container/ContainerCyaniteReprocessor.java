@@ -22,11 +22,14 @@ public class ContainerCyaniteReprocessor extends Container {
 	}
 
 	protected void addSlots() {
+		// TODO comment out to allow compilation
+		/*
 		// Input Slot
 		addSlotToContainer(new SlotReactorInput(_entity, 0, 44, 41, false));
 	
 		// Output Slot
 		addSlotToContainer(new SlotRemoveOnly(_entity, 1, 116, 41));
+		*/
 	}
 	
 	protected int getPlayerInventoryVerticalOffset()
