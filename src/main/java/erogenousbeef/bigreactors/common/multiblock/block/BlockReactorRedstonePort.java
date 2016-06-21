@@ -2,9 +2,12 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import java.util.Random;
 
+import erogenousbeef.bigreactors.common.multiblock.PartType;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,27 +35,23 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorR
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")	
 })
 */
-public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNode */ {
+public class BlockReactorRedstonePort extends BlockPart /* implements IRedNetOmniNode */ {
 
 	// TODO blockstate
 	//protected IIcon blockIconLit;
-	
+	// TODO remove
 	public static final int META_REDSTONE_LIT = 1;
 	public static final int META_REDSTONE_UNLIT = 0;
-	
+
 	protected final static int REDSTONE_VALUE_OFF = 0;  // corresponds to no power
 	protected final static int REDSTONE_VALUE_ON  = 15; // corresponds to strong power
 	
-	public BlockReactorRedstonePort(Material material) {
-		super(material);
-		
-		setStepSound(SoundType.METAL);
-		setHardness(2.0f);
-        //setRegistryName("blockReactorRedstonePort");
-        setUnlocalizedName("blockReactorRedstonePort");
-		// TODO textures
-        //this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName());
-		setCreativeTab(BigReactors.TAB);
+	public BlockReactorRedstonePort(String blockName) {
+
+		super(PartType.ReactorRedstonePort, blockName, Material.iron);
+		this.setDefaultState(
+				this.blockState.getBaseState().withProperty(BlockReactorRedstonePort.LIT, false)
+		);
 	}
 
 	@Override
@@ -151,7 +150,6 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
 
     @Override
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-    	super.onNeighborBlockChange(world, pos, state, neighborBlock);
 
     	TileEntity te = world.getTileEntity(pos);
     	if(te instanceof TileEntityReactorRedstonePort) {
@@ -238,8 +236,12 @@ public class BlockReactorRedstonePort extends Block /* implements IRedNetOmniNod
 	}
 	*/
 
-    @Override
-    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
-        return false;
-    }
+	@Override
+	protected void buildBlockState(BlockStateContainer.Builder builder) {
+
+		super.buildBlockState(builder);
+		builder.add(BlockReactorRedstonePort.LIT);
+	}
+
+	public static final PropertyBool LIT = PropertyBool.create("lit");
 }

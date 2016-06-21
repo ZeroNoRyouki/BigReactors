@@ -1,17 +1,21 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.block.BlockBR;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFuelRod extends Block {
+public class BlockFuelRod extends BlockBR {
 
 	public static int renderId;
 
@@ -23,16 +27,11 @@ public class BlockFuelRod extends Block {
 	private IIcon iconFuelRodTopBottom;
 	*/
 
-	public BlockFuelRod(Material material) {
-		super(material);
-		
-		setHardness(2f);
-		setLightLevel(0.9f);
-		setLightOpacity(1);
-		setCreativeTab(BigReactors.TAB);
-		setUnlocalizedName("yelloriumFuelRod");
-		// TODO blockstate
-		//setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "yelloriumFuelRod");
+	public BlockFuelRod(String blockName) {
+
+		super(blockName, Material.iron);
+		this.setLightLevel(0.9f);
+		this.setLightOpacity(1);
 	}
 
 	// TODO blockstate
@@ -70,6 +69,17 @@ public class BlockFuelRod extends Block {
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
 	}
 
 	/**
