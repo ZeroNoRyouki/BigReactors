@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import erogenousbeef.bigreactors.common.BRConfig;
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,13 +17,6 @@ import zero.mods.zerocore.lib.MetalSize;
 import zero.mods.zerocore.lib.client.ICustomModelsProvider;
 
 public class ItemBRMetal extends ItemBase implements ICustomModelsProvider {
-	/*
-	public static final String[] TYPES = { "ingotYellorium", "ingotCyanite", "ingotGraphite", "ingotBlutonium",
-											"dustYellorium", "dustCyanite", "dustGraphite", "dustBlutonium",
-											"ingotLudicrite", "dustLudicrite" };
-
-	public static final String[] MATERIALS = { "Yellorium", "Cyanite", "Graphite", "Blutonium", "Ludicrite" };
-	*/
 
 	public ItemBRMetal(String itemName, MetalSize size) {
 
@@ -58,8 +47,10 @@ public class ItemBRMetal extends ItemBase implements ICustomModelsProvider {
 
 		if (registerYelloriumAsUranium) {
 
-			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Uranium", this.createItemStack(MetalType.Yellorium, 1));
-			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Plutonium", this.createItemStack(MetalType.Yellorium, 1));
+			ItemStack yellorium = this.createItemStack(MetalType.Yellorium, 1);
+			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Uranium", yellorium);
+
+			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Plutonium", yellorium);
 		}
 
 		BRConfig.CONFIGURATION.save();

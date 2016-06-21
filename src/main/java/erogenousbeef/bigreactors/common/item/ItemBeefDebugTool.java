@@ -28,9 +28,10 @@ import net.minecraft.world.World;
 
 public class ItemBeefDebugTool extends ItemBase {
 
-	public ItemBeefDebugTool() {
-		super("beefDebugTool");
-		setMaxStackSize(1);
+	public ItemBeefDebugTool(String itemName) {
+
+		super(itemName);
+		this.setMaxStackSize(1);
 	}
 
 	@Override

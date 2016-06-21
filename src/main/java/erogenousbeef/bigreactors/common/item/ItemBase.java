@@ -1,60 +1,36 @@
 package erogenousbeef.bigreactors.common.item;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.BigReactors;
 
 public class ItemBase extends Item {
-	// TODO textures
-	//protected IIcon[] icons;
 
-	public ItemBase(String name)
-	{
-		super();
-		this.setUnlocalizedName(name);
+	public ItemBase(String itemName) {
+
+		this.setRegistryName(itemName);
+		this.setUnlocalizedName(this.getRegistryName().toString());
 		this.setCreativeTab(BigReactors.TAB);
-		// TODO textures
-		//icons = new IIcon[getNumberOfSubItems()];
 	}
 
-	protected int getNumberOfSubItems() {
-		return 0;
+	public ItemStack createItemStack() {
+
+		return this.createItemStack(1, 0);
 	}
-	
-	protected String[] getSubItemNames() {
-		return null;
+	public ItemStack createItemStack(int amount) {
+
+		return this.createItemStack(amount, 0);
 	}
 
-	// TODO textures
-	/*
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		String[] subItemNames = getSubItemNames();
-		if(subItemNames != null) {
-			for(int i = 0; i < subItemNames.length; i++) {
-				icons[i] = iconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + subItemNames[i]);
-			}
-		}
-		else
-		{
-			this.itemIcon = iconRegister.registerIcon(this.getUnlocalizedName().replace("item.", BigReactors.TEXTURE_NAME_PREFIX));
-		}
+	public ItemStack createItemStack(int amount, int meta) {
+
+		return new ItemStack(this, amount, meta);
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int damage)
-	{
-		if(icons.length > damage && !this.isDamageable()) {
-			return icons[damage];
-		}
-
-		return super.getIconFromDamage(damage);
+	public void onPostRegister() {
 	}
-	*/
 
 	@Override
 	public int getMetadata(int metadata) {
