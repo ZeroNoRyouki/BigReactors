@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.gui;
-
+/*
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -47,3 +47,4 @@ public class BigReactorsGUIHandler implements IGuiHandler {
 	}
 
 }
+*/
