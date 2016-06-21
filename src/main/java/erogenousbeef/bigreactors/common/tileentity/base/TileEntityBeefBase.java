@@ -31,13 +31,13 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	protected static final int SIDE_UNEXPOSED = -1;
 	protected static final int[] kEmptyIntArray = new int[0];
 
-	protected int facing;	// Tile rotation
+	protected EnumFacing facing;	// Tile rotation
 	int[] exposures; // Inventory/Fluid tank exposure
 
 	public TileEntityBeefBase() {
 		super();
 
-		facing = EnumFacing.NORTH.ordinal();
+		facing = EnumFacing.NORTH;
 
 		exposures = new int[6];
 		for(int i = 0; i < exposures.length; i++) {
@@ -50,13 +50,13 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 
 	// IReconfigurableFacing
 	@Override
-	public int getFacing() { return facing; }
+	public int getFacing() { return facing.getIndex(); }
 
 	@Override
-	public boolean setFacing(int newFacing) {
+	public boolean setFacing(EnumFacing newFacing) {
 		if(facing == newFacing) { return false; }
 
-		if(!allowYAxisFacing() && (newFacing == EnumFacing.UP.ordinal() || newFacing == EnumFacing.DOWN.ordinal())) {
+		if(!allowYAxisFacing() && (newFacing == EnumFacing.UP || newFacing == EnumFacing.DOWN)) {
 			return false;
 		}
 		
@@ -73,13 +73,13 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		return true;
 	}
 	
-	public int getRotatedSide(int side) {
-		return BlockHelper.ICON_ROTATION_MAP[facing][side];
+	public int getRotatedSide(EnumFacing side) {
+		return BlockHelper.ICON_ROTATION_MAP[facing.getIndex()][side.getIndex()];
 	}
 	
 	@Override
 	public boolean rotateBlock() {
-		return setFacing(BlockHelper.SIDE_LEFT[facing]);
+		return setFacing(EnumFacing.VALUES[BlockHelper.SIDE_LEFT[facing.getIndex()]]);
 	}
 	
 	@Override
@@ -95,12 +95,17 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	public void readFromNBT(NBTTagCompound tag) {
 		
 		// Rotation
+
+		int newFacing;
+
 		if(tag.hasKey("facing")) {
-			facing = Math.max(0, Math.min(5, tag.getInteger("facing")));
+			newFacing = Math.max(0, Math.min(5, tag.getInteger("facing")));
 		}
 		else {
-			facing = 2;
+			newFacing = 2;
 		}
+
+		this.facing = EnumFacing.VALUES[newFacing];
 
 		// Exposure settings
 		if(tag.hasKey("exposures")) {
@@ -113,7 +118,7 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		
-		tag.setInteger("facing", facing);
+		tag.setInteger("facing", facing.getIndex());
 		tag.setIntArray("exposures", exposures);
 	}
 
@@ -169,7 +174,7 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	
 	// Side Exposure Helpers
 	@Override
-	public boolean setSide(int side, int config) {
+	public boolean setSide(EnumFacing side, int config) {
 		int rotatedSide = this.getRotatedSide(side);
 
 		int numConfig = getNumConfig(side);
@@ -185,7 +190,7 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	 * @param worldSide The world side whose exposure you wish to get.
 	 * @return The current exposure setting for the world side.
 	 */
-	protected int getExposure(int worldSide) {
+	protected int getExposure(EnumFacing worldSide) {
 		return exposures[getRotatedSide(worldSide)];
 	}
 	
@@ -200,16 +205,16 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	}
 	
 	@Override
-	public boolean incrSide(int side) {
+	public boolean incrSide(EnumFacing side) {
 		return changeSide(side, 1);
 	}
 	
 	@Override
-	public boolean decrSide(int side) {
+	public boolean decrSide(EnumFacing side) {
 		return changeSide(side, -1);
 	}
 	
-	private boolean changeSide(int side, int amount) {
+	private boolean changeSide(EnumFacing side, int amount) {
 		int rotatedSide = this.getRotatedSide(side);
 		
 		int numConfig = getNumConfig(side);
