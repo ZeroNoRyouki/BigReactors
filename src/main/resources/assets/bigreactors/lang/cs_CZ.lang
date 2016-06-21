@@ -4,12 +4,12 @@
 itemGroup.BigReactors=Velké reaktory
 
 # Blocks
-tile.brOre.0.name=Yelloritová ruda
-tile.brMetal.0.name=Yelloritový blok
-tile.brMetal.1.name=Kyanitový blok
-tile.brMetal.2.name=Grafitový blok
-tile.brMetal.3.name=Blutóniový blok
-tile.brMetal.4.name=Ludikritový blok
+tile.bigreactors:brOre.yellorite.name=Yelloritová ruda
+tile.bigreactors:brMetalBlock.yellorium.name=Yelloritový blok
+tile.bigreactors:brMetalBlock.cyanite.name=Kyanitový blok
+tile.bigreactors:brMetalBlock.graphite.name=Grafitový blok
+tile.bigreactors:brMetalBlock.blutonium.name=Blutóniový blok
+tile.bigreactors:brMetalBlock.ludicrite.name=Ludikritový blok
 tile.yelloriumFuelRod.name=Yelloriová palivová tyč
 tile.brMultiblockGlass.0.name=Reaktorové sklo
 tile.brMultiblockGlass.1.name=Turbínové sklo

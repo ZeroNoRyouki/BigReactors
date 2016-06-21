@@ -4,12 +4,12 @@
 itemGroup.BigReactors=Store Reaktorer
 
 # Blocks
-tile.brOre.0.name=Uran
-tile.brMetal.0.name=Uran Blok
-tile.brMetal.1.name=Cyanite Blok
-tile.brMetal.2.name=Grafit Blok
-tile.brMetal.3.name=Plutonium Blok
-tile.brMetal.4.name=Ludicrite Blok
+tile.bigreactors:brOre.yellorite.name=Uran
+tile.bigreactors:brMetalBlock.yellorium.name=Uran Blok
+tile.bigreactors:brMetalBlock.cyanite.name=Cyanite Blok
+tile.bigreactors:brMetalBlock.graphite.name=Grafit Blok
+tile.bigreactors:brMetalBlock.blutonium.name=Plutonium Blok
+tile.bigreactors:brMetalBlock.ludicrite.name=Ludicrite Blok
 tile.yelloriumFuelRod.name=Uran Stang
 tile.brMultiblockGlass.0.name=Reaktor Glas
 tile.brMultiblockGlass.1.name=Turbine Glas

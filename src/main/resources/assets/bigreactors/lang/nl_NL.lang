@@ -4,12 +4,12 @@
 itemGroup.BigReactors=Big Reactors
 
 # Blocks
-tile.brOre.0.name=Geeliet Erts
-tile.brMetal.0.name=Gelium Blok
-tile.brMetal.1.name=Cyanide Blok
-tile.brMetal.2.name=Grafeen Blok
-tile.brMetal.3.name=Blautonium Blok
-tile.brMetal.4.name=Ludicrite Blok
+tile.bigreactors:brOre.yellorite.name=Geeliet Erts
+tile.bigreactors:brMetalBlock.yellorium.name=Gelium Blok
+tile.bigreactors:brMetalBlock.cyanite.name=Cyanide Blok
+tile.bigreactors:brMetalBlock.graphite.name=Grafeen Blok
+tile.bigreactors:brMetalBlock.blutonium.name=Blautonium Blok
+tile.bigreactors:brMetalBlock.ludicrite.name=Ludicrite Blok
 tile.yelloriumFuelRod.name=Gelium Brandstofstaaf
 tile.brMultiblockGlass.0.name=Reactorglas
 tile.brMultiblockGlass.1.name=Turbineglas

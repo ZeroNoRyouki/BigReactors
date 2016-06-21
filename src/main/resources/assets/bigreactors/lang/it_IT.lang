@@ -4,12 +4,12 @@
 itemGroup.BigReactors=Big Reactors
 
 # Blocks
-tile.brOre.0.name=Yellorite Grezzo
-tile.brMetal.0.name=Blocco di Yellorium
-tile.brMetal.1.name=Blocco di Cianite
-tile.brMetal.2.name=Blocco di Grafite
-tile.brMetal.3.name=Blocco di Blutonium
-tile.brMetal.4.name=Blocco di Ludicrite
+tile.bigreactors:brOre.yellorite.name=Yellorite Grezzo
+tile.bigreactors:brMetalBlock.yellorium.name=Blocco di Yellorium
+tile.bigreactors:brMetalBlock.cyanite.name=Blocco di Cianite
+tile.bigreactors:brMetalBlock.graphite.name=Blocco di Grafite
+tile.bigreactors:brMetalBlock.blutonium.name=Blocco di Blutonium
+tile.bigreactors:brMetalBlock.ludicrite.name=Blocco di Ludicrite
 tile.yelloriumFuelRod.name=Asta del Nocciolo del Reattore
 tile.brMultiblockGlass.0.name=Vetro per Reattore
 tile.brMultiblockGlass.1.name=Vetro per Turbina

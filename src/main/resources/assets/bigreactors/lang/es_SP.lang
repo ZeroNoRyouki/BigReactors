@@ -4,12 +4,12 @@
 itemGroup.BigReactors=Grandes Reactores
 
 # Blocks
-tile.brOre.0.name=Mena de Yelorio
-tile.brMetal.0.name=Bloque de Yelorio
-tile.brMetal.1.name=Bloque de Cyanite
-tile.brMetal.2.name=Bloque de Grafito
-tile.brMetal.3.name=Bloque de Blutonio
-tile.brMetal.4.name=Bloque de Ludicrio
+tile.bigreactors:brOre.yellorite.name=Mena de Yelorio
+tile.bigreactors:brMetalBlock.yellorium.name=Bloque de Yelorio
+tile.bigreactors:brMetalBlock.cyanite.name=Bloque de Cyanite
+tile.bigreactors:brMetalBlock.graphite.name=Bloque de Grafito
+tile.bigreactors:brMetalBlock.blutonium.name=Bloque de Blutonio
+tile.bigreactors:brMetalBlock.ludicrite.name=Bloque de Ludicrio
 tile.yelloriumFuelRod.name=Barra de Combustible de Yelorio
 tile.brMultiblockGlass.0.name=Cristal del Reactor
 tile.brMultiblockGlass.1.name=Cristal de la Turbine

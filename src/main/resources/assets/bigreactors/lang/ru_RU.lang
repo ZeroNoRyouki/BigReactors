@@ -4,12 +4,12 @@
 itemGroup.BigReactors=Big Reactors
 
 # Blocks
-tile.brOre.0.name=Йелоритовая руда
-tile.brMetal.0.name=Йеллориумовый блок
-tile.brMetal.1.name=Цианитовый блок
-tile.brMetal.2.name=Графитовый блок
-tile.brMetal.3.name=Блутониевый блок
-tile.brMetal.4.name=Лудикритовый блок
+tile.bigreactors:brOre.yellorite.name=Йелоритовая руда
+tile.bigreactors:brMetalBlock.yellorium.name=Йеллориумовый блок
+tile.bigreactors:brMetalBlock.cyanite.name=Цианитовый блок
+tile.bigreactors:brMetalBlock.graphite.name=Графитовый блок
+tile.bigreactors:brMetalBlock.blutonium.name=Блутониевый блок
+tile.bigreactors:brMetalBlock.ludicrite.name=Лудикритовый блок
 tile.yelloriumFuelRod.name=Йеллориумовый топливный стержень
 tile.brMultiblockGlass.0.name=Реакторное стекло
 tile.brMultiblockGlass.1.name=Турбинное стекло

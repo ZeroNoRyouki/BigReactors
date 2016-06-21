@@ -1,30 +1,30 @@
 # Big Reactors Language File - English
 # @author Erogenous Beef
 
-itemGroup.BigReactors=Big Reactors
+itemGroup.bigreactors=Big Reactors
 
 # Blocks
-tile.brOre.0.name=Yellorite Ore
-tile.brMetal.0.name=Yellorium Block
-tile.brMetal.1.name=Cyanite Block
-tile.brMetal.2.name=Graphite Block
-tile.brMetal.3.name=Blutonium Block
-tile.brMetal.4.name=Ludicrite Block
+tile.bigreactors:brOre.yellorite.name=Yellorite Ore
+tile.bigreactors:brMetalBlock.yellorium.name=Yellorium Block
+tile.bigreactors:brMetalBlock.cyanite.name=Cyanite Block
+tile.bigreactors:brMetalBlock.graphite.name=Graphite Block
+tile.bigreactors:brMetalBlock.blutonium.name=Blutonium Block
+tile.bigreactors:brMetalBlock.ludicrite.name=Ludicrite Block
 tile.yelloriumFuelRod.name=Yellorium Fuel Rod
-tile.brMultiblockGlass.0.name=Reactor Glass
+tile.bigreactors:reactorGlass.name=Reactor Glass
 tile.brMultiblockGlass.1.name=Turbine Glass
-tile.blockReactorRedstonePort.name=Reactor Redstone Port
-tile.blockReactorPart.0.name=Reactor Casing
-tile.blockReactorPart.1.name=Reactor Controller
-tile.blockReactorPart.2.name=Reactor Control Rod
-tile.blockReactorPart.3.name=Reactor Power Tap
-tile.blockReactorPart.4.name=Reactor Access Port
-tile.blockReactorPart.6.name=Reactor RedNet Port
-tile.blockReactorPart.7.name=Reactor Computer Port
-tile.blockReactorPart.5.name=Reactor Coolant Port
+tile.bigreactors:reactorRedstonePort.name=Reactor Redstone Port
+tile.bigreactors:reactorCasing.name=Reactor Casing
+tile.bigreactors:reactorController.name=Reactor Controller
+tile.bigreactors:reactorControlRod.name=Reactor Control Rod
+tile.bigreactors:reactorPowerTap.name=Reactor Power Tap
+tile.bigreactors:reactorAccessPort.name=Reactor Access Port
+tile.bigreactors:reactorRedNetPort.name=Reactor RedNet Port
+tile.bigreactors:reactorComputerPort.name=Reactor Computer Port
+tile.bigreactors:reactorCoolantPort.name=Reactor Coolant Port
 tile.blockRadiothermalGen.0=Radiothermal Generator
 tile.blockBRDevice.0.name=Cyanite Reprocesssor
-tile.blockTurbinePart.0.name=Turbine Housing
+tile.bigreactors:turbineHousing.name=Turbine Housing
 tile.blockTurbinePart.1.name=Turbine Controller
 tile.blockTurbinePart.2.name=Turbine Power Port
 tile.blockTurbinePart.3.name=Turbine Fluid Port
@@ -64,6 +64,9 @@ tile.fluid.cyanite.still.name=Fluid Cyanite
 tile.fluid.blutonium.still.name=Fluid Blutonium
 
 # 1.9 stuff from there one ...
+
+# Error messages
+multiblock.validation.block_not_connected=Block is not connected to a reactor. This could be due to lag, or a bug. If the problem persists, try breaking and re-placing the block
 
 # Multiblock validation errors (reactors)
 multiblock.validation.reactor.invalid_fuelrod_position=%1$d, %2$d, %3$d - fuel rods may only be placed in the reactor interior
