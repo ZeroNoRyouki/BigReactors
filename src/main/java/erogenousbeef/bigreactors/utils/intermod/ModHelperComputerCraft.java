@@ -11,8 +11,8 @@ public class ModHelperComputerCraft extends ModHelperBase {
 	@Optional.Method(modid = "ComputerCraft")
 	@Override
 	public void register() {
-		ComputerCraftAPI.registerPeripheralProvider(BigReactors.blockReactorPart);
-		ComputerCraftAPI.registerPeripheralProvider(BigReactors.blockTurbinePart);
+		ComputerCraftAPI.registerPeripheralProvider(BrBlocks.blockReactorPart);
+		ComputerCraftAPI.registerPeripheralProvider(BrBlocks.blockTurbinePart);
 	}
 }
 */
