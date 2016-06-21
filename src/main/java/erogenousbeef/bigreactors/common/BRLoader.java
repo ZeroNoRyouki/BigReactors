@@ -1,5 +1,7 @@
 package erogenousbeef.bigreactors.common;
 
+import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -43,15 +45,11 @@ public class BRLoader {
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		BigReactors.registerOres(0, true);
-		BigReactors.registerIngots(0);
-		BigReactors.registerFuelRods(0, true);
-		BigReactors.registerReactorPartBlocks(0, true);
-		BigReactors.registerTurbineParts();
-		BigReactors.registerDevices(0,  true);
-		BigReactors.registerFluids(0,  true);
-		BigReactors.registerCreativeParts(0, true);
-		BigReactors.registerItems();
 
+		BrItems.initialize();
+		BrBlocks.initialize();
+
+		BigReactors.registerFluids(0,  true);
 		StandardReactants.register();
 		
 		BigReactors.eventHandler = new BREventHandler();
