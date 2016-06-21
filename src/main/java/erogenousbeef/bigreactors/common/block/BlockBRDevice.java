@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cofh.api.block.IDismantleable;
+import erogenousbeef.bigreactors.common.multiblock.block.BlockMultiblockDevice;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import net.minecraft.block.material.Material;
@@ -34,126 +39,113 @@ import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
 import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import zero.mods.zerocore.lib.block.properties.Orientation;
 import zero.mods.zerocore.util.WorldHelper;
 
-public class BlockBRDevice extends Block implements IDismantleable {
+public class BlockBRDevice extends BlockBR implements IDismantleable {
 
 	public static final int META_CYANITE_REPROCESSOR = 0;
-	
+	/*
 	public static final String[] _subBlocks = {
 		"cyaniteReprocessor"
-	};
+	};*/
 
 	/* TODO blockstate
 	private IIcon[] _icons = new IIcon[_subBlocks.length];
 	private IIcon[] _activeIcons = new IIcon[_subBlocks.length];
 	*/
 	
-	public BlockBRDevice(Material material) {
-		super(material);
-		setStepSound(SoundType.METAL);
-		setHardness(1.0f);
-		setUnlocalizedName("blockBRDevice");
-		//TODO blockstate
-		//setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockBRDevice");
-		setCreativeTab(BigReactors.TAB);
+	public BlockBRDevice(DeviceType type, String blockName) {
+
+		super(blockName, Material.iron);
+		this._type = type;
+		this.setStepSound(SoundType.METAL);
+		this.setHardness(1.0f);
+		this.setDefaultState(
+				this.blockState.getBaseState()
+						.withProperty(BlockBRDevice.ACTIVE, false)
+						.withProperty(Orientation.HFACING, EnumFacing.NORTH)
+		);
 	}
 
-	// TODO blockstate?
-	//public static final int SIDE_FRONT = ForgeDirection.NORTH.ordinal();
-
-	/* TODO blockstate
-	private IIcon safeGetIcon(IIcon[] list, int idx, int x, int y, int z) {
-		if(idx < 0 || idx >= list.length) {
-			BRLog.warning("Invalid metadata (%d) for block at %d, %d, %d!", idx, x, y, z);
-			return blockIcon;
-		}
-		else {
-			return list[idx];
-		}
-	}
-	public IIcon getIconFromTileEntity(TileEntity te, int metadata, int side) {
-		if(metadata < 0) { return blockIcon; }
-
-		// Tracks the actual index of the current side, after rotation
-		int front = -1;
-
-		if(te instanceof IReconfigurableFacing) {
-			IReconfigurableFacing teFacing = (IReconfigurableFacing)te;
-			front = teFacing.getFacing();
-		}
-		
-		if(side == front) {
-			if(te instanceof TileEntityBeefBase) {
-				TileEntityBeefBase beefTe = (TileEntityBeefBase)te;
-				if(beefTe.isActive()) {
-					return safeGetIcon(_activeIcons, metadata, te.xCoord, te.yCoord, te.zCoord);
-				}
-			}
-			return safeGetIcon(_icons, metadata, te.xCoord, te.yCoord, te.zCoord);
-		}
-		
-		if(te instanceof IBeefReconfigurableSides) {
-			IBeefReconfigurableSides teSides = (IBeefReconfigurableSides)te;
-			return teSides.getIconForSide(side);
-		}
-
-		return blockIcon;
-	}
-	
 	@Override
-	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side)
-	{
-		TileEntity te = blockAccess.getTileEntity(x, y, z);
-		int metadata = blockAccess.getBlockMetadata(x, y, z);
-		return this.getIconFromTileEntity(te, metadata, side);
+	public void onPostRegister() {
+
+		super.onPostRegister();
+
+		String name = this._type.oreDictionaryName;
+
+		if (name.length() > 0)
+			OreDictionary.registerOre(name, this.createItemStack());
 	}
-	
+
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
 	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		// This is used when rendering in-inventory. 4 == front here.
-		if(side == 4) {
-			return _icons[metadata];
-		}
-		return this.blockIcon;
+	public IBlockState getStateFromMeta(int meta) {
+
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+		if (EnumFacing.Axis.Y == enumfacing.getAxis())
+			enumfacing = EnumFacing.NORTH;
+
+		return this.getDefaultState().withProperty(Orientation.HFACING, enumfacing);
 	}
-	
+
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.blockIcon = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName());
-		
-		for(int i = 0; i < _subBlocks.length; ++i) {
-			_icons[i] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + "." + _subBlocks[i]);
-			_activeIcons[i] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + "." + _subBlocks[i] + ".active");
-		}
+	public int getMetaFromState(IBlockState state) {
+
+		return (state.getValue(Orientation.HFACING)).getIndex();
 	}
-	*/
+
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos position) {
+
+		TileEntity te = world.getTileEntity(position);
+
+		if (te instanceof TileEntityBeefBase)
+			state = state.withProperty(ACTIVE, ((TileEntityBeefBase)te).isActive());
+
+		return state;
+	}
+
+	/**
+	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
+	 * IBlockstate
+	 */
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
+									 int meta, EntityLivingBase placer) {
+
+		facing = (null != placer) ? placer.getHorizontalFacing().getOpposite() : EnumFacing.NORTH;
+
+		return this.getDefaultState().withProperty(Orientation.HFACING, facing);
+	}
+
+	@Override
+	public void onBlockAdded(World world, BlockPos position, IBlockState state) {
+
+		EnumFacing newFacing = Orientation.suggestDefaultHorizontalFacing(world, position,
+				state.getValue(Orientation.HFACING));
+
+		world.setBlockState(position, state.withProperty(Orientation.HFACING, newFacing), 2);
+	}
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		// TODO blockstate
-		return null;
-		/*
-		switch(metadata) {
-		case META_CYANITE_REPROCESSOR:
-			return new TileEntityCyaniteReprocessor();
-		default:
-			throw new IllegalArgumentException("Unknown metadata for tile entity");
-		}
-		*/
-	}
 
-	public ItemStack getCyaniteReprocessorItemStack() {
-		return new ItemStack(this, 1, META_CYANITE_REPROCESSOR);
-	}
-	
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(this.getCyaniteReprocessorItemStack());
+		switch (this._type) {
+
+			case CyaniteReprocessor:
+				return new TileEntityCyaniteReprocessor();
+
+			default:
+				throw new IllegalArgumentException("Unknown device type for tile entity");
+		}
 	}
 
 	@Override
@@ -168,7 +160,7 @@ public class BlockBRDevice extends Block implements IDismantleable {
 			// Wrench + Sneak = Dismantle
 			if(StaticUtils.Inventory.isPlayerHoldingWrench(entityPlayer)) {
 				// Pass simulate == true on the client to prevent creation of "ghost" item stacks
-				dismantleBlock(entityPlayer, world, pos.getX(), pos.getY(), pos.getZ(), false);
+				dismantleBlock(entityPlayer, world, pos, false);
 				return true;
 			}
 
@@ -213,15 +205,14 @@ public class BlockBRDevice extends Block implements IDismantleable {
 	// IDismantleable
 
 	@Override
-	public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
+	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos position, boolean returnDrops) {
 
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
-		BlockPos position = new BlockPos(x, y, z);
 		IBlockState blockState = world.getBlockState(position);
 
 		stacks.add(new ItemStack(getItemDropped(blockState, world.rand, 0), 1, damageDropped(blockState)));
@@ -244,6 +235,9 @@ public class BlockBRDevice extends Block implements IDismantleable {
 		world.setBlockToAir(position);
 
 		if(!returnDrops) {
+
+			int x = position.getX(), y = position.getY(), z = position.getZ();
+
 			for(ItemStack stack: stacks) {
 				WorldHelper.spawnItemStack(stack, world, x, y, z, true);
 			}
@@ -251,4 +245,16 @@ public class BlockBRDevice extends Block implements IDismantleable {
 
 		return stacks;
 	}
+
+	@Override
+	protected void buildBlockState(BlockStateContainer.Builder builder) {
+
+		super.buildBlockState(builder);
+		builder.add(BlockBRDevice.ACTIVE);
+		builder.add(Orientation.HFACING);
+	}
+
+	private static final PropertyBool ACTIVE = PropertyBool.create("active");
+
+	private DeviceType _type;
 }
