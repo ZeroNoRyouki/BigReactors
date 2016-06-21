@@ -2,39 +2,67 @@ package erogenousbeef.bigreactors.common;
 
 import java.util.Calendar;
 
+import erogenousbeef.bigreactors.common.block.BlockBR;
+import erogenousbeef.bigreactors.common.item.ItemBRMetal;
+import erogenousbeef.bigreactors.common.item.ItemBase;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
 //import cofh.api.modhelpers.ThermalExpansionHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.item.ItemIngot;
-import erogenousbeef.bigreactors.gui.BigReactorsGUIHandler;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 //import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
 import zero.mods.zerocore.api.multiblock.MultiblockServerTickHandler;
+import zero.mods.zerocore.lib.gui.ModGuiHandler;
 
 public class CommonProxy {
+
+	public BlockBR register(BlockBR block) {
+
+		GameRegistry.register(block);
+		block.onPostRegister();
+		return block;
+	}
+
+	public ItemBase register(ItemBase item) {
+
+		GameRegistry.register(item);
+		item.onPostRegister();
+		return item;
+	}
+
+	public void register(Class<? extends TileEntity> tileEntityClass) {
+
+		GameRegistry.registerTileEntity(tileEntityClass, BigReactors.MODID + tileEntityClass.getSimpleName());
+	}
 
 	public void preInit() {
 	}
 
 	public void init() {
-		BigReactors.registerTileEntities();
+		//BigReactors.registerTileEntities();
 		
 		CommonPacketHandler.init();
 
-		NetworkRegistry.INSTANCE.registerGuiHandler(BRLoader.instance, new BigReactorsGUIHandler());
+		//NetworkRegistry.INSTANCE.registerGuiHandler(BRLoader.instance, new BigReactorsGUIHandler());
+		new ModGuiHandler(BRLoader.instance);
+
+
 		BigReactors.tickHandler = new BigReactorsTickHandler();
 		FMLCommonHandler.instance().bus().register(BigReactors.tickHandler);
         FMLCommonHandler.instance().bus().register(new MultiblockServerTickHandler());
@@ -47,68 +75,57 @@ public class CommonProxy {
 	}
 
 	private void sendInterModAPIMessages() {
-		ItemIngot ingotGeneric = BigReactors.ingotGeneric;
-		ItemStack yelloriteOre 	= new ItemStack(BigReactors.blockYelloriteOre, 1);
 
-		final int YELLORIUM = 0;
+		ItemStack yelloriteOre = new ItemStack(BrBlocks.brOre, 1);
+
+		MetalType[] metals = MetalType.values();
+		int length = metals.length;
+		ItemStack[] ingots = new ItemStack[length];
+		ItemStack[] dusts = new ItemStack[length];
 		
-		String[] names = ItemIngot.MATERIALS;
-		ItemStack[] ingots = new ItemStack[names.length];
-		ItemStack[] dusts = new ItemStack[names.length];
-		
-		for(int i = 0; i < names.length; i++) {
-			ingots[i] = ingotGeneric.getIngotItem(names[i]);
-			dusts[i] = ingotGeneric.getDustItem(names[i]);
-		}
-		
-		ItemStack doubledYelloriumDust = null;
-		if(dusts[YELLORIUM] != null) {
-			doubledYelloriumDust = dusts[YELLORIUM].copy();
-			doubledYelloriumDust.stackSize = 2;
+		for(int i = 0; i < length; ++i) {
+
+			ingots[i] = BrItems.ingotMetals.createItemStack(metals[i], 1);
+			dusts[i] = BrItems.dustMetals.createItemStack(metals[i], 1);
 		}
 
+		ItemStack doubledYelloriumDust = BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2);
+
+		// TODO disabled as there is no ThermalExpansion for 1.9.x
+		/*
 		if(Loader.isModLoaded("ThermalExpansion")) {
+
 			ItemStack sandStack = new ItemStack(Blocks.sand, 1);
-			ItemStack doubleYellorium = ingots[YELLORIUM].copy();
-			doubleYellorium.stackSize = 2;
+			ItemStack doubleYelloriumIngots = BrItems.ingotMetals.createItemStack(MetalType.Yellorium, 2);
 
 			// TODO: Remove ThermalExpansionHelper once addSmelterRecipe and addPulverizerRecipe aren't broken
 			if(ingots[YELLORIUM] != null) {
-				// TODO Commented temporarily to allow this thing to compile...
-				/*
-				ThermalExpansionHelper.addFurnaceRecipe(400, yelloriteOre, ingots[YELLORIUM]);
-				ThermalExpansionHelper.addSmelterRecipe(1600, yelloriteOre, sandStack, doubleYellorium);
-				*/
+
+				ThermalExpansionHelper.addFurnaceRecipe(400, yelloriteOre, ingots[yelloriumIndex]);
+				ThermalExpansionHelper.addSmelterRecipe(1600, yelloriteOre, sandStack, doubleYelloriumIngots);
 			}
 
 			if(doubledYelloriumDust != null) {
-				// TODO Commented temporarily to allow this thing to compile...
-				/*
+
 				ThermalExpansionHelper.addPulverizerRecipe(4000, yelloriteOre, doubledYelloriumDust);
-				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYellorium);
-				*/
+				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYelloriumIngots);
 			}
 
 			for(int i = 0; i < ingots.length; i++) {
 				if(ingots[i] == null || dusts[i] == null) { continue; }
 
-				// TODO Commented temporarily to allow this thing to compile...
-				/*
 				ThermalExpansionHelper.addPulverizerRecipe(2400, ingots[i], dusts[i]);
 				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYellorium);
-				*/
 
 				ItemStack doubleDust = dusts[i].copy();
 				doubleDust.stackSize = 2;
 				ItemStack doubleIngot = ingots[i].copy();
 				doubleIngot.stackSize = 2;
 
-				// TODO Commented temporarily to allow this thing to compile...
-				/*
 				ThermalExpansionHelper.addSmelterRecipe(200, doubleDust, sandStack, doubleIngot);
-				*/
 			}
 		} // END: IsModLoaded - ThermalExpansion
+		*/
 		
 		if(Loader.isModLoaded("MineFactoryReloaded")) {
 			// Add yellorite to yellow focus list.
