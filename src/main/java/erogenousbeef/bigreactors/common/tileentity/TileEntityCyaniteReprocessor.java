@@ -200,7 +200,7 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	*/
 	
 	@Override
-	public int getNumConfig(int side) {
+	public int getNumConfig(EnumFacing side) {
 		if(facing == side) {
 			return 0;
 		}
@@ -211,14 +211,14 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 
 	@Override
 	public int getExposedTankFromSide(int side) {
-		int exposure = getExposure(side);
+		int exposure = getExposure(EnumFacing.VALUES[side]);
 		if(exposure == 2) { return FLUIDTANK_WATER; }
 		return FLUIDTANK_NONE;
 	}
 
 	@Override
 	protected int getExposedInventorySlotFromSide(int side) {
-		int exposure = getExposure(side);
+		int exposure = getExposure(EnumFacing.VALUES[side]);
 		if(exposure == 0) { return SLOT_INLET; }
 		if(exposure == 1) { return SLOT_OUTLET; }
 		return SLOT_NONE;
