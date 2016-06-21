@@ -64,6 +64,8 @@ public class GuiTurbineController extends BeefGuiBase {
 	private BeefGuiIcon inductorIcon;
 	private GuiIconButton btnInductorOn;
 	private GuiIconButton btnInductorOff;
+
+	private static ResourceLocation s_backGround;
 	
 	public GuiTurbineController(Container container, TileEntityTurbinePartBase part) {
 		super(container);
@@ -74,7 +76,11 @@ public class GuiTurbineController extends BeefGuiBase {
 
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation(BigReactors.GUI_DIRECTORY + "TurbineController.png");
+
+		if (null == GuiTurbineController.s_backGround)
+			GuiTurbineController.s_backGround = BigReactors.createResourceLocation("textures/gui/TurbineController.png");
+
+		return GuiTurbineController.s_backGround;
 	}
 	
 	// Add controls, etc.
@@ -88,18 +94,15 @@ public class GuiTurbineController extends BeefGuiBase {
 		titleString = new BeefGuiLabel(this, "Turbine Control", leftX, topY);
 		topY += titleString.getHeight() + 4;
 
-		// TODO Commented out IIcon stuff
-		speedIcon = new BeefGuiIcon(this, leftX + 1, topY, 16, 16, null/*ClientProxy.GuiIcons.getIcon("rpm")*/, new String[] { TextFormatting.AQUA + "Rotor Speed", "", "Speed of the rotor in", "revolutions per minute.", "", "Rotors perform best at 900", "or 1800 RPM.", "", "Speeds over 2000PM are overspeed", "and may cause a turbine to", "fail catastrophically." });
+		speedIcon = new BeefGuiIcon(this, leftX + 1, topY, 16, 16, ClientProxy.GuiIcons.getIcon("rpm"), new String[] { TextFormatting.AQUA + "Rotor Speed", "", "Speed of the rotor in", "revolutions per minute.", "", "Rotors perform best at 900", "or 1800 RPM.", "", "Speeds over 2000PM are overspeed", "and may cause a turbine to", "fail catastrophically." });
 		speedString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += speedIcon.getHeight() + 4;
 
-		// TODO Commented out IIcon stuff
-		energyGeneratedIcon = new BeefGuiIcon(this, leftX+1, topY, 16, 16, null/*ClientProxy.GuiIcons.getIcon("energyOutput")*/, new String[] { TextFormatting.AQUA + "Energy Output", "", "Turbines generate energy via", "metal induction coils placed", "around a spinning rotor.", "More, or higher-quality, coils", "generate energy faster."});
+		energyGeneratedIcon = new BeefGuiIcon(this, leftX+1, topY, 16, 16, ClientProxy.GuiIcons.getIcon("energyOutput"), new String[] { TextFormatting.AQUA + "Energy Output", "", "Turbines generate energy via", "metal induction coils placed", "around a spinning rotor.", "More, or higher-quality, coils", "generate energy faster."});
 		energyGeneratedString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += energyGeneratedIcon.getHeight() + 4;
 
-		// TODO Commented out IIcon stuff
-		rotorEfficiencyIcon = new BeefGuiIcon(this, leftX + 1, topY, 16, 16, null/*ClientProxy.GuiIcons.getIcon("rotorEfficiency")*/, new String[] { TextFormatting.AQUA + "Rotor Efficiency", "", "Rotor blades can only fully", String.format("capture energy from %d mB of", MultiblockTurbine.inputFluidPerBlade), "fluid per blade.", "", "Efficiency drops if the flow", "of input fluid rises past", "capacity."});
+		rotorEfficiencyIcon = new BeefGuiIcon(this, leftX + 1, topY, 16, 16, ClientProxy.GuiIcons.getIcon("rotorEfficiency"), new String[] { TextFormatting.AQUA + "Rotor Efficiency", "", "Rotor blades can only fully", String.format("capture energy from %d mB of", MultiblockTurbine.inputFluidPerBlade), "fluid per blade.", "", "Efficiency drops if the flow", "of input fluid rises past", "capacity."});
 		rotorEfficiencyString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += rotorEfficiencyIcon.getHeight() + 4;
 

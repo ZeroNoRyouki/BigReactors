@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.client.gui;
 
+import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
 import erogenousbeef.bigreactors.common.BigReactors;
@@ -9,6 +10,8 @@ import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.DeviceChangeExposureMessage;
 import zero.temp.BlockHelper;
+
+import java.io.IOException;
 
 public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 
@@ -57,7 +60,7 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 		createInventoryExposureButton(BlockHelper.SIDE_OPPOSITE[facing], minLeft + 42, minTop + 42);
 
 		// TODO Commented temporarily to allow this thing to compile...
-		//exposureButtons[facing].setIcon(BigReactors.blockDevice.getIcon(4, getBlockMetadata()));
+		//exposureButtons[facing].setIcon(BrBlocks.deviceCyaniteRep.getIcon(4, getBlockMetadata()));
 		exposureButtons[facing].enabled = false;
 	}
 
@@ -68,9 +71,8 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//super.actionPerformed(button);
+	protected void actionPerformed(GuiButton button) throws IOException {
+		super.actionPerformed(button);
 
 		if(button.id >= EXPOSURE_BUTTON_ID_BASE && button.id < EXPOSURE_BUTTON_ID_BASE + 6) {
 			// TODO: Figure out how to detect rightclicks
@@ -80,11 +82,10 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 	
 	protected void updateInventoryExposures() {
 		int facing = _entity.getFacing();
-		BlockBRDevice deviceBlock = (BlockBRDevice)BigReactors.blockDevice;
 		for(int side = 0; side < 6; side++) {
 			if(side == facing) { continue; }
 			// TODO Commented temporarily to allow this thing to compile...
-			//exposureButtons[side].setIcon( deviceBlock.getIconFromTileEntity(_entity, BlockBRDevice.META_CYANITE_REPROCESSOR, side) );
+			//exposureButtons[side].setIcon(BrBlocks.deviceCyaniteRep.getIconFromTileEntity(_entity, BlockBRDevice.META_CYANITE_REPROCESSOR, side) );
 		}
 	}
 }

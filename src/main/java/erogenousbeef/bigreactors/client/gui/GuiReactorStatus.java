@@ -56,6 +56,8 @@ public class GuiReactorStatus extends BeefGuiBase {
 	private BeefGuiFluidBar coolantBar;
 	private BeefGuiIcon hotFluidIcon;
 	private BeefGuiFluidBar hotFluidBar;
+
+	private static ResourceLocation s_backGround;
 	
 	public GuiReactorStatus(Container container, TileEntityReactorPart tileEntityReactorPart) {
 		super(container);
@@ -71,17 +73,15 @@ public class GuiReactorStatus extends BeefGuiBase {
 	public void initGui() {
 		super.initGui();
 
-		//TODO Commented out IIcon stuff
-		btnReactorOn = new GuiIconButton(0, guiLeft + 4, guiTop + 164, 18, 18, null/*ClientProxy.GuiIcons.getIcon("On_off")*/);
-		btnReactorOff = new GuiIconButton(1, guiLeft + 22, guiTop + 164, 18, 18, null/*ClientProxy.GuiIcons.getIcon("Off_off")*/);
+		btnReactorOn = new GuiIconButton(0, guiLeft + 4, guiTop + 164, 18, 18, ClientProxy.GuiIcons.getIcon("On_off"));
+		btnReactorOff = new GuiIconButton(1, guiLeft + 22, guiTop + 164, 18, 18, ClientProxy.GuiIcons.getIcon("Off_off"));
 		
 		btnReactorOn.setTooltip(new String[] { TextFormatting.AQUA + "Activate Reactor" });
 		btnReactorOff.setTooltip(new String[] { TextFormatting.AQUA + "Deactivate Reactor", "Residual heat will still", "generate power/consume coolant,", "until the reactor cools." });
 
-		//TODO Commented out IIcon stuff
-		btnWasteAutoEject = new GuiIconButton(2, guiLeft + 4, guiTop + 144, 18, 18, null/*ClientProxy.GuiIcons.getIcon("wasteEject_off")*/);
-		btnWasteManual = new GuiIconButton(4, guiLeft + 22, guiTop + 144, 18, 18, null/*ClientProxy.GuiIcons.getIcon("wasteManual_off")*/);
-		btnWasteEject = new GuiIconButton(5, guiLeft + 50, guiTop + 144, 18, 18, null/*ClientProxy.GuiIcons.getIcon("wasteEject")*/);
+		btnWasteAutoEject = new GuiIconButton(2, guiLeft + 4, guiTop + 144, 18, 18, ClientProxy.GuiIcons.getIcon("wasteEject_off"));
+		btnWasteManual = new GuiIconButton(4, guiLeft + 22, guiTop + 144, 18, 18, ClientProxy.GuiIcons.getIcon("wasteManual_off"));
+		btnWasteEject = new GuiIconButton(5, guiLeft + 50, guiTop + 144, 18, 18, ClientProxy.GuiIcons.getIcon("wasteEject"));
 
 		btnWasteEject.visible = false;
 
@@ -101,8 +101,7 @@ public class GuiReactorStatus extends BeefGuiBase {
 		titleString = new BeefGuiLabel(this, "Reactor Control", leftX, topY);
 		topY += titleString.getHeight() + 4;
 
-		//TODO Commented out IIcon stuff
-		heatIcon = new BeefGuiIcon(this, leftX - 2, topY, 16, 16, null/*ClientProxy.GuiIcons.getIcon("temperature")*/, new String[] { TextFormatting.AQUA + "Core Temperature", "", "Temperature inside the reactor core.", "Higher temperatures increase fuel burnup." });
+		heatIcon = new BeefGuiIcon(this, leftX - 2, topY, 16, 16, ClientProxy.GuiIcons.getIcon("temperature"), new String[] { TextFormatting.AQUA + "Core Temperature", "", "Temperature inside the reactor core.", "Higher temperatures increase fuel burnup." });
 		heatString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += heatIcon.getHeight() + 5;
 		
@@ -110,13 +109,11 @@ public class GuiReactorStatus extends BeefGuiBase {
 		outputString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += outputIcon.getHeight() + 5;
 
-		//TODO Commented out IIcon stuff
-		fuelConsumedIcon = new BeefGuiIcon(this, leftX + 1, topY, 16, 16, null/*ClientProxy.GuiIcons.getIcon("fuelUsageRate")*/, new String[] { TextFormatting.AQUA + "Fuel Burnup Rate", "", "The rate at which fuel is", "fissioned into waste in the core."});
+		fuelConsumedIcon = new BeefGuiIcon(this, leftX + 1, topY, 16, 16, ClientProxy.GuiIcons.getIcon("fuelUsageRate"), new String[] { TextFormatting.AQUA + "Fuel Burnup Rate", "", "The rate at which fuel is", "fissioned into waste in the core."});
 		fuelConsumedString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += fuelConsumedIcon.getHeight() + 5;
 
-		//TODO Commented out IIcon stuff
-		reactivityIcon = new BeefGuiIcon(this, leftX, topY, 16, 16, null/*ClientProxy.GuiIcons.getIcon("reactivity")*/, new String[] { TextFormatting.AQUA + "Fuel Reactivity", "", "How heavily irradiated the core is.", "Higher levels of radiation", "reduce fuel burnup."});
+		reactivityIcon = new BeefGuiIcon(this, leftX, topY, 16, 16, ClientProxy.GuiIcons.getIcon("reactivity"), new String[] { TextFormatting.AQUA + "Fuel Reactivity", "", "How heavily irradiated the core is.", "Higher levels of radiation", "reduce fuel burnup."});
 		reactivityString = new BeefGuiLabel(this, "", leftX + 22, topY + 4);
 		topY += reactivityIcon.getHeight() + 6;
 
@@ -129,12 +126,10 @@ public class GuiReactorStatus extends BeefGuiBase {
 		caseHeatBar = new BeefGuiHeatBar(this, guiLeft + 108, guiTop + 22, TextFormatting.AQUA + "Casing Heat", new String[] { "Heat of the reactor's casing.", "High heat raises energy output", "and coolant conversion."});
 		fuelMixBar = new BeefGuiFuelMixBar(this, guiLeft + 86, guiTop + 22, this.reactor);
 
-		//TODO Commented out IIcon stuff
-		coolantIcon = new BeefGuiIcon(this, guiLeft + 132, guiTop + 91, 16, 16, null/*ClientProxy.GuiIcons.getIcon("coolantIn")*/, new String[] { TextFormatting.AQUA + "Coolant Fluid Tank", "", "Casing heat will superheat", "coolant in this tank." });
+		coolantIcon = new BeefGuiIcon(this, guiLeft + 132, guiTop + 91, 16, 16, ClientProxy.GuiIcons.getIcon("coolantIn"), new String[] { TextFormatting.AQUA + "Coolant Fluid Tank", "", "Casing heat will superheat", "coolant in this tank." });
 		coolantBar = new BeefGuiFluidBar(this, guiLeft + 131, guiTop + 108, this.reactor, MultiblockReactor.FLUID_COOLANT);
 
-		//TODO Commented out IIcon stuff
-		hotFluidIcon = new BeefGuiIcon(this, guiLeft + 154, guiTop + 91, 16, 16, null/* ClientProxy.GuiIcons.getIcon("hotFluidOut")*/, new String[] { TextFormatting.AQUA + "Hot Fluid Tank", "", "Superheated coolant", "will pump into this tank,", "and must be piped out", "via coolant ports" });
+		hotFluidIcon = new BeefGuiIcon(this, guiLeft + 154, guiTop + 91, 16, 16, ClientProxy.GuiIcons.getIcon("hotFluidOut"), new String[] { TextFormatting.AQUA + "Hot Fluid Tank", "", "Superheated coolant", "will pump into this tank,", "and must be piped out", "via coolant ports" });
 		hotFluidBar = new BeefGuiFluidBar(this, guiLeft + 153, guiTop + 108, this.reactor, MultiblockReactor.FLUID_SUPERHEATED);
 		
 		registerControl(titleString);
@@ -161,7 +156,11 @@ public class GuiReactorStatus extends BeefGuiBase {
 
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation(BigReactors.GUI_DIRECTORY + "ReactorController.png");
+
+		if (null == GuiReactorStatus.s_backGround)
+			GuiReactorStatus.s_backGround = BigReactors.createResourceLocation("textures/gui/ReactorController.png");
+
+		return GuiReactorStatus.s_backGround;
 	}
 
 	@Override
@@ -226,23 +225,16 @@ public class GuiReactorStatus extends BeefGuiBase {
 	
 	protected void updateIcons() {
 		if(reactor.getActive()) {
-			//TODO Commented out IIcon stuff
-			/*
 			btnReactorOn.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.ON_ON));
 			btnReactorOff.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.OFF_OFF));
-			*/
 		}
 		else {
-			//TODO Commented out IIcon stuff
-			/*
 			btnReactorOn.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.ON_OFF));
 			btnReactorOff.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.OFF_ON));
-			*/
 		}
 		
 		if(reactor.isPassivelyCooled()) {
-			//TODO Commented out IIcon stuff
-			//outputIcon.setIcon(ClientProxy.GuiIcons.getIcon("energyOutput"));
+			outputIcon.setIcon(ClientProxy.GuiIcons.getIcon("energyOutput"));
 			outputIcon.setTooltip(passivelyCooledTooltip);
 			
 			coolantIcon.visible = false;
@@ -251,8 +243,7 @@ public class GuiReactorStatus extends BeefGuiBase {
 			hotFluidBar.visible = false;
 		}
 		else {
-			//TODO Commented out IIcon stuff
-			//outputIcon.setIcon(ClientProxy.GuiIcons.getIcon("hotFluidOut"));
+			outputIcon.setIcon(ClientProxy.GuiIcons.getIcon("hotFluidOut"));
 			outputIcon.setTooltip(activelyCooledTooltip);
 			
 			coolantIcon.visible = true;
@@ -264,20 +255,14 @@ public class GuiReactorStatus extends BeefGuiBase {
 		
 		switch(reactor.getWasteEjection()) {
 		case kAutomatic:
-			//TODO Commented out IIcon stuff
-			/*
 			btnWasteAutoEject.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.WASTE_EJECT_ON));
 			btnWasteManual.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.WASTE_MANUAL_OFF));
-			*/
 			btnWasteEject.visible = false;
 			break;
 		case kManual:
 		default:
-			//TODO Commented out IIcon stuff
-			/*
 			btnWasteAutoEject.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.WASTE_EJECT_OFF));
 			btnWasteManual.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.WASTE_MANUAL_ON));
-			*/
 			btnWasteEject.visible = true;
 			break;
 		}

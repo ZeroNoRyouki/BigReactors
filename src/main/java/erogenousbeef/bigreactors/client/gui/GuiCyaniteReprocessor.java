@@ -11,6 +11,8 @@ import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiPowerBar;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiProgressArrow;
 
+import java.io.IOException;
+
 public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 
 	private GuiButton _togglePort;
@@ -52,7 +54,11 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation(BigReactors.GUI_DIRECTORY + "CyaniteReprocessor.png");
+
+		if (null == GuiCyaniteReprocessor.s_guiTexture)
+			GuiCyaniteReprocessor.s_guiTexture = BigReactors.createGuiResourceLocation("CyaniteReprocessor.png");
+
+		return GuiCyaniteReprocessor.s_guiTexture;
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(GuiButton button) throws IOException {
 		super.actionPerformed(button);
 	}
 
@@ -74,4 +80,6 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 	protected int getBlockMetadata() {
 		return BlockBRDevice.META_CYANITE_REPROCESSOR;
 	}
+
+	private static ResourceLocation s_guiTexture;
 }

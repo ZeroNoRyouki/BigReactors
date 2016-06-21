@@ -1,5 +1,3 @@
-// TODO Commented temporarily to allow this thing to compile...
-/*
 package erogenousbeef.bigreactors.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
@@ -38,17 +36,21 @@ public class GuiReactorControlRod extends BeefGuiBase {
 	BeefGuiInsertionProgressBar insertionBar;
 	
     private GuiTextField rodName;
-
+	private static ResourceLocation s_backGround;
 	
 	public GuiReactorControlRod(Container c, TileEntityReactorControlRod controlRod) {
 		super(c);
 		
 		entity = controlRod;
 	}
-	
+
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation (BigReactors.GUI_DIRECTORY + "BasicBackground.png");
+
+		if (null == GuiReactorControlRod.s_backGround)
+			GuiReactorControlRod.s_backGround = BigReactors.createResourceLocation("textures/gui/BasicBackground.png");
+
+		return GuiReactorControlRod.s_backGround;
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 		
 		rodNameLabel = new BeefGuiLabel(this, "Name:", leftX, topY + 6);
 		
-		rodName = new GuiTextField(fontRendererObj, leftX + 4 + rodNameLabel.getWidth(), topY, 100, 20);
+		rodName = new GuiTextField(1, fontRendererObj, leftX + 4 + rodNameLabel.getWidth(), topY, 100, 20);
 		rodName.setCanLoseFocus(true);
 		rodName.setMaxStringLength(32);
 		rodName.setText(entity.getName());
@@ -175,9 +177,8 @@ public class GuiReactorControlRod extends BeefGuiBase {
 		
 		if(keyCode == Keyboard.KEY_RETURN) {
 			// Return/enter
-			this.actionPerformed((GuiButton)this.buttonList.get(2));
+			this.actionPerformed(this.buttonList.get(2));
 		}
 	}
 	
 }
-*/

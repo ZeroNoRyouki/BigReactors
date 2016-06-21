@@ -49,17 +49,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 			"LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"
 	};
 	
-	public static final String[] grabbableTooltips = {
-		"Input: Toggle reactor on/off",
-		"Input: Change control rod insertion",
-		"Input: Eject Waste",
-		"Output: Fuel Temp (C)",
-		"Output: Casing Temp (C)",
-		"Output: Fuel mix (% fuel, 0-100)",
-		"Output: Fuel amount",
-		"Output: Waste amount",
-		"Output: Energy amount (%)"
-	};
+
 	
 	BeefGuiRedNetChannelSelector[] channelSelectors = new BeefGuiRedNetChannelSelector[numChannels];
 	RedNetConfigGrabTarget[] grabTargets = new RedNetConfigGrabTarget[numChannels];
