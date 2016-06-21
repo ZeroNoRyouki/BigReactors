@@ -1,0 +1,123 @@
+package erogenousbeef.bigreactors.init;
+
+import erogenousbeef.bigreactors.common.BRConfig;
+import erogenousbeef.bigreactors.common.BRLoader;
+import erogenousbeef.bigreactors.common.CommonProxy;
+import erogenousbeef.bigreactors.common.block.BlockBRDevice;
+import erogenousbeef.bigreactors.common.block.BlockBRMetal;
+import erogenousbeef.bigreactors.common.block.BlockBROre;
+import erogenousbeef.bigreactors.common.block.DeviceType;
+import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.block.*;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
+import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
+
+public final class BrBlocks {
+
+    // Ores
+    public static final BlockBROre brOre;
+    // Metal blocks
+    public static final BlockBRMetal blockMetals;
+
+    // Reactor parts
+    public static final BlockMultiblockGlass reactorGlass;
+    public static final BlockMultiblockCasing reactorCasing;
+    public static final BlockReactorController reactorController;
+    public static final BlockReactorPowerTap reactorPowerTap;
+    public static final BlockReactorIOPort reactorAccessPort;
+    public static final BlockReactorIOPort reactorCoolantPort;
+    public static final BlockReactorControlRod reactorControlRod;
+    public static final BlockReactorPart reactorRedNetPort;
+    public static final BlockReactorPart reactorComputerPort;
+    public static final BlockReactorRedstonePort reactorRedstonePort;
+    public static final BlockFuelRod reactorFuelRod;
+    public static final BlockReactorCreativeCoolantPort reactorCreativeCoolantPort;
+
+    // Turbine parts
+    public static final BlockMultiblockGlass turbineGlass;
+    public static final BlockMultiblockCasing turbineHousing;
+    public static final BlockTurbinePart turbineController;
+    public static final BlockTurbinePart turbinePowerTap;
+    public static final BlockTurbinePart turbineFluidPort;
+    public static final BlockTurbinePart turbineBearing;
+    public static final BlockTurbinePart turbineComputerPort;
+    public static final BlockMBCreativePart turbineCreativeSteamGenerator;
+    
+    // Devices
+    public static final BlockBRDevice deviceCyaniteRep;
+
+
+    public static void initialize() {
+    }
+
+    static {
+
+        CommonProxy proxy = BRLoader.proxy;
+        boolean regCreativeParts;
+
+        BRConfig.CONFIGURATION.load();
+        regCreativeParts = BRConfig.CONFIGURATION.get("General", "registerCreativeMultiblockParts", true, "If true, creative parts for reactors, turbines and other multiblocks will be registered.").getBoolean(true);
+        BRConfig.CONFIGURATION.save();
+
+        // register blocks
+
+        // - ores
+        brOre = (BlockBROre)proxy.register(new BlockBROre("brOre"));
+
+        // - metal blocks
+        blockMetals = (BlockBRMetal)proxy.register(new BlockBRMetal("blockMetals"));
+        
+        // - reactor parts
+        reactorGlass = (BlockMultiblockGlass)proxy.register(new BlockMultiblockGlass(PartType.ReactorGlass, "reactorGlass"));
+        reactorCasing = (BlockMultiblockCasing)proxy.register(new BlockMultiblockCasing(PartType.ReactorCasing, "reactorCasing"));
+        reactorController = (BlockReactorController)proxy.register(new BlockReactorController("reactorController"));
+        reactorPowerTap = (BlockReactorPowerTap)proxy.register(new BlockReactorPowerTap("reactorPowerTap"));
+        reactorAccessPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorAccessPort, "reactorAccessPort"));
+        reactorCoolantPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCoolantPort, "reactorCoolantPort"));
+        reactorControlRod = (BlockReactorControlRod)proxy.register(new BlockReactorControlRod("reactorControlRod"));
+        reactorRedNetPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorRednetPort, "reactorRedNetPort"));
+        reactorComputerPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorComputerPort, "reactorComputerPort"));
+        reactorRedstonePort = (BlockReactorRedstonePort)proxy.register(new BlockReactorRedstonePort("reactorRedstonePort"));
+        reactorFuelRod = (BlockFuelRod)proxy.register(new BlockFuelRod("reactorFuelRod"));
+        reactorCreativeCoolantPort = !regCreativeParts ? null : (BlockReactorCreativeCoolantPort)proxy.register(new BlockReactorCreativeCoolantPort("reactorCreativeCoolantPort"));
+
+        // - turbine parts
+        turbineGlass = (BlockMultiblockGlass)proxy.register(new BlockMultiblockGlass(PartType.TurbineGlass, "turbineGlass"));
+        turbineHousing = (BlockMultiblockCasing)proxy.register(new BlockMultiblockCasing(PartType.TurbineHousing, "turbineHousing"));
+
+        turbineController = (BlockTurbinePart)proxy.register(new BlockTurbinePart(PartType.TurbineController, "turbineController"));
+        turbinePowerTap = (BlockTurbinePart)proxy.register(new BlockTurbinePart(PartType.TurbinePowerPort, "turbinePowerTap"));
+        turbineFluidPort = (BlockTurbinePart)proxy.register(new BlockTurbinePart(PartType.TurbineFluidPort, "turbineFluidPort"));
+        turbineBearing = (BlockTurbinePart)proxy.register(new BlockTurbinePart(PartType.TurbineRotorBearing, "turbineBearing"));
+        turbineComputerPort = (BlockTurbinePart)proxy.register(new BlockTurbinePart(PartType.TurbineComputerPort, "turbineComputerPort"));
+        turbineCreativeSteamGenerator = !regCreativeParts ? null : (BlockMBCreativePart)proxy.register(new BlockMBCreativePart(PartType.TurbineCreativeSteamGenerator, "turbineCreativeSteamGenerator"));
+
+        // - devices
+        deviceCyaniteRep = (BlockBRDevice)proxy.register(new BlockBRDevice(DeviceType.CyaniteReprocessor, "deviceCyaniteRep"));
+
+        // - register block tile entities
+        proxy.register(TileEntityCyaniteReprocessor.class);
+        proxy.register(TileEntityReactorPart.class);
+        proxy.register(TileEntityReactorGlass.class);
+        proxy.register(TileEntityController.class);
+        proxy.register(TileEntityReactorPowerTap.class);
+        proxy.register(TileEntityReactorAccessPort.class);
+        proxy.register(TileEntityReactorFuelRod.class);
+        proxy.register(TileEntityReactorControlRod.class);
+        proxy.register(TileEntityReactorRedstonePort.class);
+        //proxy.register(TileEntityReactorRedNetPort.class);
+        //proxy.register(TileEntityReactorComputerPort.class);
+        proxy.register(TileEntityReactorCoolantPort.class);
+        proxy.register(TileEntityReactorCreativeCoolantPort.class);
+        proxy.register(TileEntityTurbinePartStandard.class);
+        proxy.register(TileEntityTurbinePowerTap.class);
+        proxy.register(TileEntityTurbineFluidPort.class);
+        proxy.register(TileEntityTurbinePartGlass.class);
+        proxy.register(TileEntityTurbineRotorBearing.class);
+        proxy.register(TileEntityTurbineRotorPart.class);
+        proxy.register(TileEntityTurbineCreativeSteamGenerator.class);
+        //proxy.register(TileEntityTurbineComputerPort.class);
+    }
+}
