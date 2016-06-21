@@ -21,6 +21,8 @@ import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.data.ReactorSolidMapping;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.oredict.OreDictionary;
+import zero.mods.zerocore.util.OreDictionaryHelper;
 
 public class Reactants {
 	
@@ -85,29 +87,8 @@ public class Reactants {
 	 * @param reactantName The name of the reactant.
 	 */
 	public static SourceProductMapping registerSolid(ItemStack itemStack, String reactantName) {
-		if(!_reactants.containsKey(reactantName)) {
-			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
-		}
 
-		// TODO Commented temporarily to allow this thing to compile...
-		ArrayList<String> oreDictNames = null;//OreDictionaryArbiter.getAllOreNames(itemStack);
-		if(oreDictNames == null || oreDictNames.size() < 1) {
-			BRLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
-			return null;
-		}
-
-		SourceProductMapping firstMapping = null;
-
-		for(String name : oreDictNames) {
-			OreDictToReactantMapping mapping = new OreDictToReactantMapping(name, reactantName);
-			SourceProductMapping reverseMapping = mapping.getReverse();
-			_solidToReactant.put(mapping.getSource(), mapping);
-			mapReactant(reverseMapping.getSource(), reverseMapping, _reactantToSolid);
-
-			if(firstMapping == null) { firstMapping = mapping; }
-		}
-		
-		return firstMapping;
+		return registerSolid(itemStack, reactantName, Reactants.standardSolidReactantAmount);
 	}
 
 	/**
@@ -119,22 +100,25 @@ public class Reactants {
 	 * @param reactantQty The quantity of the reactant produced by the itemStack.stackSize units of the item.
 	 */
 	public static SourceProductMapping registerSolid(ItemStack itemStack, String reactantName, int reactantQty) {
-		if(!_reactants.containsKey(reactantName)) {
+
+		if (!_reactants.containsKey(reactantName)) {
 			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
 		}
 
-		// TODO Commented temporarily to allow this thing to compile...
-		ArrayList<String> oreDictNames = null;//OreDictionaryArbiter.getAllOreNames(itemStack);
-		if(oreDictNames == null || oreDictNames.size() < 1) {
+		String[] oreDictNames = OreDictionaryHelper.getOreNames(itemStack);
+		SourceProductMapping firstMapping = null;
+
+		if (null == oreDictNames) {
+
 			BRLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
 			return null;
 		}
 
-		SourceProductMapping firstMapping = null;
-
 		for(String name : oreDictNames) {
+
 			OreDictToReactantMapping mapping = new OreDictToReactantMapping(name, reactantName, reactantQty);
 			SourceProductMapping reverseMapping = mapping.getReverse();
+
 			_solidToReactant.put(mapping.getSource(), mapping);
 			mapReactant(reverseMapping.getSource(), reverseMapping, _reactantToSolid);
 
@@ -212,12 +196,10 @@ public class Reactants {
 	 */
 	public static void registerFluid(Fluid fluid, String reactantName) {
 
-		// TODO Commented temporarily to allow this thing to compile...
 		if (null == fluid) {
 			FMLLog.info("TEMP - Skipping registration of NULL fluid for reactant %s",reactantName );
 			return;
 		}
-
 
 		if(!_reactants.containsKey(reactantName)) {
 			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
@@ -239,9 +221,27 @@ public class Reactants {
 		return _reactants.get(name);
 	}
 	
-	public static OreDictToReactantMapping getSolidToReactant(ItemStack item) {
-		// TODO Commented temporarily to allow this thing to compile...
-		return _solidToReactant.get(""/*ItemHelper.oreProxy.getOreName(item)*/);
+	public static OreDictToReactantMapping getSolidToReactant(ItemStack stack) {
+
+		int[] oreIDs = OreDictionary.getOreIDs(stack);
+		int oreCount;
+
+		if (oreIDs == null || (oreCount = oreIDs.length) < 1)
+			return null;
+
+		String oreDictName;
+		OreDictToReactantMapping mapping;
+
+		for (int i = 0; i < oreCount; ++i) {
+
+			oreDictName = OreDictionary.getOreName(oreIDs[i]);
+			mapping = _solidToReactant.get(oreDictName);
+
+			if (null != mapping)
+				return mapping;
+		}
+
+		return null;
 	}
 	
 	public static FluidToReactantMapping getFluidToReactant(FluidStack fluid) {
