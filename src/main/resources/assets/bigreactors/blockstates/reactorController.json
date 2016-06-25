@@ -2,68 +2,111 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockReactorPart.controller.off",
-            "particle":"#side",
-            "down":"#side",
-            "up":"#side",
-            "north":"#side",
-            "south":"#side",
-            "west":"#side",
-            "east":"#side"
+            "plate":"bigreactors:blocks/reactor/standard/plate",
+            "machineA":"bigreactors:blocks/reactor/standard/controller.off.png",
+            "machine":"#machineA",
+            "particle":"#machine",
+            "down":"#machine",
+            "up":"#machine",
+            "north":"#machine",
+            "south":"#machine",
+            "west":"#machine",
+            "east":"#machine"
         },
         "model":"cube"
     },
     "variants":{  
-        "assembled":{  
-            "true":{  
+        "tier":{  
+            "standard":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockReactorPart.controller.idle",
-                    "side":"bigreactors:blocks/tile.blockReactorPart"
+                    "plate":"bigreactors:blocks/reactor/standard/plate",
+                    "machineA":"bigreactors:blocks/reactor/standard/controller.off",
+                    "machineB":"bigreactors:blocks/reactor/standard/controller.active",
+					"machineC":"bigreactors:blocks/reactor/standard/controller.idle"
                 }
             },
-            "false":{  
+            "advanced":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockReactorPart.controller.off",
-                    "side":"bigreactors:blocks/tile.blockReactorPart.controller.off"
+                    "plate":"bigreactors:blocks/reactor/advanced/plate",
+                    "machineA":"bigreactors:blocks/reactor/advanced/controller.off",
+                    "machineB":"bigreactors:blocks/reactor/advanced/controller.active",
+					"machineC":"bigreactors:blocks/reactor/advanced/controller.idle"
+                }
+            }
+        },
+        "afstate":{  
+            "disassembled":{  
+
+            },
+            "assemblednorth":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledsouth":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledwest":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledeast":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate"
+                }
+            },
+            "assembledup":{  
+                "textures":{  
+                    "down":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembleddown":{  
+                "textures":{  
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             }
         },
         "controller":{  
             "off":{  
                 "textures":{  
-                    "north":"#facing"
+                    "machine":"#machineA"
                 }
             },
             "idle":{  
                 "textures":{  
-                    "south":"#facing"
+                    "machine":"#machineC"
                 }
             },
-            "active":{  
+			"active":{  
                 "textures":{  
-                    "west":"#facing"
-                }
-            }
-        },
-        "hfacing":{  
-            "north":{  
-                "textures":{  
-                    "north":"#facing"
-                }
-            },
-            "south":{  
-                "textures":{  
-                    "south":"#facing"
-                }
-            },
-            "west":{  
-                "textures":{  
-                    "west":"#facing"
-                }
-            },
-            "east":{  
-                "textures":{  
-                    "east":"#facing"
+                    "machine":"#machineB"
                 }
             }
         },

@@ -2,27 +2,105 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockReactorRedstonePort.unlit",
-            "particle":"#side",
-            "down":"bigreactors:blocks/tile.blockReactorPart",
-            "up":"bigreactors:blocks/tile.blockReactorPart",
-            "north":"#side",
-            "south":"#side",
-            "west":"#side",
-            "east":"#side"
+            "plate":"bigreactors:blocks/reactor/standard/plate",
+            "machineA":"bigreactors:blocks/reactor/standard/redstonePort.unlit",
+            "machine":"#machineA",
+            "particle":"#machine",
+            "down":"#machine",
+            "up":"#machine",
+            "north":"#machine",
+            "south":"#machine",
+            "west":"#machine",
+            "east":"#machine"
         },
         "model":"cube"
     },
     "variants":{  
+        "tier":{  
+            "standard":{  
+				"transform":"forge:default-block",
+                "textures":{  
+                    "plate":"bigreactors:blocks/reactor/standard/plate",
+                    "machineA":"bigreactors:blocks/reactor/standard/redstonePort.unlit",
+                    "machineB":"bigreactors:blocks/reactor/standard/redstonePort.lit"
+                }
+            },
+            "advanced":{  
+                "textures":{  
+                    "plate":"bigreactors:blocks/reactor/advanced/plate",
+                    "machineA":"bigreactors:blocks/reactor/advanced/redstonePort.unlit",
+                    "machineB":"bigreactors:blocks/reactor/advanced/redstonePort.lit"
+                }
+            }
+        },
+        "afstate":{  
+            "disassembled":{  
+
+            },
+            "assemblednorth":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledsouth":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledwest":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledeast":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate"
+                }
+            },
+            "assembledup":{  
+                "textures":{  
+                    "down":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembleddown":{  
+                "textures":{  
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            }
+        },
         "lit":{  
             "true":{  
                 "textures":{  
-                    "side":"bigreactors:blocks/tile.blockReactorRedstonePort.lit"
+                    "machine":"#machineB"
                 }
             },
             "false":{  
                 "textures":{  
-                    "side":"bigreactors:blocks/tile.blockReactorRedstonePort.unlit"
+                    "machine":"#machineA"
                 }
             }
         },

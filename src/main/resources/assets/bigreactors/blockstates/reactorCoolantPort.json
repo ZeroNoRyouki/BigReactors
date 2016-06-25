@@ -2,63 +2,105 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockReactorPart.coolantPort.inlet",
-            "particle":"#side",
-            "down":"#side",
-            "up":"#side",
-            "north":"#side",
-            "south":"#side",
-            "west":"#side",
-            "east":"#side"
+            "plate":"bigreactors:blocks/reactor/standard/plate",
+            "machineA":"bigreactors:blocks/reactor/standard/coolantPort.inlet",
+            "machine":"#machineA",
+            "particle":"#machine",
+            "down":"#machine",
+            "up":"#machine",
+            "north":"#machine",
+            "south":"#machine",
+            "west":"#machine",
+            "east":"#machine"
         },
         "model":"cube"
     },
     "variants":{  
-        "assembled":{  
-            "true":{  
+        "tier":{  
+            "standard":{  
+				"transform":"forge:default-block",
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockReactorPart.coolantPort.inlet",
-                    "side":"bigreactors:blocks/tile.blockReactorPart"
+                    "plate":"bigreactors:blocks/reactor/standard/plate",
+                    "machineA":"bigreactors:blocks/reactor/standard/coolantPort.inlet",
+                    "machineB":"bigreactors:blocks/reactor/standard/coolantPort.outlet"
                 }
             },
-            "false":{  
+            "advanced":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockReactorPart.coolantPort.inlet",
-                    "side":"bigreactors:blocks/tile.blockReactorPart.coolantPort.inlet"
+                    "plate":"bigreactors:blocks/reactor/advanced/plate",
+                    "machineA":"bigreactors:blocks/reactor/advanced/coolantPort.inlet",
+                    "machineB":"bigreactors:blocks/reactor/advanced/coolantPort.outlet"
                 }
             }
         },
-		"portdirection":{  
-            "inlet":{  
+        "afstate":{  
+            "disassembled":{  
+
+            },
+            "assemblednorth":{  
                 "textures":{  
-                    "north":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
+            "assembledsouth":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledwest":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledeast":{  
+                "textures":{  
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate"
+                }
+            },
+            "assembledup":{  
+                "textures":{  
+                    "down":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembleddown":{  
+                "textures":{  
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            }
+        },
+        "portdirection":{  
             "outlet":{  
                 "textures":{  
-                    "south":"#facing"
-                }
-            }
-        },
-        "hfacing":{  
-            "north":{  
-                "textures":{  
-                    "north":"#facing"
+                    "machine":"#machineB"
                 }
             },
-            "south":{  
+            "inlet":{  
                 "textures":{  
-                    "south":"#facing"
-                }
-            },
-            "west":{  
-                "textures":{  
-                    "west":"#facing"
-                }
-            },
-            "east":{  
-                "textures":{  
-                    "east":"#facing"
+                    "machine":"#machineA"
                 }
             }
         },
