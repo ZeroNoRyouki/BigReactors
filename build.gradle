@@ -28,7 +28,7 @@ group= "erogenousbeef" // http://maven.apache.org/guides/mini/guide-naming-conve
 archivesBaseName = "BigReactors"
 
 minecraft {
-    version = "1.9-12.16.1.1887"
+    version = "1.9-12.16.1.1934"
 	
 	if (file('../run').exists()) {
 		runDir = "../run"
@@ -49,6 +49,7 @@ minecraft {
 }
 
 repositories {
+    /*
     maven {
         name = "OpenComputers"
         url = "http://maven.cil.li/"
@@ -61,6 +62,7 @@ repositories {
         name "CoFHCore"
         artifactPattern "http://addons.cursecdn.com/files/2221/835/[module]-[revision].[ext]"
     }
+    */
 }
 
 dependencies {
@@ -85,10 +87,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 	
-	
+
+    /*
 	compile 'com.mod-buildcraft:buildcraft:6.0.18:dev'
     compile 'li.cil.oc:OpenComputers:MC1.7.10-1.4.0.+:api'
     compile name: 'CoFHCore', version: '[1.7.10]3.0.0B9-40-dev', ext: 'jar'
+    */
+    compile files("../ZeroCore/build/libs/zerocore-1.9.0-0.0.1.jar")
 }
 
 processResources
