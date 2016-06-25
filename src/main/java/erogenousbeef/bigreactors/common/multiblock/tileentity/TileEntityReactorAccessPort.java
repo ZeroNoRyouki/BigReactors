@@ -2,15 +2,16 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import java.util.List;
 
+import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -22,39 +23,62 @@ import erogenousbeef.bigreactors.api.data.SourceProductMapping;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
 import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.utils.AdjacentInventoryHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.lib.item.TileEntityItemStackHandler;
 import zero.mods.zerocore.util.WorldHelper;
 
-public class TileEntityReactorAccessPort extends TileEntityReactorPart implements IInventory, ISidedInventory, INeighborUpdatableEntity {
+public class TileEntityReactorAccessPort extends TileEntityReactorPart implements INeighborUpdatableEntity {
 
-	protected ItemStack[] _inventories;
+	protected TileEntityItemStackHandler _inventories;
+
 	protected boolean isInlet;
 	protected AdjacentInventoryHelper adjacencyHelper;
 	
 	public static final int SLOT_INLET = 0;
 	public static final int SLOT_OUTLET = 1;
-	public static final int NUM_SLOTS = 2;
 	
 	private static final int[] kInletExposed = {SLOT_INLET};
 	private static final int[] kOutletExposed = {SLOT_OUTLET};
 	
 	public TileEntityReactorAccessPort() {
+
 		super();
-		
-		_inventories = new ItemStack[getSizeInventory()];
+		this._inventories = new TileEntityItemStackHandler(this, 2);
 		isInlet = true;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+
+		return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == capability ?
+			true : super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+
+		if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == capability)
+			return (T)this._inventories;
+
+		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public boolean canOpenGui(World world, BlockPos posistion, IBlockState state) {
+		return true;
 	}
 
 	// Return the name of the reactant to which the item in the input slot
 	public String getInputReactantType() {
-		ItemStack inputItem = getStackInSlot(SLOT_INLET);
+		ItemStack inputItem = this._inventories.getStackInSlot(SLOT_INLET);
 		if(inputItem == null) { return null; }
 		SourceProductMapping mapping = Reactants.getSolidToReactant(inputItem);
 		return mapping != null ? mapping.getProduct() : null;
@@ -62,7 +86,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 	// Returns the potential amount of reactant which can be produced from this port.
 	public int getInputReactantAmount() {
-		ItemStack inputItem = getStackInSlot(SLOT_INLET);
+		ItemStack inputItem = this._inventories.getStackInSlot(SLOT_INLET);
 		if(inputItem == null) { return 0; }
 
 		SourceProductMapping mapping = Reactants.getSolidToReactant(inputItem);
@@ -76,7 +100,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	 * @return The amount of reactant actually produced, in reactant units (mB)
 	 */
 	public int consumeReactantItem(int reactantDesired) {
-		ItemStack inputItem = getStackInSlot(SLOT_INLET);
+		ItemStack inputItem = this._inventories.getStackInSlot(SLOT_INLET);
 		if(inputItem == null) { return 0; }
 		
 		SourceProductMapping mapping = Reactants.getSolidToReactant(inputItem);
@@ -86,7 +110,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		
 		if(sourceItemsToConsume <= 0) { return 0; }
 
-		decrStackSize(SLOT_INLET, sourceItemsToConsume);
+		this._inventories.extractItem(SLOT_INLET, sourceItemsToConsume, false);
+
 		return mapping.getProductAmount(sourceItemsToConsume);
 	}
 
@@ -101,8 +126,10 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public int emitReactant(String reactantType, int amount) {
 		if(reactantType == null || amount <= 0) { return 0; }
 		
-		ItemStack outputItem = getStackInSlot(SLOT_OUTLET);
-		if(outputItem != null && outputItem.stackSize >= getInventoryStackLimit()) {
+		ItemStack outputItem = this._inventories.getStackInSlot(SLOT_OUTLET);
+		int outputItemMaxSize = null != outputItem ? outputItem.getMaxStackSize() : 64;
+
+		if (outputItem != null && outputItem.stackSize >= /*getInventoryStackLimit()*/outputItemMaxSize) {
 			// Already full?
 			return 0;
 		}
@@ -119,7 +146,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			// We're using the original source item >> reactant mapping here
 			// This means that source == item, and product == reactant
 			int amtToProduce = mapping.getSourceAmount(amount);
-			amtToProduce = Math.min(amtToProduce, getInventoryStackLimit() - outputItem.stackSize);
+			amtToProduce = Math.min(amtToProduce, outputItemMaxSize - outputItem.stackSize);
 			if(amtToProduce <= 0) {	return 0; }
 			
 			// Do we actually produce any reactant at this reduced amount?
@@ -159,7 +186,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			bestMapping = StandardReactants.cyaniteMapping;
 		}
 
-		int itemsToProduce = Math.min(bestMapping.getProductAmount(amount), getInventoryStackLimit());
+		int itemsToProduce = Math.min(bestMapping.getProductAmount(amount), outputItemMaxSize);
 		if(itemsToProduce <= 0) {
 			// Can't produce even one ingot? Ok then.
 			return 0;
@@ -173,14 +200,15 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		ItemStack newItem = null;//ItemHelper.getOre(bestMapping.getProduct());
 		if(newItem == null) {
 			BRLog.warning("Could not find item for oredict entry %s, using cyanite instead.", bestMapping.getSource());
-			newItem = BigReactors.ingotGeneric.getItemStackForType("ingotCyanite");
+			newItem = BrItems.ingotMetals.createItemStack(MetalType.Cyanite, 1);
 		}
 		else {
 			newItem = newItem.copy(); // Don't stomp the oredict
 		}
 		
 		newItem.stackSize = itemsToProduce;
-		setInventorySlotContents(SLOT_OUTLET, newItem);
+		//setInventorySlotContents(SLOT_OUTLET, newItem);
+		this._inventories.setStackInSlot(SLOT_OUTLET, newItem);
 		onItemsReceived();
 		
 		return reactantConsumed;
@@ -205,7 +233,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 
 	// TileEntity overrides
-	
+	/*
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
@@ -247,8 +275,27 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		}
 		
 		tag.setBoolean("isInlet", isInlet);
+	}*/
+
+	@Override
+	protected void saveToNBT(NBTTagCompound data) {
+
+		super.saveToNBT(data);
+		data.setBoolean("isInlet", this.isInlet);
+		data.setTag("inv", this._inventories.serializeNBT());
 	}
-	
+
+	@Override
+	protected void loadFromNBT(NBTTagCompound data) {
+
+		super.loadFromNBT(data);
+
+		this.isInlet = data.hasKey("isInlet") ? data.getBoolean("isInlet") : true;
+
+		if (data.hasKey("inv"))
+			this._inventories.deserializeNBT((NBTTagCompound)data.getTag("inv"));
+	}
+
 	// MultiblockTileEntityBase
 	@Override
 	protected void encodeDescriptionPacket(NBTTagCompound packetData) {
@@ -269,6 +316,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	// IInventory
 
 	// TODO fake imp!
+	/*
 	@Override
 	public void closeInventory(EntityPlayer player) {
 
@@ -374,12 +422,12 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		return null;
 	}
-	*/
+
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemstack) {
@@ -391,6 +439,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
         markDirty();
 	}
+	*/
 
 	// TODO Commented temporarily to allow this thing to compile...
 	/*
@@ -403,8 +452,6 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public boolean hasCustomInventoryName() {
 		return false;
 	}
-	*/
-
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -422,7 +469,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+
 	@Override
 	public void openInventory() {
 	}
@@ -430,7 +477,6 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	@Override
 	public void closeInventory() {
 	}
-	*/
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
@@ -446,6 +492,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			return false;
 		}
 	}
+	*/
 
 	// ISidedInventory
 	// TODO Commented temporarily to allow this thing to compile...
@@ -471,16 +518,14 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 	*/
 
-	// IMultiblockGuiHandler
 	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
-		return new ContainerReactorAccessPort(this, inventoryPlayer);
+	public Object getServerGuiElement(int guiId, EntityPlayer player) {
+		return new ContainerReactorAccessPort(this, player.inventory);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		return new GuiReactorAccessPort(new ContainerReactorAccessPort(this, inventoryPlayer), this);
+	public Object getClientGuiElement(int guiId, EntityPlayer player) {
+		return new GuiReactorAccessPort(new ContainerReactorAccessPort(this, player.inventory), this);
 	}
 
 	/**
@@ -507,6 +552,11 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 		notifyNeighborsOfTileChange();
 	}
+
+	public void toggleInlet() {
+
+		this.setInlet(!this.isInlet);
+	}
 	
 	protected void distributeItems() {
 		if(worldObj.isRemote) { return; }
@@ -514,8 +564,9 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		
 		if(this.isInlet()) { return; }
 		
-		_inventories[SLOT_OUTLET] = adjacencyHelper.distribute(_inventories[SLOT_OUTLET]);
-		markChunkDirty();
+		//_inventories[SLOT_OUTLET] = adjacencyHelper.distribute(_inventories[SLOT_OUTLET]);
+		this._inventories.setStackInSlot(SLOT_OUTLET, adjacencyHelper.distribute(this._inventories.getStackInSlot(SLOT_OUTLET)));
+		this.markChunkDirty();
 	}
 	
 	protected void checkForAdjacentInventories() {
@@ -535,24 +586,15 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		}
 		*/
 	}
-	
-	protected void markChunkDirty() {
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-		*/
-	}
 
 	// INeighborUpdateableEntity
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z,
-			Block neighborBlock) {
+	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
 		checkForAdjacentInventories();
 	}
 
 	@Override
-	public void onNeighborTileChange(IBlockAccess world, int x, int y, int z,
-			int neighborX, int neighborY, int neighborZ) {
+	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 		// TODO Commented temporarily to allow this thing to compile...
 		/*
 		int side = BlockHelper.determineAdjacentSide(this, neighborX, neighborY, neighborZ);

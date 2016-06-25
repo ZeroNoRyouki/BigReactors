@@ -9,7 +9,6 @@ import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.IMultiblockGuiHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +17,7 @@ import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEn
 import zero.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityReactorPartBase extends
-		RectangularMultiblockTileEntityBase implements IMultiblockGuiHandler, IHeatEntity,
+		RectangularMultiblockTileEntityBase implements /*IMultiblockGuiHandler,*/ IHeatEntity,
 														IRadiationModerator, IActivateable,
 														IBeefDebuggableTile {
 
@@ -59,6 +58,7 @@ public abstract class TileEntityReactorPartBase extends
 	/**
 	 * @return The Container object for use by the GUI. Null if there isn't any.
 	 */
+	/*
 	@Override
 	public Object getContainer(InventoryPlayer inventoryPlayer) {
 		return null;
@@ -69,6 +69,7 @@ public abstract class TileEntityReactorPartBase extends
 	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
 		return null;
 	}
+	*/
 	
 	// IHeatEntity
 	@Override

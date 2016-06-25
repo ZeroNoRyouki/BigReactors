@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
+import erogenousbeef.bigreactors.init.BrBlocks;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashSet;
@@ -1035,7 +1036,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(worldObj.isRemote) {
 			// Force controllers to re-render on client
 			for(IMultiblockPart part : attachedControllers) {
-				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(worldObj, part.getWorldPosition(), null, null);
 			}
 			
 			for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
@@ -1076,18 +1077,21 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		return true;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	private CoilPartData getCoilPartData(int x, int y, int z, Block block, int metadata) {
 		// Allow vanilla iron and gold blocks
 		if(block == Blocks.iron_block) { return TurbineCoil.getBlockData("blockIron"); }
 		if(block == Blocks.gold_block) { return TurbineCoil.getBlockData("blockGold"); }
 		
-		if(block == BigReactors.blockMetal && metadata == BlockBRMetal.METADATA_LUDICRITE) { return TurbineCoil.getBlockData("blockLudicrite"); }
+		if(block == BrBlocks.blockMetals && metadata == BlockBRMetal.METADATA_LUDICRITE) { return TurbineCoil.getBlockData("blockLudicrite"); }
 		
 		// Check the oredict to see if it's copper, or a funky kind of gold/iron block
 		// TODO Commented temporarily to allow this thing to compile...
 		String oreName = null;//ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata));
 		return TurbineCoil.getBlockData(oreName);
 	}
+	*/
 	
 	/**
 	 * Recalculate rotor and coil parameters

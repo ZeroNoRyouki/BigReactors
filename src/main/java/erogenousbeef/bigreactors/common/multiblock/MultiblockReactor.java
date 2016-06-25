@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
+import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashSet;
@@ -14,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,19 +34,11 @@ import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelContainer;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorCoolantPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTap;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
@@ -73,7 +65,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private float reactorHeat;
 	private float fuelHeat;
 	private WasteEjectionSetting wasteEjection;
+
+	private PowerSystem powerSystem;
 	private float energyStored;
+
+
 	protected FuelContainer fuelContainer;
 	protected RadiationHelper radiationHelper;
 	protected CoolantContainer coolantContainer;
@@ -102,7 +98,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	private Set<TileEntityReactorControlRod> attachedControlRods; 	// Highest internal Y-coordinate in the fuel column
 	private Set<TileEntityReactorAccessPort> attachedAccessPorts;
-	private Set<TileEntityReactorPart> attachedControllers;
+	private Set<TileEntityController> attachedControllers;
 	
 	private Set<TileEntityReactorFuelRod> attachedFuelRods;
 	private Set<TileEntityReactorCoolantPort> attachedCoolantPorts;
@@ -114,6 +110,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private int ticksSinceLastUpdate;
 	private static final int ticksBetweenUpdates = 3;
 	private static final int maxEnergyStored = 10000000;
+
 	
 	public MultiblockReactor(World world) {
 		super(world);
@@ -122,6 +119,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		active = false;
 		reactorHeat = 0f;
 		fuelHeat = 0f;
+		powerSystem = PowerSystem.Unknown;
 		energyStored = 0f;
 		wasteEjection = WasteEjectionSetting.kAutomatic;
 
@@ -139,7 +137,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedControlRods = new HashSet<TileEntityReactorControlRod>();
 		attachedAccessPorts = new HashSet<TileEntityReactorAccessPort>();
-		attachedControllers = new HashSet<TileEntityReactorPart>();
+		attachedControllers = new HashSet<TileEntityController>();
 		attachedFuelRods = new HashSet<TileEntityReactorFuelRod>();
 		attachedCoolantPorts = new HashSet<TileEntityReactorCoolantPort>();
 		attachedGlass = new HashSet<TileEntityReactorGlass>();
@@ -180,11 +178,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			attachedPowerTaps.add((TileEntityReactorPowerTap)part);
 		}
 
-		if(part instanceof TileEntityReactorPart) {
-			TileEntityReactorPart reactorPart = (TileEntityReactorPart)part;
-			if(BlockReactorPart.isController(reactorPart.getBlockMetadata())) {
-				attachedControllers.add(reactorPart);
-			}
+		if(part instanceof TileEntityController) {
+			attachedControllers.add((TileEntityController)part);
 		}
 
 		if(part instanceof ITickableMultiblockPart) {
@@ -226,11 +221,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			attachedPowerTaps.remove((TileEntityReactorPowerTap)part);
 		}
 
-		if(part instanceof TileEntityReactorPart) {
-			TileEntityReactorPart reactorPart = (TileEntityReactorPart)part;
-			if(BlockReactorPart.isController(reactorPart.getBlockMetadata())) {
-				attachedControllers.remove(reactorPart);
-			}
+		if(part instanceof TileEntityController) {
+			attachedControllers.remove(part);
 		}
 
 		if(part instanceof ITickableMultiblockPart) {
@@ -472,7 +464,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(worldObj.isRemote) {
 			// Force controllers to re-render on client
 			for(IMultiblockPart part : attachedControllers) {
-				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(worldObj, part.getWorldPosition(), null, null);
 			}
 		}
 		else {
@@ -790,6 +782,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @return The number of waste items distributed, i.e. the differential in stack size for wasteToDistribute.
 	 */
 	private int tryDistributeItems(TileEntityReactorAccessPort port, ItemStack itemsToDistribute, boolean distributeToInputs) {
+		// TODO compiled out while added Capabilities
+		/*
 		ItemStack existingStack = port.getStackInSlot(TileEntityReactorAccessPort.SLOT_OUTLET);
 		int initialWasteAmount = itemsToDistribute.stackSize;
 		if(!port.isInlet() || (distributeToInputs || attachedAccessPorts.size() < 2)) {
@@ -820,6 +814,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 		
 		return initialWasteAmount - itemsToDistribute.stackSize;
+		*/return 0;
 	}
 
 	@Override
@@ -1362,5 +1357,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 
 		return sb.toString();
+	}
+
+	public PartTier getMachineTier() {
+		return PartTier.Standard; // TODO implement
 	}
 }

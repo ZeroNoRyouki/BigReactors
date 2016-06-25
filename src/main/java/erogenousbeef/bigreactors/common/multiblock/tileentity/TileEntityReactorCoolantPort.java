@@ -1,9 +1,11 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -51,6 +53,11 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		else {
 			notifyNeighborsOfTileChange();
 		}
+	}
+
+	public void toggleInlet(boolean markDirty) {
+
+		this.setInlet(!this.inlet, markDirty);
 	}
 	
 	// MultiblockTileEntityBase
@@ -191,12 +198,12 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	// INeighborUpdatableEntity
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
 		checkForAdjacentTank();
 	}
 	
 	@Override
-	public void onNeighborTileChange(IBlockAccess world, int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
+	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 		checkForAdjacentTank();
 	}
 

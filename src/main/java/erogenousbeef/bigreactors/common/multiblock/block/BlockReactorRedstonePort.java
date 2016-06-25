@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import java.util.Random;
 
+import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -28,6 +29,8 @@ import net.minecraft.world.World;
 import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
+import zero.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 /*
@@ -35,23 +38,13 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorR
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")	
 })
 */
-public class BlockReactorRedstonePort extends BlockPart /* implements IRedNetOmniNode */ {
-
-	// TODO blockstate
-	//protected IIcon blockIconLit;
-	// TODO remove
-	public static final int META_REDSTONE_LIT = 1;
-	public static final int META_REDSTONE_UNLIT = 0;
+public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRedNetOmniNode */ {
 
 	protected final static int REDSTONE_VALUE_OFF = 0;  // corresponds to no power
 	protected final static int REDSTONE_VALUE_ON  = 15; // corresponds to strong power
 	
 	public BlockReactorRedstonePort(String blockName) {
-
-		super(PartType.ReactorRedstonePort, blockName, Material.iron);
-		this.setDefaultState(
-				this.blockState.getBaseState().withProperty(BlockReactorRedstonePort.LIT, false)
-		);
+		super(PartType.ReactorRedstonePort, blockName);
 	}
 
 	@Override
@@ -59,26 +52,6 @@ public class BlockReactorRedstonePort extends BlockPart /* implements IRedNetOmn
 		return new TileEntityReactorRedstonePort();
 	}
 
-    /* TODO blockstate
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		if(side == 0 || side == 1) { return BigReactors.blockReactorPart.getIcon(side, BlockReactorPart.METADATA_CASING); }
-
-		if(metadata == META_REDSTONE_LIT) { return blockIconLit; }
-		else {
-			return blockIcon;
-		}
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.blockIcon = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + ".unlit");
-		this.blockIconLit = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + ".lit");
-	}
-	*/
 
     // TODO blockstate
 	/* TODO Commented temporarily to allow this thing to compile...
@@ -240,8 +213,19 @@ public class BlockReactorRedstonePort extends BlockPart /* implements IRedNetOmn
 	protected void buildBlockState(BlockStateContainer.Builder builder) {
 
 		super.buildBlockState(builder);
-		builder.add(BlockReactorRedstonePort.LIT);
+		builder.add(Properties.LIT);
 	}
 
-	public static final PropertyBool LIT = PropertyBool.create("lit");
+	@Override
+	protected IBlockState buildDefaultState(IBlockState state) {
+
+		return super.buildDefaultState(state).withProperty(Properties.LIT, false);
+	}
+
+	@Override
+	protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
+
+		return super.buildActualState(state, world, position, part).withProperty(Properties.LIT,
+				(part instanceof TileEntityReactorRedstonePort) && ((TileEntityReactorRedstonePort)part).isRedstoneActive());
+	}
 }

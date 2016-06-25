@@ -28,29 +28,7 @@ import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorRedNetPort extends TileEntityReactorPart implements ITickableMultiblockPart, INeighborUpdatableEntity {
 
-	public enum CircuitType {
-		DISABLED,
-		inputActive, 				// Input: reactor on/off
-		inputSetControlRod, 		// Input: control rod insertion (0-100)
-		inputEjectWaste,			// Input: eject waste from the reactor
 
-		outputFuelTemperature,		// Output: Temperature of the reactor fuel
-		outputCasingTemperature,	// Output: Temperature of the reactor casing
-		outputFuelMix, 		// Output: Fuel mix, % of contents that is fuel (0-100, 100 = 100% fuel)
-		outputFuelAmount, 	// Output: Fuel amount in a control rod, raw value, (0-4*height)
-		outputWasteAmount, 	// Output: Waste amount in a control rod, raw value, (0-4*height)
-		outputEnergyAmount; // Output: Energy in the reactor's buffer, percentile (0-100, 100 = 100% full)
-		
-		public static final CircuitType[] s_Types = CircuitType.values();
-		
-		public static boolean hasCoordinate(TileEntityReactorRedNetPort.CircuitType circuitType) {
-			return circuitType == CircuitType.inputSetControlRod;
-		}
-
-		public static boolean canBeToggledBetweenPulseAndNormal(CircuitType circuitType) {
-			return circuitType == CircuitType.inputActive;
-		}
-	}
 
 	protected final static int minInputEnumValue = CircuitType.inputActive.ordinal();
 	protected final static int maxInputEnumValue = CircuitType.inputEjectWaste.ordinal();

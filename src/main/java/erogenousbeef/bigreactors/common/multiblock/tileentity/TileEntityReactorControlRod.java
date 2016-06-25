@@ -1,14 +1,15 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-// TODO Commented temporarily to allow this thing to compile...
-//import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
+import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,7 +32,12 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		controlRodInsertion = minInsertion;
 		name = "";
 	}
-	
+
+	@Override
+	public boolean canOpenGui(World world, BlockPos posistion, IBlockState state) {
+		return true;
+	}
+
 	// Data accessors
 	public short getControlRodInsertion() {
 		return this.controlRodInsertion;
@@ -89,23 +95,16 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	public void writeToNBT(NBTTagCompound data) {
 		super.writeToNBT(data);
 		this.writeLocalDataToNBT(data);
-	}	
-	
-	// IMultiblockGuiHandler
-	/**
-	 * @return The Container object for use by the GUI. Null if there isn't any.
-	 */
+	}
+
 	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
+	public Object getServerGuiElement(int guiId, EntityPlayer player) {
 		return new ContainerBasic();
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//return new GuiReactorControlRod(new ContainerBasic(), this);
-		return null;
+	public Object getClientGuiElement(int guiId, EntityPlayer player) {
+		return new GuiReactorControlRod(new ContainerBasic(), this);
 	}
 	
 	// TileEntityReactorPart
@@ -165,6 +164,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		return false;
 	}
 
+	// TODO check with ModTileEntity
 	@Override
 	protected void encodeDescriptionPacket(NBTTagCompound packet) {
 		super.encodeDescriptionPacket(packet);
@@ -172,7 +172,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		this.writeLocalDataToNBT(localData);
 		packet.setTag("reactorControlRod", localData);
 	}
-	
+
+	// TODO check with ModTileEntity
 	@Override
 	protected void decodeDescriptionPacket(NBTTagCompound packet) {
 		super.decodeDescriptionPacket(packet);

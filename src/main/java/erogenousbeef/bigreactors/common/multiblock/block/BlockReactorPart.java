@@ -18,7 +18,6 @@ public class BlockReactorPart extends BlockMultiblockDevice /*implements IRedNet
 	//private IIcon[] _redNetPortConfigIcons = new IIcon[TileEntityReactorRedNetPort.CircuitType.values().length - 1];
 	
 	public BlockReactorPart(PartType type, String blockName) {
-
 		super(type, blockName);
 	}
 
@@ -126,4 +125,5 @@ public class BlockReactorPart extends BlockMultiblockDevice /*implements IRedNet
 		return null;
 	}
 	*/
+
 }

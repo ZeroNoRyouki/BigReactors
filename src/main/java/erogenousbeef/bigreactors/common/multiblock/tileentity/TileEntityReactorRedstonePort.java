@@ -1,7 +1,10 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.CircuitType;
+import erogenousbeef.bigreactors.common.Properties;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,12 +24,12 @@ import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import zero.mods.zerocore.lib.BlockFacings;
+import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		implements ITickableMultiblockPart {
 
-	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-	//protected CircuitType circuitType;
+	protected CircuitType circuitType;
 	protected int outputLevel;
 	protected boolean activeOnPulse;
 	protected boolean greaterThan; // if false, less than
@@ -39,14 +42,16 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	public TileEntityReactorRedstonePort() {
 		super();
 
-		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-		//circuitType = circuitType.DISABLED;
+		circuitType = circuitType.DISABLED;
 		isExternallyPowered = false;
 		ticksSinceLastUpdate = 0;
 	}
 
-	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-	/*
+	@Override
+	public boolean canOpenGui(World world, BlockPos posistion, IBlockState state) {
+		return true;
+	}
+
 	// Redstone methods
 	public boolean isRedstoneActive() {
 		if(!this.isConnected()) { return false; }
@@ -74,13 +79,12 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	}
 	
 	public boolean isInput() {
-		return TileEntityReactorRedNetPort.isInput(this.circuitType);
+		return this.circuitType.isInput();
 	}
 	
 	public boolean isOutput() {
-		return TileEntityReactorRedNetPort.isOutput(this.circuitType);
+		return this.circuitType.isOutput();
 	}
-	*/
 
 	protected boolean checkVariable(int value) {
 		if(this.greaterThan) {
@@ -92,22 +96,15 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	}
 	
 	public void sendRedstoneUpdate() {
-		if(this.worldObj != null && !this.worldObj.isRemote) {
-			int md;
 
-			// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-			/*
-			if(this.isOutput()) {
-				md = isRedstoneActive() ? BlockReactorRedstonePort.META_REDSTONE_LIT : BlockReactorRedstonePort.META_REDSTONE_UNLIT;
-			}
-			else {
-				md = isExternallyPowered ? BlockReactorRedstonePort.META_REDSTONE_LIT : BlockReactorRedstonePort.META_REDSTONE_UNLIT;
-			}
+		if (this.worldObj != null && !this.worldObj.isRemote) {
 
-			if(md != this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) {
-				this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, md, 3);
-			}
-			*/
+			boolean newLitState = (this.isOutput() && this.isRedstoneActive()) || this.isExternallyPowered;
+			BlockPos position = this.getWorldPosition();
+			IBlockState blockState = this.worldObj.getBlockState(position);
+
+			if (newLitState != blockState.getValue(Properties.LIT))
+				this.worldObj.setBlockState(position, blockState.withProperty(Properties.LIT, newLitState), 3);
 		}
 	}
 	
@@ -138,8 +135,6 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	protected void onRedstoneInputUpdated() {
 		if(!this.isConnected()) { return; }
 
-		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-		/*
 		MultiblockReactor reactor = (MultiblockReactor)getMultiblockController();
 		switch(this.circuitType) {
 		case inputActive:
@@ -182,7 +177,6 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		default:
 			break;
 		}
-		*/
 	}
 	
 	public int getOutputLevel() { return outputLevel; }
@@ -248,9 +242,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	@SideOnly(Side.CLIENT)
 	public boolean getGreaterThan() { return this.greaterThan; }
 
-	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-	//public CircuitType getCircuitType() { return this.circuitType; }
-
+	public CircuitType getCircuitType() { return this.circuitType; }
 
 	private boolean shouldSetControlRodsInsteadOfChange() { return !greaterThan; }
 
@@ -456,19 +448,18 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		this.sendRedstoneUpdate();
 	}
 
-	// IBeefGuiEntity
-	@SideOnly(Side.CLIENT)
 	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
+	public Object getServerGuiElement(int guiId, EntityPlayer player) {
+		return new ContainerBasic();
+	}
+
+	@Override
+	public Object getClientGuiElement(int guiId, EntityPlayer player) {
 		// TODO Commented temporarily to allow this thing to compile...
 		//return new GuiReactorRedstonePort(new ContainerBasic(), this);
 		return null;
 	}
 
-	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
-		return new ContainerBasic();
-	}
 
 	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
 	/*

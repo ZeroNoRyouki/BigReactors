@@ -1,5 +1,9 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import erogenousbeef.bigreactors.client.gui.GuiReactorStatus;
 import erogenousbeef.bigreactors.common.BigReactors;
@@ -22,12 +26,10 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
 
 		BlockPos position = this.getPos();
+		IBlockState state = this.worldObj.getBlockState(position);
 
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		if(BlockReactorPart.isCasing(metadata)) { return true; }
-		*/
+		if (BrBlocks.reactorCasing == state.getBlock())
+			return true;
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_frame_block", position.getX(), position.getY(), position.getZ());
 		return false;
@@ -71,33 +73,22 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	@Override
 	public void onMachineActivated() {
 		// Re-render controllers on client
-		if(this.worldObj.isRemote) {
-			if(getBlockType() == BigReactors.blockReactorPart) {
-				int metadata = this.getBlockMetadata();
-				if(BlockReactorPart.isController(metadata)) {
-					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
-				}
-			}
-		}
+		if (this.worldObj.isRemote && (this.getBlockType() == BrBlocks.reactorController))
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 	}
 
 	@Override
 	public void onMachineDeactivated() {
 		// Re-render controllers on client
-		if(this.worldObj.isRemote) {
-			if(getBlockType() == BigReactors.blockReactorPart) {
-				int metadata = this.getBlockMetadata();
-				if(BlockReactorPart.isController(metadata)) {
-					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
-				}
-			}
-		}
+		if (this.worldObj.isRemote && (this.getBlockType() == BrBlocks.reactorController))
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 	}
 
+	/*
 	// IMultiblockGuiHandler
-	/**
+	/ **
 	 * @return The Container object for use by the GUI. Null if there isn't any.
-	 */
+	 * /
 	@Override
 	public Object getContainer(InventoryPlayer inventoryPlayer) {
 		if(!this.isConnected()) {
@@ -105,12 +96,12 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 		}
 
 		// TODO Commented temporarily to allow this thing to compile...
-		/*
+		/ *
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);		
 		if(BlockReactorPart.isController(metadata)) {
 			return new ContainerReactorController(this, inventoryPlayer.player);
 		}
-		*/
+		* /
 		return null;
 	}
 
@@ -122,12 +113,17 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 		}
 
 		// TODO Commented temporarily to allow this thing to compile...
-		/*
+		/ *
 		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		if(BlockReactorPart.isController(metadata)) {
 			return new GuiReactorStatus(new ContainerReactorController(this, inventoryPlayer.player), this);
 		}
-		*/
+		* /
 		return null;
+	}
+	*/
+
+	public PartTier getMachineTier() {
+		return this.isConnected() ? ((MultiblockReactor)this.getMultiblockController()).getMachineTier() : PartTier.Standard;
 	}
 }

@@ -8,12 +8,11 @@ import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.IMultiblockGuiHandler;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 import zero.mods.zerocore.util.WorldHelper;
 
-public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IMultiblockGuiHandler, 
+public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements /*IMultiblockGuiHandler,*/
 		IActivateable, IBeefDebuggableTile {
 
 	public TileEntityTurbinePartBase() {
@@ -61,6 +60,7 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	/**
 	 * @return The Container object for use by the GUI. Null if there isn't any.
 	 */
+	/*
 	@Override
 	public Object getContainer(InventoryPlayer inventoryPlayer) {
 		return null;
@@ -71,6 +71,7 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
 		return null;
 	}
+	*/
 
 	public MultiblockTurbine getTurbine() {
 		return (MultiblockTurbine)getMultiblockController();

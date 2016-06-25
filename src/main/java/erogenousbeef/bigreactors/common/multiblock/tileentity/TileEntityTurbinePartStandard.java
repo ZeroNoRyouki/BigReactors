@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;
@@ -55,8 +56,20 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 		}
 		return true;
 	}
-	
+
 	@Override
+	public Object getServerGuiElement(int guiId, EntityPlayer player) {
+		return super.getServerGuiElement(guiId, player);
+	}
+
+	@Override
+	public Object getClientGuiElement(int guiId, EntityPlayer player) {
+		return super.getClientGuiElement(guiId, player);
+	}
+
+
+	// TODO GUI
+	//@Override
 	public Object getContainer(InventoryPlayer inventoryPlayer) {
 		if(!this.isConnected()) {
 			return null;
@@ -70,7 +83,7 @@ public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	@Override
+	//@Override
 	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
 		if(!this.isConnected()) {
 			return null;

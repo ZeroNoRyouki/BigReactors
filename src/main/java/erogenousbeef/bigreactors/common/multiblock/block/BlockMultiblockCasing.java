@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartStandard;
@@ -15,14 +16,10 @@ import net.minecraft.world.World;
 import zero.mods.zerocore.api.multiblock.rectangular.PartPosition;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
-public class BlockMultiblockCasing extends BlockPart {
+public class BlockMultiblockCasing extends BlockTieredPart {
 
     public BlockMultiblockCasing(PartType type, String blockName) {
-
         super(type, blockName, Material.iron);
-        this.setDefaultState(
-                this.blockState.getBaseState().withProperty(BlockMultiblockCasing.CASINGTYPE, CasingType.Single)
-        );
     }
 
     @Override
@@ -55,18 +52,22 @@ public class BlockMultiblockCasing extends BlockPart {
                 type = CasingType.from(mbTile.getPartPosition());
         }
 
-        return state.withProperty(BlockMultiblockCasing.CASINGTYPE, type);
+        return state.withProperty(Properties.CASINGTYPE, type);
     }
 
     protected void buildBlockState(BlockStateContainer.Builder builder) {
 
         super.buildBlockState(builder);
-        builder.add(BlockMultiblockCasing.CASINGTYPE);
+        builder.add(Properties.CASINGTYPE);
     }
 
-    private static final PropertyEnum<CasingType> CASINGTYPE = PropertyEnum.<CasingType>create("casing", CasingType.class);
+    @Override
+    protected IBlockState buildDefaultState(IBlockState state) {
 
-    private enum CasingType implements IStringSerializable {
+        return super.buildDefaultState(state).withProperty(Properties.CASINGTYPE, CasingType.Single);
+    }
+
+    public enum CasingType implements IStringSerializable {
 
         Single,
         Wall,

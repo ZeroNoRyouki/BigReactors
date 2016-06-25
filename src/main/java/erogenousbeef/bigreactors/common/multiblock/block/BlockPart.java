@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
@@ -25,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import zero.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 import zero.mods.zerocore.api.multiblock.validation.ValidationError;
 import zero.mods.zerocore.lib.block.ModTileEntity;
 import zero.mods.zerocore.util.WorldHelper;
@@ -179,6 +182,21 @@ public class BlockPart extends BlockBR {
         Block sideBlock = sideState.getBlock();
 
         return sideBlock != this;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos position) {
+
+        TileEntity te = world.getTileEntity(position);
+
+        if (te instanceof MultiblockTileEntityBase)
+            state = this.buildActualState(state, world, position, (MultiblockTileEntityBase)te);
+
+        return state;
+    }
+
+    protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
+        return state;
     }
 
     protected final PartType _type;

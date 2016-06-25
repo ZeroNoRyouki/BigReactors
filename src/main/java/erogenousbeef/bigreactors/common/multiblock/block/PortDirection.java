@@ -1,14 +1,11 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 
-enum PortDirection implements IStringSerializable {
+public enum PortDirection implements IStringSerializable {
 
     Inlet,
     Outlet;
-
-    public static final PropertyEnum<PortDirection> PORTDIRECTION = PropertyEnum.<PortDirection>create("portdirection", PortDirection.class);
 
     PortDirection() {
 
