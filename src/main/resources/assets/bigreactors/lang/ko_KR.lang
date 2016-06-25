@@ -1,7 +1,7 @@
 # Big Reactors Language File - Korean
 # @Team MMKP(for @puyo061)
 
-itemGroup.BigReactors=빅 리액터
+itemGroup.BigReactors=빅 리액터  Reborn
 
 # Blocks
 tile.bigreactors:brOre.yellorite.name=옐로이트 광석

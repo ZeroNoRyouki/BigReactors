@@ -1,7 +1,7 @@
 # Simplified Chinese Language file
 # @author crafteverywhere,ReventonC,sb023612
 
-itemGroup.BigReactors=大型反应堆
+itemGroup.BigReactors=大型反应堆 Reborn
 
 # Blocks
 tile.bigreactors:brOre.yellorite.name=黄铀矿石
