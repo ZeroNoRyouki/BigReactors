@@ -1,22 +1,20 @@
 package erogenousbeef.bigreactors.common.item;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import erogenousbeef.bigreactors.common.BRConfig;
 import erogenousbeef.bigreactors.common.MetalType;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import zero.mods.zerocore.lib.MetalSize;
-import zero.mods.zerocore.lib.client.ICustomModelsProvider;
 
-public class ItemBRMetal extends ItemBase implements ICustomModelsProvider {
+public class ItemBRMetal extends ItemBase {
 
 	public ItemBRMetal(String itemName, MetalSize size) {
 
@@ -57,6 +55,19 @@ public class ItemBRMetal extends ItemBase implements ICustomModelsProvider {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void onPostClientRegister() {
+
+		ResourceLocation location = this.getRegistryName();
+
+		location = new ResourceLocation(location.getResourceDomain(), "items/" + location.getResourcePath());
+
+		for (MetalType metal : MetalType.values())
+			ModelLoader.setCustomModelResourceLocation(this, metal.toMeta(),
+					new ModelResourceLocation(location, String.format("metal=%s", metal.getName())));
+	}
+
+	@Override
 	public int getMetadata(int damage)
 	{
 		return damage;
@@ -88,23 +99,6 @@ public class ItemBRMetal extends ItemBase implements ICustomModelsProvider {
 
 		for (int i = 0; i < length; ++i)
 			list.add(this._subItems[i]);
-	}
-
-	@Override
-	public List<Pair<Integer, String>> getMetadataToModelMappings() {
-
-		List<Pair<Integer, String>> mappings = new ArrayList();
-		MetalType[] metals = MetalType.values();
-
-		for (MetalType metal : metals)
-			mappings.add(new ImmutablePair(Integer.valueOf(metal.toMeta()), String.format("metal=%s", metal.getName())));
-
-		return mappings;
-	}
-
-	@Override
-	public ResourceLocation getCustomResourceLocation() {
-		return null;
 	}
 
 	/*

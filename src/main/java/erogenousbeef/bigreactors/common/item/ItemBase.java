@@ -16,20 +16,21 @@ public class ItemBase extends Item {
 	}
 
 	public ItemStack createItemStack() {
-
 		return this.createItemStack(1, 0);
 	}
 	public ItemStack createItemStack(int amount) {
-
 		return this.createItemStack(amount, 0);
 	}
 
 	public ItemStack createItemStack(int amount, int meta) {
-
 		return new ItemStack(this, amount, meta);
 	}
 
 	public void onPostRegister() {
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void onPostClientRegister() {
 	}
 
 	@Override
