@@ -8,6 +8,7 @@ import erogenousbeef.bigreactors.common.block.BlockBRMetal;
 import erogenousbeef.bigreactors.common.block.BlockBROre;
 import erogenousbeef.bigreactors.common.block.DeviceType;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.block.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
@@ -25,15 +26,16 @@ public final class BrBlocks {
     public static final BlockMultiblockGlass reactorGlass;
     public static final BlockMultiblockCasing reactorCasing;
     public static final BlockReactorController reactorController;
-    public static final BlockReactorPowerTap reactorPowerTap;
+    public static final BlockReactorPowerTap reactorPowerTapRF;
+    public static final BlockReactorPowerTap reactorPowerTapTesla;
     public static final BlockReactorIOPort reactorAccessPort;
     public static final BlockReactorIOPort reactorCoolantPort;
     public static final BlockReactorControlRod reactorControlRod;
-    public static final BlockReactorPart reactorRedNetPort;
-    public static final BlockReactorPart reactorComputerPort;
+    //public static final BlockReactorPart reactorRedNetPort;
+    //public static final BlockReactorPart reactorComputerPort;
     public static final BlockReactorRedstonePort reactorRedstonePort;
     public static final BlockFuelRod reactorFuelRod;
-    public static final BlockReactorCreativeCoolantPort reactorCreativeCoolantPort;
+    public static final BlockReactorIOPort reactorCreativeCoolantPort;
 
     // Turbine parts
     public static final BlockMultiblockGlass turbineGlass;
@@ -73,15 +75,16 @@ public final class BrBlocks {
         reactorGlass = (BlockMultiblockGlass)proxy.register(new BlockMultiblockGlass(PartType.ReactorGlass, "reactorGlass"));
         reactorCasing = (BlockMultiblockCasing)proxy.register(new BlockMultiblockCasing(PartType.ReactorCasing, "reactorCasing"));
         reactorController = (BlockReactorController)proxy.register(new BlockReactorController("reactorController"));
-        reactorPowerTap = (BlockReactorPowerTap)proxy.register(new BlockReactorPowerTap("reactorPowerTap"));
+        reactorPowerTapRF = (BlockReactorPowerTap)proxy.register(new BlockReactorPowerTap("reactorPowerTapRF", PowerSystem.RedstoneFlux));
+        reactorPowerTapTesla = (BlockReactorPowerTap)proxy.register(new BlockReactorPowerTap("reactorPowerTapTesla", PowerSystem.Tesla));
         reactorAccessPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorAccessPort, "reactorAccessPort"));
         reactorCoolantPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCoolantPort, "reactorCoolantPort"));
         reactorControlRod = (BlockReactorControlRod)proxy.register(new BlockReactorControlRod("reactorControlRod"));
-        reactorRedNetPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorRednetPort, "reactorRedNetPort"));
-        reactorComputerPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorComputerPort, "reactorComputerPort"));
+        //reactorRedNetPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorRednetPort, "reactorRedNetPort"));
+        //reactorComputerPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorComputerPort, "reactorComputerPort"));
         reactorRedstonePort = (BlockReactorRedstonePort)proxy.register(new BlockReactorRedstonePort("reactorRedstonePort"));
         reactorFuelRod = (BlockFuelRod)proxy.register(new BlockFuelRod("reactorFuelRod"));
-        reactorCreativeCoolantPort = !regCreativeParts ? null : (BlockReactorCreativeCoolantPort)proxy.register(new BlockReactorCreativeCoolantPort("reactorCreativeCoolantPort"));
+        reactorCreativeCoolantPort = !regCreativeParts ? null : (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCreativeCoolantPort, "reactorCreativeCoolantPort"));
 
         // - turbine parts
         turbineGlass = (BlockMultiblockGlass)proxy.register(new BlockMultiblockGlass(PartType.TurbineGlass, "turbineGlass"));
@@ -102,7 +105,8 @@ public final class BrBlocks {
         proxy.register(TileEntityReactorPart.class);
         proxy.register(TileEntityReactorGlass.class);
         proxy.register(TileEntityController.class);
-        proxy.register(TileEntityReactorPowerTap.class);
+        proxy.register(TileEntityReactorPowerTapRedstoneFlux.class);
+        proxy.register(TileEntityReactorPowerTapTesla.class);
         proxy.register(TileEntityReactorAccessPort.class);
         proxy.register(TileEntityReactorFuelRod.class);
         proxy.register(TileEntityReactorControlRod.class);
