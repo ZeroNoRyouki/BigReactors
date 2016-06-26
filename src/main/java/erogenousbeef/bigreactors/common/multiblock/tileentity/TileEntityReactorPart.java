@@ -61,16 +61,6 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockController) {
-		super.onMachineAssembled(multiblockController);
-	}
-
-	@Override
-	public void onMachineBroken() {
-		super.onMachineBroken();
-	}
-
-	@Override
 	public void onMachineActivated() {
 		// Re-render controllers on client
 		if (this.worldObj.isRemote && (this.getBlockType() == BrBlocks.reactorController))
@@ -83,45 +73,6 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 		if (this.worldObj.isRemote && (this.getBlockType() == BrBlocks.reactorController))
 			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 	}
-
-	/*
-	// IMultiblockGuiHandler
-	/ **
-	 * @return The Container object for use by the GUI. Null if there isn't any.
-	 * /
-	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
-		if(!this.isConnected()) {
-			return null;
-		}
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/ *
-		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);		
-		if(BlockReactorPart.isController(metadata)) {
-			return new ContainerReactorController(this, inventoryPlayer.player);
-		}
-		* /
-		return null;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		if(!this.isConnected()) {
-			return null;
-		}
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/ *
-		int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		if(BlockReactorPart.isController(metadata)) {
-			return new GuiReactorStatus(new ContainerReactorController(this, inventoryPlayer.player), this);
-		}
-		* /
-		return null;
-	}
-	*/
 
 	public PartTier getMachineTier() {
 		return this.isConnected() ? ((MultiblockReactor)this.getMultiblockController()).getMachineTier() : PartTier.Standard;
