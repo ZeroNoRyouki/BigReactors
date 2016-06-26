@@ -64,6 +64,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private WasteEjectionSetting wasteEjection;
 
 	private PowerSystem powerSystem;
+	private PartTier partsTier;
 	private float energyStored;
 
 
@@ -118,6 +119,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		powerSystem = PowerSystem.RedstoneFlux;
 		energyStored = 0f;
 		wasteEjection = WasteEjectionSetting.kAutomatic;
+		this.partsTier = PartTier.Standard;
 
 		// Derived stats
 		fuelToReactorHeatTransferCoefficient = 0f;
@@ -252,7 +254,33 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			return false;
 		}
 
-		PowerSystem proposedPowerSystem = PowerSystem.RedstoneFlux;
+		// check tier
+
+		PartTier candidateTier = null;
+
+		for (IMultiblockPart part: this.connectedParts) {
+
+			if (part instanceof TileEntityReactorPartBase) {
+
+				PartTier tier = ((TileEntityReactorPartBase)part).getPartTier();
+
+				if (null == candidateTier)
+					candidateTier = tier;
+
+				else if (candidateTier != tier) {
+
+					validatorCallback.setLastError("multiblock.validation.reactor.mixed_tiers");
+					return false;
+				}
+			}
+		}
+
+		this.partsTier = candidateTier;
+
+
+		// check power system
+
+		PowerSystem candidatePowerSystem = PowerSystem.RedstoneFlux;
 
 		if (this.attachedPowerTaps.size() > 0) {
 
@@ -272,10 +300,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 				return false;
 			}
 
-			proposedPowerSystem = tesla > 0 ? PowerSystem.Tesla : PowerSystem.RedstoneFlux;
+			candidatePowerSystem = tesla > 0 ? PowerSystem.Tesla : PowerSystem.RedstoneFlux;
 		}
 
-		this.switchPowerSystem(proposedPowerSystem);
+		this.switchPowerSystem(candidatePowerSystem);
 		
 		return super.isMachineWhole(validatorCallback);
 	}
