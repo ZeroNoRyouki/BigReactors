@@ -2,7 +2,10 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTap;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTapRedstoneFlux;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTapTesla;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -16,13 +19,26 @@ import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEn
 
 public class BlockReactorPowerTap extends BlockReactorPart {
 
-    public BlockReactorPowerTap(String blockName) {
+    public BlockReactorPowerTap(String blockName, PowerSystem powerSystem) {
+
         super(PartType.ReactorPowerTap, blockName);
+        this._powerSystem = powerSystem;
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityReactorPowerTap();
+
+        switch (this._powerSystem) {
+
+            case RedstoneFlux:
+                return new TileEntityReactorPowerTapRedstoneFlux();
+
+            case Tesla:
+                return new TileEntityReactorPowerTapTesla();
+
+            default:
+                throw new IllegalArgumentException("Unrecognized power system");
+        }
     }
 
     @Override
@@ -48,6 +64,8 @@ public class BlockReactorPowerTap extends BlockReactorPart {
 
         return state;
     }
+
+    protected PowerSystem _powerSystem;
 
     public enum PowerTapState implements IStringSerializable {
 

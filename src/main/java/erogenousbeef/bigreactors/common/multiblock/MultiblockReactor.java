@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -23,8 +22,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
-import cofh.api.energy.IEnergyProvider;
-//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
@@ -50,7 +47,7 @@ import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockContro
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import zero.mods.zerocore.util.WorldHelper;
 
-public class MultiblockReactor extends RectangularMultiblockControllerBase implements IEnergyProvider, IReactorFuelInfo, IMultipleFluidHandler, IActivateable {
+public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo, IMultipleFluidHandler, IActivateable {
 	public static final int FuelCapacityPerFuelRod = 4 * Reactants.standardSolidReactantAmount; // 4 ingots per rod
 	
 	public static final int FLUID_SUPERHEATED = CoolantContainer.HOT;
@@ -109,7 +106,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private Set<EntityPlayer> updatePlayers;
 	private int ticksSinceLastUpdate;
 	private static final int ticksBetweenUpdates = 3;
-	private static final int maxEnergyStored = 10000000;
 
 	
 	public MultiblockReactor(World world) {
@@ -119,7 +115,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		active = false;
 		reactorHeat = 0f;
 		fuelHeat = 0f;
-		powerSystem = PowerSystem.Unknown;
+		powerSystem = PowerSystem.RedstoneFlux;
 		energyStored = 0f;
 		wasteEjection = WasteEjectionSetting.kAutomatic;
 
@@ -255,6 +251,31 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			validatorCallback.setLastError("multiblock.validation.reactor.too_few_controllers");
 			return false;
 		}
+
+		PowerSystem proposedPowerSystem = PowerSystem.RedstoneFlux;
+
+		if (this.attachedPowerTaps.size() > 0) {
+
+			int rf = 0, tesla = 0;
+
+			for (TileEntityReactorPowerTap tap : this.attachedPowerTaps) {
+
+				if (tap instanceof TileEntityReactorPowerTapRedstoneFlux)
+					++rf;
+				else if (tap instanceof TileEntityReactorPowerTapTesla)
+					++tesla;
+			}
+
+			if (rf != 0 && tesla != 0) {
+
+				validatorCallback.setLastError("multiblock.validation.reactor.mixed_power_systems");
+				return false;
+			}
+
+			proposedPowerSystem = tesla > 0 ? PowerSystem.Tesla : PowerSystem.RedstoneFlux;
+		}
+
+		this.switchPowerSystem(proposedPowerSystem);
 		
 		return super.isMachineWhole(validatorCallback);
 	}
@@ -357,11 +378,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(fuelHeat < 0f) { setFuelHeat(0f); }
 		
 		// Distribute available power
-		int energyAvailable = (int)getEnergyStored();
-		int energyRemaining = energyAvailable;
+		long energyAvailable = getEnergyStored();
+		long energyRemaining = energyAvailable;
 		if(attachedPowerTaps.size() > 0 && energyRemaining > 0) {
 			// First, try to distribute fairly
-			int splitEnergy = energyRemaining / attachedPowerTaps.size();
+			long splitEnergy = energyRemaining / attachedPowerTaps.size();
 			for(TileEntityReactorPowerTap powerTap : attachedPowerTaps) {
 				if(energyRemaining <= 0) { break; }
 				if(!powerTap.isConnected()) { continue; }
@@ -410,8 +431,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(energyStored < 0.0 || Float.isNaN(energyStored)) {
 			energyStored = 0.0f;
 		}
-		else if(energyStored > maxEnergyStored) {
-			energyStored = maxEnergyStored;
+		else if(energyStored > this.powerSystem.maxCapacity) {
+			energyStored = this.powerSystem.maxCapacity;
 		}
 	}
 	
@@ -431,15 +452,18 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @param newEnergy
 	 */
 	protected void addStoredEnergy(float newEnergy) {
-		if(Float.isNaN(newEnergy)) { return; }
 
-		energyStored += newEnergy;
-		if(energyStored > maxEnergyStored) {
-			energyStored = maxEnergyStored;
+		if (Float.isNaN(newEnergy))
+			return;
+
+		this.energyStored += newEnergy;
+
+		if (this.energyStored > this.powerSystem.maxCapacity) {
+			this.energyStored = this.powerSystem.maxCapacity;
 		}
-		if(-0.00001f < energyStored && energyStored < 0.00001f) {
+		if (-0.00001f < this.energyStored && this.energyStored < 0.00001f) {
 			// Clamp to zero
-			energyStored = 0f;
+			this.energyStored = 0f;
 		}
 	}
 
@@ -449,9 +473,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @param energy Amount by which the buffer should be reduced.
 	 */
 	protected void reduceStoredEnergy(float energy) {
-		this.addStoredEnergy(-1f * energy);
+		this.addStoredEnergy(-energy);
 	}
-	
+
 	public void setActive(boolean act) {
 		if(act == this.active) { return; }
 		this.active = act;
@@ -851,9 +875,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		this.readFromNBT(data);
 	}
 	
-	public float getEnergyStored() {
+	/*public float getEnergyStored() {
 		return energyStored;
-	}
+	}*/
 
 	/**
 	 * Directly set the waste ejection setting. Will dispatch network updates
@@ -1162,6 +1186,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		else { return (float)amtFuel / (float)(amtFuel+amtWaste); }
 	}
 
+	/*
 	// IEnergyProvider
 	@Override
 	public int extractEnergy(EnumFacing from, int maxExtract,
@@ -1187,6 +1212,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	public int getMaxEnergyStored(EnumFacing from) {
 		return maxEnergyStored;
 	}
+	*/
 
 	// Redstone helper
 	public void setAllControlRodInsertionValues(int newValue) {
@@ -1235,7 +1261,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	public int getEnergyStoredPercentage() {
-		return (int)(this.energyStored / (float)this.maxEnergyStored * 100f);
+		return (int)(this.energyStored / (float)this.powerSystem.maxCapacity * 100f);
 	}
 
 	@Override
@@ -1361,5 +1387,42 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	public PartTier getMachineTier() {
 		return PartTier.Standard; // TODO implement
+	}
+
+	protected void switchPowerSystem(PowerSystem newPowerSystem) {
+
+		this.powerSystem = newPowerSystem;
+
+		if (this.energyStored > this.powerSystem.maxCapacity)
+			this.energyStored = this.powerSystem.maxCapacity;
+	}
+
+	/*
+	 * Power exchange API (replacement for IEnergyProvider)
+ 	*/
+	@Override
+	public long getEnergyCapacity() {
+		return this.powerSystem.maxCapacity;
+	}
+
+	@Override
+	public long getEnergyStored() {
+		return (long)this.energyStored;
+	}
+
+	@Override
+	public long extractEnergy(long maxEnergy, boolean simulate) {
+
+		long removed = (long)Math.min(maxEnergy, this.energyStored);
+
+		if (!simulate)
+			this.reduceStoredEnergy(removed);
+
+		return removed;
+	}
+
+	@Override
+	public PowerSystem getPowerSystem() {
+		return this.powerSystem;
 	}
 }

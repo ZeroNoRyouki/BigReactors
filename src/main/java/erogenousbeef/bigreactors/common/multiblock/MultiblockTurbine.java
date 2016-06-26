@@ -53,7 +53,7 @@ import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import zero.mods.zerocore.api.multiblock.validation.ValidationError;
 import zero.mods.zerocore.util.WorldHelper;
 
-public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
+public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IPowerGenerator, IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
 
 	public enum VentStatus {
 		VentOverflow,
@@ -81,6 +81,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	
 	// Persistent game data
 	float energyStored;
+	private PowerSystem powerSystem;
 	boolean active;
 	float rotorEnergy;
 	boolean inductorEngaged;
@@ -155,6 +156,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		attachedGlass = new HashSet<TileEntityTurbinePartGlass>();
 		
 		energyStored = 0f;
+		this.powerSystem = PowerSystem.RedstoneFlux;
 		active = false;
 		inductorEngaged = true;
 		ventStatus = VentStatus.VentOverflow;
@@ -965,9 +967,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	}
 	
 	// Energy Helpers
-	public float getEnergyStored() {
+	/*public float getEnergyStored() {
 		return energyStored;
-	}
+	}*/
 	
 	/**
 	 * Remove some energy from the internal storage buffer.
@@ -1286,5 +1288,34 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		for(TileEntityTurbineRotorBearing bearing: attachedRotorBearings) {
 			bearing.clearDisplayList();
 		}
+	}
+
+	/*
+	 * Power exchange API (replacement for IEnergyProvider)
+ 	*/
+	@Override
+	public long getEnergyCapacity() {
+		return this.powerSystem.maxCapacity;
+	}
+
+	@Override
+	public long getEnergyStored() {
+		return (long)this.energyStored;
+	}
+
+	@Override
+	public long extractEnergy(long maxEnergy, boolean simulate) {
+
+		long removed = (long)Math.min(maxEnergy, this.energyStored);
+
+		if (!simulate)
+			this.reduceStoredEnergy(removed);
+
+		return removed;
+	}
+
+	@Override
+	public PowerSystem getPowerSystem() {
+		return this.powerSystem;
 	}
 }
