@@ -77,7 +77,7 @@ public class BlockPart extends BlockBR {
     public boolean onBlockActivated(World world, BlockPos posistion, IBlockState state, EntityPlayer player, EnumHand hand,
                                     ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking()) {
+        if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking() && (hand == EnumHand.OFF_HAND)) {
 
             TileEntity te = world.getTileEntity(posistion);
 
