@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
@@ -17,14 +16,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import zero.mods.zerocore.lib.client.ICustomModelsProvider;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class BlockTieredPart extends BlockPart implements ICustomModelsProvider {
+public class BlockTieredPart extends BlockPart {
 
     public BlockTieredPart(PartType type, String blockName, Material material) {
         super(type, blockName, material);
@@ -43,7 +37,6 @@ public class BlockTieredPart extends BlockPart implements ICustomModelsProvider 
         ResourceLocation location = this.getRegistryName();
         IBlockState defaultState = this.getDefaultState();
         StringBuilder sb = new StringBuilder(32);
-        //String mapFormat = "";
         boolean first = true;
 
         for (IProperty<?> prop : defaultState.getProperties().keySet()) {
@@ -51,14 +44,11 @@ public class BlockTieredPart extends BlockPart implements ICustomModelsProvider 
             String name = prop.getName();
 
             if (!first)
-                //mapFormat += ",";
                 sb.append(',');
 
             if ("tier".equals(name))
-                //mapFormat += "tier=%s";
                 sb.append("tier=%s");
             else {
-                //mapFormat += name + "=" + defaultState.getValue(prop).toString();
                 sb.append(name);
                 sb.append('=');
                 sb.append(defaultState.getValue(prop));
@@ -119,41 +109,8 @@ public class BlockTieredPart extends BlockPart implements ICustomModelsProvider 
             list.add(this._subBlocks[i]);
     }
 
-    @Override
-    public List<Pair<Integer, ModelResourceLocation>> getMetadataToModelMappings() {
-
-        List<Pair<Integer, ModelResourceLocation>> mappings = new ArrayList();
-
-        IBlockState defaultState = this.getDefaultState();
-        String mapFormat = "";
-        boolean first = true;
-
-        for (IProperty<?> prop : defaultState.getProperties().keySet()) {
-
-            String name = prop.getName();
-
-            if (!first)
-                mapFormat += ",";
-
-            if ("tier".equals(name)) {
-
-                mapFormat += "tier=%s";
-
-            } else {
-
-                mapFormat += name + "=" + defaultState.getValue(prop).toString();
-            }
-
-            first = false;
-        }
-
-        ResourceLocation loc = this.getRegistryName();
-
-        for (PartTier tier : PartTier.VALUES)
-            mappings.add(new ImmutablePair(Integer.valueOf(tier.toMeta()),
-                    new ModelResourceLocation(loc, String.format(mapFormat, tier.getName()))));
-
-        return mappings;
+    public PartTier getTierFromState(IBlockState state) {
+        return state.getValue(Properties.TIER);
     }
 
     @Override
