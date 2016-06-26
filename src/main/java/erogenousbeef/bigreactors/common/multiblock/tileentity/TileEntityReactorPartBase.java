@@ -1,5 +1,9 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
+import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
@@ -53,23 +57,6 @@ public abstract class TileEntityReactorPartBase extends
 			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
 	}
-	
-	// IMultiblockGuiHandler
-	/**
-	 * @return The Container object for use by the GUI. Null if there isn't any.
-	 */
-	/*
-	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
-		return null;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		return null;
-	}
-	*/
 	
 	// IHeatEntity
 	@Override
@@ -134,5 +121,13 @@ public abstract class TileEntityReactorPartBase extends
 		}
 		sb.append(r.getDebugInfo());
 		return sb.toString();
+	}
+
+	public PartTier getPartTier() {
+
+		IBlockState state = this.worldObj.getBlockState(this.getWorldPosition());
+		Block block = state.getBlock();
+
+		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
 	}
 }
