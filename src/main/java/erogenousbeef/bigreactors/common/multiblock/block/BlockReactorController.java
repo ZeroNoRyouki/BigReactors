@@ -47,7 +47,7 @@ public class BlockReactorController extends BlockReactorPart {
 
         if (part instanceof TileEntityController) {
 
-            MultiblockReactor reactor = (MultiblockReactor)part.getMultiblockController();
+            MultiblockReactor reactor = ((TileEntityController)part).getReactorController();
             ControllerState controllerState = null == reactor || !reactor.isAssembled() ? ControllerState.Off :
                     reactor.getActive() ? ControllerState.Active : ControllerState.Idle;
 
