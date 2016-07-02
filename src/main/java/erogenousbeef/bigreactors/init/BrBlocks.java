@@ -2,11 +2,9 @@ package erogenousbeef.bigreactors.init;
 
 import erogenousbeef.bigreactors.common.BRConfig;
 import erogenousbeef.bigreactors.common.BRLoader;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
-import erogenousbeef.bigreactors.common.block.BlockBRDevice;
-import erogenousbeef.bigreactors.common.block.BlockBRMetal;
-import erogenousbeef.bigreactors.common.block.BlockBROre;
-import erogenousbeef.bigreactors.common.block.DeviceType;
+import erogenousbeef.bigreactors.common.block.*;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.block.*;
@@ -14,11 +12,19 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
 import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public final class BrBlocks {
 
     // Ores
     public static final BlockBROre brOre;
+
     // Metal blocks
     public static final BlockBRMetal blockMetals;
 
@@ -49,6 +55,10 @@ public final class BrBlocks {
     
     // Devices
     public static final BlockBRDevice deviceCyaniteRep;
+
+    // Fluid blocks
+    public static final BlockBRGenericFluid yellorium;
+    public static final BlockBRGenericFluid cyanite;
 
 
     public static void initialize() {
@@ -99,6 +109,11 @@ public final class BrBlocks {
 
         // - devices
         deviceCyaniteRep = (BlockBRDevice)proxy.register(new BlockBRDevice(DeviceType.CyaniteReprocessor, "deviceCyaniteRep"));
+
+        // - fluid blocks
+
+        yellorium = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidYellorium, "yellorium", new MaterialLiquid(MapColor.yellowColor)));
+        cyanite = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidCyanite, "cyanite", Material.lava));
 
         // - register block tile entities
         proxy.register(TileEntityCyaniteReprocessor.class);
