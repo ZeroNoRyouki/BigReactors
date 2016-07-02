@@ -4,15 +4,7 @@ import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.InventoryPlayer;
-import erogenousbeef.bigreactors.client.gui.GuiReactorStatus;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
-import erogenousbeef.bigreactors.gui.container.ContainerReactorController;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import zero.mods.zerocore.util.WorldHelper;
 
@@ -75,6 +67,6 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	}
 
 	public PartTier getMachineTier() {
-		return this.isConnected() ? ((MultiblockReactor)this.getMultiblockController()).getMachineTier() : PartTier.Standard;
+		return this.isConnected() ? this.getReactorController().getMachineTier() : PartTier.Standard;
 	}
 }
