@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.utils;
 
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 //import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
+import scala.tools.nsc.interpreter.Power;
 
 public class StaticUtils {
 
@@ -268,14 +270,14 @@ public class StaticUtils {
 		public static String[] sizePrefixes = {"", "Ki", "Me", "Gi", "Te", "Pe", "Ex", "Ze", "Yo", "Ho"};
 		// Ho = Hojillion
 		
-		public static String formatRF(float number) {
+		public static String formatEnergy(float number, PowerSystem powerSystem) {
 			String prefix = "";
 			if(number < 0f) {
 				prefix = "-";
 				number *= -1;
 			}
 			
-			if(number <= 0.00001f) { return "0.00 RF"; }
+			if(number <= 0.00001f) { return "0.00 " + powerSystem.unitOfMeasure; }
 			
 			int power = (int)Math.floor(Math.log10(number));
 
@@ -284,10 +286,10 @@ public class StaticUtils {
 			double divisor = Math.pow(1000f, letterIdx);
 			
 			if(divisor > 0) {
-				return String.format("%s%." + Integer.toString(decimalPoints) + "f %sRF", prefix, number/divisor, sizePrefixes[letterIdx]);
+				return String.format("%s%." + Integer.toString(decimalPoints) + "f %s%s", prefix, number/divisor, sizePrefixes[letterIdx], powerSystem.unitOfMeasure);
 			}
 			else {
-				return String.format("%s%." + Integer.toString(decimalPoints) + "f RF", prefix, number);
+				return String.format("%s%." + Integer.toString(decimalPoints) + "f %s", prefix, number, powerSystem.unitOfMeasure);
 			}
 		}
 		
