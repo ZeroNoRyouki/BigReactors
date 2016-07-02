@@ -13,15 +13,17 @@ import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import zero.mods.zerocore.lib.BlockFacings;
 import zero.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityReactorPartBase extends
-		RectangularMultiblockTileEntityBase implements /*IMultiblockGuiHandler,*/ IHeatEntity,
+		RectangularMultiblockTileEntityBase implements IHeatEntity,
 														IRadiationModerator, IActivateable,
 														IBeefDebuggableTile {
 
@@ -129,5 +131,12 @@ public abstract class TileEntityReactorPartBase extends
 		Block block = state.getBlock();
 
 		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
+	}
+
+	public EnumFacing getSingleOutwardsDir() {
+
+		BlockFacings out = this.getOutwardsDir();
+
+		return !out.none() && (1 == out.countFacesIf(true)) ? out.firstIf(true) : null;
 	}
 }
