@@ -63,6 +63,10 @@ repositories {
         artifactPattern "http://addons.cursecdn.com/files/2221/835/[module]-[revision].[ext]"
     }
     */
+    maven {
+        name "Tesla"
+        url "http://maven.epoxide.xyz/"
+    }
 }
 
 dependencies {
@@ -93,7 +97,11 @@ dependencies {
     compile 'li.cil.oc:OpenComputers:MC1.7.10-1.4.0.+:api'
     compile name: 'CoFHCore', version: '[1.7.10]3.0.0B9-40-dev', ext: 'jar'
     */
+
     compile files("../ZeroCore/build/libs/zerocore-1.9.0-0.0.1.jar")
+
+    //compile "net.darkhax.tesla:Tesla:1.9-1.0.2.23"
+    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "1.9-1.0.2.23"
 }
 
 processResources
