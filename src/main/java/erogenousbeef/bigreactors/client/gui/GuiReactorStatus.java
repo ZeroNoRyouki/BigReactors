@@ -288,7 +288,7 @@ public class GuiReactorStatus extends BeefGuiBase {
 		float number = reactor.getEnergyGeneratedLastTick(); // Also doubles as fluid vaporized last tick
 
 		if(reactor.isPassivelyCooled()) {
-			return StaticUtils.Strings.formatRF(number) + "/t";
+			return StaticUtils.Strings.formatEnergy(number, this.reactor.getPowerSystem()) + "/t";
 		}
 		else {
 			return StaticUtils.Strings.formatMillibuckets(number) + "/t";			
