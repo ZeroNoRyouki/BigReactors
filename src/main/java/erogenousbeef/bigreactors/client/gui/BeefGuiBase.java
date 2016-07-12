@@ -128,6 +128,8 @@ public abstract class BeefGuiBase extends GuiContainer {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 
+		this.mc.renderEngine.bindTexture(this.mc.getTextureMapBlocks().locationBlocksTexture);
+
 		TextureAtlasSprite sprite = this.mc.getTextureMapBlocks().getAtlasSprite(texture.toString());
 		float maxV = sprite.getMaxV(), minV = sprite.getMinV();
 		float maxU = sprite.getMaxU(), minU = sprite.getMinU();
