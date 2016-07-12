@@ -77,7 +77,7 @@ public class BlockPart extends BlockBR {
     public boolean onBlockActivated(World world, BlockPos posistion, IBlockState state, EntityPlayer player, EnumHand hand,
                                     ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking() && (hand == EnumHand.OFF_HAND)) {
+        if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking()) {
 
             TileEntity te = world.getTileEntity(posistion);
 
@@ -95,7 +95,7 @@ public class BlockPart extends BlockBR {
             // If the player's hands are empty and they rightclick on a multiblock, they get a
             // multiblock-debugging message if the machine is not assembled.
 
-            if ((te instanceof IMultiblockPart) && (null == heldItem)) {
+            if ((te instanceof IMultiblockPart) && (null == heldItem) && (hand == EnumHand.OFF_HAND)) {
 
                 IMultiblockPart part = (IMultiblockPart) te;
                 MultiblockControllerBase controller = part.getMultiblockController();
@@ -136,7 +136,7 @@ public class BlockPart extends BlockBR {
 
         TileEntity te = world.getTileEntity(position);
 
-        // Signal power taps when their neighbors change, etc.
+        // Signal power taps and other ports when their neighbors change, etc.
         if (te instanceof INeighborUpdatableEntity) {
             ((INeighborUpdatableEntity)te).onNeighborTileChange(world, position, neighbor);
         }
