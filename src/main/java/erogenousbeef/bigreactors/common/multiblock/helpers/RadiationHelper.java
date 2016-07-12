@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -21,6 +22,7 @@ import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import zero.mods.zerocore.util.ItemHelper;
 
 /**
  * Helper for reactor radiation game logic
@@ -42,7 +44,11 @@ public class RadiationHelper {
 		fertility = 1f;
 	}
 
-	public RadiationData radiate(World world, FuelContainer fuelContainer, TileEntityReactorFuelRod source, TileEntityReactorControlRod controlRod, float fuelHeat, float environmentHeat, int numControlRods) {
+	public RadiationData radiate(World world, FuelContainer fuelContainer, TileEntityReactorFuelRod source, FuelAssembly fuelAssembly,
+								 float fuelHeat, float environmentHeat, int numControlRods) {
+
+		TileEntityReactorControlRod controlRod = fuelAssembly.getControlRod();
+
 		// No fuel? No radiation!
 		if(fuelContainer.getFuelAmount() <= 0) { return null; }
 
@@ -86,27 +92,24 @@ public class RadiationHelper {
 
 		// Propagate radiation to others
 		BlockPos originCoord = source.getPos();
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		CoordTriplet currentCoord = new CoordTriplet(0, 0, 0);
+		BlockPos currentCoord;
 		
 		effectiveRadIntensity *= 0.25f; // We're going to do this four times, no need to repeat
 		RadiationPacket radPacket = new RadiationPacket();
 
-		for(ForgeDirection dir : StaticUtils.CardinalDirections) {
+		for (EnumFacing dir : fuelAssembly.getRadiateDirections()) {
+
 			radPacket.hardness = radHardness;
 			radPacket.intensity = effectiveRadIntensity;
 			int ttl = 4;
-			currentCoord.copy(originCoord);
+			currentCoord = originCoord;
 
 			while(ttl > 0 && radPacket.intensity > 0.0001f) {
 				ttl--;
-				currentCoord.translate(dir);
+				currentCoord = currentCoord.offset(dir);
 				performIrradiation(world, data, radPacket, currentCoord);
 			}
 		}
-		*/
 
 		// Apply changes
 		fertility += data.fuelAbsorbedRadiation;
@@ -139,16 +142,18 @@ public class RadiationHelper {
 			IBlockState blockState = world.getBlockState(position);
 			Block block = blockState.getBlock();
 			if(block != null) {
-				
-				if(block instanceof IFluidBlock) {
+
+				if (block.isAir(blockState, world, position)) {
+
+					moderateByAir(data, radiation);
+
+				} else if(block instanceof IFluidBlock) {
+
 					moderateByFluid(data, radiation, ((IFluidBlock)block).getFluid());
-				}
-				else {
+
+				} else {
 					// Go by block
-					// TODO Commented temporarily to allow this thing to compile...
-					/*
-					moderateByBlock(data, radiation, block, world.getBlockMetadata(x, y, z));
-					*/
+					moderateByBlock(data, radiation, blockState);
 				}
 			}
 			else {
@@ -163,8 +168,10 @@ public class RadiationHelper {
 		applyModerationFactors(data, radiation, airData);
 	}
 	
-	private void moderateByBlock(RadiationData data, RadiationPacket radiation, Block block, int metadata) {
+	private void moderateByBlock(RadiationData data, RadiationPacket radiation, IBlockState blockState) {
+
 		ReactorInteriorData moderatorData = null;
+		Block block = blockState.getBlock();
 
 		if(block == Blocks.iron_block) {
 			moderatorData = ReactorInterior.getBlockData("blockIron");
@@ -180,10 +187,7 @@ public class RadiationHelper {
 		}
 		else {
 			// Check the ore dictionary.
-			// TODO Commented temporarily to allow this thing to compile...
-			/*
-			moderatorData = ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));
-			*/
+			moderatorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
 		}
 		
 		if(moderatorData == null) {
