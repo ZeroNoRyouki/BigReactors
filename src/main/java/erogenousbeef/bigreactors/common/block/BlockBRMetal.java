@@ -1,13 +1,11 @@
 package erogenousbeef.bigreactors.common.block;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -21,28 +19,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import erogenousbeef.bigreactors.common.item.ItemBRMetal;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import zero.mods.zerocore.lib.MetalSize;
-import zero.mods.zerocore.lib.client.ICustomModelsProvider;
 
-public class BlockBRMetal extends BlockBR implements ICustomModelsProvider {
-	/*
-	public static final int METADATA_YELLORIUM 	= 0;
-	public static final int METADATA_CYANITE 	= 1;
-	public static final int METADATA_GRAPHITE 	= 2;
-	public static final int METADATA_BLUTONIUM 	= 3;
-	public static final int METADATA_LUDICRITE = 4;
-	*/
-	/*
-	private static final String[] _subBlocks = new String[] { "blockYellorium", "blockCyanite", "blockGraphite", "blockBlutonium", "blockLudicrite" };
-	private static final String[] _materials = new String[] { "Yellorium", "Cyanite", "Graphite", "Blutonium", "Ludicrite" };
-	// TODO blockstate
-	//private IIcon[] _icons = new IIcon[_subBlocks.length];
-	private static final int NUM_BLOCKS = _subBlocks.length;
-	*/
-	
+public class BlockBRMetal extends BlockBR {
+
 	public BlockBRMetal(String blockName) {
 
 		super(blockName, Material.iron);
@@ -59,6 +39,18 @@ public class BlockBRMetal extends BlockBR implements ICustomModelsProvider {
 
 		for (int i = 0; i < length; ++i)
 			OreDictionary.registerOre(metals[i].getOreDictionaryName(MetalSize.Block), this.createItemStack(metals[i], 1));
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onPostClientRegister() {
+
+		ResourceLocation location = this.getRegistryName();
+		Item item = Item.getItemFromBlock(this);
+
+		for (MetalType metal : MetalType.values())
+			ModelLoader.setCustomModelResourceLocation(item, metal.toMeta(),
+					new ModelResourceLocation(location, String.format("metal=%s", metal.getName())));
 	}
 
 	/**
@@ -88,55 +80,21 @@ public class BlockBRMetal extends BlockBR implements ICustomModelsProvider {
 	}
 
 	@Override
-	public ResourceLocation getCustomResourceLocation() {
-		return null;
-	}
-
-	@Override
-	public List<Pair<Integer, String>> getMetadataToModelMappings() {
-
-		List<Pair<Integer, String>> mappings = new ArrayList();
-		MetalType[] metals = MetalType.values();
-
-		for (MetalType metal : metals)
-			mappings.add(new ImmutablePair(Integer.valueOf(metal.toMeta()), String.format("metal=%s", metal.getName())));
-
-		return mappings;
-	}
-
-	/*
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerCustomModels(Block newlyRegisteredBlock) {
-
-		final ResourceLocation name = this.getRegistryName();
-		final Item item = Item.getItemFromBlock(newlyRegisteredBlock);
-
-		for (final MetalType type : MetalType.values())
-			ModelLoader.setCustomModelResourceLocation(item, type.toMeta(),
-					new ModelResourceLocation(name, String.format("metal=%s", type.getName())));
-	}*/
-
-	@Override
 	public IBlockState getStateFromMeta(int meta) {
-
-		return this.getDefaultState().withProperty(METAL, MetalType.fromMeta(meta));
+		return this.getDefaultState().withProperty(Properties.METAL, MetalType.fromMeta(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-
-		return state.getValue(METAL).toMeta();
+		return state.getValue(Properties.METAL).toMeta();
 	}
 
 	@Override
 	public int damageDropped(IBlockState state) {
-
-		return state.getValue(METAL).toMeta();
+		return this.getMetaFromState(state);
 	}
 
 	public ItemStack createItemStack(MetalType type, int amount) {
-
 		return new ItemStack(this, amount, type.toMeta());
 	}
 
@@ -159,8 +117,7 @@ public class BlockBRMetal extends BlockBR implements ICustomModelsProvider {
 
 	@Override
 	protected void buildBlockState(BlockStateContainer.Builder builder) {
-
-		builder.add(METAL);
+		builder.add(Properties.METAL);
 	}
 
 	private static class ItemBlockMetal extends ItemBlock {
@@ -174,18 +131,14 @@ public class BlockBRMetal extends BlockBR implements ICustomModelsProvider {
 
 		@Override
 		public String getUnlocalizedName(ItemStack stack) {
-
 			return super.getUnlocalizedName() + "." + MetalType.fromMeta(stack.getMetadata()).getName();
 		}
 
 		@Override
 		public int getMetadata(int meta) {
-
 			return meta;
 		}
 	}
 
 	private ItemStack[] _subBlocks;
-
-	private static final PropertyEnum<MetalType> METAL = PropertyEnum.create("metal", MetalType.class);
 }
