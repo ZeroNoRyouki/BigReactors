@@ -5,6 +5,8 @@ import java.util.Map;
 
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
 import erogenousbeef.bigreactors.common.BRLog;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ReactorInterior {
 	private static Map<String, ReactorInteriorData> _reactorModeratorBlocks = new HashMap<String, ReactorInteriorData>();
@@ -48,6 +50,27 @@ public class ReactorInterior {
 	
 	public static ReactorInteriorData getBlockData(String oreDictName) {
 		return _reactorModeratorBlocks.get(oreDictName);
+	}
+
+	public static ReactorInteriorData getBlockData(ItemStack stack) {
+
+		int[] ids = OreDictionary.getOreIDs(stack);
+		int len;
+
+		if (null == ids || 0 == (len = ids.length))
+			return null;
+
+		String name;
+
+		for (int i = 0; i < len; ++i) {
+
+			name = OreDictionary.getOreName(ids[i]);
+
+			if (_reactorModeratorBlocks.containsKey(name))
+				return  _reactorModeratorBlocks.get(name);
+		}
+
+		return null;
 	}
 
 	public static ReactorInteriorData getFluidData(String fluidName) {
