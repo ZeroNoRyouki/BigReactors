@@ -1,16 +1,12 @@
 package erogenousbeef.bigreactors.common;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import erogenousbeef.bigreactors.common.block.*;
 import erogenousbeef.bigreactors.common.multiblock.block.*;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -35,7 +31,6 @@ import erogenousbeef.bigreactors.api.registry.ReactorConversions;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.item.ItemBeefDebugTool;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 //import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorRedstonePort;
@@ -338,7 +333,7 @@ public class BigReactors {
 					Items.diamond, 'G', yelloriumIngot, 'C', "reactorCasing", 'R', Items.redstone));
 
 			if (enableReactorPowerTapRecipe) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorPowerTap.createItemStack(), "CRC", "R R", "CRC", 'C',
+				GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorPowerTapRF.createItemStack(), "CRC", "R R", "CRC", 'C',
 						"reactorCasing", 'R', Items.redstone));
 			}
 
@@ -354,14 +349,17 @@ public class BigReactors {
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorRedstonePort.createItemStack(), "CRC", "RGR", "CRC", 'C',
 					"reactorCasing", 'R', Items.redstone, 'G', Items.gold_ingot));
 
+			/*
 			if (Loader.isModLoaded("MineFactoryReloaded")) {
 				GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorRedNetPort.createItemStack(), "CRC", "RGR", "CRC", 'C',
 						"reactorCasing", 'R', "cableRedNet", 'G', "ingotGold"));
 			}
-
+			*/
+			/*
 			if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers"))
 				GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorComputerPort, "CRC", "GPG", "CRC", 'C',
 						"reactorCasing", 'R', Items.redstone, 'G', "ingotGold", 'P', Items.repeater));
+			*/
 
 			// reactor and turbine glass
 
@@ -465,7 +463,7 @@ public class BigReactors {
 		BRConfig.CONFIGURATION.save();
 
 
-		return new ItemStack(BrBlocks.brOre);
+		return null;//new ItemStack(BrBlocks.brOre);
 	}
 
 	public static void registerFluids(int id, boolean require) {
@@ -694,7 +692,10 @@ public class BigReactors {
 		return BigReactors.createResourceLocation("textures/gui/" + path);
 	}
 
+	public static ResourceLocation createBlockResourceLocation(String path) {
 
+		return BigReactors.createResourceLocation("blocks/" + path);
+	}
 
 
 	// Thanks KingLemming!
