@@ -12,7 +12,6 @@ public class ItemBase extends Item {
 
 		this.setRegistryName(itemName);
 		this.setUnlocalizedName(this.getRegistryName().toString());
-		this.setCreativeTab(BigReactors.TAB);
 	}
 
 	public ItemStack createItemStack() {
