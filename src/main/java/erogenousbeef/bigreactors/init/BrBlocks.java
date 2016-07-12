@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.init;
 
 import erogenousbeef.bigreactors.common.BRConfig;
 import erogenousbeef.bigreactors.common.BRLoader;
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.*;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
@@ -15,10 +14,6 @@ import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public final class BrBlocks {
 
@@ -40,7 +35,7 @@ public final class BrBlocks {
     //public static final BlockReactorPart reactorRedNetPort;
     //public static final BlockReactorPart reactorComputerPort;
     public static final BlockReactorRedstonePort reactorRedstonePort;
-    public static final BlockFuelRod reactorFuelRod;
+    public static final BlockReactorFuelRod reactorFuelRod;
     public static final BlockReactorIOPort reactorCreativeCoolantPort;
 
     // Turbine parts
@@ -93,7 +88,7 @@ public final class BrBlocks {
         //reactorRedNetPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorRednetPort, "reactorRedNetPort"));
         //reactorComputerPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorComputerPort, "reactorComputerPort"));
         reactorRedstonePort = (BlockReactorRedstonePort)proxy.register(new BlockReactorRedstonePort("reactorRedstonePort"));
-        reactorFuelRod = (BlockFuelRod)proxy.register(new BlockFuelRod("reactorFuelRod"));
+        reactorFuelRod = (BlockReactorFuelRod)proxy.register(new BlockReactorFuelRod("reactorFuelRod"));
         reactorCreativeCoolantPort = !regCreativeParts ? null : (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCreativeCoolantPort, "reactorCreativeCoolantPort"));
 
         // - turbine parts
