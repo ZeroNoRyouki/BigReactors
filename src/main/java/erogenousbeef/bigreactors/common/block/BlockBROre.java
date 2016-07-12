@@ -1,8 +1,8 @@
 package erogenousbeef.bigreactors.common.block;
 
+import erogenousbeef.bigreactors.common.Properties;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,14 +16,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import zero.mods.zerocore.lib.client.ICustomModelsProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class BlockBROre extends BlockBR implements ICustomModelsProvider {
+public class BlockBROre extends BlockBR {
 
 	public BlockBROre(String blockName) {
 
@@ -40,6 +36,18 @@ public class BlockBROre extends BlockBR implements ICustomModelsProvider {
 
 		OreDictionary.registerOre("oreYellorite", stack);
 		OreDictionary.registerOre("oreYellorium", stack); // For convenience of mods which fiddle with recipes
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onPostClientRegister() {
+
+		ResourceLocation location = this.getRegistryName();
+		Item item = Item.getItemFromBlock(this);
+
+		for (OreType ore : OreType.values())
+			ModelLoader.setCustomModelResourceLocation(item, ore.toMeta(),
+					new ModelResourceLocation(location, String.format("ore=%s", ore.getName())));
 	}
 
 	/**
@@ -59,57 +67,27 @@ public class BlockBROre extends BlockBR implements ICustomModelsProvider {
 	}
 
 	@Override
-	public ResourceLocation getCustomResourceLocation() {
-		return null;
-	}
-
-	@Override
-	public List<Pair<Integer, String>> getMetadataToModelMappings() {
-
-		List<Pair<Integer, String>> mappings = new ArrayList();
-		OreType[] ores = OreType.values();
-
-		for (OreType ore : ores)
-			mappings.add(new ImmutablePair(Integer.valueOf(ore.toMeta()), String.format("ore=%s", ore.getName())));
-
-		return mappings;
-	}
-
-	/*
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerCustomModels(Block newlyRegisteredBlock) {
-
-		final ResourceLocation name = this.getRegistryName();
-		final Item item = Item.getItemFromBlock(newlyRegisteredBlock);
-
-		for (final OreType type : OreType.values())
-			ModelLoader.setCustomModelResourceLocation(item, type.toMeta(),
-					new ModelResourceLocation(name, String.format("ore=%s", type.getName())));
-	}*/
-
-	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(ORE, OreType.fromMeta(meta));
+		return this.getDefaultState().withProperty(Properties.ORE, OreType.fromMeta(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 
-		return state.getValue(ORE).toMeta();
+		return state.getValue(Properties.ORE).toMeta();
 	}
 
 	@Override
 	public int damageDropped(IBlockState state) {
 
-		return state.getValue(ORE).toMeta();
+		return state.getValue(Properties.ORE).toMeta();
 	}
 
 	@Override
 	protected void buildBlockState(BlockStateContainer.Builder builder) {
 
-		builder.add(ORE);
+		builder.add(Properties.ORE);
 	}
 
 	private static class ItemBlockOre extends ItemBlock {
@@ -135,6 +113,4 @@ public class BlockBROre extends BlockBR implements ICustomModelsProvider {
 	}
 
 	private ItemStack _subBlocks;
-
-	private static final PropertyEnum<OreType> ORE = PropertyEnum.create("ore", OreType.class);
 }
