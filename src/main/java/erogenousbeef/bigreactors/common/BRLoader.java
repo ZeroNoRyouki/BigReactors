@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common;
 
 import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.init.BrFluids;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -46,8 +47,13 @@ public class BRLoader {
 	{
 		BigReactors.registerOres(0, true);
 
+
+		BrFluids.initialize();
 		BrItems.initialize();
 		BrBlocks.initialize();
+
+
+
 
 		BigReactors.registerFluids(0,  true);
 		StandardReactants.register();
@@ -111,4 +117,9 @@ public class BRLoader {
         else return null;
     }
     */
+
+	static {
+
+		FluidRegistry.enableUniversalBucket();
+	}
 }
