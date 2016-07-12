@@ -3,10 +3,12 @@ package erogenousbeef.bigreactors.common;
 import java.util.Calendar;
 
 import erogenousbeef.bigreactors.common.block.BlockBR;
+import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -35,6 +37,15 @@ public class CommonProxy {
 	public BlockBR register(BlockBR block) {
 
 		GameRegistry.register(block);
+		block.setCreativeTab(BigReactors.TAB);
+		block.onPostRegister();
+		return block;
+	}
+
+	public BlockBRGenericFluid register(BlockBRGenericFluid block) {
+
+		GameRegistry.register(block);
+		block.setCreativeTab(BigReactors.TAB);
 		block.onPostRegister();
 		return block;
 	}
@@ -42,6 +53,7 @@ public class CommonProxy {
 	public ItemBase register(ItemBase item) {
 
 		GameRegistry.register(item);
+		item.setCreativeTab(BigReactors.TAB);
 		item.onPostRegister();
 		return item;
 	}
@@ -55,13 +67,10 @@ public class CommonProxy {
 	}
 
 	public void init() {
-		//BigReactors.registerTileEntities();
 		
 		CommonPacketHandler.init();
 
-		//NetworkRegistry.INSTANCE.registerGuiHandler(BRLoader.instance, new BigReactorsGUIHandler());
 		new ModGuiHandler(BRLoader.instance);
-
 
 		BigReactors.tickHandler = new BigReactorsTickHandler();
 		FMLCommonHandler.instance().bus().register(BigReactors.tickHandler);
