@@ -7,11 +7,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockReactorControlRod extends BlockPart {
+public class BlockReactorControlRod extends BlockReactorPart {
 
     public BlockReactorControlRod(String blockName) {
 
-        super(PartType.ReactorControlRod, blockName, Material.iron);
+        super(PartType.ReactorControlRod, blockName);
     }
 
     @Override
