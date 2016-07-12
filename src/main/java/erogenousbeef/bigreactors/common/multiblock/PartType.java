@@ -8,6 +8,7 @@ public enum PartType implements IStringSerializable {
     ReactorCasing("reactorCasing"),
     ReactorController("reactorController"),
     ReactorControlRod("reactorControlRod"),
+    ReactorFuelRod("reactorFuelRod"),
     ReactorPowerTap("reactorPowerTap"),
     ReactorAccessPort("reactorAccessPort"),
     ReactorCoolantPort("reactorCoolantPort"),
