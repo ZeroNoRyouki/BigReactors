@@ -8,16 +8,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockBR extends Block {
 
     public BlockBR(String blockName, Material material) {
 
         super(material);
+        this.setDefaultState(this.buildDefaultState(this.blockState.getBaseState()));
         this.setRegistryName(blockName);
         this.setUnlocalizedName(this.getRegistryName().toString());
         this.setHardness(2.0f);
-        this.setCreativeTab(BigReactors.TAB);
     }
 
     @Override
@@ -28,6 +30,10 @@ public abstract class BlockBR extends Block {
     public void onPostRegister() {
 
         GameRegistry.register(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void onPostClientRegister() {
     }
 
     public ItemStack createItemStack() {
@@ -55,5 +61,9 @@ public abstract class BlockBR extends Block {
     }
 
     protected void buildBlockState(BlockStateContainer.Builder builder) {
+    }
+
+    protected IBlockState buildDefaultState(IBlockState state) {
+        return state;
     }
 }
