@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -131,6 +132,7 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 
 	@Override
 	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+		/*
 		// Check above and below. Above must be fuel rod or control rod.
 		BlockPos position = this.getPos();
 
@@ -151,6 +153,8 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_column", position);
 		return false;
+		*/
+		return true;
 	}
 
 	@Override
@@ -234,4 +238,14 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		
 		return interiorData.heatConductivity;
 	}
+
+	public void linkToAssembly(final FuelAssembly assembly) {
+		this._assembly = assembly;
+	}
+
+	public FuelAssembly getFuelAssembly() {
+		return this._assembly;
+	}
+
+	private FuelAssembly _assembly;
 }
