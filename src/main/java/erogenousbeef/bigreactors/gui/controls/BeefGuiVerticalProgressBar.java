@@ -29,7 +29,7 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 	public BeefGuiVerticalProgressBar(BeefGuiBase container, int x, int y) {
 		super(container, x, y, controlWidth, controlHeight);
 		
-		this.controlResource = this.getBackgroundTexture();
+		this.controlResource = null;
 		
 		backgroundLeftU = getBackgroundLeftU();
 		backgroundRightU = getBackgroundRightU();
@@ -56,6 +56,9 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 		if(!this.visible) { return; }
 
 		// Draw the background
+
+		if (null == this.controlResource)
+			this.controlResource = this.getBackgroundTexture();
 
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexBuffer = tessellator.getBuffer();
