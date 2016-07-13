@@ -59,7 +59,8 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		this.setInlet(!this.inlet, markDirty);
 	}
-	
+
+	/*
 	// MultiblockTileEntityBase
 	@Override
 	protected void encodeDescriptionPacket(NBTTagCompound packetData) {
@@ -75,7 +76,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		if(packetData.hasKey("inlet")) {
 			setInlet(packetData.getBoolean("inlet"), false);
 		}
-	}
+	}*/
 	
 	@Override
 	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase)
@@ -101,7 +102,8 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
 	}
-	
+
+	/*
 	// TileEntity
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -116,13 +118,45 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setBoolean("inlet", inlet);
+	}*/
+
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
+		super.loadFromNBT(data, fromPacket);
+
+		if (!fromPacket) {
+
+			if (data.hasKey("inlet"))
+				this.inlet = data.getBoolean("inlet");
+
+		} else {
+
+			if (data.hasKey("inlet"))
+				setInlet(data.getBoolean("inlet"), false);
+		}
+	}
+
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
+		super.saveToNBT(data, toPacket);
+
+		if (!toPacket) {
+
+			data.setBoolean("inlet", this.inlet);
+
+		} else {
+
+			data.setBoolean("inlet", this.inlet);
+
+		}
 	}
 
 	// IFluidHandler
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//if(!isConnected() || !inlet || from != getOutwardsDir()) { return 0; }
+
+		if (!isConnected() || !inlet || null == from || from != this.getOutwardFacing())
+			return 0;
 		
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.fill(getConnectedTank(), resource, doFill);
@@ -130,8 +164,9 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	@Override
 	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//if(!isConnected() || from != getOutwardsDir()) { return null; }
+
+		if (!isConnected() || null == from || from != this.getOutwardFacing())
+			return null;
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.drain(getConnectedTank(), resource, doDrain);
@@ -139,18 +174,20 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	@Override
 	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//if(!isConnected() || from != getOutwardsDir()) { return null; }
+
+		if (!isConnected() || null == from || from != this.getOutwardFacing())
+			return null;
+
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.drain(getConnectedTank(), maxDrain, doDrain);
 	}
 
 	@Override
 	public boolean canFill(EnumFacing from, Fluid fluid) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//if(!isConnected() || from != getOutwardsDir()) { return false; }
 
-		if(!inlet) { return false; } // Prevent pipes from filling up the output tank inadvertently
+		if (!isConnected() || null == from || from != this.getOutwardFacing() || !inlet)
+			// Also prevent pipes from filling up the output tank inadvertently
+			return false;
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.canFill(getConnectedTank(), fluid);
@@ -158,8 +195,10 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	@Override
 	public boolean canDrain(EnumFacing from, Fluid fluid) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//if(!isConnected() || from != getOutwardsDir()) { return false; }
+
+		if (!isConnected() || null == from || from != this.getOutwardFacing())
+			return false;
+
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.canDrain(getConnectedTank(), fluid);
 	}
@@ -168,8 +207,9 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	
 	@Override
 	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-		// TODO Commented temporarily to allow this thing to compile...
-		//if(!isConnected() || from != getOutwardsDir()) { return emptyTankArray; }
+
+		if (!isConnected() || null == from || from != this.getOutwardFacing())
+			return emptyTankArray;
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		return cc.getTankInfo(getConnectedTank());
@@ -185,14 +225,12 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
 		FluidStack fluidToDrain = cc.drain(CoolantContainer.HOT, cc.getCapacity(), false);
-		
-		if(fluidToDrain != null && fluidToDrain.amount > 0)
-		{
-			// TODO Commented temporarily to allow this thing to compile...
-			/*
-			fluidToDrain.amount = pumpDestination.fill(getOutwardsDir().getOpposite(), fluidToDrain, true);
+		EnumFacing out = this.getOutwardFacing();
+
+		if (fluidToDrain != null && fluidToDrain.amount > 0 && null != out) {
+
+			fluidToDrain.amount = pumpDestination.fill(out.getOpposite(), fluidToDrain, true);
 			cc.drain(CoolantContainer.HOT, fluidToDrain, true);
-			*/
 		}
 	}
 
@@ -217,25 +255,21 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		}
 	}
 
-	protected void checkForAdjacentTank()
-	{
-		pumpDestination = null;
-		if(worldObj.isRemote || isInlet()) {
-			return;
-		}
+	protected void checkForAdjacentTank() {
 
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		ForgeDirection outDir = getOutwardsDir();
-		if(outDir == ForgeDirection.UNKNOWN) {
+		this.pumpDestination = null;
+
+		if (this.worldObj.isRemote || this.isInlet())
 			return;
-		}
-		
-		TileEntity neighbor = worldObj.getTileEntity(xCoord + outDir.offsetX, yCoord + outDir.offsetY, zCoord + outDir.offsetZ);
-		if(neighbor instanceof IFluidHandler) {
-			pumpDestination = (IFluidHandler)neighbor;
-		}
-		*/
+
+		EnumFacing out = this.getOutwardFacing();
+
+		if (null == out)
+			return;
+
+		TileEntity neighbor = this.worldObj.getTileEntity(this.getPos().offset(out));
+
+		if (neighbor instanceof IFluidHandler)
+			this.pumpDestination = (IFluidHandler)neighbor;
 	}
-
 }
