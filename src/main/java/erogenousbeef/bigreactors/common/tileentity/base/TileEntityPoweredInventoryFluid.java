@@ -66,7 +66,33 @@ public abstract class TileEntityPoweredInventoryFluid extends
 			tag.setTag("fluids", fluidTagList);
 		}
 	}
-	
+
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
+		super.loadFromNBT(data, fromPacket);
+
+		if (!fromPacket) {
+
+			readFluidsFromNBT(data);
+
+		} else {
+
+		}
+	}
+
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
+		super.saveToNBT(data, toPacket);
+
+		if (!toPacket) {
+
+			writeFluidsToNBT(data);
+
+		} else {
+
+		}
+	}
+	/*
 	// TileEntity overrides
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -79,7 +105,8 @@ public abstract class TileEntityPoweredInventoryFluid extends
 		super.writeToNBT(tag);
 		writeFluidsToNBT(tag);
 	}
-	
+	*/
+
 	// TileEntityBeefBase
 	@Override
 	protected void onSendUpdate(NBTTagCompound updateTag) {

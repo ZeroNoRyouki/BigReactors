@@ -59,7 +59,60 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		checkAdjacentInventory(ForgeDirection.getOrientation(side));
 	}
 	*/
-	
+
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
+		super.loadFromNBT(data, fromPacket);
+
+		if (!fromPacket) {
+
+			// Inventories
+			_inventories = new ItemStack[getSizeInventory()];
+			if(data.hasKey("Items")) {
+				NBTTagList tagList = data.getTagList("Items", 10);
+				for(int i = 0; i < tagList.tagCount(); i++) {
+					NBTTagCompound itemTag = (NBTTagCompound)tagList.getCompoundTagAt(i);
+					int slot = itemTag.getByte("Slot") & 0xff;
+					if(slot >= 0 && slot <= _inventories.length) {
+						ItemStack itemStack = new ItemStack((Block)null,0,0);
+						itemStack.readFromNBT(itemTag);
+						_inventories[slot] = itemStack;
+					}
+				}
+			}
+
+		} else {
+
+		}
+	}
+
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
+		super.saveToNBT(data, toPacket);
+
+		if (!toPacket) {
+
+			// Inventories
+			NBTTagList tagList = new NBTTagList();
+			for(int i = 0; i < _inventories.length; i++) {
+				if((_inventories[i]) != null) {
+					NBTTagCompound itemTag = new NBTTagCompound();
+					itemTag.setByte("Slot", (byte)i);
+					_inventories[i].writeToNBT(itemTag);
+					tagList.appendTag(itemTag);
+				}
+			}
+
+			if(tagList.tagCount() > 0) {
+				data.setTag("Items", tagList);
+			}
+
+		} else {
+
+		}
+	}
+
+	/*
 	// TileEntity overrides
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -99,7 +152,7 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		if(tagList.tagCount() > 0) {
 			tag.setTag("Items", tagList);
 		}
-	}
+	}*/
 	
 	// IInventory
 	@Override

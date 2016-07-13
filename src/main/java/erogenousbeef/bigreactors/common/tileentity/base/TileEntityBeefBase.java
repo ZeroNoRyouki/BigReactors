@@ -92,8 +92,8 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 
 	// Save/Load
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		
+	protected void loadFromNBT(NBTTagCompound tag, boolean fromPacket) {
+
 		// Rotation
 
 		int newFacing;
@@ -116,7 +116,7 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	protected void saveToNBT(NBTTagCompound tag, boolean toPacket) {
 		
 		tag.setInteger("facing", facing.getIndex());
 		tag.setIntArray("exposures", exposures);
