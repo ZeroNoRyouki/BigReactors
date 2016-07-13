@@ -6,8 +6,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
-import erogenousbeef.bigreactors.gui.slot.SlotReactorInput;
-import erogenousbeef.bigreactors.gui.slot.SlotRemoveOnly;
 
 public class ContainerCyaniteReprocessor extends Container {
 
@@ -25,7 +23,7 @@ public class ContainerCyaniteReprocessor extends Container {
 		// TODO comment out to allow compilation
 		/*
 		// Input Slot
-		addSlotToContainer(new SlotReactorInput(_entity, 0, 44, 41, false));
+		addSlotToContainer(new SlotReactorFuel(_entity, 0, 44, 41, false));
 	
 		// Output Slot
 		addSlotToContainer(new SlotRemoveOnly(_entity, 1, 116, 41));
