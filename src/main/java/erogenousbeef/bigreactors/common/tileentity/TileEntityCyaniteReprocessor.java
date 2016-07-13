@@ -268,13 +268,11 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	}
 
 	@Override
-	protected void loadFromNBT(NBTTagCompound nbt) {
-
+	protected void loadFromNBT(NBTTagCompound nbt, boolean fromPacket) {
 	}
 
 	@Override
-	protected void saveToNBT(NBTTagCompound nbt) {
-
+	protected void saveToNBT(NBTTagCompound nbt, boolean toPacket) {
 	}
 
 	// fake imp (end)
