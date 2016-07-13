@@ -5,12 +5,8 @@ import java.util.Random;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,11 +22,9 @@ import net.minecraft.world.World;
 //import net.minecraftforge.fml.common.Optional;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.BRLoader;
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 import zero.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import zero.mods.zerocore.util.WorldHelper;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 /*
@@ -40,9 +34,6 @@ import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEn
 */
 public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRedNetOmniNode */ {
 
-	protected final static int REDSTONE_VALUE_OFF = 0;  // corresponds to no power
-	protected final static int REDSTONE_VALUE_ON  = 15; // corresponds to strong power
-	
 	public BlockReactorRedstonePort(String blockName) {
 		super(PartType.ReactorRedstonePort, blockName);
 	}
@@ -52,74 +43,55 @@ public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRe
 		return new TileEntityReactorRedstonePort();
 	}
 
-
-    // TODO blockstate
-	/* TODO Commented temporarily to allow this thing to compile...
 	@Override
-	public int damageDropped(int metadata)
-	{
-		return META_REDSTONE_UNLIT;
-	}
-	*/
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
                                     ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		/*
+		if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking()) {
 
-		if(player.isSneaking()) {
-			return false;
-		}
+			TileEntity te = world.getTileEntity(pos);
 
-		TileEntity te = world.getTileEntity(pos);
-		if(te instanceof TileEntityReactorRedstonePort) {
-			if(!((TileEntityReactorRedstonePort)te).isConnected()) { return false; }
-			
-			if(!world.isRemote)
-				((TileEntityReactorRedstonePort)te).sendRedstoneUpdate();
+			if (te instanceof TileEntityReactorRedstonePort) {
 
-			if(!world.isRemote) {
-				player.openGui(BRLoader.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+				TileEntityReactorRedstonePort part = (TileEntityReactorRedstonePort)te;
+
+				if (part.isConnected())
+					part.updateRedstoneState();
 			}
-			return true;
 		}
-
-		return false;
+		*/
+		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-	/* TODO Commented temporarily to allow this thing to compile...
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos position, Random rand) {
 
     	TileEntity te = world.getTileEntity(position);
-        if (te instanceof TileEntityReactorRedstonePort)
-        {
+
+		if (te instanceof TileEntityReactorRedstonePort) {
+
         	TileEntityReactorRedstonePort port = (TileEntityReactorRedstonePort)te;
-        	if(port.isRedstoneActive()) {
-                ForgeDirection out = port.getOutwardsDir();
-                
-                if(out != ForgeDirection.UNKNOWN) {
-                    double particleX, particleY, particleZ;
-                    particleY = y + 0.45D + rand.nextFloat() * 0.1D;
+			EnumFacing out = port.getOutwardFacing();
 
-                    if(out.offsetX > 0)
-                    	particleX = x + rand.nextFloat() * 0.1D + 1.1D;
-                    else
-                    	particleX = x + 0.45D + rand.nextFloat() * 0.1D;
-                    
-                    if(out.offsetZ > 0)
-                    	particleZ = z + rand.nextFloat() * 0.1D + 1.1D;
-                    else
-                    	particleZ = z + 0.45D + rand.nextFloat() * 0.1D;
+			if (port.isLit() && (null != out)) {
+				/*
+				double particleX, particleY, particleZ;
+				int x = position.getX(), z = position.getZ();
 
-                    world.spawnParticle(EnumParticleTypes.REDSTONE, particleX, particleY, particleZ, 0.0D, rand.nextFloat() * 0.1D, 0.0D);
-                }
+				particleY = position.getY() + 0.45D + rand.nextFloat() * 0.1D;
+				particleX = out.getFrontOffsetX() > 0 ? x + rand.nextFloat() * 0.1D + 1.1D : x + 0.45D + rand.nextFloat() * 0.1D;
+				particleZ = out.getFrontOffsetZ() > 0 ? z + rand.nextFloat() * 0.1D + 1.1D : z + 0.45D + rand.nextFloat() * 0.1D;
+
+				world.spawnParticle(EnumParticleTypes.REDSTONE, particleX, particleY, particleZ, 0.0D, rand.nextFloat() * 0.1D, 0.0D);
+				*/
+				WorldHelper.spawnVanillaParticles(world, EnumParticleTypes.REDSTONE, 1, 1, position.getX(),
+						position.getY(), position.getZ(), 0, 1, 0);
         	}
         }
     }
-	*/
 
     @Override
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
@@ -131,33 +103,27 @@ public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRe
     }
     
 	// Redstone API
-	/* TODO Commented temporarily to allow this thing to compile...
-    @Override
-    public boolean canProvidePower(IBlockState state) {
-        return true;
-    }
 
-    @Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
-		return isProvidingWeakPower(world, x, y, z, side);
+	/**
+	 * Can this block provide power. Only wire currently seems to have this change based on its state.
+	 */
+	@Override
+	public boolean canProvidePower(IBlockState state) {
+		return true;
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-		if(side == 0 || side == 1) { return REDSTONE_VALUE_OFF; }
-
-		TileEntity te = world.getTileEntity(x, y, z);
-		if(te instanceof TileEntityReactorRedstonePort) {
-			TileEntityReactorRedstonePort port = (TileEntityReactorRedstonePort)te;
-			if(port.isOutput())
-				return port.isRedstoneActive() ? REDSTONE_VALUE_ON : REDSTONE_VALUE_OFF;
-			else
-				return REDSTONE_VALUE_OFF;
-		}
-		
-		return REDSTONE_VALUE_OFF;
+	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return this.getWeakPower(blockState, blockAccess, pos, side);
 	}
-	*/
+
+	@Override
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+
+		TileEntity te = blockAccess.getTileEntity(pos);
+
+		return te instanceof TileEntityReactorRedstonePort ? ((TileEntityReactorRedstonePort)te).getWeakPower() : 0;
+	}
 
     // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
     /*
@@ -226,6 +192,6 @@ public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRe
 	protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
 
 		return super.buildActualState(state, world, position, part).withProperty(Properties.LIT,
-				(part instanceof TileEntityReactorRedstonePort) && ((TileEntityReactorRedstonePort)part).isRedstoneActive());
+				(part instanceof TileEntityReactorRedstonePort) && ((TileEntityReactorRedstonePort)part).isLit());
 	}
 }
