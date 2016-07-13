@@ -68,12 +68,12 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 		pumpDestination = null;
 	}
 
+	/*
 	@Override
 	public void writeToNBT(NBTTagCompound data) {
 		super.writeToNBT(data);
 		data.setInteger("flowSetting", flowSetting.ordinal());
 	}
-	
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
@@ -81,19 +81,32 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 			flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
 		}
 	}
-	
 	@Override
 	public void encodeDescriptionPacket(NBTTagCompound data) {
 		super.encodeDescriptionPacket(data);
 		data.setInteger("flowSetting", flowSetting.ordinal());
 	}
-	
 	@Override
 	public void decodeDescriptionPacket(NBTTagCompound data) {
 		super.decodeDescriptionPacket(data);
 		if(data.hasKey("flowSetting")) {
 			flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
 		}
+	}*/
+
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
+		super.loadFromNBT(data, fromPacket);
+
+		if(data.hasKey("flowSetting")) {
+			flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
+		}
+	}
+
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
+		super.saveToNBT(data, toPacket);
+		data.setInteger("flowSetting", flowSetting.ordinal());
 	}
 
 	@Override
