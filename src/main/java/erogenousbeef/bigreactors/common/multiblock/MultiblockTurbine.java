@@ -203,7 +203,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
-		readFromNBT(data);
+
+		this.loadFromNBT(data, false);
 	}
 
 	@Override
@@ -697,6 +698,58 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	protected void updateClient() {
 	}
 
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
+		if(data.hasKey("inputTank")) {
+			tanks[TANK_INPUT].readFromNBT(data.getCompoundTag("inputTank"));
+		}
+
+		if(data.hasKey("outputTank")) {
+			tanks[TANK_OUTPUT].readFromNBT(data.getCompoundTag("outputTank"));
+		}
+
+		if(data.hasKey("active")) {
+			setActive(data.getBoolean("active"));
+		}
+
+		if(data.hasKey("energy")) {
+			setEnergyStored(data.getFloat("energy"));
+		}
+
+		if(data.hasKey("ventStatus")) {
+			setVentStatus(VentStatus.values()[data.getInteger("ventStatus")], false);
+		}
+
+		if(data.hasKey("rotorEnergy")) {
+			setRotorEnergy(data.getFloat("rotorEnergy"));
+
+			if(!worldObj.isRemote) {
+				rpmUpdateTracker.setValue(getRotorSpeed());
+			}
+		}
+
+		if(data.hasKey("maxIntakeRate")) {
+			maxIntakeRate = data.getInteger("maxIntakeRate");
+		}
+
+		if(data.hasKey("inductorEngaged")) {
+			setInductorEngaged(data.getBoolean("inductorEngaged"), false);
+		}
+	}
+
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
+		data.setTag("inputTank", tanks[TANK_INPUT].writeToNBT(new NBTTagCompound()));
+		data.setTag("outputTank", tanks[TANK_OUTPUT].writeToNBT(new NBTTagCompound()));
+		data.setBoolean("active", active);
+		data.setFloat("energy", energyStored);
+		data.setInteger("ventStatus", ventStatus.ordinal());
+		data.setFloat("rotorEnergy", rotorEnergy);
+		data.setInteger("maxIntakeRate", maxIntakeRate);
+		data.setBoolean("inductorEngaged", inductorEngaged);
+	}
+
+	/*
 	@Override
 	public void writeToNBT(NBTTagCompound data) {
 		data.setTag("inputTank", tanks[TANK_INPUT].writeToNBT(new NBTTagCompound()));
@@ -746,8 +799,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(data.hasKey("inductorEngaged")) {
 			setInductorEngaged(data.getBoolean("inductorEngaged"), false);
 		}
-	}
-
+	}*/
+	/*
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound data) {
 		writeToNBT(data);
@@ -757,7 +810,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	public void decodeDescriptionPacket(NBTTagCompound data) {
 		readFromNBT(data);
 	}
-	
+	*/
+
 	// Network Serialization
 	/**
 	 * Used when dispatching update packets from the server.
