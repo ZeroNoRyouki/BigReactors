@@ -2,6 +2,8 @@ package erogenousbeef.bigreactors.net.message;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
@@ -42,8 +44,25 @@ public class ReactorRedstonePortChangeMessage extends TileMessageServer<TileEnti
     public static class Handler extends TileMessageServer.Handler<ReactorRedstonePortChangeMessage,
     															  TileEntityReactorRedstonePort> {
         @Override
-        public IMessage handle(ReactorRedstonePortChangeMessage message, MessageContext ctx, TileEntityReactorRedstonePort te) {
-        	te.onReceiveUpdatePacket(message.newCircut, message.newLevel, message.newGt, message.pulse);
+        public IMessage handle(final ReactorRedstonePortChangeMessage message, final MessageContext ctx, final TileEntityReactorRedstonePort te) {
+
+            /**/
+            World w = te.getWorld();
+            if (w instanceof WorldServer) {
+
+                WorldServer world = (WorldServer)w;
+
+                world.addScheduledTask(new Runnable() {
+                    public void run() {
+
+                        te.onReceiveUpdatePacket(message.newCircut, message.newLevel, message.newGt, message.pulse);
+                    }
+                });
+            }/**/
+
+            //te.onReceiveUpdatePacket(message.newCircut, message.newLevel, message.newGt, message.pulse);
+
+
             return null;
         }
         
