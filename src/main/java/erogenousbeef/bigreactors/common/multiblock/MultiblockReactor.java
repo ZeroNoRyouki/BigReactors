@@ -1,6 +1,8 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
+import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
+import erogenousbeef.bigreactors.init.BrBlocks;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashSet;
@@ -15,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -40,14 +44,19 @@ import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.ItemHandlerHelper;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.util.ItemHelper;
 import zero.mods.zerocore.util.WorldHelper;
 
-public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo, IMultipleFluidHandler, IActivateable {
+public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo,
+		IMultipleFluidHandler, IActivateable {
+
 	public static final int FuelCapacityPerFuelRod = 4 * Reactants.standardSolidReactantAmount; // 4 ingots per rod
 	
 	public static final int FLUID_SUPERHEATED = CoolantContainer.HOT;
@@ -94,7 +103,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private Set<TileEntityReactorPowerTap> attachedPowerTaps;
 	private Set<ITickableMultiblockPart> attachedTickables;
 
-	private Set<TileEntityReactorControlRod> attachedControlRods; 	// Highest internal Y-coordinate in the fuel column
+	private Set<TileEntityReactorControlRod> attachedControlRods;
 	private Set<TileEntityReactorAccessPort> attachedAccessPorts;
 	private Set<TileEntityController> attachedControllers;
 	
@@ -102,6 +111,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private Set<TileEntityReactorCoolantPort> attachedCoolantPorts;
 	
 	private Set<TileEntityReactorGlass> attachedGlass;
+
+	private FuelAssembly[] _fuelAssemblies;
 
 	// Updates
 	private Set<EntityPlayer> updatePlayers;
@@ -139,6 +150,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		attachedFuelRods = new HashSet<TileEntityReactorFuelRod>();
 		attachedCoolantPorts = new HashSet<TileEntityReactorCoolantPort>();
 		attachedGlass = new HashSet<TileEntityReactorGlass>();
+		this._fuelAssemblies = null;
 		
 		currentFuelRod = null;
 
@@ -243,22 +255,98 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected boolean isMachineWhole(IMultiblockValidator validatorCallback) {
+
 		// Ensure that there is at least one controller and control rod attached.
-		if(attachedControlRods.size() < 1) {
+
+		if (this.attachedControlRods.size() < 1) {
+
 			validatorCallback.setLastError("multiblock.validation.reactor.too_few_rods");
 			return false;
 		}
 		
-		if(attachedControllers.size() < 1) {
+		if (this.attachedControllers.size() < 1) {
+
 			validatorCallback.setLastError("multiblock.validation.reactor.too_few_controllers");
 			return false;
 		}
+
+		// ensure that control rods are placed only on one side of the reactor and that fuel rods follow the
+		// orientation of control rods
+
+		Set<TileEntity> validFuelRods = new HashSet<TileEntity>();
+		EnumFacing rodsFacing = null;
+
+		for (TileEntityReactorControlRod rod : this.attachedControlRods) {
+
+			EnumFacing facing = rod.getOutwardFacingFromWorldPosition();
+
+			if (null == rodsFacing)
+				rodsFacing = facing;
+
+			else if (null == facing || (facing != rodsFacing)) {
+
+				validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_side");
+				return false;
+			}
+
+			// - capture all the fuel rods behind this control rod
+
+			BlockPos position = rod.getWorldPosition();
+			TileEntity te;
+
+			facing = facing.getOpposite();
+
+			while (true) {
+
+				position = position.offset(facing);
+				te = this.worldObj.getTileEntity(position);
+
+				if (te instanceof TileEntityReactorFuelRod)
+					// found a valid fuel rod
+					validFuelRods.add(te);
+
+				else if (te instanceof TileEntityReactorPartBase) {
+
+					// we hit some other reactor parts on the walls
+
+					IBlockState state = this.worldObj.getBlockState(position);
+
+					if (BrBlocks.reactorCasing != state.getBlock()) {
+
+						// reactor casing is the only valid base for a fuel assembly
+
+						validatorCallback.setLastError("multiblock.validation.reactor.invalid_base_for_fuel_assembly",
+								position.getX(), position.getY(), position.getZ());
+						return false;
+					}
+
+					break;
+
+				} else {
+					// found an invalid tile entity (or no tile entity at all)
+					validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_in_fuel_assembly",
+							position.getX(), position.getY(), position.getZ());
+					return false;
+				}
+			}
+		}
+
+		if (validFuelRods.size() != this.attachedFuelRods.size()) {
+
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuel_rods");
+			return false;
+		}
+
 
 		// check tier
 
 		PartTier candidateTier = null;
 
 		for (IMultiblockPart part: this.connectedParts) {
+
+			if (part instanceof TileEntityReactorControlRod ||
+				part instanceof TileEntityReactorFuelRod)
+				continue;
 
 			if (part instanceof TileEntityReactorPartBase) {
 
@@ -309,8 +397,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	public void updateClient() {}
-	
+	public void updateClient() {
+    }
+
 	// Update loop. Only called when the machine is assembled.
 	@Override
 	public boolean updateServer() {
@@ -333,12 +422,15 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 			// Radiate from that control rod
 			TileEntityReactorFuelRod source  = currentFuelRod.next();
-			BlockPos sourcePosition = source.getPos();
-			BlockPos controlRodPosition = new BlockPos(sourcePosition.getX(), getMaximumCoord().getY(), sourcePosition.getZ());
-			TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)worldObj.getTileEntity(controlRodPosition);
+			FuelAssembly fuelAssembly = source.getFuelAssembly();
+			//BlockPos sourcePosition = source.getPos();
+			//BlockPos controlRodPosition = new BlockPos(sourcePosition.getX(), getMaximumCoord().getY(), sourcePosition.getZ());
+			///TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)worldObj.getTileEntity(controlRodPosition);
+			TileEntityReactorControlRod sourceControlRod = (null != fuelAssembly) ? fuelAssembly.getControlRod() : null;
+
 			if(sourceControlRod != null)
 			{
-				RadiationData radData = radiationHelper.radiate(worldObj, fuelContainer, source, sourceControlRod, getFuelHeat(), getReactorHeat(), attachedControlRods.size());
+				RadiationData radData = radiationHelper.radiate(worldObj, fuelContainer, source, fuelAssembly, getFuelHeat(), getReactorHeat(), attachedControlRods.size());
 
 				// Assimilate results of radiation
 				if(radData != null) {
@@ -437,6 +529,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		ticksSinceLastUpdate++;
 		if(ticksSinceLastUpdate >= ticksBetweenUpdates) {
 			ticksSinceLastUpdate = 0;
+            this.updateFuelAssembliesQuota();
 			sendTickUpdate();
 		}
 		
@@ -585,14 +678,12 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 		
 		// Permit registered moderator blocks
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		int metadata = world.getBlockMetadata(x, y, z);
 
-		if(ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata))) != null) {
+		ItemStack stack = ItemHelper.createItemStack(blockState, 1);
+
+		if(ReactorInterior.getBlockData(stack) != null) {
 			return true;
 		}
-		*/
 
 		// Permit TE fluids
 		if(block != null) {
@@ -658,7 +749,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound data) {
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
 		data.setBoolean("reactorActive", this.active);
 		data.setFloat("heat", this.reactorHeat);
 		data.setFloat("fuelHeat", fuelHeat);
@@ -670,7 +762,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound data) {
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
 		if(data.hasKey("reactorActive")) {
 			setActive(data.getBoolean("reactorActive"));
 		}
@@ -702,6 +795,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(data.hasKey("coolantContainer")) {
 			coolantContainer.readFromNBT(data.getCompoundTag("coolantContainer"));
 		}
+
+		if (fromPacket)
+			this.onFuelStatusChanged();
 	}
 
 	@Override
@@ -709,7 +805,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		// Hollow cube.
 		return 26;
 	}
-
+	/*
 	@Override
 	public void formatDescriptionPacket(NBTTagCompound data) {
 		writeToNBT(data);
@@ -719,7 +815,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	public void decodeDescriptionPacket(NBTTagCompound data) {
 		readFromNBT(data);
 		onFuelStatusChanged();
-	}
+	}*/
 
 	// Network & Storage methods
 	/*
@@ -727,17 +823,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @param buf The byte buffer to serialize into
 	 */
 	public void serialize(ByteBuf buf) {
-		int fuelTypeID, wasteTypeID, coolantTypeID, vaporTypeID;
 
-		// Marshal fluid types into integers
-		{
-			Fluid coolantType, vaporType;
-			coolantType = coolantContainer.getCoolantType();
-			vaporType = coolantContainer.getVaporType();
-			// TODO Commented temporarily to allow this thing to compile...
-			coolantTypeID = coolantType == null ? -1 :/* coolantType.getID()*/-1;
-			vaporTypeID = vaporType == null ? -1 : /*vaporType.getID()*/-1;
-		}
+		Fluid coolantType = this.coolantContainer.getCoolantType();
+		Fluid vaporType = this.coolantContainer.getVaporType();
+		String coolantName = null != coolantType ? coolantType.getName() : "";
+		String vaporName = null != vaporType ? vaporType.getName() : "";
 
 		// Basic data
 		buf.writeBoolean(active);
@@ -751,9 +841,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		buf.writeFloat(fuelConsumedLastTick);
 		
 		// Coolant data
-		buf.writeInt(coolantTypeID);
+		ByteBufUtils.writeUTF8String(buf, coolantName);
 		buf.writeInt(coolantContainer.getCoolantAmount());
-		buf.writeInt(vaporTypeID);
+		ByteBufUtils.writeUTF8String(buf, vaporName);
 		buf.writeInt(coolantContainer.getVaporAmount());
 		
 		fuelContainer.serialize(buf);
@@ -777,28 +867,25 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		
 
 		// Coolant data
-		int coolantTypeID = buf.readInt();
+		String coolantName = ByteBufUtils.readUTF8String(buf);
 		int coolantAmt = buf.readInt();
-		int vaporTypeID = buf.readInt();
+		String vaporName = ByteBufUtils.readUTF8String(buf);
 		int vaporAmt = buf.readInt();
 
 		// Fuel & waste data
 		fuelContainer.deserialize(buf);
+		this.updateFuelAssembliesQuota();
 
-		if(coolantTypeID == -1) {
+
+		if (coolantName.isEmpty())
 			coolantContainer.emptyCoolant();
-		}
-		else {
-			coolantContainer.setCoolant(new FluidStack(FluidRegistry.getFluid(coolantTypeID), coolantAmt));
-		}
-		
-		if(vaporTypeID == -1) {
+		else
+			coolantContainer.setCoolant(new FluidStack(FluidRegistry.getFluid(coolantName), coolantAmt));
+
+		if (vaporName.isEmpty())
 			coolantContainer.emptyVapor();
-		}
-		else {
-			coolantContainer.setVapor(new FluidStack(FluidRegistry.getFluid(vaporTypeID), vaporAmt));
-		}
-		
+		else
+			coolantContainer.setVapor(new FluidStack(FluidRegistry.getFluid(vaporName), vaporAmt));
 	}
 	
 	protected IMessage getUpdatePacket() {
@@ -818,10 +905,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * Send an update to any clients with GUIs open
 	 */
 	protected void sendTickUpdate() {
-		if(this.worldObj.isRemote) { return; }
-		if(this.updatePlayers.size() <= 0) { return; }
 
-		for(EntityPlayer player : updatePlayers) {
+		if (this.worldObj.isRemote || this.updatePlayers.size() <= 0)
+			return;
+
+		for(EntityPlayer player : this.updatePlayers) {
             CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)player);
 		}
 	}
@@ -834,8 +922,19 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @return The number of waste items distributed, i.e. the differential in stack size for wasteToDistribute.
 	 */
 	private int tryDistributeItems(TileEntityReactorAccessPort port, ItemStack itemsToDistribute, boolean distributeToInputs) {
-		// TODO compiled out while added Capabilities
-		/*
+
+        int initialWasteAmount = itemsToDistribute.stackSize;
+
+        // Dump waste preferentially to outlets, unless we only have one access port
+        if (!port.isInlet() || (distributeToInputs || this.attachedAccessPorts.size() < 2)) {
+
+            itemsToDistribute = ItemHandlerHelper.insertItem(port.getItemStackHandler(false), itemsToDistribute, false);
+            port.onItemsReceived();
+        }
+
+        return null != itemsToDistribute ? initialWasteAmount - itemsToDistribute.stackSize : initialWasteAmount;
+
+        /*
 		ItemStack existingStack = port.getStackInSlot(TileEntityReactorAccessPort.SLOT_OUTLET);
 		int initialWasteAmount = itemsToDistribute.stackSize;
 		if(!port.isInlet() || (distributeToInputs || attachedAccessPorts.size() < 2)) {
@@ -866,7 +965,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 		
 		return initialWasteAmount - itemsToDistribute.stackSize;
-		*/return 0;
+		*/
 	}
 
 	@Override
@@ -877,6 +976,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		this.attachedControllers.clear();
 		this.attachedControlRods.clear();
 		currentFuelRod = null;
+		this._fuelAssemblies = null;
 	}
 	
 	@Override
@@ -896,11 +996,13 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		fuelContainer.merge(otherReactor.fuelContainer);
 		radiationHelper.merge(otherReactor.radiationHelper);
 		coolantContainer.merge(otherReactor.coolantContainer);
+
+		//this.rebuildFuelAssemblies();
 	}
 	
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
-		this.readFromNBT(data);
+		this.loadFromNBT(data, false);
 	}
 	
 	/*public float getEnergyStored() {
@@ -1086,6 +1188,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected void onMachineAssembled() {
+
+		this.rebuildFuelAssemblies();
 		recalculateDerivedValues();
 	}
 
@@ -1343,6 +1447,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	// Client-only
 	protected void onFuelStatusChanged() {
 		if(worldObj.isRemote) {
+
+            this.updateFuelAssembliesQuota();
+
 			// On the client, re-render all the fuel rod blocks when the fuel status changes
 			for(TileEntityReactorFuelRod fuelRod : attachedFuelRods) {
 				WorldHelper.notifyBlockUpdate(this.worldObj, fuelRod.getPos(), null, null);
@@ -1372,11 +1479,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		BlockPos referenceCoord = getReferenceCoord();
 		if(referenceCoord == null) { return; }
 
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		TileEntity saveTe = worldObj.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
-		worldObj.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
-		*/
+		TileEntity saveTe = worldObj.getTileEntity(referenceCoord);
+		this.worldObj.markChunkDirty(referenceCoord, saveTe);
 	}
 
 	@Override
@@ -1395,7 +1499,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
 		}
 		*/
-		
+
 		if(isAssembled()) {
 			sb.append("\nActive: ").append(Boolean.toString(getActive()));
 			sb.append("\nStored Energy: ").append(Float.toString(getEnergyStored()));
@@ -1414,7 +1518,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	public PartTier getMachineTier() {
-		return PartTier.Standard; // TODO implement
+		return this.partsTier;
 	}
 
 	protected void switchPowerSystem(PowerSystem newPowerSystem) {
@@ -1424,6 +1528,33 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if (this.energyStored > this.powerSystem.maxCapacity)
 			this.energyStored = this.powerSystem.maxCapacity;
 	}
+
+	public int getFuelAssembliesCount() {
+		return null != this._fuelAssemblies ? this._fuelAssemblies.length : 0;
+	}
+
+	private void rebuildFuelAssemblies() {
+
+		int count = this.attachedControlRods.size();
+		int idx = 0;
+
+		this._fuelAssemblies = new FuelAssembly[count];
+
+		for (TileEntityReactorControlRod controlRod : this.attachedControlRods)
+			this._fuelAssemblies[idx++] = new FuelAssembly(controlRod);
+	}
+
+    private void updateFuelAssembliesQuota() {
+
+        if (null == this._fuelAssemblies)
+            return;
+
+        int count = this._fuelAssemblies.length;
+        int fuelRodsTotalCount = this.attachedFuelRods.size();
+
+        for (int i = 0; i < count; ++i)
+            this._fuelAssemblies[i].updateQuota(this.fuelContainer, fuelRodsTotalCount);
+    }
 
 	/*
 	 * Power exchange API (replacement for IEnergyProvider)
