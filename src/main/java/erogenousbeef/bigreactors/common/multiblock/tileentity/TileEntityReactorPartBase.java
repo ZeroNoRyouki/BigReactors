@@ -132,11 +132,4 @@ public abstract class TileEntityReactorPartBase extends
 
 		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
 	}
-
-	public EnumFacing getSingleOutwardsDir() {
-
-		BlockFacings out = this.getOutwardsDir();
-
-		return !out.none() && (1 == out.countFacesIf(true)) ? out.firstIf(true) : null;
-	}
 }
