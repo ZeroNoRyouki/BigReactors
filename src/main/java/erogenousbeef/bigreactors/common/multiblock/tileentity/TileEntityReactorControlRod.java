@@ -8,12 +8,14 @@ import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.lib.BlockFacings;
 import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorControlRod extends TileEntityReactorPart {
@@ -86,15 +88,42 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 	// TileEntity overrides
 	@Override
-	public void readFromNBT(NBTTagCompound data) {
-		super.readFromNBT(data);
-		this.readLocalDataFromNBT(data);
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+
+		super.loadFromNBT(data, fromPacket);
+
+		if (fromPacket) {
+
+			this.readLocalDataFromNBT(data);
+
+		} else {
+
+			if(data.hasKey("reactorControlRod")) {
+				NBTTagCompound localData = data.getCompoundTag("reactorControlRod");
+				this.readLocalDataFromNBT(localData);
+
+				if(worldObj != null && worldObj.isRemote) {
+					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+				}
+			}
+		}
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound data) {
-		super.writeToNBT(data);
-		this.writeLocalDataToNBT(data);
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+
+		super.saveToNBT(data, toPacket);
+
+		if (!toPacket) {
+
+			this.writeLocalDataToNBT(data);
+
+		} else {
+
+			NBTTagCompound localData = new NBTTagCompound();
+			this.writeLocalDataToNBT(localData);
+			data.setTag("reactorControlRod", localData);
+		}
 	}
 
 	@Override
@@ -121,20 +150,36 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	@Override
 	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
 
-		BlockPos position = this.getPos();
+        for (EnumFacing direction: EnumFacing.UP.HORIZONTALS)
+            if (this.checkForFuelRod(direction))
+                return true;
 
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
-				position.getX(), position.getY(), position.getZ());
-		return false;
+        BlockPos position = this.getPos();
+
+        validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
+                position.getX(), position.getY(), position.getZ());
+
+        return false;
 	}
 
 	@Override
 	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+		/*
 		// Check that the space below us is a fuel rod
 		BlockPos position = this.getPos();
 		TileEntity teBelow = this.worldObj.getTileEntity(position.down());
 
 		if(!(teBelow instanceof TileEntityReactorFuelRod)) {
+
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_column",
+					position.getX(), position.getY(), position.getZ());
+			return false;
+		}
+		*/
+
+		if (!this.checkForFuelRod(EnumFacing.DOWN)) {
+
+			BlockPos position = this.getPos();
 
 			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_column",
 					position.getX(), position.getY(), position.getZ());
@@ -146,12 +191,24 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 	@Override
 	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
-
+		/*
 		BlockPos position = this.getPos();
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
 				position.getX(), position.getY(), position.getZ());
 		return false;
+		*/
+
+		if (!this.checkForFuelRod(EnumFacing.UP)) {
+
+			BlockPos position = this.getPos();
+
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
+					position.getX(), position.getY(), position.getZ());
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -164,6 +221,13 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		return false;
 	}
 
+	private boolean checkForFuelRod(EnumFacing fuelDirection) {
+		return null != fuelDirection && this.worldObj.getTileEntity(this.getWorldPosition().offset(fuelDirection)) instanceof TileEntityReactorFuelRod;
+	}
+
+
+
+	/*
 	// TODO check with ModTileEntity
 	@Override
 	protected void encodeDescriptionPacket(NBTTagCompound packet) {
@@ -186,7 +250,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 				WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 			}
 		}
-	}
+	}*/
 	
 	// Save/Load Helpers
 	private void readLocalDataFromNBT(NBTTagCompound data) {
