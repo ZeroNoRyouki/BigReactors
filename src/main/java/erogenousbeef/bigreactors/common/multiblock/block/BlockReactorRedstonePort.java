@@ -7,11 +7,8 @@ import erogenousbeef.bigreactors.common.multiblock.PartType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -43,26 +40,6 @@ public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRe
 		return new TileEntityReactorRedstonePort();
 	}
 
-	@Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-                                    ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		/*
-		if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking()) {
-
-			TileEntity te = world.getTileEntity(pos);
-
-			if (te instanceof TileEntityReactorRedstonePort) {
-
-				TileEntityReactorRedstonePort part = (TileEntityReactorRedstonePort)te;
-
-				if (part.isConnected())
-					part.updateRedstoneState();
-			}
-		}
-		*/
-		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
-	}
-
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
@@ -76,20 +53,9 @@ public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRe
         	TileEntityReactorRedstonePort port = (TileEntityReactorRedstonePort)te;
 			EnumFacing out = port.getOutwardFacing();
 
-			if (port.isLit() && (null != out)) {
-				/*
-				double particleX, particleY, particleZ;
-				int x = position.getX(), z = position.getZ();
-
-				particleY = position.getY() + 0.45D + rand.nextFloat() * 0.1D;
-				particleX = out.getFrontOffsetX() > 0 ? x + rand.nextFloat() * 0.1D + 1.1D : x + 0.45D + rand.nextFloat() * 0.1D;
-				particleZ = out.getFrontOffsetZ() > 0 ? z + rand.nextFloat() * 0.1D + 1.1D : z + 0.45D + rand.nextFloat() * 0.1D;
-
-				world.spawnParticle(EnumParticleTypes.REDSTONE, particleX, particleY, particleZ, 0.0D, rand.nextFloat() * 0.1D, 0.0D);
-				*/
+			if (port.isLit() && (null != out))
 				WorldHelper.spawnVanillaParticles(world, EnumParticleTypes.REDSTONE, 1, 1, position.getX(),
 						position.getY(), position.getZ(), 0, 1, 0);
-        	}
         }
     }
 
