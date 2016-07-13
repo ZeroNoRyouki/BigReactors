@@ -120,6 +120,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	 */
 	public int consumeReactantItem(int reactantDesired) {
 
+		// TODO consume partial amount of source fuel (say, a block) and put left over back in the inventory (say, ingots)
+
 		ItemStack inputItem = this._fuelInventory.getStackInSlot(0);
 		SourceProductMapping mapping = null != inputItem ? Reactants.getSolidToReactant(inputItem) : null;
 		int sourceItemsToConsume = null != mapping ? Math.min(inputItem.stackSize, mapping.getSourceAmount(reactantDesired)) : 0;
@@ -291,27 +293,44 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}*/
 
 	@Override
-	protected void saveToNBT(NBTTagCompound data) {
+	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
 
-		super.saveToNBT(data);
-		data.setBoolean("isInlet", this._isInlet);
-		data.setTag("invI", this._fuelInventory.serializeNBT());
-		data.setTag("invO", this._wasteInventory.serializeNBT());
+		super.saveToNBT(data, toPacket);
+
+		if (!toPacket) {
+
+			data.setBoolean("isInlet", this._isInlet);
+			data.setTag("invI", this._fuelInventory.serializeNBT());
+			data.setTag("invO", this._wasteInventory.serializeNBT());
+
+		} else {
+
+			data.setBoolean("inlet", this._isInlet);
+		}
 	}
 
 	@Override
-	protected void loadFromNBT(NBTTagCompound data) {
+	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
 
-		super.loadFromNBT(data);
-		this._isInlet = data.hasKey("isInlet") ? data.getBoolean("isInlet") : true;
+		super.loadFromNBT(data, fromPacket);
 
-		if (data.hasKey("invI"))
-			this._fuelInventory.deserializeNBT((NBTTagCompound)data.getTag("invI"));
+		if (!fromPacket) {
 
-		if (data.hasKey("invO"))
-			this._wasteInventory.deserializeNBT((NBTTagCompound)data.getTag("invO"));
+			this._isInlet = data.hasKey("isInlet") ? data.getBoolean("isInlet") : true;
+
+			if (data.hasKey("invI"))
+				this._fuelInventory.deserializeNBT((NBTTagCompound) data.getTag("invI"));
+
+			if (data.hasKey("invO"))
+				this._wasteInventory.deserializeNBT((NBTTagCompound) data.getTag("invO"));
+
+		} else {
+
+			if (data.hasKey("inlet"))
+				this.setInlet(data.getBoolean("inlet"));
+		}
 	}
-
+/*
 	// TODO FIX both
 	// MultiblockTileEntityBase
 	@Override
@@ -328,7 +347,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		if(packetData.hasKey("inlet")) {
 			setInlet(packetData.getBoolean("inlet"));
 		}
-	}
+	}*/
 
 	@Override
 	public Object getServerGuiElement(int guiId, EntityPlayer player) {
@@ -363,7 +382,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		if (!this.worldObj.isRemote) {
 
 			distributeItems();
-			markChunkDirty();
+			//markChunkDirty();
+			this.markDirty();
 		}
 
 		notifyNeighborsOfTileChange();
@@ -385,7 +405,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	
 	protected void checkForAdjacentInventories() {
 
-		EnumFacing facing = this.getSingleOutwardsDir();
+		EnumFacing facing = this.getOutwardFacing();
 		IItemHandler candidateInventory = null;
 
 		if (null == facing)
@@ -415,7 +435,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 
-		EnumFacing facing = this.getSingleOutwardsDir();
+		EnumFacing facing = this.getOutwardFacing();
 
 		// is the changed block the one we are facing?
 		if (null != facing && neighbor.equals(position.offset(facing)))
