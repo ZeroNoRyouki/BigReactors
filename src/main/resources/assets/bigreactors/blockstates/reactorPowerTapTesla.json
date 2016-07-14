@@ -3,7 +3,8 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/reactor/standard/plate",
-            "machine":"bigreactors:blocks/reactor/standard/controlRod",
+            "machineA":"bigreactors:blocks/reactor/standard/powerTapTesla.disconnected",
+            "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -20,13 +21,15 @@
 				"transform":"forge:default-block",
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/standard/plate",
-                    "machine":"bigreactors:blocks/reactor/standard/controlRod"
+                    "machineA":"bigreactors:blocks/reactor/standard/powerTapTesla.disconnected",
+                    "machineB":"bigreactors:blocks/reactor/standard/powerTapTesla.connected"
                 }
             },
             "advanced":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/advanced/plate",
-					"machine":"bigreactors:blocks/reactor/advanced/controlRod"
+                    "machineA":"bigreactors:blocks/reactor/advanced/powerTapTesla.disconnected",
+                    "machineB":"bigreactors:blocks/reactor/advanced/powerTapTesla.connected"
                 }
             }
         },
@@ -86,6 +89,18 @@
                     "south":"#plate",
                     "west":"#plate",
                     "east":"#plate"
+                }
+            }
+        },
+        "powerstate":{  
+            "connected":{  
+                "textures":{  
+                    "machine":"#machineB"
+                }
+            },
+            "disconnected":{  
+                "textures":{  
+                    "machine":"#machineA"
                 }
             }
         },
