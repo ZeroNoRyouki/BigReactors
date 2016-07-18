@@ -20,7 +20,8 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorR
 import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.GuiSelectableButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
-import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
+//import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
+import erogenousbeef.bigreactors.net.message.multiblock.ReactorRedstonePortChangeMessage;
 
 public class GuiReactorRedstonePort extends BeefGuiBase {
 
