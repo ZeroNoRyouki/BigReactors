@@ -293,30 +293,13 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}*/
 
 	@Override
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
+		super.syncDataFrom(data, syncReason);
 
-		if (!toPacket) {
+		if (SyncReason.FullSync == syncReason) {
 
-			data.setBoolean("isInlet", this._isInlet);
-			data.setTag("invI", this._fuelInventory.serializeNBT());
-			data.setTag("invO", this._wasteInventory.serializeNBT());
-
-		} else {
-
-			data.setBoolean("inlet", this._isInlet);
-		}
-	}
-
-	@Override
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
-
-		super.loadFromNBT(data, fromPacket);
-
-		if (!fromPacket) {
-
-			this._isInlet = data.hasKey("isInlet") ? data.getBoolean("isInlet") : true;
+			this._isInlet = !data.hasKey("isInlet") || data.getBoolean("isInlet");
 
 			if (data.hasKey("invI"))
 				this._fuelInventory.deserializeNBT((NBTTagCompound) data.getTag("invI"));
@@ -330,6 +313,24 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 				this.setInlet(data.getBoolean("inlet"));
 		}
 	}
+
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataTo(data, syncReason);
+
+		if (SyncReason.FullSync == syncReason) {
+
+			data.setBoolean("isInlet", this._isInlet);
+			data.setTag("invI", this._fuelInventory.serializeNBT());
+			data.setTag("invO", this._wasteInventory.serializeNBT());
+
+		} else {
+
+			data.setBoolean("inlet", this._isInlet);
+		}
+	}
+
 /*
 	// TODO FIX both
 	// MultiblockTileEntityBase

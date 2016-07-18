@@ -11,6 +11,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -51,6 +52,7 @@ import zero.mods.zerocore.api.multiblock.IMultiblockPart;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import zero.mods.zerocore.lib.block.ModTileEntity;
 import zero.mods.zerocore.util.ItemHelper;
 import zero.mods.zerocore.util.WorldHelper;
 
@@ -671,9 +673,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		Block block = blockState.getBlock();
 
 		Material material = block.getMaterial(blockState);
-		if(material == net.minecraft.block.material.MaterialLiquid.water ||
-				block == Blocks.iron_block || block == Blocks.gold_block ||
-				block == Blocks.diamond_block || block == Blocks.emerald_block) {
+		if(material == MaterialLiquid.WATER ||
+				block == Blocks.IRON_BLOCK || block == Blocks.GOLD_BLOCK ||
+				block == Blocks.DIAMOND_BLOCK || block == Blocks.EMERALD_BLOCK) {
 			return true;
 		}
 		
@@ -749,7 +751,38 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	protected void syncDataFromServer(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+
+		if (data.hasKey("reactorActive"))
+			this.setActive(data.getBoolean("reactorActive"));
+
+		if (data.hasKey("heat"))
+			this.setReactorHeat(Math.max(getReactorHeat(), data.getFloat("heat")));
+
+		if (data.hasKey("storedEnergy"))
+			this.setEnergyStored(Math.max(getEnergyStored(), data.getFloat("storedEnergy")));
+
+		if (data.hasKey("wasteEjection2"))
+			this.wasteEjection = s_EjectionSettings[data.getInteger("wasteEjection2")];
+
+		if (data.hasKey("fuelHeat"))
+			this.setFuelHeat(data.getFloat("fuelHeat"));
+
+		if (data.hasKey("fuelContainer"))
+			this.fuelContainer.readFromNBT(data.getCompoundTag("fuelContainer"));
+
+		if (data.hasKey("radiation"))
+			this.radiationHelper.readFromNBT(data.getCompoundTag("radiation"));
+
+		if (data.hasKey("coolantContainer"))
+			this.coolantContainer.readFromNBT(data.getCompoundTag("coolantContainer"));
+
+		if (ModTileEntity.SyncReason.NetworkUpdate == syncReason)
+			this.onFuelStatusChanged();
+	}
+
+	@Override
+	protected void syncDataToClient(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		data.setBoolean("reactorActive", this.active);
 		data.setFloat("heat", this.reactorHeat);
@@ -759,45 +792,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		data.setTag("fuelContainer", fuelContainer.writeToNBT(new NBTTagCompound()));
 		data.setTag("radiation", radiationHelper.writeToNBT(new NBTTagCompound()));
 		data.setTag("coolantContainer", coolantContainer.writeToNBT(new NBTTagCompound()));
-	}
-
-	@Override
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
-
-		if(data.hasKey("reactorActive")) {
-			setActive(data.getBoolean("reactorActive"));
-		}
-		
-		if(data.hasKey("heat")) {
-			setReactorHeat(Math.max(getReactorHeat(), data.getFloat("heat")));
-		}
-		
-		if(data.hasKey("storedEnergy")) {
-			setEnergyStored(Math.max(getEnergyStored(), data.getFloat("storedEnergy")));
-		}
-		
-		if(data.hasKey("wasteEjection2")) {
-			this.wasteEjection = s_EjectionSettings[data.getInteger("wasteEjection2")];
-		}
-		
-		if(data.hasKey("fuelHeat")) {
-			setFuelHeat(data.getFloat("fuelHeat"));
-		}
-		
-		if(data.hasKey("fuelContainer")) {
-			fuelContainer.readFromNBT(data.getCompoundTag("fuelContainer"));
-		}
-		
-		if(data.hasKey("radiation")) {
-			radiationHelper.readFromNBT(data.getCompoundTag("radiation"));
-		}
-		
-		if(data.hasKey("coolantContainer")) {
-			coolantContainer.readFromNBT(data.getCompoundTag("coolantContainer"));
-		}
-
-		if (fromPacket)
-			this.onFuelStatusChanged();
 	}
 
 	@Override
@@ -1002,7 +996,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
-		this.loadFromNBT(data, false);
+		this.syncDataFromServer(data, ModTileEntity.SyncReason.FullSync);
 	}
 	
 	/*public float getEnergyStored() {

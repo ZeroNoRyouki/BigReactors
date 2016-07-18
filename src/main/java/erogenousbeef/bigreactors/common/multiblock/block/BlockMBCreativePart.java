@@ -25,7 +25,7 @@ import java.util.List;
 public class BlockMBCreativePart extends BlockTieredPart {
 
 	public BlockMBCreativePart(PartType type, String blockName) {
-		super(type, blockName, Material.iron);
+		super(type, blockName, Material.IRON);
 	}
 
 	@Override

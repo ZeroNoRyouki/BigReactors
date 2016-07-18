@@ -103,52 +103,25 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		}
 	}
 
-	/*
-	// TileEntity
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		
-		if(tag.hasKey("inlet")) {
-			inlet = tag.getBoolean("inlet");
-		}
-	}
-	
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		tag.setBoolean("inlet", inlet);
-	}*/
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+		super.syncDataFrom(data, syncReason);
 
-		super.loadFromNBT(data, fromPacket);
+		if (!data.hasKey("inlet"))
+			return;
 
-		if (!fromPacket) {
-
-			if (data.hasKey("inlet"))
-				this.inlet = data.getBoolean("inlet");
-
-		} else {
-
-			if (data.hasKey("inlet"))
-				setInlet(data.getBoolean("inlet"), false);
-		}
+		if (SyncReason.FullSync == syncReason)
+			this.inlet = data.getBoolean("inlet");
+		else
+			this.setInlet(data.getBoolean("inlet"), false);
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
-
-		if (!toPacket) {
-
-			data.setBoolean("inlet", this.inlet);
-
-		} else {
-
-			data.setBoolean("inlet", this.inlet);
-
-		}
+		super.syncDataTo(data, syncReason);
+		data.setBoolean("inlet", this.inlet);
 	}
 
 	// IFluidHandler

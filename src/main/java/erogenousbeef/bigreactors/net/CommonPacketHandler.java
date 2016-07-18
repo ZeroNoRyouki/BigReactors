@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.net;
 
+import erogenousbeef.bigreactors.net.message.multiblock.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,16 +16,8 @@ import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
 import erogenousbeef.bigreactors.net.message.ReactorAccessPortChangeDirectionMessage;
 // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
 //import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
-import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorChangeWasteEjectionMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorCommandEjectMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorCommandEjectToPortMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeInductorMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeMaxIntakeMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeVentMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
+//import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
+
 
 public class CommonPacketHandler {
 

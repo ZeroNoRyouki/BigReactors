@@ -67,31 +67,24 @@ public abstract class TileEntityPoweredInventoryFluid extends
 		}
 	}
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		super.loadFromNBT(data, fromPacket);
+		super.syncDataFrom(data, syncReason);
 
-		if (!fromPacket) {
-
+		if (SyncReason.FullSync == syncReason)
 			readFluidsFromNBT(data);
-
-		} else {
-
-		}
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
+		super.syncDataTo(data, syncReason);
 
-		if (!toPacket) {
-
+		if (SyncReason.FullSync == syncReason)
 			writeFluidsToNBT(data);
-
-		} else {
-
-		}
 	}
+
 	/*
 	// TileEntity overrides
 	@Override

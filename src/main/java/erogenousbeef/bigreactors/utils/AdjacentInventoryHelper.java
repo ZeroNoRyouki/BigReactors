@@ -146,7 +146,7 @@ public class AdjacentInventoryHelper {
 			World world = te.getWorld();
 			BlockPos position = te.getPos();
 			IBlockState state = world.getBlockState(position);
-			if(state.getBlock() == Blocks.chest) {
+			if(state.getBlock() == Blocks.CHEST) {
 				inv = StaticUtils.Inventory.checkForDoubleChest(world, inv, position.getX(), position.getY(), position.getZ());
 			}
 			this.inv = new InventoryHelper(inv);

@@ -29,7 +29,7 @@ import zero.mods.zerocore.api.multiblock.MultiblockEventHandler;
 public class BRLoader {
 
 	public static final String MOD_ID = BigReactors.MODID;
-    public static final String DEPENDENCIES = "required-after:Forge@[12.16.1.1887,);required-after:zerocore";
+    public static final String DEPENDENCIES = "required-after:Forge@[12.17.0.1976,);required-after:zerocore";
 
 	@Instance(MOD_ID)
 	public static BRLoader instance;

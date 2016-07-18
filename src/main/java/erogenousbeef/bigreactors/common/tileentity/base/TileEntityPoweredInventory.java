@@ -79,11 +79,12 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		else { return (float)cycledTicks / (float)getCycleLength(); }
 	}
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		super.loadFromNBT(data, fromPacket);
+		super.syncDataFrom(data, syncReason);
 
-		if (!fromPacket) {
+		if (SyncReason.FullSync == syncReason) {
 
 			if(data.hasKey("energyStorage")) {
 				this.energyStorage.readFromNBT(data.getCompoundTag("energyStorage"));
@@ -92,27 +93,23 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 			if(data.hasKey("cycledTicks")) {
 				cycledTicks = data.getInteger("cycledTicks");
 			}
-
-		} else {
-
 		}
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
+		super.syncDataTo(data, syncReason);
 
-		if (!toPacket) {
+		if (SyncReason.FullSync == syncReason) {
 
 			NBTTagCompound energyTag = new NBTTagCompound();
 			this.energyStorage.writeToNBT(energyTag);
 			data.setTag("energyStorage", energyTag);
 			data.setInteger("cycledTicks", cycledTicks);
-
-		} else {
-
 		}
 	}
+
 	/*
 	// TileEntity overrides
 	@Override

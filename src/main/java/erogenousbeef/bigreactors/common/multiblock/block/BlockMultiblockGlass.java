@@ -41,8 +41,8 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 
 	public BlockMultiblockGlass(PartType type, String blockName) {
 
-		super(type, blockName, Material.glass);
-		this.setStepSound(SoundType.GLASS);
+		super(type, blockName, Material.GLASS);
+		this.setSoundType(SoundType.GLASS);
 		this._actualFacings = new boolean[EnumFacing.VALUES.length];
 	}
 

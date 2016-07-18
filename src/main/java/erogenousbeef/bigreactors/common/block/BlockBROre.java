@@ -23,7 +23,7 @@ public class BlockBROre extends BlockBR {
 
 	public BlockBROre(String blockName) {
 
-		super(blockName, Material.rock);
+		super(blockName, Material.ROCK);
 		this._subBlocks = null;
 	}
 

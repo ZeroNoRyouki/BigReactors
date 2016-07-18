@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import erogenousbeef.bigreactors.common.BigReactors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -84,7 +85,7 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 
 	@Override
 	protected ResourceLocation getResourceLocation() {
-		return net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture;
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 	
 	@Override

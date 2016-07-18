@@ -3,7 +3,6 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
@@ -15,7 +14,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.lib.BlockFacings;
 import zero.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorControlRod extends TileEntityReactorPart {
@@ -87,12 +85,13 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	}
 
 	// TileEntity overrides
+
 	@Override
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		super.loadFromNBT(data, fromPacket);
+		super.syncDataFrom(data, syncReason);
 
-		if (fromPacket) {
+		if (SyncReason.NetworkUpdate == syncReason) {
 
 			this.readLocalDataFromNBT(data);
 
@@ -108,13 +107,13 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 			}
 		}
 	}
-	
+
 	@Override
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
+		super.syncDataTo(data, syncReason);
 
-		if (!toPacket) {
+		if (SyncReason.FullSync == syncReason) {
 
 			this.writeLocalDataToNBT(data);
 

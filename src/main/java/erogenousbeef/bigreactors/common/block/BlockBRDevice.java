@@ -58,9 +58,9 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 	
 	public BlockBRDevice(DeviceType type, String blockName) {
 
-		super(blockName, Material.iron);
+		super(blockName, Material.IRON);
 		this._type = type;
-		this.setStepSound(SoundType.METAL);
+		this.setSoundType(SoundType.METAL);
 		this.setHardness(1.0f);
 		this.setDefaultState(
 				this.blockState.getBaseState()

@@ -25,7 +25,7 @@ public class BlockBRMetal extends BlockBR {
 
 	public BlockBRMetal(String blockName) {
 
-		super(blockName, Material.iron);
+		super(blockName, Material.IRON);
 		this._subBlocks = null;
 	}
 

@@ -364,9 +364,10 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		this.writeData(data);
 	}*/
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		super.loadFromNBT(data, fromPacket);
+		super.syncDataFrom(data, syncReason);
 
 		if (data.hasKey("circuitType"))
 			this.circuitType = circuitType.values()[data.getInteger("circuitType")];
@@ -383,20 +384,17 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		if (data.hasKey("lit"))
 			this._isLit = data.getBoolean("lit");
 
-		if (!fromPacket) {
-
+		if (SyncReason.FullSync == syncReason) {
 			this.updateRedstoneStateAndNotify();
-
 		} else {
-
 			WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
-			return;
 		}
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
+		super.syncDataTo(data, syncReason);
 
 		data.setInteger("circuitType", this.circuitType.ordinal());
 		data.setInteger("outputLevel", this.outputLevel);

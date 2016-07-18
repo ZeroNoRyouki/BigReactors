@@ -7,11 +7,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import erogenousbeef.bigreactors.utils.AdjacentInventoryHelper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 
 public abstract class TileEntityInventory extends TileEntityBeefBase implements IInventory, ISidedInventory {
 	
@@ -60,11 +58,12 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 	}
 	*/
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		super.loadFromNBT(data, fromPacket);
+		super.syncDataFrom(data, syncReason);
 
-		if (!fromPacket) {
+		if (SyncReason.FullSync == syncReason) {
 
 			// Inventories
 			_inventories = new ItemStack[getSizeInventory()];
@@ -80,17 +79,15 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 					}
 				}
 			}
-
-		} else {
-
 		}
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
+		super.syncDataTo(data, syncReason);
 
-		if (!toPacket) {
+		if (SyncReason.FullSync == syncReason) {
 
 			// Inventories
 			NBTTagList tagList = new NBTTagList();
@@ -106,9 +103,6 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 			if(tagList.tagCount() > 0) {
 				data.setTag("Items", tagList);
 			}
-
-		} else {
-
 		}
 	}
 

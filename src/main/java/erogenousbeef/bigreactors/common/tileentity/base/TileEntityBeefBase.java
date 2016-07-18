@@ -3,20 +3,17 @@ package erogenousbeef.bigreactors.common.tileentity.base;
 import java.util.HashSet;
 import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import cofh.api.tileentity.IReconfigurableFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import erogenousbeef.bigreactors.common.interfaces.IBeefReconfigurableSides;
 import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
 import erogenousbeef.bigreactors.gui.IBeefGuiEntity;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateExposureMessage;
-import erogenousbeef.bigreactors.net.message.DeviceUpdateMessage;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateRotationMessage;
 import zero.mods.zerocore.lib.block.ModTileEntity;
 import zero.mods.zerocore.util.WorldHelper;
@@ -90,16 +87,15 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	@Override
 	public boolean allowYAxisFacing() { return false; }
 
-	// Save/Load
 	@Override
-	protected void loadFromNBT(NBTTagCompound tag, boolean fromPacket) {
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
 		// Rotation
 
 		int newFacing;
 
-		if(tag.hasKey("facing")) {
-			newFacing = Math.max(0, Math.min(5, tag.getInteger("facing")));
+		if(data.hasKey("facing")) {
+			newFacing = Math.max(0, Math.min(5, data.getInteger("facing")));
 		}
 		else {
 			newFacing = 2;
@@ -108,18 +104,18 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		this.facing = EnumFacing.VALUES[newFacing];
 
 		// Exposure settings
-		if(tag.hasKey("exposures")) {
-			int[] tagExposures = tag.getIntArray("exposures");
+		if(data.hasKey("exposures")) {
+			int[] tagExposures = data.getIntArray("exposures");
 			assert(tagExposures.length == exposures.length);
 			System.arraycopy(tagExposures, 0, exposures, 0, exposures.length);
 		}
 	}
 
 	@Override
-	protected void saveToNBT(NBTTagCompound tag, boolean toPacket) {
-		
-		tag.setInteger("facing", facing.getIndex());
-		tag.setIntArray("exposures", exposures);
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		data.setInteger("facing", facing.getIndex());
+		data.setIntArray("exposures", exposures);
 	}
 
 	@Override
@@ -148,28 +144,31 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	public void stopUpdatingPlayer(EntityPlayer player) {
 		updatePlayers.remove(player);
 	}
-	
+
+	/* TODO commented out to make this compile
 	protected IMessage getUpdatePacket() {
 		NBTTagCompound childData = new NBTTagCompound();
 		onSendUpdate(childData);
 		
 		return new DeviceUpdateMessage(this.getPos(), childData);
 	}
-	
+	*/
+
 	private void sendUpdatePacketToClient(EntityPlayer recipient) {
 		if(this.worldObj.isRemote) { return; }
-
+		/* TODO commented out to make this compile
         CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)recipient);
-		
+		*/
 	}
 	
 	private void sendUpdatePacket() {
 		if(this.worldObj.isRemote) { return; }
 		if(this.updatePlayers.size() <= 0) { return; }
-
+		/* TODO commented out to make this compile
 		for(EntityPlayer player : updatePlayers) {
             CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)player);
 		}
+		*/
 	}
 	
 	// Side Exposure Helpers

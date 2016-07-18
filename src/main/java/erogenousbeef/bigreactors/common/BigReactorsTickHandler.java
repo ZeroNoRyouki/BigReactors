@@ -5,23 +5,23 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class BigReactorsTickHandler {
 
-	protected HashMap<Integer, Queue<ChunkCoordIntPair>> chunkRegenMap;
+	protected HashMap<Integer, Queue<ChunkPos>> chunkRegenMap;
 	protected static final long maximumDeltaTimeNanoSecs = 16000000; // 16 milliseconds
 	
-	public void addRegenChunk(int dimensionId, ChunkCoordIntPair chunkCoord) {
+	public void addRegenChunk(int dimensionId, ChunkPos chunkCoord) {
 		if(chunkRegenMap == null) {
-			chunkRegenMap = new HashMap<Integer, Queue<ChunkCoordIntPair>>();
+			chunkRegenMap = new HashMap<Integer, Queue<ChunkPos>>();
 		}
 		
 		if(!chunkRegenMap.containsKey(dimensionId)) {
-			LinkedList<ChunkCoordIntPair> list = new LinkedList<ChunkCoordIntPair>();
+			LinkedList<ChunkPos> list = new LinkedList<ChunkPos>();
 			list.add(chunkCoord);
 			chunkRegenMap.put(dimensionId, list);
 		}
@@ -43,11 +43,11 @@ public class BigReactorsTickHandler {
 
             if(chunkRegenMap.containsKey(dimensionId)) {
                 // Split up regen so it takes at most 16 millisec per frame to allow for ~55-60 FPS
-                Queue<ChunkCoordIntPair> chunksToGen = chunkRegenMap.get(dimensionId);
+                Queue<ChunkPos> chunksToGen = chunkRegenMap.get(dimensionId);
                 long startTime = System.nanoTime();
                 while(System.nanoTime() - startTime < maximumDeltaTimeNanoSecs && !chunksToGen.isEmpty()) {
                     // Regenerate chunk
-                    ChunkCoordIntPair nextChunk = chunksToGen.poll();
+                    ChunkPos nextChunk = chunksToGen.poll();
                     if(nextChunk == null) { break; }
 
                     Random fmlRandom = new Random(event.world.getSeed());

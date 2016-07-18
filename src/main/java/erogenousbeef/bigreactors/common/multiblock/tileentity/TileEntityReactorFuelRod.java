@@ -208,16 +208,16 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		int metadata;
 
 		
-		if(block == Blocks.iron_block) {
+		if(block == Blocks.IRON_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockIron");
 		}
-		else if(block == Blocks.gold_block) {
+		else if(block == Blocks.GOLD_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockGold");
 		}
-		else if(block == Blocks.diamond_block) {
+		else if(block == Blocks.DIAMOND_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockDiamond");
 		}
-		else if(block == Blocks.emerald_block) {
+		else if(block == Blocks.EMERALD_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockEmerald");
 		}
 		else {

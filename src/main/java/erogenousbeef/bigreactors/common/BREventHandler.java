@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import erogenousbeef.bigreactors.utils.StaticUtils;
@@ -36,7 +36,7 @@ public class BREventHandler {
 			return;
 		}
 		
-		ChunkCoordIntPair coordPair = loadEvent.getChunk().getChunkCoordIntPair();
+		ChunkPos coordPair = loadEvent.getChunk().getChunkCoordIntPair();
 		BigReactors.tickHandler.addRegenChunk(dimensionId, coordPair);
 	}
 	

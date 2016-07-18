@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
-import erogenousbeef.bigreactors.init.BrBlocks;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashSet;
@@ -10,10 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,13 +21,9 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import cofh.api.energy.IEnergyProvider;
 //import cofh.lib.util.helpers.ItemHelper;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import erogenousbeef.bigreactors.api.data.CoilPartData;
-import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.block.BlockBRMetal;
 import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FloatUpdateTracker;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
@@ -43,7 +35,6 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineR
 import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
-import erogenousbeef.bigreactors.utils.StaticUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zero.mods.zerocore.api.multiblock.IMultiblockPart;
@@ -51,6 +42,7 @@ import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import zero.mods.zerocore.api.multiblock.validation.ValidationError;
+import zero.mods.zerocore.lib.block.ModTileEntity;
 import zero.mods.zerocore.util.WorldHelper;
 
 public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IPowerGenerator, IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
@@ -203,8 +195,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
-
-		this.loadFromNBT(data, false);
+		this.syncDataFromServer(data, ModTileEntity.SyncReason.FullSync);
 	}
 
 	@Override
@@ -698,7 +689,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	protected void updateClient() {
 	}
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+	@Override
+	protected void syncDataFromServer(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		if(data.hasKey("inputTank")) {
 			tanks[TANK_INPUT].readFromNBT(data.getCompoundTag("inputTank"));
@@ -737,7 +729,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		}
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataToClient(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		data.setTag("inputTank", tanks[TANK_INPUT].writeToNBT(new NBTTagCompound()));
 		data.setTag("outputTank", tanks[TANK_OUTPUT].writeToNBT(new NBTTagCompound()));

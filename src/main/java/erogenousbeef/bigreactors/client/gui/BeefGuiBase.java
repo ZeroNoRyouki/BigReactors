@@ -117,7 +117,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 		
 		if(this.grabbedItem != null) {
 			// Render grabbed item next to mouse
-            this.mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+            this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 			drawTexturedModelRectFromIcon(absoluteX+1, absoluteY+1, this.grabbedItem.getIcon(), 16, 16);
 		}
@@ -128,7 +128,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 
-		this.mc.renderEngine.bindTexture(this.mc.getTextureMapBlocks().locationBlocksTexture);
+		this.mc.renderEngine.bindTexture(this.mc.getTextureMapBlocks().LOCATION_BLOCKS_TEXTURE);
 
 		TextureAtlasSprite sprite = this.mc.getTextureMapBlocks().getAtlasSprite(texture.toString());
 		float maxV = sprite.getMaxV(), minV = sprite.getMinV();

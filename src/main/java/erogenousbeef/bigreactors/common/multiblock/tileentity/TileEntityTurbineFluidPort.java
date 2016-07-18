@@ -3,7 +3,6 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -68,45 +67,20 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePartStandard im
 		pumpDestination = null;
 	}
 
-	/*
 	@Override
-	public void writeToNBT(NBTTagCompound data) {
-		super.writeToNBT(data);
-		data.setInteger("flowSetting", flowSetting.ordinal());
-	}
-	@Override
-	public void readFromNBT(NBTTagCompound data) {
-		super.readFromNBT(data);
-		if(data.hasKey("flowSetting")) {
-			flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
-		}
-	}
-	@Override
-	public void encodeDescriptionPacket(NBTTagCompound data) {
-		super.encodeDescriptionPacket(data);
-		data.setInteger("flowSetting", flowSetting.ordinal());
-	}
-	@Override
-	public void decodeDescriptionPacket(NBTTagCompound data) {
-		super.decodeDescriptionPacket(data);
-		if(data.hasKey("flowSetting")) {
-			flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
-		}
-	}*/
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-	protected void loadFromNBT(NBTTagCompound data, boolean fromPacket) {
+		super.syncDataFrom(data, syncReason);
 
-		super.loadFromNBT(data, fromPacket);
-
-		if(data.hasKey("flowSetting")) {
-			flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
-		}
+		if (data.hasKey("flowSetting"))
+			this.flowSetting = FluidFlow.values()[data.getInteger("flowSetting")];
 	}
 
-	protected void saveToNBT(NBTTagCompound data, boolean toPacket) {
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-		super.saveToNBT(data, toPacket);
-		data.setInteger("flowSetting", flowSetting.ordinal());
+		super.syncDataTo(data, syncReason);
+		data.setInteger("flowSetting", this.flowSetting.ordinal());
 	}
 
 	@Override

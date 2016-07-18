@@ -60,11 +60,11 @@ public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRe
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+	public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor) {
 
-    	TileEntity te = world.getTileEntity(pos);
+    	TileEntity te = world.getTileEntity(position);
     	if(te instanceof TileEntityReactorRedstonePort) {
-    		((TileEntityReactorRedstonePort)te).onNeighborBlockChange(world, pos, state, neighborBlock);
+    		((TileEntityReactorRedstonePort)te).onNeighborBlockChange(world, position, stateAtPosition, neighbor);
     	}
     }
     

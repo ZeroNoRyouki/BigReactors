@@ -55,7 +55,7 @@ public class GuiSelectableButton extends GuiButton implements IBeefTooltipContro
 
 			TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(this.icon.toString());
 
-			mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+			mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
             this.drawTexturedModalRect(this.xPosition+1, this.yPosition+1, sprite, this.width-2, this.height-2);
             this.mouseDragged(mc, mouseX, mouseY);

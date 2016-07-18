@@ -36,7 +36,7 @@ public class BlockTurbineRotorPart extends Block {
 	public BlockTurbineRotorPart(Material material) {
 		super(material);
 
-		setStepSound(SoundType.METAL);
+		this.setSoundType(SoundType.METAL);
 		setLightLevel(0.9f);
 		setHardness(2.0f);
 		//setRegistryName("blockTurbineRotorPart");

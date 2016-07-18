@@ -148,7 +148,7 @@ public class StaticUtils {
 				position = originalPosition.offset(dir);
 				state = worldObj.getBlockState(position);
 
-				if(state.getBlock() == Blocks.chest) {
+				if(state.getBlock() == Blocks.CHEST) {
 					TileEntity otherTe = worldObj.getTileEntity(position);
 					if(otherTe instanceof IInventory) {
 						// TODO Commented temporarily to allow this thing to compile...

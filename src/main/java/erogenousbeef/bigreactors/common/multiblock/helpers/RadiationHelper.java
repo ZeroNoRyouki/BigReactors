@@ -173,16 +173,16 @@ public class RadiationHelper {
 		ReactorInteriorData moderatorData = null;
 		Block block = blockState.getBlock();
 
-		if(block == Blocks.iron_block) {
+		if(block == Blocks.IRON_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockIron");
 		}
-		else if(block == Blocks.gold_block) {
+		else if(block == Blocks.GOLD_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockGold");
 		}
-		else if(block == Blocks.diamond_block) {
+		else if(block == Blocks.DIAMOND_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockDiamond");
 		}
-		else if(block == Blocks.emerald_block) {
+		else if(block == Blocks.EMERALD_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockEmerald");
 		}
 		else {

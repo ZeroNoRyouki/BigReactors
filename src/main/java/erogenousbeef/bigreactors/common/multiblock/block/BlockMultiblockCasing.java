@@ -19,7 +19,7 @@ import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEn
 public class BlockMultiblockCasing extends BlockTieredPart {
 
     public BlockMultiblockCasing(PartType type, String blockName) {
-        super(type, blockName, Material.iron);
+        super(type, blockName, Material.IRON);
     }
 
     @Override

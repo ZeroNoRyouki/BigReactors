@@ -198,23 +198,23 @@ public class BigReactors {
 
 			// Patch up vanilla being stupid - most mods already do this, so it's usually a no-op
 			if(!OreDictionaryHelper.doesOreNameExist("ingotIron")) {
-				OreDictionary.registerOre("ingotIron", new ItemStack(Items.iron_ingot, 1));
+				OreDictionary.registerOre("ingotIron", new ItemStack(Items.IRON_INGOT, 1));
 			}
 			
 			if(!OreDictionaryHelper.doesOreNameExist("ingotGold")) {
-				OreDictionary.registerOre("ingotGold", new ItemStack(Items.gold_ingot, 1));
+				OreDictionary.registerOre("ingotGold", new ItemStack(Items.GOLD_INGOT, 1));
 			}
 			
 			if(!OreDictionaryHelper.doesOreNameExist("blockSnow")) {
-				OreDictionary.registerOre("blockSnow", new ItemStack(Blocks.snow, 1));
+				OreDictionary.registerOre("blockSnow", new ItemStack(Blocks.SNOW, 1));
 			}
 			
 			if(!OreDictionaryHelper.doesOreNameExist("blockIce")) {
-				OreDictionary.registerOre("blockIce", new ItemStack(Blocks.ice, 1));
+				OreDictionary.registerOre("blockIce", new ItemStack(Blocks.ICE, 1));
 			}
 
 			if(!OreDictionaryHelper.doesOreNameExist("blockGlassColorless")) {
-				OreDictionary.registerOre("blockGlassColorless", new ItemStack(Blocks.glass, 1));
+				OreDictionary.registerOre("blockGlassColorless", new ItemStack(Blocks.GLASS, 1));
 			}
 
 			// Use steel if the players are masochists and someone else has supplied steel.
@@ -271,13 +271,13 @@ public class BigReactors {
 				ItemStack ludicriteBlock = BrBlocks.blockMetals.createItemStack(MetalType.Ludicrite, 1);
 
 				GameRegistry.addRecipe(new ShapedOreRecipe(ludicriteBlock, "BPB", "ENE", "BPB", 'N',
-						Items.nether_star, 'P', Items.ender_pearl, 'E', Blocks.emerald_block, 'B', blutoniumIngot));
+						Items.NETHER_STAR, 'P', Items.ENDER_PEARL, 'E', Blocks.EMERALD_BLOCK, 'B', blutoniumIngot));
 
 				if (OreDictionaryHelper.doesOreNameExist("blockEnderium")) {
 
 					// Ok, how about some ludicrous shit here. Enderium and blaze rods. Have fun, bucko.
 					GameRegistry.addRecipe(new ShapedOreRecipe(ludicriteBlock, "BRB", "E E", "BRB", 'B',
-							blutoniumIngot, 'R', Items.blaze_rod, 'E', "blockEnderium"));
+							blutoniumIngot, 'R', Items.BLAZE_ROD, 'E', "blockEnderium"));
 				}
 			}
 
@@ -301,24 +301,24 @@ public class BigReactors {
 			
 			if(registerCoalFurnaceRecipe) {
 				// Coal -> Graphite
-				GameRegistry.addSmelting(Items.coal, ingotGraphite, 1);
+				GameRegistry.addSmelting(Items.COAL, ingotGraphite, 1);
 			}
 			
 			if(registerCharcoalFurnaceRecipe) {
 				// Charcoal -> Graphite
-				GameRegistry.addSmelting(new ItemStack(Items.coal, 1, 1), ingotGraphite, 1);
+				GameRegistry.addSmelting(new ItemStack(Items.COAL, 1, 1), ingotGraphite, 1);
 			}
 			
 			if(registerCoalCraftingRecipe) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.gravel, 'C', new ItemStack(Items.coal, 1, 0)));
+				GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C', new ItemStack(Items.COAL, 1, 0)));
 			}
 			
 			if(registerCharcoalCraftingRecipe) {
-				GameRegistry.addRecipe(new ShapedOreRecipe( ingotGraphite, "GCG", 'G', Blocks.gravel, 'C', new ItemStack(Items.coal, 1, 1)));
+				GameRegistry.addRecipe(new ShapedOreRecipe( ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C', new ItemStack(Items.COAL, 1, 1)));
 			}
 			
 			if(enableCyaniteFromYelloriumRecipe) {
-				GameRegistry.addRecipe(new ShapelessOreRecipe(ingotCyanite, yelloriumIngot, Blocks.sand ));
+				GameRegistry.addRecipe(new ShapelessOreRecipe(ingotCyanite, yelloriumIngot, Blocks.SAND ));
 			}
 
 			// reactor parts
@@ -330,24 +330,24 @@ public class BigReactors {
 					ironOrSteelIngot, 'C', "ingotGraphite", 'U', yelloriumIngot));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorController.createItemStack(), "C C", "GDG", "CRC", 'D',
-					Items.diamond, 'G', yelloriumIngot, 'C', "reactorCasing", 'R', Items.redstone));
+					Items.DIAMOND, 'G', yelloriumIngot, 'C', "reactorCasing", 'R', Items.REDSTONE));
 
 			if (enableReactorPowerTapRecipe) {
 				GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorPowerTapRF.createItemStack(), "CRC", "R R", "CRC", 'C',
-						"reactorCasing", 'R', Items.redstone));
+						"reactorCasing", 'R', Items.REDSTONE));
 			}
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorAccessPort.createItemStack(), "C C", " V ", "CPC", 'C',
-					"reactorCasing", 'V', Blocks.chest, 'P', Blocks.piston));
+					"reactorCasing", 'V', Blocks.CHEST, 'P', Blocks.PISTON));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorCoolantPort.createItemStack(), "C C", "IVI", "CPC", 'C',
-					"reactorCasing", 'V', Items.bucket, 'P', Blocks.piston, 'I', ironOrSteelIngot));
+					"reactorCasing", 'V', Items.BUCKET, 'P', Blocks.PISTON, 'I', ironOrSteelIngot));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorControlRod.createItemStack(), "CGC", "GRG", "CUC", 'G',
-					"ingotGraphite", 'C', "reactorCasing", 'R', Items.redstone, 'U', yelloriumIngot));
+					"ingotGraphite", 'C', "reactorCasing", 'R', Items.REDSTONE, 'U', yelloriumIngot));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorRedstonePort.createItemStack(), "CRC", "RGR", "CRC", 'C',
-					"reactorCasing", 'R', Items.redstone, 'G', Items.gold_ingot));
+					"reactorCasing", 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT));
 
 			/*
 			if (Loader.isModLoaded("MineFactoryReloaded")) {
@@ -384,24 +384,24 @@ public class BigReactors {
 			// generic devices
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.deviceCyaniteRep.createItemStack(), "CIC", "PFP", "CRC", 'C',
-					"reactorCasing", 'I', ironOrSteelIngot, 'F', BrBlocks.reactorFuelRod, 'P', Blocks.piston, 'R', Items.redstone));
+					"reactorCasing", 'I', ironOrSteelIngot, 'F', BrBlocks.reactorFuelRod, 'P', Blocks.PISTON, 'R', Items.REDSTONE));
 
 			// turbine parts
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineHousing.createItemStack(4), "IGI", "QCQ", "IGI", 'C',
-					"ingotCyanite", 'I', ironOrSteelIngot, 'Q', Items.quartz, 'G', "ingotGraphite"));
+					"ingotCyanite", 'I', ironOrSteelIngot, 'Q', Items.QUARTZ, 'G', "ingotGraphite"));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineController.createItemStack(), "H H", "BDB", "H H", 'H',
-					"turbineHousing", 'D', Items.diamond, 'B', blutoniumIngot));
+					"turbineHousing", 'D', Items.DIAMOND, 'B', blutoniumIngot));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbinePowerTap.createItemStack(), "HRH", "R R", "HRH", 'H',
-					"turbineHousing", 'R', Items.redstone));
+					"turbineHousing", 'R', Items.REDSTONE));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineFluidPort.createItemStack(), "H H", "IVI", "HPH", 'H',
-					"turbineHousing", 'I', ironOrSteelIngot, 'V', Items.bucket, 'P', Blocks.piston));
+					"turbineHousing", 'I', ironOrSteelIngot, 'V', Items.BUCKET, 'P', Blocks.PISTON));
 
 			GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH", 'H',
-					"turbineHousing", 'D', Items.diamond, 'R', "turbineRotorShaft"));
+					"turbineHousing", 'D', Items.DIAMOND, 'R', "turbineRotorShaft"));
 
 			if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers"))
 				GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineComputerPort.createItemStack(), "HRH", "GPG", "HRH", 'H',

@@ -21,7 +21,7 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 
 	public BlockReactorFuelRod(String blockName) {
 
-		super(PartType.ReactorFuelRod, blockName, Material.iron);
+		super(PartType.ReactorFuelRod, blockName, Material.IRON);
 		this.setLightLevel(0.9f);
 		this.setLightOpacity(1);
 	}

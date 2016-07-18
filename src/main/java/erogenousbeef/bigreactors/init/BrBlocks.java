@@ -107,8 +107,8 @@ public final class BrBlocks {
 
         // - fluid blocks
 
-        yellorium = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidYellorium, "yellorium", new MaterialLiquid(MapColor.yellowColor)));
-        cyanite = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidCyanite, "cyanite", Material.lava));
+        yellorium = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidYellorium, "yellorium", new MaterialLiquid(MapColor.YELLOW)));
+        cyanite = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidCyanite, "cyanite", Material.LAVA));
 
         // - register block tile entities
         proxy.register(TileEntityCyaniteReprocessor.class);

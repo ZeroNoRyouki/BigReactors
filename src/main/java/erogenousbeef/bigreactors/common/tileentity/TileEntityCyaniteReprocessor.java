@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.client.gui.GuiCyaniteReprocessor;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityPoweredInventoryFluid;
 import erogenousbeef.bigreactors.gui.container.ContainerCyaniteReprocessor;
@@ -267,12 +266,15 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 		return null;
 	}
 
+
 	@Override
-	protected void loadFromNBT(NBTTagCompound nbt, boolean fromPacket) {
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
 	}
 
 	@Override
-	protected void saveToNBT(NBTTagCompound nbt, boolean toPacket) {
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
 	}
 
 	// fake imp (end)

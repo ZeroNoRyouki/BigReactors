@@ -22,7 +22,7 @@ public class BlockMultiblockDevice extends BlockTieredPart {
 
     public BlockMultiblockDevice(PartType type, String blockName) {
 
-        super(type, blockName, Material.iron);
+        super(type, blockName, Material.IRON);
     }
 
     @Override
