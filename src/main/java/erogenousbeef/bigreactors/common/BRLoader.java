@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import zero.mods.zerocore.api.multiblock.MultiblockEventHandler;
+//import zero.mods.zerocore.api.multiblock.MultiblockEventHandler;
 
 @Mod(modid = BRLoader.MOD_ID, name = BigReactors.NAME, version = BRConfig.VERSION, acceptedMinecraftVersions = BRConfig.MINECRAFT_VERSION, dependencies = BRLoader.DEPENDENCIES)
 public class BRLoader {
@@ -39,8 +39,6 @@ public class BRLoader {
 	
 	@Mod.Metadata(MOD_ID)
 	public static ModMetadata metadata;
-	
-	private MultiblockEventHandler multiblockEventHandler;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -61,10 +59,7 @@ public class BRLoader {
 		BigReactors.eventHandler = new BREventHandler();
 		MinecraftForge.EVENT_BUS.register(BigReactors.eventHandler);
 		MinecraftForge.EVENT_BUS.register(proxy);
-		
-		multiblockEventHandler = new MultiblockEventHandler();
-		MinecraftForge.EVENT_BUS.register(multiblockEventHandler);
-		
+
 		proxy.preInit();
 		
 		Fluid waterFluid = FluidRegistry.WATER; // Force-load water to prevent startup crashes

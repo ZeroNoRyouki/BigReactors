@@ -32,7 +32,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import org.apache.commons.lang3.tuple.Pair;
-import zero.mods.zerocore.api.multiblock.MultiblockClientTickHandler;
+//import zero.mods.zerocore.api.multiblock.MultiblockClientTickHandler;
 import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import zero.mods.zerocore.api.multiblock.MultiblockRegistry;
 import zero.mods.zerocore.lib.client.ICustomModelsProvider;
@@ -87,8 +87,6 @@ public class ClientProxy extends CommonProxy {
 	public void init() {
 
 		super.init();
-
-		MinecraftForge.EVENT_BUS.register(new MultiblockClientTickHandler());
 		MinecraftForge.EVENT_BUS.register(new BRRenderTickHandler());
 
 		// register TESRs

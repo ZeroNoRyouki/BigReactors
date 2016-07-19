@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
 //import cofh.api.modhelpers.ThermalExpansionHelper;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -29,7 +30,8 @@ import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 //import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
-import zero.mods.zerocore.api.multiblock.MultiblockServerTickHandler;
+import zero.mods.zerocore.api.multiblock.MultiblockRegistry;
+//import zero.mods.zerocore.api.multiblock.MultiblockServerTickHandler;
 import zero.mods.zerocore.lib.gui.ModGuiHandler;
 
 public class CommonProxy {
@@ -73,14 +75,19 @@ public class CommonProxy {
 		new ModGuiHandler(BRLoader.instance);
 
 		BigReactors.tickHandler = new BigReactorsTickHandler();
-		FMLCommonHandler.instance().bus().register(BigReactors.tickHandler);
-        FMLCommonHandler.instance().bus().register(new MultiblockServerTickHandler());
+		MinecraftForge.EVENT_BUS.register(BigReactors.tickHandler);
+
+		/*
+		MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
+		*/
+		MultiblockRegistry.initRegistry();
 		
 		sendInterModAPIMessages();
 
+		/*
 		if(Loader.isModLoaded("VersionChecker")) {
 			FMLInterModComms.sendRuntimeMessage(BRLoader.MOD_ID, "VersionChecker", "addVersionCheck", "http://big-reactors.com/version.json");
-		}
+		}*/
 	}
 
 	private void sendInterModAPIMessages() {
