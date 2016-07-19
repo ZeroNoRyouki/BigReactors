@@ -1,4 +1,3 @@
-/* TODO put back in when ComputerCraft is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import java.util.HashMap;
@@ -372,4 +371,3 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		return hashCode() == other.hashCode();
 	}
 }
-*/

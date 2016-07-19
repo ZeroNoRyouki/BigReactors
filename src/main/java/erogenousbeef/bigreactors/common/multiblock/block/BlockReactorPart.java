@@ -1,19 +1,27 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import dan200.computercraft.api.peripheral.IPeripheral;
+import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
+import net.minecraftforge.fml.common.Optional;
 
-/*	TODO put back in when ComputerCraft is available for MC 1.9.x
-	TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 @Optional.InterfaceList({
-	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
-	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")	
+	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft")
+
+	//TODO put back in when MineFactory Reloaded is available for MC 1.9.x
+	/*
+	,
+	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
+	*/
 })
-*/
-public class BlockReactorPart extends BlockMultiblockDevice /*implements IRedNetOmniNode, IPeripheralProvider*/ {
+public class BlockReactorPart extends BlockMultiblockDevice implements IPeripheralProvider /*, IRedNetOmniNode, */ {
 
 	//private IIcon[] _redNetPortConfigIcons = new IIcon[TileEntityReactorRedNetPort.CircuitType.values().length - 1];
 	
@@ -42,8 +50,8 @@ public class BlockReactorPart extends BlockMultiblockDevice /*implements IRedNet
 				return new TileEntityReactorPart(); // TODO fix when Minefactory Reloaded is back
 
 			case ReactorComputerPort:
-				//return new TileEntityReactorComputerPort();
-				return new TileEntityReactorPart(); // TODO fix when ComputerCraft is back
+				return new TileEntityReactorComputerPort();
+				//return new TileEntityReactorPart(); // TODO fix when ComputerCraft is back
 
 			default:
 				throw new IllegalArgumentException("Unrecognized part");
@@ -112,18 +120,12 @@ public class BlockReactorPart extends BlockMultiblockDevice /*implements IRedNet
 	}
 	*/
 
-	/* TODO put back in when ComputerCraft is available for MC 1.9.x
-	// IPeripheralProvider
 	@Optional.Method(modid ="ComputerCraft")
 	@Override
-	public IPeripheral getPeripheral(World world, int x, int y, int z, int side) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		
-		if(te instanceof TileEntityReactorComputerPort)
-			return (IPeripheral)te;
-		
-		return null;
-	}
-	*/
+	public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
 
+		TileEntity tileEntity = world.getTileEntity(pos);
+
+		return tileEntity instanceof IPeripheral ? (IPeripheral)tileEntity : null;
+	}
 }
