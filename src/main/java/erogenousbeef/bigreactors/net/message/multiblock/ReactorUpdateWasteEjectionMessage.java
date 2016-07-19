@@ -7,32 +7,38 @@ import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.net.message.base.ReactorMessageClient;
 
 public class ReactorUpdateWasteEjectionMessage extends ReactorMessageClient {
-    private int newSetting;
-    
-    public ReactorUpdateWasteEjectionMessage() { super(); newSetting = 0; }
+
+    public ReactorUpdateWasteEjectionMessage() {
+        this._newSetting = 0;
+    }
 
     public ReactorUpdateWasteEjectionMessage(MultiblockReactor reactor) {
+
     	super(reactor);
-    	newSetting = reactor.getWasteEjection().ordinal();
+        this._newSetting = reactor.getWasteEjection().ordinal();
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
+
     	super.fromBytes(buf);
-        newSetting = buf.readInt();
+        this._newSetting = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
+
     	super.toBytes(buf);
-        buf.writeInt(newSetting);
+        buf.writeInt(this._newSetting);
     }
 
+    private int _newSetting;
+
     public static class Handler extends ReactorMessageClient.Handler<ReactorUpdateWasteEjectionMessage> {
+
         @Override
-        public IMessage handleMessage(ReactorUpdateWasteEjectionMessage message, MessageContext ctx, MultiblockReactor reactor) {
-        	reactor.setWasteEjection(MultiblockReactor.s_EjectionSettings[message.newSetting]);
-            return null;
-        }    	
+        protected void processReactorMessage(ReactorUpdateWasteEjectionMessage message, MessageContext ctx, MultiblockReactor reactor) {
+            reactor.setWasteEjection(MultiblockReactor.s_EjectionSettings[message._newSetting]);
+        }
     }
 }

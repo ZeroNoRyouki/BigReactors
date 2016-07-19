@@ -2,44 +2,54 @@ package erogenousbeef.bigreactors.net.message.base;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
+import zero.mods.zerocore.lib.network.ModTileEntityMessage;
+import zero.mods.zerocore.lib.network.ModTileEntityMessageHandlerServer;
 
-public class TurbineMessageServer extends WorldMessageServer {
-	protected MultiblockTurbine turbine;
-	
-	protected TurbineMessageServer() { super(); turbine = null; }
-	protected TurbineMessageServer(MultiblockTurbine turbine, BlockPos referenceCoord) {
-		super(referenceCoord);
-		this.turbine = turbine;
+public abstract class TurbineMessageServer extends ModTileEntityMessage {
+
+	protected final MultiblockTurbine TURBINE;
+
+	protected TurbineMessageServer() {
+		this.TURBINE = null;
 	}
+
 	protected TurbineMessageServer(MultiblockTurbine turbine) {
-		this(turbine, turbine.getReferenceCoord());
+
+		super(turbine.getReferenceCoord());
+		this.TURBINE = turbine;
 	}
-	
-	public static abstract class Handler<M extends TurbineMessageServer> extends WorldMessageServer.Handler<M> {
-		protected abstract IMessage handleMessage(M message, MessageContext ctx, MultiblockTurbine turbine);
+
+	public static abstract class Handler<MessageT extends TurbineMessageServer> extends ModTileEntityMessageHandlerServer<MessageT> {
 
 		@Override
-		protected IMessage handleMessage(M message, MessageContext ctx, TileEntity te) {
-			if(te instanceof TileEntityTurbinePartBase) {
-				MultiblockTurbine reactor = ((TileEntityTurbinePartBase)te).getTurbine();
-				if(reactor != null) {
-					return handleMessage(message, ctx, reactor);
-				}
-				else {
-					BlockPos tePosition = te.getPos();
+		protected void processTileEntityMessage(MessageT message, MessageContext ctx, TileEntity tileEntity) {
+
+			BlockPos position = null != tileEntity ? tileEntity.getPos() : null;
+
+			if (tileEntity instanceof TileEntityTurbinePartBase) {
+
+				MultiblockTurbine turbine = ((TileEntityTurbinePartBase)tileEntity).getTurbine();
+
+				if (null != turbine) {
+
+					this.processTurbineMessage(message, ctx, turbine);
+
+				} else {
+
 					BRLog.error("Received TurbineMessageServer for a turbine part @ %d, %d, %d which has no attached turbine",
-							tePosition.getX(), tePosition.getY(), tePosition.getZ());
+							position.getX(), position.getY(), position.getZ());
 				}
+			} else if (null != position) {
+
+				BRLog.error("Received TurbineMessageServer for a non-turbine-part block @ %d, %d, %d",
+						position.getX(), position.getY(), position.getZ());
 			}
-			else {
-				BRLog.error("Received TurbineMessageServer for a non-turbine-part block @ %d, %d, %d", message.x, message.y, message.z);
-			}
-			return null;
 		}
+
+		protected abstract void processTurbineMessage(final MessageT message, final MessageContext ctx, final MultiblockTurbine turbine);
 	}
 }
