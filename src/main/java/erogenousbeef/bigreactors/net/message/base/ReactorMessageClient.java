@@ -6,8 +6,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPartBase;
-import zero.mods.zerocore.lib.network.ModTileEntityMessage;
-import zero.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
 
 public abstract class ReactorMessageClient extends ModTileEntityMessage {
 

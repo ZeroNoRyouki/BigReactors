@@ -17,10 +17,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import zero.mods.zerocore.lib.BlockFacings;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityReactorPartBase extends
 		RectangularMultiblockTileEntityBase implements IHeatEntity,

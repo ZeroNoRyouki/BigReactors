@@ -15,9 +15,9 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase implements ITickableMultiblockPart {
 
@@ -355,7 +355,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 	public void decodeDescriptionPacket(NBTTagCompound data) {
 		super.decodeDescriptionPacket(data);
 		this.readData(data);
-		WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
+		WorldHelper.notifyBlockUpdate(this.WORLD, this.getWorldPosition(), null, null);
 	}
 
 	@Override

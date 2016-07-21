@@ -36,7 +36,7 @@ import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 //import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorRedstonePort;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import zero.mods.zerocore.util.OreDictionaryHelper;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 //import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 //import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 //import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;

@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 
 public class TileEntityTurbineRotorPart extends TileEntityTurbinePartBase {
 

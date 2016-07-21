@@ -23,8 +23,8 @@ import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatable
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorRedNetPort extends TileEntityReactorPart implements ITickableMultiblockPart, INeighborUpdatableEntity {
 

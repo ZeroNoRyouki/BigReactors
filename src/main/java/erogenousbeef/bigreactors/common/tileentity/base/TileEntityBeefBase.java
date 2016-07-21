@@ -15,8 +15,8 @@ import erogenousbeef.bigreactors.gui.IBeefGuiEntity;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateExposureMessage;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateRotationMessage;
-import zero.mods.zerocore.lib.block.ModTileEntity;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import zero.temp.BlockHelper;
 
 public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefGuiEntity, IBeefReconfigurableSides,

@@ -30,8 +30,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import zero.mods.zerocore.lib.BlockFacings;
-import zero.mods.zerocore.lib.PropertyBlockFacings;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.lib.PropertyBlockFacings;
 
 import java.util.ArrayList;
 import java.util.List;

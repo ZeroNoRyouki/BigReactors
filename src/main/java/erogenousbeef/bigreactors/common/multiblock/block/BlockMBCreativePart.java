@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import zero.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 
 import java.util.List;
 

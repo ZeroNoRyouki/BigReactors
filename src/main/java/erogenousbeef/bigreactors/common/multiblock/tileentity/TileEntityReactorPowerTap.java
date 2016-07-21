@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public abstract class TileEntityReactorPowerTap extends TileEntityReactorPart implements INeighborUpdatableEntity {
 

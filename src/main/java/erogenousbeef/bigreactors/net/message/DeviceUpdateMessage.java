@@ -7,8 +7,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import zero.mods.zerocore.lib.network.ModTileEntityMessage;
-import zero.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
 
 public class DeviceUpdateMessage extends ModTileEntityMessage {
 

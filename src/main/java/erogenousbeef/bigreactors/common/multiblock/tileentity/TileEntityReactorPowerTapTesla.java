@@ -11,9 +11,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.Optional;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.lib.BlockFacings;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorPowerTapTesla extends TileEntityReactorPowerTap {
 

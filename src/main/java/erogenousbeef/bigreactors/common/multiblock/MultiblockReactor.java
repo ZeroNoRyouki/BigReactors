@@ -48,13 +48,13 @@ import erogenousbeef.bigreactors.utils.StaticUtils;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
-import zero.mods.zerocore.api.multiblock.IMultiblockPart;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.lib.block.ModTileEntity;
-import zero.mods.zerocore.util.ItemHelper;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.ItemHelper;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo,
 		IMultipleFluidHandler, IActivateable {
@@ -205,8 +205,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			// Reset iterator
 			currentFuelRod = attachedFuelRods.iterator();
 
-			if(worldObj.isRemote) {
-				WorldHelper.notifyBlockUpdate(worldObj, fuelRod.getPos(), null, null);
+			if(WORLD.isRemote) {
+				WorldHelper.notifyBlockUpdate(WORLD, fuelRod.getPos(), null, null);
 			}
 		}
 		
@@ -301,7 +301,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			while (true) {
 
 				position = position.offset(facing);
-				te = this.worldObj.getTileEntity(position);
+				te = this.WORLD.getTileEntity(position);
 
 				if (te instanceof TileEntityReactorFuelRod)
 					// found a valid fuel rod
@@ -311,7 +311,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 					// we hit some other reactor parts on the walls
 
-					IBlockState state = this.worldObj.getBlockState(position);
+					IBlockState state = this.WORLD.getBlockState(position);
 
 					if (BrBlocks.reactorCasing != state.getBlock()) {
 
@@ -427,12 +427,12 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			FuelAssembly fuelAssembly = source.getFuelAssembly();
 			//BlockPos sourcePosition = source.getPos();
 			//BlockPos controlRodPosition = new BlockPos(sourcePosition.getX(), getMaximumCoord().getY(), sourcePosition.getZ());
-			///TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)worldObj.getTileEntity(controlRodPosition);
+			///TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)WORLD.getTileEntity(controlRodPosition);
 			TileEntityReactorControlRod sourceControlRod = (null != fuelAssembly) ? fuelAssembly.getControlRod() : null;
 
 			if(sourceControlRod != null)
 			{
-				RadiationData radData = radiationHelper.radiate(worldObj, fuelContainer, source, fuelAssembly, getFuelHeat(), getReactorHeat(), attachedControlRods.size());
+				RadiationData radData = radiationHelper.radiate(WORLD, fuelContainer, source, fuelAssembly, getFuelHeat(), getReactorHeat(), attachedControlRods.size());
 
 				// Assimilate results of radiation
 				if(radData != null) {
@@ -608,10 +608,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			else { part.onMachineDeactivated(); }
 		}
 		
-		if(worldObj.isRemote) {
+		if(WORLD.isRemote) {
 			// Force controllers to re-render on client
 			for(IMultiblockPart part : attachedControllers) {
-				WorldHelper.notifyBlockUpdate(worldObj, part.getWorldPosition(), null, null);
+				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
 			}
 		}
 		else {
@@ -669,7 +669,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		if(world.isAirBlock(position)) { return true; } // Air is OK
 
-		IBlockState blockState = this.worldObj.getBlockState(position);
+		IBlockState blockState = this.WORLD.getBlockState(position);
 		Block block = blockState.getBlock();
 
 		Material material = block.getMaterial(blockState);
@@ -713,7 +713,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForFrame(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -723,7 +723,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForTop(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -733,7 +733,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForBottom(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -743,7 +743,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForSides(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -890,7 +890,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * Sends a full state update to a player.
 	 */
 	protected void sendIndividualUpdate(EntityPlayer player) {
-		if(this.worldObj.isRemote) { return; }
+		if(this.WORLD.isRemote) { return; }
 
         CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)player);
 	}
@@ -900,7 +900,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 */
 	protected void sendTickUpdate() {
 
-		if (this.worldObj.isRemote || this.updatePlayers.size() <= 0)
+		if (this.WORLD.isRemote || this.updatePlayers.size() <= 0)
 			return;
 
 		for(EntityPlayer player : this.updatePlayers) {
@@ -976,7 +976,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected void onAssimilate(MultiblockControllerBase otherMachine) {
 		if(!(otherMachine instanceof MultiblockReactor)) {
-			BRLog.warning("[%s] Reactor @ %s is attempting to assimilate a non-Reactor machine! That machine's data will be lost!", worldObj.isRemote?"CLIENT":"SERVER", getReferenceCoord());
+			BRLog.warning("[%s] Reactor @ %s is attempting to assimilate a non-Reactor machine! That machine's data will be lost!", WORLD.isRemote?"CLIENT":"SERVER", getReferenceCoord());
 			return;
 		}
 		
@@ -1012,7 +1012,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(this.wasteEjection != newSetting) {
 			this.wasteEjection = newSetting;
 			
-			if(!this.worldObj.isRemote) {
+			if(!this.WORLD.isRemote) {
 				markReferenceCoordDirty();
 
 				if(this.updatePlayers.size() > 0) {
@@ -1236,7 +1236,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		surfaceArea = 2 * (xSize * ySize + xSize * zSize + ySize * zSize);
 		reactorHeatLossCoefficient = reactorHeatLossConductivity * surfaceArea;
 		
-		if(worldObj.isRemote) {
+		if(WORLD.isRemote) {
 			// Make sure our fuel rods re-render
 			this.onFuelStatusChanged();
 		}
@@ -1392,7 +1392,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	public int getCapacity() {
-		if(worldObj.isRemote && assemblyState != AssemblyState.Assembled) {
+		if(WORLD.isRemote && assemblyState != AssemblyState.Assembled) {
 			// Estimate capacity
 			return attachedFuelRods.size() * FuelCapacityPerFuelRod;
 		}
@@ -1440,13 +1440,13 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	// Client-only
 	protected void onFuelStatusChanged() {
-		if(worldObj.isRemote) {
+		if(WORLD.isRemote) {
 
             this.updateFuelAssembliesQuota();
 
 			// On the client, re-render all the fuel rod blocks when the fuel status changes
 			for(TileEntityReactorFuelRod fuelRod : attachedFuelRods) {
-				WorldHelper.notifyBlockUpdate(this.worldObj, fuelRod.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(this.WORLD, fuelRod.getPos(), null, null);
 			}
 		}
 	}
@@ -1462,19 +1462,19 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	
 	protected void markReferenceCoordForUpdate() {
 		BlockPos rc = getReferenceCoord();
-		if(worldObj != null && rc != null) {
-			WorldHelper.notifyBlockUpdate(worldObj, rc, null, null);
+		if(WORLD != null && rc != null) {
+			WorldHelper.notifyBlockUpdate(WORLD, rc, null, null);
 		}
 	}
 	
 	protected void markReferenceCoordDirty() {
-		if(worldObj == null || worldObj.isRemote) { return; }
+		if(WORLD == null || WORLD.isRemote) { return; }
 
 		BlockPos referenceCoord = getReferenceCoord();
 		if(referenceCoord == null) { return; }
 
-		TileEntity saveTe = worldObj.getTileEntity(referenceCoord);
-		this.worldObj.markChunkDirty(referenceCoord, saveTe);
+		TileEntity saveTe = WORLD.getTileEntity(referenceCoord);
+		this.WORLD.markChunkDirty(referenceCoord, saveTe);
 	}
 
 	@Override

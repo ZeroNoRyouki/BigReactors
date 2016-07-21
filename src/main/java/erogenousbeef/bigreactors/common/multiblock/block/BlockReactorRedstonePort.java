@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
-import zero.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 /*

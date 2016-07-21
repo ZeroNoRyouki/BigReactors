@@ -8,7 +8,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityTurbineRotorBearing extends
 		TileEntityTurbinePartStandard {
@@ -59,7 +59,7 @@ public class TileEntityTurbineRotorBearing extends
 
 		boundingBox = AxisAlignedBB.getBoundingBox(minCoord.x, minCoord.y, minCoord.z, maxCoord.x + 1, maxCoord.y + 1, maxCoord.z + 1);
 		
-		if(worldObj.isRemote) {
+		if(WORLD.isRemote) {
 			// Calculate rotor info
 			rotorInfo = new RotorInfo();
 			rotorInfo.rotorDirection = getOutwardsDir().getOpposite();
@@ -98,7 +98,7 @@ public class TileEntityTurbineRotorBearing extends
 					bladeCoord.copy(currentCoord);
 					bladeCoord.translate(bladeDir);
 					bladeLength = 0;
-					while(worldObj.getBlock(bladeCoord.x, bladeCoord.y, bladeCoord.z) == BigReactors.blockTurbineRotorPart && bladeLength < 32) {
+					while(WORLD.getBlock(bladeCoord.x, bladeCoord.y, bladeCoord.z) == BigReactors.blockTurbineRotorPart && bladeLength < 32) {
 						bladeLength++;
 						bladeCoord.translate(bladeDir);
 					}

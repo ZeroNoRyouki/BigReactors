@@ -8,9 +8,9 @@ import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements /*IMultiblockGuiHandler,*/
 		IActivateable, IBeefDebuggableTile {

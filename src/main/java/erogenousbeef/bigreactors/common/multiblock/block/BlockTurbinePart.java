@@ -43,9 +43,9 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineR
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import zero.mods.zerocore.api.multiblock.IMultiblockPart;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 
 
 // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x

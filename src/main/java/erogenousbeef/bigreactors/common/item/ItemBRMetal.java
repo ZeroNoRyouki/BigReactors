@@ -12,7 +12,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import zero.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.MetalSize;
 
 public class ItemBRMetal extends ItemBase {
 

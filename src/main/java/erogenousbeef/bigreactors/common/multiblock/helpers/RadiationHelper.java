@@ -22,7 +22,7 @@ import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import zero.mods.zerocore.util.ItemHelper;
+import it.zerono.mods.zerocore.util.ItemHelper;
 
 /**
  * Helper for reactor radiation game logic

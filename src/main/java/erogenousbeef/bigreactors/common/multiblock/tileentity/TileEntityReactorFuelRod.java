@@ -19,8 +19,8 @@ import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 
 public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implements IRadiationModerator, IHeatEntity {
 
@@ -136,14 +136,14 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		// Check above and below. Above must be fuel rod or control rod.
 		BlockPos position = this.getPos();
 
-		TileEntity entityAbove = this.worldObj.getTileEntity(position.up());
+		TileEntity entityAbove = this.WORLD.getTileEntity(position.up());
 		if(!(entityAbove instanceof TileEntityReactorFuelRod || entityAbove instanceof TileEntityReactorControlRod)) {
 			validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_column", position);
 			return false;
 		}
 
 		// Below must be fuel rod or the base of the reactor.
-		TileEntity entityBelow = this.worldObj.getTileEntity(position.down());
+		TileEntity entityBelow = this.WORLD.getTileEntity(position.down());
 		if(entityBelow instanceof TileEntityReactorFuelRod) {
 			return true;
 		}

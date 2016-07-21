@@ -7,7 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import scala.actors.threadpool.Arrays;
-import zero.mods.zerocore.util.OreDictionaryHelper;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 //import cofh.core.util.oredict.OreDictionaryArbiter;
 
 public class SlotRestrictedOreTypes extends Slot {

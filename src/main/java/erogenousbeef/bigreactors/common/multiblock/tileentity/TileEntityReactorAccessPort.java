@@ -26,10 +26,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.lib.item.TileEntityItemStackHandler;
-import zero.mods.zerocore.util.OreDictionaryHelper;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorAccessPort extends TileEntityReactorPart implements INeighborUpdatableEntity {
 

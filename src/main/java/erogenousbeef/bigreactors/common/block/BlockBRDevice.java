@@ -39,9 +39,9 @@ import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
 import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
 import erogenousbeef.bigreactors.utils.StaticUtils;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import zero.mods.zerocore.lib.block.properties.Orientation;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.block.properties.Orientation;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class BlockBRDevice extends BlockBR implements IDismantleable {
 

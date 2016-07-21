@@ -9,8 +9,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiTurbineController;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbinePart;
 import erogenousbeef.bigreactors.gui.container.ContainerSlotless;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityTurbinePartStandard extends TileEntityTurbinePartBase {
 

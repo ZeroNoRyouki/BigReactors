@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-//import zero.mods.zerocore.api.multiblock.MultiblockEventHandler;
+//import it.zerono.mods.zerocore.api.multiblock.MultiblockEventHandler;
 
 @Mod(modid = BRLoader.MOD_ID, name = BigReactors.NAME, version = BRConfig.VERSION, acceptedMinecraftVersions = BRConfig.MINECRAFT_VERSION, dependencies = BRLoader.DEPENDENCIES)
 public class BRLoader {

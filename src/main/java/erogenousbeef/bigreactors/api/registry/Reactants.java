@@ -22,7 +22,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.data.ReactorSolidMapping;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
-import zero.mods.zerocore.util.OreDictionaryHelper;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 
 public class Reactants {
 	

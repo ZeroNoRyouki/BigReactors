@@ -37,13 +37,13 @@ import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import zero.mods.zerocore.api.multiblock.IMultiblockPart;
-import zero.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.api.multiblock.validation.ValidationError;
-import zero.mods.zerocore.lib.block.ModTileEntity;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IPowerGenerator, IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
 
@@ -171,7 +171,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	 * Sends a full state update to a player.
 	 */
 	protected void sendIndividualUpdate(EntityPlayer player) {
-		if(this.worldObj.isRemote) { return; }
+		if(this.WORLD.isRemote) { return; }
 
         CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)player);
 	}
@@ -472,7 +472,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForFrame(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -482,7 +482,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForTop(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -492,7 +492,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForBottom(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -502,7 +502,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForSides(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+		IBlockState blockState = this.WORLD.getBlockState(new BlockPos(x, y, z));
 		Block block = blockState.getBlock();
 
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_exterior", x, y, z, block.getLocalizedName());
@@ -543,7 +543,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	@Override
 	protected void onAssimilate(MultiblockControllerBase otherMachine) {
 		if(!(otherMachine instanceof MultiblockTurbine)) {
-			BRLog.warning("[%s] Turbine @ %s is attempting to assimilate a non-Turbine machine! That machine's data will be lost!", worldObj.isRemote?"CLIENT":"SERVER", getReferenceCoord());
+			BRLog.warning("[%s] Turbine @ %s is attempting to assimilate a non-Turbine machine! That machine's data will be lost!", WORLD.isRemote?"CLIENT":"SERVER", getReferenceCoord());
 			return;
 		}
 		
@@ -715,7 +715,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(data.hasKey("rotorEnergy")) {
 			setRotorEnergy(data.getFloat("rotorEnergy"));
 
-			if(!worldObj.isRemote) {
+			if(!WORLD.isRemote) {
 				rpmUpdateTracker.setValue(getRotorSpeed());
 			}
 		}
@@ -780,7 +780,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(data.hasKey("rotorEnergy")) {
 			setRotorEnergy(data.getFloat("rotorEnergy"));
 			
-			if(!worldObj.isRemote) {
+			if(!WORLD.isRemote) {
 				rpmUpdateTracker.setValue(getRotorSpeed());
 			}
 		}
@@ -1078,22 +1078,22 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				else { part.onMachineDeactivated(); }
 			}
 
-			WorldHelper.notifyBlockUpdate(worldObj, this.getReferenceCoord(), null, null);
+			WorldHelper.notifyBlockUpdate(WORLD, this.getReferenceCoord(), null, null);
 			markReferenceCoordDirty();
 		}
 		
-		if(worldObj.isRemote) {
+		if(WORLD.isRemote) {
 			// Force controllers to re-render on client
 			for(IMultiblockPart part : attachedControllers) {
-				WorldHelper.notifyBlockUpdate(worldObj, part.getWorldPosition(), null, null);
+				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
 			}
 			
 			for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
-				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(WORLD, part.getPos(), null, null);
 			}
 			
 			for(TileEntityTurbineRotorPart part : attachedRotorShafts) {
-				WorldHelper.notifyBlockUpdate(worldObj, part.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(WORLD, part.getPos(), null, null);
 			}
 		}
 	}
@@ -1163,8 +1163,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		for(int x = minInterior.x; x <= maxInterior.x; x++) {
 			for(int y = minInterior.y; y <= maxInterior.y; y++) {
 				for(int z = minInterior.z; z <= maxInterior.z; z++) {
-					Block block = worldObj.getBlock(x, y, z);
-					int metadata = worldObj.getBlockMetadata(x, y, z);
+					Block block = WORLD.getBlock(x, y, z);
+					int metadata = WORLD.getBlockMetadata(x, y, z);
 					CoilPartData coilData = null;
 
 					if(block == BigReactors.blockTurbineRotorPart) {
@@ -1250,7 +1250,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	}
 
 	protected void markReferenceCoordDirty() {
-		if(worldObj == null || worldObj.isRemote) { return; }
+		if(WORLD == null || WORLD.isRemote) { return; }
 
 		BlockPos referenceCoord = getReferenceCoord();
 		if(referenceCoord == null) { return; }
@@ -1259,10 +1259,10 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 		// TODO Commented temporarily to allow this thing to compile...
 		/*
-		TileEntity saveTe = worldObj.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
-		worldObj.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
+		TileEntity saveTe = WORLD.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
+		WORLD.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
 		*/
-		WorldHelper.notifyBlockUpdate(worldObj, referenceCoord, null, null);
+		WorldHelper.notifyBlockUpdate(WORLD, referenceCoord, null, null);
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...

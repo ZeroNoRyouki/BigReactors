@@ -30,9 +30,7 @@ import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 //import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
-import zero.mods.zerocore.api.multiblock.MultiblockRegistry;
-//import zero.mods.zerocore.api.multiblock.MultiblockServerTickHandler;
-import zero.mods.zerocore.lib.gui.ModGuiHandler;
+import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
 
 public class CommonProxy {
 
@@ -80,8 +78,7 @@ public class CommonProxy {
 		/*
 		MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
 		*/
-		MultiblockRegistry.initRegistry();
-		
+
 		sendInterModAPIMessages();
 
 		/*

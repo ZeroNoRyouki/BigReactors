@@ -5,8 +5,8 @@ import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorPart extends TileEntityReactorPartBase {
 

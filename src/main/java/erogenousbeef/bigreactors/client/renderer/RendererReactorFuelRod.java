@@ -21,8 +21,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import zero.mods.zerocore.lib.BlockFacings;
-import zero.mods.zerocore.lib.client.render.ModRenderHelper;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.lib.client.render.ModRenderHelper;
 
 @SideOnly(Side.CLIENT)
 public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntityReactorFuelRod> {

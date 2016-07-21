@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import zero.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.MetalSize;
 
 public class BlockBRMetal extends BlockBR {
 

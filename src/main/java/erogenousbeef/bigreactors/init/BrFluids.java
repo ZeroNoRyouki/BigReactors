@@ -4,7 +4,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import zero.mods.zerocore.lib.fluid.ModFluid;
+import it.zerono.mods.zerocore.lib.fluid.ModFluid;
 
 public class BrFluids {
 

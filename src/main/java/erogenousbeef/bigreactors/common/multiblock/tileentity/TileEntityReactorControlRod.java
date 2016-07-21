@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import zero.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	public final static short maxInsertion = 100;
@@ -166,7 +166,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		/*
 		// Check that the space below us is a fuel rod
 		BlockPos position = this.getPos();
-		TileEntity teBelow = this.worldObj.getTileEntity(position.down());
+		TileEntity teBelow = this.WORLD.getTileEntity(position.down());
 
 		if(!(teBelow instanceof TileEntityReactorFuelRod)) {
 
@@ -245,8 +245,8 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 			NBTTagCompound localData = packet.getCompoundTag("reactorControlRod");
 			this.readLocalDataFromNBT(localData);
 			
-			if(worldObj != null && worldObj.isRemote) {
-				WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+			if(WORLD != null && WORLD.isRemote) {
+				WorldHelper.notifyBlockUpdate(this.WORLD, this.getPos(), null, null);
 			}
 		}
 	}*/

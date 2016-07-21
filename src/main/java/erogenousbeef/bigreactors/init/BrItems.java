@@ -5,7 +5,7 @@ import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemBeefDebugTool;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import zero.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.MetalSize;
 
 public final class BrItems {
 

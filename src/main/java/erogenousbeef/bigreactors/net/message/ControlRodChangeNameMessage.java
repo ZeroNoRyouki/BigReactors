@@ -6,8 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import zero.mods.zerocore.lib.network.ModTileEntityMessage;
-import zero.mods.zerocore.lib.network.ModTileEntityMessageHandlerServer;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerServer;
 
 public class ControlRodChangeNameMessage extends ModTileEntityMessage {
 

@@ -5,7 +5,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import zero.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public abstract class TileEntityPoweredInventory extends TileEntityInventory implements IEnergyHandler, ITickable {
 	public static float energyPerRF = 1f;
