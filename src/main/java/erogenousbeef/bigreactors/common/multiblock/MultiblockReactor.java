@@ -285,7 +285,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			if (null == rodsFacing)
 				rodsFacing = facing;
 
-			else if (null == facing || (facing != rodsFacing)) {
+			if (null == facing || (facing != rodsFacing)) {
 
 				validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_side");
 				return false;
