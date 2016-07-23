@@ -37,10 +37,6 @@ import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
-//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
-//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
-//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
-//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
 
 // TODO Commented temporarily to allow this thing to compile...
 //import erogenousbeef.bigreactors.world.BRSimpleOreGenerator;
@@ -58,10 +54,12 @@ public class BigReactors {
 	public static final String TEXTURE_NAME_PREFIX = "bigreactors:";
 
 	public static final String TEXTURE_DIRECTORY = RESOURCE_PATH + "textures/";
+	/*
 	//public static final String GUI_DIRECTORY = TEXTURE_NAME_PREFIX + "textures/gui/";
 	public static final String BLOCK_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "blocks/";
 	public static final String ITEM_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "items/";
 	public static final String MODEL_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "models/";
+	*/
 
 	public static final String LANGUAGE_PATH = RESOURCE_PATH + "languages/";
 	private static final String[] LANGUAGES_SUPPORTED = new String[]{"de_DE", "en_US", "es_SP", "nl_NL", "pl_PL", "pt_BR", "ru_RU", "sv_SE", "zh_CN"};
@@ -69,14 +67,8 @@ public class BigReactors {
 	// TODO move all to BrBlocks
 	public static BlockTurbineRotorPart blockTurbineRotorPart;
 	public static Block blockRadiothermalGen;
-	public static Block fluidYelloriumStill;
 	public static Block fluidCyaniteStill;
 	public static Block fluidFuelColumnStill;
-
-	// TODO move all to BrItems
-	// Buckets for bucketing reactor fluids
-	public static Item fluidYelloriumBucketItem;
-	public static Item fluidCyaniteBucketItem;
 
 	public static Fluid fluidYellorium;
 	public static Fluid fluidCyanite;
