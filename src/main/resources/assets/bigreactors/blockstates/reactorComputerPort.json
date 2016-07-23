@@ -1,53 +1,89 @@
 {  
-	// THIS FILE IS NOT IN USE
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockReactorPart.computerPort.default",
-            "particle":"#side",
-            "down":"#side",
-            "up":"#side",
-            "north":"#side",
-            "south":"#side",
-            "west":"#side",
-            "east":"#side"
+            "plate":"bigreactors:blocks/reactor/standard/plate",
+            "machine":"bigreactors:blocks/reactor/standard/computerPort.png",
+            "particle":"#machine",
+            "down":"#machine",
+            "up":"#machine",
+            "north":"#machine",
+            "south":"#machine",
+            "west":"#machine",
+            "east":"#machine"
         },
         "model":"cube"
     },
     "variants":{  
-        "assembled":{  
-            "true":{  
+        "tier":{  
+            "standard":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockReactorPart.computerPort.default",
-                    "side":"bigreactors:blocks/tile.blockReactorPart"
+                    "plate":"bigreactors:blocks/reactor/standard/plate",
+                    "machine":"bigreactors:blocks/reactor/standard/computerPort"
                 }
             },
-            "false":{  
+            "advanced":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockReactorPart.computerPort.default",
-                    "side":"bigreactors:blocks/tile.blockReactorPart.computerPort.default"
+                    "plate":"bigreactors:blocks/reactor/advanced/plate",
+					"machine":"bigreactors:blocks/reactor/advanced/computerPort"
                 }
             }
         },
-        "hfacing":{  
-            "north":{  
+        "afstate":{  
+            "disassembled":{  
+            },
+            "assemblednorth":{  
                 "textures":{  
-                    "north":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
-            "south":{  
+            "assembledsouth":{  
                 "textures":{  
-                    "south":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
-            "west":{  
+            "assembledwest":{  
                 "textures":{  
-                    "west":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "east":"#plate"
                 }
             },
-            "east":{  
+            "assembledeast":{  
                 "textures":{  
-                    "east":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate"
+                }
+            },
+            "assembledup":{  
+                "textures":{  
+                    "down":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembleddown":{  
+                "textures":{  
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             }
         },
