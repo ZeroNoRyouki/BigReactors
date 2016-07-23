@@ -8,6 +8,7 @@ import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
+import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -196,11 +197,8 @@ public class CommonProxy {
 		
 		ModHelperBase.detectMods();
 
-		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-		/*
 		modHelper = new ModHelperComputerCraft();
 		modHelper.register();
-		*/
 		
 		modHelper = new ModHelperMekanism();
 		modHelper.register();

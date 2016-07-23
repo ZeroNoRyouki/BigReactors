@@ -51,7 +51,6 @@ public class BlockReactorPart extends BlockMultiblockDevice implements IPeripher
 
 			case ReactorComputerPort:
 				return new TileEntityReactorComputerPort();
-				//return new TileEntityReactorPart(); // TODO fix when ComputerCraft is back
 
 			default:
 				throw new IllegalArgumentException("Unrecognized part");

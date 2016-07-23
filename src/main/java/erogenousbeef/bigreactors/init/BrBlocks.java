@@ -33,7 +33,7 @@ public final class BrBlocks {
     public static final BlockReactorIOPort reactorCoolantPort;
     public static final BlockReactorControlRod reactorControlRod;
     //public static final BlockReactorPart reactorRedNetPort;
-    //public static final BlockReactorPart reactorComputerPort;
+    public static final BlockReactorComputerPort reactorComputerPort;
     public static final BlockReactorRedstonePort reactorRedstonePort;
     public static final BlockReactorFuelRod reactorFuelRod;
     public static final BlockReactorIOPort reactorCreativeCoolantPort;
@@ -86,7 +86,7 @@ public final class BrBlocks {
         reactorCoolantPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCoolantPort, "reactorCoolantPort"));
         reactorControlRod = (BlockReactorControlRod)proxy.register(new BlockReactorControlRod("reactorControlRod"));
         //reactorRedNetPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorRednetPort, "reactorRedNetPort"));
-        //reactorComputerPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorComputerPort, "reactorComputerPort"));
+        reactorComputerPort = (BlockReactorComputerPort)proxy.register(new BlockReactorComputerPort("reactorComputerPort"));
         reactorRedstonePort = (BlockReactorRedstonePort)proxy.register(new BlockReactorRedstonePort("reactorRedstonePort"));
         reactorFuelRod = (BlockReactorFuelRod)proxy.register(new BlockReactorFuelRod("reactorFuelRod"));
         reactorCreativeCoolantPort = !regCreativeParts ? null : (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCreativeCoolantPort, "reactorCreativeCoolantPort"));
@@ -107,8 +107,8 @@ public final class BrBlocks {
 
         // - fluid blocks
 
-        yellorium = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidYellorium, "yellorium", new MaterialLiquid(MapColor.YELLOW)));
-        cyanite = (BlockBRGenericFluid)proxy.register(new BlockBRGenericFluid(BrFluids.fluidCyanite, "cyanite", Material.LAVA));
+        yellorium = proxy.register(new BlockBRGenericFluid(BrFluids.fluidYellorium, "yellorium", new MaterialLiquid(MapColor.YELLOW)));
+        cyanite = proxy.register(new BlockBRGenericFluid(BrFluids.fluidCyanite, "cyanite", Material.LAVA));
 
         // - register block tile entities
         proxy.register(TileEntityCyaniteReprocessor.class);
@@ -122,7 +122,7 @@ public final class BrBlocks {
         proxy.register(TileEntityReactorControlRod.class);
         proxy.register(TileEntityReactorRedstonePort.class);
         //proxy.register(TileEntityReactorRedNetPort.class);
-        //proxy.register(TileEntityReactorComputerPort.class);
+        proxy.register(TileEntityReactorComputerPort.class);
         proxy.register(TileEntityReactorCoolantPort.class);
         proxy.register(TileEntityReactorCreativeCoolantPort.class);
         proxy.register(TileEntityTurbinePartStandard.class);

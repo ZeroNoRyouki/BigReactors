@@ -1,60 +1,34 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import java.util.List;
-import java.util.Random;
-
+import dan200.computercraft.api.peripheral.IPeripheral;
+import dan200.computercraft.api.peripheral.IPeripheralProvider;
+import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort.FluidFlow;
+import erogenousbeef.bigreactors.utils.StaticUtils;
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-//import dan200.computercraft.api.peripheral.IPeripheral;
-//import dan200.computercraft.api.peripheral.IPeripheralProvider;
-import erogenousbeef.bigreactors.common.BRLoader;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort.FluidFlow;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartStandard;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTap;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
-import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 
+import java.util.Random;
 
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-/*
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
 })
-*/
-public class BlockTurbinePart extends BlockMultiblockDevice /*implements IPeripheralProvider*/ {
+public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripheralProvider {
 
 	public static final int METADATA_HOUSING = 0;
 	public static final int METADATA_CONTROLLER = 1;
@@ -259,12 +233,9 @@ public class BlockTurbinePart extends BlockMultiblockDevice /*implements IPeriph
 			// Does jack-all different except for store display lists on the client
 			return new TileEntityTurbineRotorBearing();
 		}
-		// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-		/*
 		else if(metadata == METADATA_COMPUTERPORT) {
 			return new TileEntityTurbineComputerPort();
 		}
-		* /
 		else {
 			return new TileEntityTurbinePartStandard();
 		}
@@ -284,9 +255,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice /*implements IPeriph
 				return new TileEntityTurbineRotorBearing();
 
 			case TurbineComputerPort:
-				// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-				//return new TileEntityTurbineComputerPort();
-				return new TileEntityTurbinePartStandard();
+				return new TileEntityTurbineComputerPort();
 
 			case TurbineController:
 				return new TileEntityTurbinePartStandard();
@@ -371,8 +340,6 @@ public class BlockTurbinePart extends BlockMultiblockDevice /*implements IPeriph
 
 	@Override
 	public int damageDropped(IBlockState state) {
-		// TODO fix metadata
-		// return metadata;
 		return super.damageDropped(state);
 	}
 	
@@ -469,19 +436,13 @@ public class BlockTurbinePart extends BlockMultiblockDevice /*implements IPeriph
     }
     */
 
-	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-	/*
     // IPeripheralProvider
 	@Optional.Method(modid = "ComputerCraft")
 	@Override
-	public IPeripheral getPeripheral(World world, int x, int y, int z, int side) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		
-		if(te instanceof TileEntityTurbineComputerPort)
-			return (IPeripheral)te;
-		
-		return null;
+	public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
+
+		TileEntity te = world.getTileEntity(pos);
+
+		return (te instanceof TileEntityTurbineComputerPort) ? (IPeripheral)te : null;
 	}
-	*/
-	
 }
