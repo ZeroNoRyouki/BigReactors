@@ -113,7 +113,7 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                         0.995, wasteHight, 0.995,
                         wasteColor, brightness);
 
-            } else {
+            } else if (gotFuel) {
 
                 // only fuel
 
@@ -205,7 +205,7 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                         x2, wasteHight - 0.005, z2,
                         wasteColor, brightness);
 
-            } else {
+            } else if (gotFuel) {
 
                 // only fuel
 
