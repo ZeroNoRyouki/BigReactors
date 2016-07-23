@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -203,11 +204,9 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 	
 	private float getConductivityFromBlock(IBlockState blockState) {
 
-		ReactorInteriorData interiorData = null;
+		ReactorInteriorData interiorData;
 		Block block = blockState.getBlock();
-		int metadata;
 
-		
 		if(block == Blocks.IRON_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockIron");
 		}
@@ -221,8 +220,7 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 			interiorData = ReactorInterior.getBlockData("blockEmerald");
 		}
 		else {
-			// TODO Commented temporarily to allow this thing to compile...
-			interiorData = null; /*ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));*/
+			interiorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
 
 			if(interiorData == null && block instanceof IFluidBlock) {
 				Fluid fluid = ((IFluidBlock)block).getFluid();
