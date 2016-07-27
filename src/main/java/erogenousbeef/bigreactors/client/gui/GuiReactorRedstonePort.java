@@ -12,14 +12,11 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-//import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.GuiSelectableButton;
-import erogenousbeef.bigreactors.net.CommonPacketHandler;
-//import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
+import erogenousbeef.bigreactors.net.CommonPacketHandler;ì
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorRedstonePortChangeMessage;
 
 public class GuiReactorRedstonePort extends BeefGuiBase {
@@ -105,7 +102,6 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		topY += settingString.getHeight() + 4;
 		
 		// Setting picker
-		//BlockReactorPart reactorPartBlock = (BlockReactorPart)BigReactors.blockReactorPart;
 		int buttonOrdinal = MINIMUM_SETTING_SELECTOR_ID;
 		leftX = guiLeft + 16;
 
@@ -167,8 +163,6 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		subInputRodSettingOff.setEnabled(true);
 		subInputRodSettingOffPctLabel = new BeefGuiLabel(this, "%", leftX + xSize/2 + 34, topY + 2);
 
-		topY += 24;
-		
 		// Bottom buttons
 		commitBtn = new GuiButton(0, guiLeft + xSize - 60, guiTop + ySize - 24, 56, 20, "Commit");
 		commitBtn.enabled = false;
