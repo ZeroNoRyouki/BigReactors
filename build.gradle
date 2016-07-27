@@ -63,6 +63,14 @@ repositories {
         artifactPattern "http://addons.cursecdn.com/files/2221/835/[module]-[revision].[ext]"
     }
     */
+
+    repositories {
+        maven {
+            name "zerocore"
+            url "http://maven.zerono.it/"
+        }
+    }
+
     maven {
         name "Tesla"
         url "http://maven.epoxide.xyz/"
@@ -70,6 +78,9 @@ repositories {
 }
 
 dependencies {
+
+    compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "1.9.4-0.0.4"
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -98,7 +109,6 @@ dependencies {
     compile name: 'CoFHCore', version: '[1.7.10]3.0.0B9-40-dev', ext: 'jar'
     */
 
-    compile files("../ZeroCore/build/libs/zerocore-1.9.0-0.0.1.jar")
 
     //compile "net.darkhax.tesla:Tesla:1.9-1.0.2.23"
     deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "1.9-1.0.2.23"
