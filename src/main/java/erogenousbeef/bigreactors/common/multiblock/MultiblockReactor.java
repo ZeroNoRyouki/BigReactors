@@ -340,16 +340,16 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 
 
-		// check tier
+		// check if the machine is single-tier
 
 		PartTier candidateTier = null;
 
 		for (IMultiblockPart part: this.connectedParts) {
-
+			/*
 			if (part instanceof TileEntityReactorControlRod ||
 				part instanceof TileEntityReactorFuelRod)
 				continue;
-
+			*/
 			if (part instanceof TileEntityReactorPartBase) {
 
 				PartTier tier = ((TileEntityReactorPartBase)part).getPartTier();
@@ -365,12 +365,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			}
 		}
 
-		this.partsTier = candidateTier;
+		//this.partsTier = candidateTier;
 
 
-		// check power system
-
-		PowerSystem candidatePowerSystem = PowerSystem.RedstoneFlux;
+		// check if the machine has a single power system
 
 		if (this.attachedPowerTaps.size() > 0) {
 
@@ -389,11 +387,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 				validatorCallback.setLastError("multiblock.validation.reactor.mixed_power_systems");
 				return false;
 			}
-
-			candidatePowerSystem = tesla > 0 ? PowerSystem.Tesla : PowerSystem.RedstoneFlux;
 		}
-
-		this.switchPowerSystem(candidatePowerSystem);
 		
 		return super.isMachineWhole(validatorCallback);
 	}
@@ -751,7 +745,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	protected void syncDataFromServer(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+	protected void syncDataFrom(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		if (data.hasKey("reactorActive"))
 			this.setActive(data.getBoolean("reactorActive"));
@@ -782,7 +776,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	protected void syncDataToClient(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+	protected void syncDataTo(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		data.setBoolean("reactorActive", this.active);
 		data.setFloat("heat", this.reactorHeat);
@@ -996,7 +990,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
-		this.syncDataFromServer(data, ModTileEntity.SyncReason.FullSync);
+		this.syncDataFrom(data, ModTileEntity.SyncReason.FullSync);
 	}
 	
 	/*public float getEnergyStored() {
@@ -1184,12 +1178,63 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	protected void onMachineAssembled() {
 
 		this.rebuildFuelAssemblies();
-		recalculateDerivedValues();
+		this.recalculateDerivedValues();
+
+		// determine machine tier
+
+		PartTier candidateTier = null;
+
+		for (IMultiblockPart part: this.connectedParts) {
+
+			if (part instanceof TileEntityReactorPartBase) {
+
+				PartTier tier = ((TileEntityReactorPartBase)part).getPartTier();
+
+				if (null == candidateTier)
+					candidateTier = tier;
+
+				else if (candidateTier != tier) {
+
+					// this should never happen but ...
+					throw new IllegalStateException("Found block of a different tier while assembling the machine!");
+				}
+			}
+		}
+
+		this.partsTier = candidateTier;
+
+		// determine machine power system
+
+		PowerSystem candidatePowerSystem = PowerSystem.RedstoneFlux;
+
+		if (this.attachedPowerTaps.size() > 0) {
+
+			int rf = 0, tesla = 0;
+
+			for (TileEntityReactorPowerTap tap : this.attachedPowerTaps) {
+
+				if (tap instanceof TileEntityReactorPowerTapRedstoneFlux)
+					++rf;
+				else if (tap instanceof TileEntityReactorPowerTapTesla)
+					++tesla;
+			}
+
+			if (rf != 0 && tesla != 0) {
+
+				// this should never happen but ...
+				throw new IllegalStateException("Found different power taps while assembling the machine!");
+			}
+
+			candidatePowerSystem = tesla > 0 ? PowerSystem.Tesla : PowerSystem.RedstoneFlux;
+		}
+
+		this.switchPowerSystem(candidatePowerSystem);
 	}
 
 	@Override
 	protected void onMachineRestored() {
-		recalculateDerivedValues();
+		//recalculateDerivedValues();
+		this.onMachineAssembled();
 	}
 
 	@Override

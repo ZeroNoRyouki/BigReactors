@@ -195,7 +195,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
-		this.syncDataFromServer(data, ModTileEntity.SyncReason.FullSync);
+		this.syncDataFrom(data, ModTileEntity.SyncReason.FullSync);
 	}
 
 	@Override
@@ -690,7 +690,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	protected void syncDataFromServer(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+	protected void syncDataFrom(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		if(data.hasKey("inputTank")) {
 			tanks[TANK_INPUT].readFromNBT(data.getCompoundTag("inputTank"));
@@ -730,7 +730,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	}
 
 	@Override
-	protected void syncDataToClient(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+	protected void syncDataTo(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		data.setTag("inputTank", tanks[TANK_INPUT].writeToNBT(new NBTTagCompound()));
 		data.setTag("outputTank", tanks[TANK_OUTPUT].writeToNBT(new NBTTagCompound()));
