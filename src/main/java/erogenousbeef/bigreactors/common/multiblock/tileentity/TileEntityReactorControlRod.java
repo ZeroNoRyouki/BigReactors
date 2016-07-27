@@ -163,18 +163,6 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 	@Override
 	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
-		/*
-		// Check that the space below us is a fuel rod
-		BlockPos position = this.getPos();
-		TileEntity teBelow = this.WORLD.getTileEntity(position.down());
-
-		if(!(teBelow instanceof TileEntityReactorFuelRod)) {
-
-			validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_column",
-					position.getX(), position.getY(), position.getZ());
-			return false;
-		}
-		*/
 
 		if (!this.checkForFuelRod(EnumFacing.DOWN)) {
 
@@ -190,13 +178,6 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 	@Override
 	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
-		/*
-		BlockPos position = this.getPos();
-
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_control_rods_position",
-				position.getX(), position.getY(), position.getZ());
-		return false;
-		*/
 
 		if (!this.checkForFuelRod(EnumFacing.UP)) {
 

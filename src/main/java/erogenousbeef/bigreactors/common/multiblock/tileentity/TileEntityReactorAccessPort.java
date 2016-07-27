@@ -247,51 +247,6 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		this._adjacentInventory = null;
 	}
 
-	// TileEntity overrides
-	/*
-	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		_inventories = new ItemStack[getSizeInventory()];
-		if(tag.hasKey("Items")) {
-			NBTTagList tagList = tag.getTagList("Items", 10);
-			for(int i = 0; i < tagList.tagCount(); i++) {
-				NBTTagCompound itemTag = (NBTTagCompound)tagList.getCompoundTagAt(i);
-				int slot = itemTag.getByte("Slot") & 0xff;
-				if(slot >= 0 && slot <= _inventories.length) {
-					ItemStack itemStack = new ItemStack((Block)null,0,0);
-					itemStack.readFromNBT(itemTag);
-					_inventories[slot] = itemStack;
-				}
-			}
-		}
-		
-		if(tag.hasKey("isInlet")) {
-			this.isInlet = tag.getBoolean("isInlet");
-		}
-	}
-	
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		NBTTagList tagList = new NBTTagList();
-		
-		for(int i = 0; i < _inventories.length; i++) {
-			if((_inventories[i]) != null) {
-				NBTTagCompound itemTag = new NBTTagCompound();
-				itemTag.setByte("Slot", (byte)i);
-				_inventories[i].writeToNBT(itemTag);
-				tagList.appendTag(itemTag);
-			}
-		}
-		
-		if(tagList.tagCount() > 0) {
-			tag.setTag("Items", tagList);
-		}
-		
-		tag.setBoolean("isInlet", isInlet);
-	}*/
-
 	@Override
 	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
@@ -330,25 +285,6 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			data.setBoolean("inlet", this._isInlet);
 		}
 	}
-
-/*
-	// TODO FIX both
-	// MultiblockTileEntityBase
-	@Override
-	protected void encodeDescriptionPacket(NBTTagCompound packetData) {
-		super.encodeDescriptionPacket(packetData);
-		
-		packetData.setBoolean("inlet", this._isInlet);
-	}
-	
-	@Override
-	protected void decodeDescriptionPacket(NBTTagCompound packetData) {
-		super.decodeDescriptionPacket(packetData);
-		
-		if(packetData.hasKey("inlet")) {
-			setInlet(packetData.getBoolean("inlet"));
-		}
-	}*/
 
 	@Override
 	public Object getServerGuiElement(int guiId, EntityPlayer player) {
