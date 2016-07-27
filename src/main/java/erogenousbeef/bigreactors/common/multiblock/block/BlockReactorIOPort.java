@@ -26,7 +26,7 @@ import it.zerono.mods.zerocore.util.WorldHelper;
 
 import java.util.List;
 
-public class BlockReactorIOPort extends BlockReactorPart {
+public class BlockReactorIOPort extends BlockMultiblockDevice {
 
     public BlockReactorIOPort(PartType type, String blockName) {
         super(type, blockName);

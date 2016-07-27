@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
-public class BlockReactorPowerTap extends BlockReactorPart {
+public class BlockReactorPowerTap extends BlockMultiblockDevice {
 
     public BlockReactorPowerTap(String blockName, PowerSystem powerSystem) {
 

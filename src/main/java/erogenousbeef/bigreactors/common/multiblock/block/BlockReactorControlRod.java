@@ -7,7 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockReactorControlRod extends BlockReactorPart {
+public class BlockReactorControlRod extends BlockMultiblockDevice {
 
     public BlockReactorControlRod(String blockName) {
 

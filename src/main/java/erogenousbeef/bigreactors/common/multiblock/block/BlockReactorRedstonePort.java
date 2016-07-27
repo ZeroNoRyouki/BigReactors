@@ -29,7 +29,7 @@ import it.zerono.mods.zerocore.util.WorldHelper;
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")	
 })
 */
-public class BlockReactorRedstonePort extends BlockReactorPart /* implements IRedNetOmniNode */ {
+public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implements IRedNetOmniNode */ {
 
 	public BlockReactorRedstonePort(String blockName) {
 		super(PartType.ReactorRedstonePort, blockName);

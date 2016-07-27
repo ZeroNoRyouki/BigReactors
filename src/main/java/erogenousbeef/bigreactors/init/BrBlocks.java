@@ -32,7 +32,7 @@ public final class BrBlocks {
     public static final BlockReactorIOPort reactorAccessPort;
     public static final BlockReactorIOPort reactorCoolantPort;
     public static final BlockReactorControlRod reactorControlRod;
-    //public static final BlockReactorPart reactorRedNetPort;
+    public static final BlockReactorRedNetPort reactorRedNetPort;
     public static final BlockReactorComputerPort reactorComputerPort;
     public static final BlockReactorRedstonePort reactorRedstonePort;
     public static final BlockReactorFuelRod reactorFuelRod;
@@ -85,7 +85,7 @@ public final class BrBlocks {
         reactorAccessPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorAccessPort, "reactorAccessPort"));
         reactorCoolantPort = (BlockReactorIOPort)proxy.register(new BlockReactorIOPort(PartType.ReactorCoolantPort, "reactorCoolantPort"));
         reactorControlRod = (BlockReactorControlRod)proxy.register(new BlockReactorControlRod("reactorControlRod"));
-        //reactorRedNetPort = (BlockReactorPart)proxy.register(new BlockReactorPart(PartType.ReactorRednetPort, "reactorRedNetPort"));
+        reactorRedNetPort = (BlockReactorRedNetPort)proxy.register(new BlockReactorRedNetPort("reactorRedNetPort"));
         reactorComputerPort = (BlockReactorComputerPort)proxy.register(new BlockReactorComputerPort("reactorComputerPort"));
         reactorRedstonePort = (BlockReactorRedstonePort)proxy.register(new BlockReactorRedstonePort("reactorRedstonePort"));
         reactorFuelRod = (BlockReactorFuelRod)proxy.register(new BlockReactorFuelRod("reactorFuelRod"));

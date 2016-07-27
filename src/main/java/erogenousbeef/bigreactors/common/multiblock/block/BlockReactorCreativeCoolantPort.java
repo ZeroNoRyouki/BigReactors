@@ -21,7 +21,7 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import java.util.List;
 
 @Deprecated
-public class BlockReactorCreativeCoolantPort extends BlockReactorPart {
+public class BlockReactorCreativeCoolantPort extends BlockMultiblockDevice {
 
     public BlockReactorCreativeCoolantPort(String blockName) {
         super(PartType.ReactorCreativeCoolantPort, blockName);

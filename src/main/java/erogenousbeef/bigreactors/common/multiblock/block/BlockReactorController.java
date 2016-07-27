@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
-public class BlockReactorController extends BlockReactorPart {
+public class BlockReactorController extends BlockMultiblockDevice {
 
     public BlockReactorController(String blockName) {
 

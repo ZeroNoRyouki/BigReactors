@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
 // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
 //import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 import erogenousbeef.bigreactors.common.CircuitType;
