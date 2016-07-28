@@ -47,21 +47,21 @@ public class BigReactors {
 	public static final String NAME = "Big Reactors";
 	public static final String MODID = "bigreactors";
 	public static final String CHANNEL = MODID.toLowerCase();
-	public static final String RESOURCE_PATH = "/assets/bigreactors/";
+	//public static final String RESOURCE_PATH = "/assets/bigreactors/";
 
 	public static final CreativeTabs TAB = new CreativeTabBR(MODID);
-
+	/*
 	public static final String TEXTURE_NAME_PREFIX = "bigreactors:";
 
 	public static final String TEXTURE_DIRECTORY = RESOURCE_PATH + "textures/";
-	/*
+
 	//public static final String GUI_DIRECTORY = TEXTURE_NAME_PREFIX + "textures/gui/";
 	public static final String BLOCK_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "blocks/";
 	public static final String ITEM_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "items/";
 	public static final String MODEL_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "models/";
-	*/
 
 	public static final String LANGUAGE_PATH = RESOURCE_PATH + "languages/";
+	*/
 	private static final String[] LANGUAGES_SUPPORTED = new String[]{"de_DE", "en_US", "es_SP", "nl_NL", "pl_PL", "pt_BR", "ru_RU", "sv_SE", "zh_CN"};
 
 	// TODO move all to BrBlocks
