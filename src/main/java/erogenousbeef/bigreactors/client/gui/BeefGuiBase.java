@@ -106,10 +106,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 			if(tc.isVisible() && tc.isMouseOver(mouseX, mouseY)) {
 				String[] tooltip = tc.getTooltip();
 				if(tooltip != null) {
-					// This prevents weird rendering issues with NEI
-					GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 					drawHoveringText(Arrays.asList(tooltip), absoluteX, absoluteY, fontRendererObj);
-					GL11.glPopAttrib();
 					break;
 				}
 			}
