@@ -319,7 +319,6 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		if (!this.worldObj.isRemote) {
 
 			distributeItems();
-			//markChunkDirty();
 			this.markDirty();
 		}
 

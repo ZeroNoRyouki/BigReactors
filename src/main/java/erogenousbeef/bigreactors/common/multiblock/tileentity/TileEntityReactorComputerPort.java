@@ -91,7 +91,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		MultiblockReactor reactor = this.getReactorController();
 
 		ComputerMethod computerMethod = ComputerMethod.values()[method];
-		int index, newLevel;
+		int newLevel;
 		boolean newState;
 		TileEntityReactorControlRod controlRod;
 
