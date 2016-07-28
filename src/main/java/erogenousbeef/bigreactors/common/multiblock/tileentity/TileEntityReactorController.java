@@ -8,9 +8,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
-public class TileEntityController extends TileEntityReactorPart {
+public class TileEntityReactorController extends TileEntityReactorPart {
 
-    public TileEntityController() {
+    public TileEntityReactorController() {
     }
 
     @Override

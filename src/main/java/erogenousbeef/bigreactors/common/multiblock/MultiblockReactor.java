@@ -107,7 +107,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	private Set<TileEntityReactorControlRod> attachedControlRods;
 	private Set<TileEntityReactorAccessPort> attachedAccessPorts;
-	private Set<TileEntityController> attachedControllers;
+	private Set<TileEntityReactorController> attachedControllers;
 	
 	private Set<TileEntityReactorFuelRod> attachedFuelRods;
 	private Set<TileEntityReactorCoolantPort> attachedCoolantPorts;
@@ -148,7 +148,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedControlRods = new HashSet<TileEntityReactorControlRod>();
 		attachedAccessPorts = new HashSet<TileEntityReactorAccessPort>();
-		attachedControllers = new HashSet<TileEntityController>();
+		attachedControllers = new HashSet<TileEntityReactorController>();
 		attachedFuelRods = new HashSet<TileEntityReactorFuelRod>();
 		attachedCoolantPorts = new HashSet<TileEntityReactorCoolantPort>();
 		attachedGlass = new HashSet<TileEntityReactorGlass>();
@@ -190,8 +190,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			attachedPowerTaps.add((TileEntityReactorPowerTap)part);
 		}
 
-		if(part instanceof TileEntityController) {
-			attachedControllers.add((TileEntityController)part);
+		if(part instanceof TileEntityReactorController) {
+			attachedControllers.add((TileEntityReactorController)part);
 		}
 
 		if(part instanceof ITickableMultiblockPart) {
@@ -233,7 +233,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			attachedPowerTaps.remove((TileEntityReactorPowerTap)part);
 		}
 
-		if(part instanceof TileEntityController) {
+		if(part instanceof TileEntityReactorController) {
 			attachedControllers.remove(part);
 		}
 

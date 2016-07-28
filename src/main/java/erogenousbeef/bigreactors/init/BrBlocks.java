@@ -114,7 +114,7 @@ public final class BrBlocks {
         proxy.register(TileEntityCyaniteReprocessor.class);
         proxy.register(TileEntityReactorPart.class);
         proxy.register(TileEntityReactorGlass.class);
-        proxy.register(TileEntityController.class);
+        proxy.register(TileEntityReactorController.class);
         proxy.register(TileEntityReactorPowerTapRedstoneFlux.class);
         proxy.register(TileEntityReactorPowerTapTesla.class);
         proxy.register(TileEntityReactorAccessPort.class);

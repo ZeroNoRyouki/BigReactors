@@ -3,7 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityController;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorController;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
 public class BlockReactorController extends BlockMultiblockDevice {
 
@@ -24,7 +23,7 @@ public class BlockReactorController extends BlockMultiblockDevice {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
 
-        return new TileEntityController();
+        return new TileEntityReactorController();
     }
 
     @Override
@@ -45,9 +44,9 @@ public class BlockReactorController extends BlockMultiblockDevice {
 
         state = super.buildActualState(state, world, position, part);
 
-        if (part instanceof TileEntityController) {
+        if (part instanceof TileEntityReactorController) {
 
-            MultiblockReactor reactor = ((TileEntityController)part).getReactorController();
+            MultiblockReactor reactor = ((TileEntityReactorController)part).getReactorController();
             ControllerState controllerState = null == reactor || !reactor.isAssembled() ? ControllerState.Off :
                     reactor.getActive() ? ControllerState.Active : ControllerState.Idle;
 
