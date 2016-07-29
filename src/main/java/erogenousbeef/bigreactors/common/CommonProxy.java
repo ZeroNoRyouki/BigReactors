@@ -9,6 +9,8 @@ import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
+import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
+import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -79,6 +81,32 @@ public class CommonProxy {
 		/*
 		MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
 		*/
+
+		// world gen
+		// TODO: check if enabled in config / whitelist
+		WorldGenWhiteList whiteList = new WorldGenWhiteList();
+		WorldGenMinableOres oreWorldGen = new WorldGenMinableOres(whiteList);
+
+		int clustersPerChunk;
+		int orePerCluster;
+		int maxY;
+		/*
+		clustersPerChunk = BRConfig.CONFIGURATION.get("WorldGen", "MaxYelloriteClustersPerChunk", 5, "Maximum number of clusters per chunk; will generate at least half this number, rounded down").getInt();
+		orePerCluster = BRConfig.CONFIGURATION.get("WorldGen", "MaxYelloriteOrePerCluster", 10, "Maximum number of blocks to generate in each cluster; will usually generate at least half this number").getInt();
+		maxY = BRConfig.CONFIGURATION.get("WorldGen", "YelloriteMaxY", 50, "Maximum height (Y coordinate) in the world to generate yellorite ore").getInt();
+		int[] dimensionBlacklist = BRConfig.CONFIGURATION.get("WorldGen", "YelloriteDimensionBlacklist", new int[]{}, "Dimensions in which yellorite ore should not be generated; Nether/End automatically included").getIntList();
+		*/
+		clustersPerChunk = 2;
+		orePerCluster = 5;
+		maxY = 32;
+
+		// Standard yellorite generation
+		oreWorldGen.addOre(BrBlocks.brOre, Blocks.STONE, 11, maxY, orePerCluster, clustersPerChunk);
+
+		whiteList.whiteListDimension(0);
+		GameRegistry.registerWorldGenerator(oreWorldGen, 0);
+
+		// Mods interaction
 
 		sendInterModAPIMessages();
 
