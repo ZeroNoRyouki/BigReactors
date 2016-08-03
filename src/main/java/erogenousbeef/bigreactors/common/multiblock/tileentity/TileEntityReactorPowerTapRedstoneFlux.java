@@ -4,12 +4,12 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import it.zerono.mods.zerocore.lib.BlockFacings;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowerTap implements IEnergyProvider {
 

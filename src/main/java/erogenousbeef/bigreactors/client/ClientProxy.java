@@ -1,21 +1,22 @@
 package erogenousbeef.bigreactors.client;
 
 import erogenousbeef.bigreactors.client.renderer.RendererReactorFuelRod;
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
+import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.CommonProxy;
-import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -53,17 +54,11 @@ public class ClientProxy extends CommonProxy {
 		return item;
 	}
 
-	/*
 	@Override
-	public void preInit() {
+	public void onInit(FMLInitializationEvent event) {
 
-		super.preInit();
-	}*/
+		super.onInit(event);
 
-	@Override
-	public void init() {
-
-		super.init();
 		MinecraftForge.EVENT_BUS.register(new BRRenderTickHandler());
 
 		// register TESRs

@@ -1,12 +1,11 @@
 package erogenousbeef.bigreactors.client;
 
-import java.util.HashMap;
-
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import com.google.common.collect.Maps;
 import erogenousbeef.bigreactors.common.BigReactors;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.HashMap;
 
 /**
  * Manages Icons that are not registered via blocks or items.

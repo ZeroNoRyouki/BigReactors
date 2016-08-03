@@ -1,16 +1,15 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.BigReactors;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
+import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
-import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 
 public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
 		IBeefTooltipControl {

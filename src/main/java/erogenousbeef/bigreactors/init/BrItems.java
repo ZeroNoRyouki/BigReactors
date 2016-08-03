@@ -1,10 +1,9 @@
 package erogenousbeef.bigreactors.init;
 
-import erogenousbeef.bigreactors.common.BRLoader;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemBeefDebugTool;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import it.zerono.mods.zerocore.lib.MetalSize;
 
 public final class BrItems {
@@ -20,7 +19,7 @@ public final class BrItems {
 
     static {
 
-        CommonProxy proxy = BRLoader.proxy;
+        CommonProxy proxy = BigReactors.getProxy();
 
         // register items
 

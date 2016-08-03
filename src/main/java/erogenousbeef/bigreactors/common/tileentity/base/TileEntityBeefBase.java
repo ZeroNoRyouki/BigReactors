@@ -1,14 +1,6 @@
 package erogenousbeef.bigreactors.common.tileentity.base;
 
-import java.util.HashSet;
-import java.util.Set;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import cofh.api.tileentity.IReconfigurableFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import erogenousbeef.bigreactors.common.interfaces.IBeefReconfigurableSides;
 import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
 import erogenousbeef.bigreactors.gui.IBeefGuiEntity;
@@ -17,7 +9,16 @@ import erogenousbeef.bigreactors.net.message.DeviceUpdateExposureMessage;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateRotationMessage;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
 import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import zero.temp.BlockHelper;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefGuiEntity, IBeefReconfigurableSides,
 		IReconfigurableFacing, IWrenchable, ITickable {

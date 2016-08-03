@@ -1,13 +1,13 @@
 package erogenousbeef.bigreactors.net.message.base;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPartBase;
 import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
 import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public abstract class ReactorMessageServer extends ModTileEntityMessage {
 

@@ -1,13 +1,13 @@
 package erogenousbeef.bigreactors.utils.intermod;
 
-import java.lang.reflect.Method;
-
 import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
-import erogenousbeef.bigreactors.common.item.ItemBRMetal;
+
+import java.lang.reflect.Method;
 
 public class ModHelperMekanism extends ModHelperBase {
 

@@ -1,11 +1,11 @@
 package erogenousbeef.bigreactors.gui.container;
 
+import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
 
 public class ContainerCyaniteReprocessor extends Container {
 

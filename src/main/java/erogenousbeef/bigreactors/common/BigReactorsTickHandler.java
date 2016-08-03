@@ -1,20 +1,22 @@
 package erogenousbeef.bigreactors.common;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
-
+import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
+
 public class BigReactorsTickHandler {
 
-	protected HashMap<Integer, Queue<ChunkPos>> chunkRegenMap;
-	protected static final long maximumDeltaTimeNanoSecs = 16000000; // 16 milliseconds
-	
+    public BigReactorsTickHandler(WorldGenMinableOres oresWorldGen) {
+        this._oresWorldGen = oresWorldGen;
+    }
+
 	public void addRegenChunk(int dimensionId, ChunkPos chunkCoord) {
 		if(chunkRegenMap == null) {
 			chunkRegenMap = new HashMap<Integer, Queue<ChunkPos>>();
@@ -34,10 +36,9 @@ public class BigReactorsTickHandler {
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
-        if(event.side == Side.SERVER && event.phase == TickEvent.Phase.END) {
-            if(chunkRegenMap == null) { return; }
 
-            if(event.world.isRemote) { return; }
+        if (event.side == Side.SERVER && event.phase == TickEvent.Phase.END &&
+                null != this.chunkRegenMap && !event.world.isRemote) {
 
             int dimensionId = event.world.provider.getDimension();
 
@@ -55,8 +56,7 @@ public class BigReactorsTickHandler {
                     long zSeed = fmlRandom.nextLong() >> 2 + 1L;
                     fmlRandom.setSeed((xSeed * nextChunk.chunkXPos + zSeed * nextChunk.chunkZPos) ^ event.world.getSeed());
 
-                    // TODO Commented temporarily to allow this thing to compile...
-                    //BigReactors.worldGenerator.generateChunk(fmlRandom, nextChunk.chunkXPos, nextChunk.chunkZPos, event.world);
+                    this._oresWorldGen.generateChunk(fmlRandom, nextChunk.chunkXPos, nextChunk.chunkZPos, event.world);
                 }
 
                 if(chunksToGen.isEmpty()) {
@@ -65,4 +65,8 @@ public class BigReactorsTickHandler {
             }
         }
     }
+
+    protected HashMap<Integer, Queue<ChunkPos>> chunkRegenMap;
+    protected static final long maximumDeltaTimeNanoSecs = 16000000; // 16 milliseconds
+    private final WorldGenMinableOres _oresWorldGen;
 }

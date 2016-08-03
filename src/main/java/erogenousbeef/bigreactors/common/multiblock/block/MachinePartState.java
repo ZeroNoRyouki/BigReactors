@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import net.minecraft.util.IStringSerializable;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.PartPosition;
+import net.minecraft.util.IStringSerializable;
 
 public enum MachinePartState implements IStringSerializable {
 

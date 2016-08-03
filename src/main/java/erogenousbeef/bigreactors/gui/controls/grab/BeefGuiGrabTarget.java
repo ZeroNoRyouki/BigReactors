@@ -1,13 +1,10 @@
 package erogenousbeef.bigreactors.gui.controls.grab;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-
-import org.lwjgl.opengl.GL11;
-
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
-import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 
 public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 

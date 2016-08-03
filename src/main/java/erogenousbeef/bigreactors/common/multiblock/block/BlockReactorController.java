@@ -4,6 +4,7 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorController;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -11,7 +12,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 
 public class BlockReactorController extends BlockMultiblockDevice {
 

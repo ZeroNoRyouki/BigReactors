@@ -9,9 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 //import buildcraft.api.transport.IPipeTile;
 //import cofh.api.transport.IItemDuct;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 
 /**
  * Wraps a given direction's inventory exposure. Listen for block/tile changes and set

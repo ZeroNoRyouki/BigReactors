@@ -2,10 +2,10 @@ package erogenousbeef.bigreactors.net.message;
 
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
 import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ReactorAccessPortChangeDirectionMessage extends ModTileEntityMessage {
 

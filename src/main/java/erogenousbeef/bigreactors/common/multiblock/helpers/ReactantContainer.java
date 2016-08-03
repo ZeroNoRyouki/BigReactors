@@ -1,12 +1,12 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.data.ReactantStack;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IConditionalUpdater;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
  * A helper class which allows multiple reactants to sit in one logical

@@ -1,19 +1,11 @@
 package erogenousbeef.bigreactors.client.renderer;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-//import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import org.lwjgl.opengl.GL11;
-import erogenousbeef.bigreactors.client.ClientProxy;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
-import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
-import erogenousbeef.bigreactors.utils.StaticUtils;
+
+//import net.minecraft.client.renderer.RenderBlocks;
 
 public class RotorSpecialRenderer extends TileEntitySpecialRenderer {
 

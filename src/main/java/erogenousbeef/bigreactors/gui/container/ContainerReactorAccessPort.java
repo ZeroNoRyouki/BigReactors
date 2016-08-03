@@ -1,14 +1,12 @@
 package erogenousbeef.bigreactors.gui.container;
 
 import erogenousbeef.bigreactors.api.registry.Reactants;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
-import erogenousbeef.bigreactors.gui.slot.SlotReactorFuel;
-import erogenousbeef.bigreactors.gui.slot.SlotRemoveOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 

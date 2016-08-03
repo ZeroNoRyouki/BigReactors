@@ -1,47 +1,34 @@
 package erogenousbeef.bigreactors.common.block;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cofh.api.block.IDismantleable;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockMultiblockDevice;
-import net.minecraft.block.Block;
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
+import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
+import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
+import erogenousbeef.bigreactors.utils.StaticUtils;
+import it.zerono.mods.zerocore.lib.block.properties.Orientation;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import cofh.api.tileentity.IReconfigurableFacing;
-import erogenousbeef.bigreactors.common.BRLoader;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.interfaces.IBeefReconfigurableSides;
-import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
-import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
-import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
-import erogenousbeef.bigreactors.utils.StaticUtils;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.block.properties.Orientation;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 public class BlockBRDevice extends BlockBR implements IDismantleable {
 
@@ -194,7 +181,7 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 		// Show GUI
 		if(te instanceof TileEntityBeefBase) {
 			if(!world.isRemote) {
-				entityPlayer.openGui(BRLoader.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+				entityPlayer.openGui(BigReactors.getInstance(), 0, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return true;
 		}

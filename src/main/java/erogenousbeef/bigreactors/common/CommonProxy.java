@@ -1,41 +1,30 @@
 package erogenousbeef.bigreactors.common;
 
-import java.util.Calendar;
-
+import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
-import erogenousbeef.bigreactors.common.item.ItemBRMetal;
+import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
+import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
+import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
-import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
-import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
+import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
+import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
-//import cofh.api.modhelpers.ThermalExpansionHelper;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.net.CommonPacketHandler;
-import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
-//import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
-import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
 
-public class CommonProxy {
+public class CommonProxy implements IModInitializationHandler {
 
 	public BlockBR register(BlockBR block) {
 
@@ -66,45 +55,13 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(tileEntityClass, BigReactors.MODID + tileEntityClass.getSimpleName());
 	}
 
-	public void preInit() {
+	@Override
+	public void onPreInit(FMLPreInitializationEvent event) {
+
 	}
 
-	public void init() {
-		
-		CommonPacketHandler.init();
-
-		new ModGuiHandler(BRLoader.instance);
-
-		BigReactors.tickHandler = new BigReactorsTickHandler();
-		MinecraftForge.EVENT_BUS.register(BigReactors.tickHandler);
-
-		/*
-		MinecraftForge.EVENT_BUS.register(new MultiblockServerTickHandler());
-		*/
-
-		// world gen
-		// TODO: check if enabled in config / whitelist
-		WorldGenWhiteList whiteList = new WorldGenWhiteList();
-		WorldGenMinableOres oreWorldGen = new WorldGenMinableOres(whiteList);
-
-		int clustersPerChunk;
-		int orePerCluster;
-		int maxY;
-		/*
-		clustersPerChunk = BRConfig.CONFIGURATION.get("WorldGen", "MaxYelloriteClustersPerChunk", 5, "Maximum number of clusters per chunk; will generate at least half this number, rounded down").getInt();
-		orePerCluster = BRConfig.CONFIGURATION.get("WorldGen", "MaxYelloriteOrePerCluster", 10, "Maximum number of blocks to generate in each cluster; will usually generate at least half this number").getInt();
-		maxY = BRConfig.CONFIGURATION.get("WorldGen", "YelloriteMaxY", 50, "Maximum height (Y coordinate) in the world to generate yellorite ore").getInt();
-		int[] dimensionBlacklist = BRConfig.CONFIGURATION.get("WorldGen", "YelloriteDimensionBlacklist", new int[]{}, "Dimensions in which yellorite ore should not be generated; Nether/End automatically included").getIntList();
-		*/
-		clustersPerChunk = 2;
-		orePerCluster = 5;
-		maxY = 32;
-
-		// Standard yellorite generation
-		oreWorldGen.addOre(BrBlocks.brOre, Blocks.STONE, 11, maxY, orePerCluster, clustersPerChunk);
-
-		whiteList.whiteListDimension(0);
-		GameRegistry.registerWorldGenerator(oreWorldGen, 0);
+	@Override
+	public void onInit(FMLInitializationEvent event) {
 
 		// Mods interaction
 
@@ -114,6 +71,15 @@ public class CommonProxy {
 		if(Loader.isModLoaded("VersionChecker")) {
 			FMLInterModComms.sendRuntimeMessage(BRLoader.MOD_ID, "VersionChecker", "addVersionCheck", "http://big-reactors.com/version.json");
 		}*/
+	}
+
+	@Override
+	public void onPostInit(FMLPostInitializationEvent event) {
+
+		if (BigReactors.CONFIG.autoAddUranium)
+			Reactants.registerSolid("ingotUranium", StandardReactants.yellorium);
+
+		this.registerWithOtherMods();
 	}
 
 	private void sendInterModAPIMessages() {
@@ -189,25 +155,7 @@ public class CommonProxy {
 		} // END: IsModLoaded - AE2
 	}
 
-	public void postInit() {
-		BRConfig.CONFIGURATION.load();
-		boolean autoAddUranium = BRConfig.CONFIGURATION.get("Compatibility", "autoAddUranium",
-															true,
-															"If true, automatically adds all "
-															+"unregistered ingots found as clones"
-															+"of standard yellorium fuel").getBoolean(true);
-		if(autoAddUranium) {
-			Reactants.registerSolid("ingotUranium", StandardReactants.yellorium);
-		}
 
-		BRConfig.CONFIGURATION.save();
-		
-		registerWithOtherMods();
-		
-		// Easter Egg - Check if today is valentine's day. If so, change all particles to hearts.
-		Calendar calendar = Calendar.getInstance();
-		BigReactors.isValentinesDay = (calendar.get(Calendar.MONTH) == 1 && calendar.get(Calendar.DAY_OF_MONTH) == 14);
-	}
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent

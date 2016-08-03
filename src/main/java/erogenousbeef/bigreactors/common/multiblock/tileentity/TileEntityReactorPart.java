@@ -1,12 +1,11 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.init.BrBlocks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 
 public class TileEntityReactorPart extends TileEntityReactorPartBase {
 

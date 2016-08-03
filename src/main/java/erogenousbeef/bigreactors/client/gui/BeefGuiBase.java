@@ -1,10 +1,10 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import erogenousbeef.bigreactors.gui.IBeefGuiControl;
+import erogenousbeef.bigreactors.gui.IBeefListBoxEntry;
+import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import erogenousbeef.bigreactors.gui.controls.BeefGuiListBox;
+import erogenousbeef.bigreactors.gui.controls.grab.IBeefGuiGrabbable;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -16,15 +16,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import erogenousbeef.bigreactors.gui.IBeefGuiControl;
-import erogenousbeef.bigreactors.gui.IBeefListBoxEntry;
-import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiListBox;
-import erogenousbeef.bigreactors.gui.controls.grab.IBeefGuiGrabbable;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class BeefGuiBase extends GuiContainer {

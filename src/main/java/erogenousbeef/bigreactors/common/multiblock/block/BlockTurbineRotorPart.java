@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import java.util.List;
-
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,8 +14,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
+
+import java.util.List;
 
 public class BlockTurbineRotorPart extends Block {
 

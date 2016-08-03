@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
-import erogenousbeef.bigreactors.common.BRLoader;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort.FluidFlow;
@@ -325,7 +325,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 			return false;
 		}
 		
-		player.openGui(BRLoader.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+		player.openGui(BigReactors.getInstance(), 0, world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
@@ -404,7 +404,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
     					particleX = minCoord.x + par5Random.nextFloat() * (maxCoord.x - minCoord.x + 1);
     					particleY = minCoord.y + par5Random.nextFloat() * (maxCoord.y - minCoord.y + 1);
     					particleZ = minCoord.z + par5Random.nextFloat() * (maxCoord.z - minCoord.z + 1);
-                        world.spawnParticle(BigReactors.isValentinesDay ? "heart" : "cloud", particleX, particleY, particleZ,
+                        world.spawnParticle(BigReactors.VALENTINES_DAY ? "heart" : "cloud", particleX, particleY, particleZ,
                         		par5Random.nextFloat() * inwardsDir.offsetX,
                         		par5Random.nextFloat() * inwardsDir.offsetY,
                         		par5Random.nextFloat() * inwardsDir.offsetZ);

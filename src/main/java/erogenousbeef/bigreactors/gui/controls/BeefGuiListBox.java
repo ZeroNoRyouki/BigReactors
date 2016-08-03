@@ -1,12 +1,12 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.TextureManager;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefListBoxEntry;
+import net.minecraft.client.renderer.texture.TextureManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeefGuiListBox extends BeefGuiControlBase {
 

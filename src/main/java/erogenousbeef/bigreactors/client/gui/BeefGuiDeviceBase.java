@@ -1,14 +1,11 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import erogenousbeef.bigreactors.init.BrBlocks;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.block.BlockBRDevice;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
 import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.DeviceChangeExposureMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
 import zero.temp.BlockHelper;
 
 import java.io.IOException;

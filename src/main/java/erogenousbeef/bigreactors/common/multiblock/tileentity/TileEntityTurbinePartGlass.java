@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import net.minecraft.util.math.BlockPos;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import net.minecraft.util.math.BlockPos;
 
 public class TileEntityTurbinePartGlass extends TileEntityTurbinePartBase {
 

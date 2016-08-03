@@ -1,11 +1,11 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import erogenousbeef.bigreactors.net.message.base.ReactorMessageServer;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ReactorCommandEjectToPortMessage extends ReactorMessageServer {
 

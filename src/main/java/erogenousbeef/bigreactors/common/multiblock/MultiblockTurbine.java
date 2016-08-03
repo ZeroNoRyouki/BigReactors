@@ -1,10 +1,25 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
+import cofh.api.energy.IEnergyProvider;
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
+import erogenousbeef.bigreactors.common.multiblock.helpers.FloatUpdateTracker;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
+import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
+import erogenousbeef.bigreactors.net.CommonPacketHandler;
+import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
 import io.netty.buffer.ByteBuf;
-
-import java.util.HashSet;
-import java.util.Set;
-
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.lib.config.IConfigListener;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,39 +28,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import cofh.api.energy.IEnergyProvider;
-//import cofh.lib.util.helpers.ItemHelper;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
-import erogenousbeef.bigreactors.common.multiblock.helpers.FloatUpdateTracker;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTap;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
-import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
-import erogenousbeef.bigreactors.net.CommonPacketHandler;
-import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
-import it.zerono.mods.zerocore.lib.block.ModTileEntity;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
-public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IPowerGenerator, IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable {
+import java.util.HashSet;
+import java.util.Set;
+
+public class MultiblockTurbine extends RectangularMultiblockControllerBase
+		implements IPowerGenerator, IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable, IConfigListener {
 
 	public enum VentStatus {
 		VentOverflow,
@@ -102,8 +94,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	
 	// Game balance constants - some of these are modified by configs at startup
 	public static int inputFluidPerBlade = 25; // mB
-	public static float inductorBaseDragCoefficient = 0.1f; // RF/t extracted per coil block, multiplied by rotor speed squared.
-	public static final float baseBladeDragCoefficient = 0.00025f; // RF/t base lost to aero drag per blade block. Includes a 50% reduction to factor in constant parts of the drag equation
+	private static float inductorBaseDragCoefficient = 0.1f; // RF/t extracted per coil block, multiplied by rotor speed squared.
+	private static final float baseBladeDragCoefficient = 0.00025f; // RF/t base lost to aero drag per blade block. Includes a 50% reduction to factor in constant parts of the drag equation
 	
 	float energyGeneratedLastTick;
 	int fluidConsumedLastTick;
@@ -165,6 +157,16 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		foundCoils = new HashSet<BlockPos>();
 		
 		rpmUpdateTracker = new FloatUpdateTracker(100, 5, 10f, 100f); // Minimum 10RPM difference for slow updates, if change > 100 RPM, update every 5 ticks
+	}
+
+	@Override
+	public void onConfigChanged() {
+
+		// energy/t extracted per coil block, multiplied by rotor speed squared.
+		MultiblockTurbine.inductorBaseDragCoefficient = 0.1f * BigReactors.CONFIG.turbineCoilDragMultiplier;
+		MultiblockTurbine.inputFluidPerBlade = (int) Math.floor(MultiblockTurbine.inputFluidPerBlade * BigReactors.CONFIG.turbineFluidPerBladeMultiplier);
+
+		this.recalculateDerivedStatistics();
 	}
 
 	/**
@@ -517,17 +519,17 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected int getMaximumXSize() {
-		return BigReactors.maximumTurbineSize;
+		return BigReactors.CONFIG.maxTurbineSize;
 	}
 
 	@Override
 	protected int getMaximumZSize() {
-		return BigReactors.maximumTurbineSize;
+		return BigReactors.CONFIG.maxTurbineSize;
 	}
 
 	@Override
 	protected int getMaximumYSize() {
-		return BigReactors.maximumTurbineHeight;
+		return BigReactors.CONFIG.maxTurbineHeight;
 	}
 	
 	@Override
@@ -1060,7 +1062,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	 * @param newEnergy Base, unmultiplied energy to generate
 	 */
 	protected void generateEnergy(float newEnergy) {
-		newEnergy = newEnergy * BigReactors.powerProductionMultiplier * BigReactors.turbinePowerProductionMultiplier;
+		newEnergy = newEnergy * BigReactors.CONFIG.powerProductionMultiplier * BigReactors.CONFIG.turbinePowerProductionMultiplier;
 		energyGeneratedLastTick += newEnergy;
 		addStoredEnergy(newEnergy);
 	}
@@ -1187,8 +1189,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		*/
 		
 		// Precalculate some stuff now that we know how big the rotor and blades are
-		frictionalDrag = rotorMass * rotorDragCoefficient * BigReactors.turbineMassDragMultiplier;
-		bladeDrag = baseBladeDragCoefficient * bladeSurfaceArea * BigReactors.turbineAeroDragMultiplier;
+		frictionalDrag = rotorMass * rotorDragCoefficient * BigReactors.CONFIG.turbineMassDragMultiplier;
+		bladeDrag = baseBladeDragCoefficient * bladeSurfaceArea * BigReactors.CONFIG.turbineAeroDragMultiplier;
 
 		if(coilSize <= 0)
 		{

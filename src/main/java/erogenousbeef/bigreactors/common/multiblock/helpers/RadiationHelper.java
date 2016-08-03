@@ -1,17 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.IFluidBlock;
-//import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
@@ -21,8 +9,19 @@ import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
-import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.util.ItemHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
+
+//import cofh.lib.util.helpers.ItemHelper;
 
 /**
  * Helper for reactor radiation game logic
@@ -86,7 +85,7 @@ public class RadiationHelper {
 		float radHardness = 0.2f + (float)(0.8 * radiationPenaltyBase);
 
 		// Calculate based on propagation-to-self
-		float rawFuelUsage = (fuelPerRadiationUnit * rawRadIntensity / getFertilityModifier()) * BigReactors.fuelUsageMultiplier; // Not a typo. Fuel usage is thus penalized at high heats.
+		float rawFuelUsage = (fuelPerRadiationUnit * rawRadIntensity / getFertilityModifier()) * BigReactors.CONFIG.fuelUsageMultiplier; // Not a typo. Fuel usage is thus penalized at high heats.
 		data.fuelRfChange = rfPerRadiationUnit * effectiveRadIntensity;
 		data.environmentRfChange = 0f;
 

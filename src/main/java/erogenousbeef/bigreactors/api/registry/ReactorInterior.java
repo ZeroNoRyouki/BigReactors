@@ -1,12 +1,12 @@
 package erogenousbeef.bigreactors.api.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
 import erogenousbeef.bigreactors.common.BRLog;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReactorInterior {
 	private static Map<String, ReactorInteriorData> _reactorModeratorBlocks = new HashMap<String, ReactorInteriorData>();

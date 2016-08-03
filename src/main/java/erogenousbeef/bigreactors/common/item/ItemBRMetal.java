@@ -1,8 +1,8 @@
 package erogenousbeef.bigreactors.common.item;
 
-import java.util.List;
-import erogenousbeef.bigreactors.common.BRConfig;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
+import it.zerono.mods.zerocore.lib.MetalSize;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -12,7 +12,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import it.zerono.mods.zerocore.lib.MetalSize;
+
+import java.util.List;
 
 public class ItemBRMetal extends ItemBase {
 
@@ -29,9 +30,7 @@ public class ItemBRMetal extends ItemBase {
 
 		super.onPostRegister();
 
-		BRConfig.CONFIGURATION.load();
-
-		boolean registerYelloriumAsUranium = BRConfig.CONFIGURATION.get("Recipes", "registerYelloriumAsUranium", true, "If set, yellorium will be registered in the ore dictionary as ingotUranium as well as ingotYellorium. Otherwise, it will only be registered as ingotYellorium. (Default: true)").getBoolean(true);
+		//boolean registerYelloriumAsUranium = BRConfig.CONFIGURATION.get("Recipes", "registerYelloriumAsUranium", true, "If set, yellorium will be registered in the ore dictionary as ingotUranium as well as ingotYellorium. Otherwise, it will only be registered as ingotYellorium. (Default: true)").getBoolean(true);
 
 		// Register all generic ingots & dusts
 
@@ -43,15 +42,13 @@ public class ItemBRMetal extends ItemBase {
 
 		// Add aliases, if appropriate
 
-		if (registerYelloriumAsUranium) {
+		if (BigReactors.CONFIG.registerYelloriumAsUranium) {
 
 			ItemStack yellorium = this.createItemStack(MetalType.Yellorium, 1);
 			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Uranium", yellorium);
 
 			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Plutonium", yellorium);
 		}
-
-		BRConfig.CONFIGURATION.save();
 	}
 
 	@Override

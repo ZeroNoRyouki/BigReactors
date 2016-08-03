@@ -1,10 +1,10 @@
 package erogenousbeef.bigreactors.api.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import erogenousbeef.bigreactors.api.data.ReactorReaction;
 import erogenousbeef.bigreactors.common.BRLog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReactorConversions {
 

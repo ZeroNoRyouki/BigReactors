@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.block;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -12,7 +13,6 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.BigReactors;
 
 public class BlockBRGenericFluid extends BlockFluidClassic {
 

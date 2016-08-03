@@ -1,26 +1,20 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor.WasteEjectionSetting;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiFluidBar;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiFuelMixBar;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiHeatBar;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiIcon;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiPowerBar;
-import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
+import erogenousbeef.bigreactors.gui.controls.*;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorChangeWasteEjectionMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorCommandEjectMessage;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiReactorStatus extends BeefGuiBase {

@@ -1,11 +1,11 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import erogenousbeef.bigreactors.common.BigReactors;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 		IBeefTooltipControl {

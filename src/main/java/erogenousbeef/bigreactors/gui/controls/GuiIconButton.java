@@ -1,13 +1,12 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 
 public class GuiIconButton extends GuiButton implements IBeefTooltipControl {
 

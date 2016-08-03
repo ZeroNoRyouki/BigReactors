@@ -4,6 +4,7 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -14,8 +15,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 
 public class BlockReactorFuelRod extends BlockTieredPart {
 
@@ -60,7 +59,7 @@ public class BlockReactorFuelRod extends BlockTieredPart {
     		if(reactor != null && reactor.isActive() && reactor.getFuelConsumedLastTick() > 0) {
     			int numParticles = par5Random.nextInt(4) + 1;
     			while(numParticles > 0) {
-                    world.spawnParticle(BigReactors.isValentinesDay ? "heart" : "crit",
+                    world.spawnParticle(BigReactors.VALENTINES_DAY ? "heart" : "crit",
                     		fuelRod.xCoord + 0.5D,
                     		fuelRod.yCoord + 0.5D,
                     		fuelRod.zCoord + 0.5D,

@@ -2,11 +2,11 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.client.gui.GuiReactorStatus;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorController;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 
 public class TileEntityReactorController extends TileEntityReactorPart {
 

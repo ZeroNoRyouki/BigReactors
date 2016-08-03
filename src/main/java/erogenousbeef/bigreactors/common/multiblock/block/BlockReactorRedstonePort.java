@@ -1,9 +1,10 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import java.util.Random;
-
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -13,15 +14,15 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.Random;
+
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 //import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
 //import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 //import net.minecraftforge.fml.common.Optional;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 /*

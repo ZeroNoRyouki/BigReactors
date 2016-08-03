@@ -48,6 +48,9 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 repositories {
     /*
     maven {
@@ -79,7 +82,7 @@ repositories {
 
 dependencies {
 
-    compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "1.9.4-0.0.4"
+    compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "1.9.4-0.0.5"
 
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..

@@ -2,11 +2,11 @@ package erogenousbeef.bigreactors.net.message;
 
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import io.netty.buffer.ByteBuf;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
-import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
 
 public class ControlRodUpdateMessage extends ModTileEntityMessage {
 

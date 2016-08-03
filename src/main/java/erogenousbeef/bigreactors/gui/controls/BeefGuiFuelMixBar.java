@@ -1,14 +1,14 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
+import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
-import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
-import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import org.lwjgl.opengl.GL11;
 
 public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements

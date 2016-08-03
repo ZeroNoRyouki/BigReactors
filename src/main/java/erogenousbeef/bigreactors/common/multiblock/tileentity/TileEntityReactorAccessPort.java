@@ -1,9 +1,18 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import java.util.List;
-
+import erogenousbeef.bigreactors.api.data.SourceProductMapping;
+import erogenousbeef.bigreactors.api.registry.Reactants;
+import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
+import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.data.StandardReactants;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
+import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,22 +23,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import erogenousbeef.bigreactors.api.data.SourceProductMapping;
-import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
-import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
-import it.zerono.mods.zerocore.util.OreDictionaryHelper;
-import it.zerono.mods.zerocore.util.WorldHelper;
+
+import java.util.List;
 
 public class TileEntityReactorAccessPort extends TileEntityReactorPart implements INeighborUpdatableEntity {
 

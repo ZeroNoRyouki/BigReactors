@@ -1,10 +1,10 @@
 package erogenousbeef.bigreactors.init;
 
 import erogenousbeef.bigreactors.common.BigReactors;
+import it.zerono.mods.zerocore.lib.fluid.ModFluid;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import it.zerono.mods.zerocore.lib.fluid.ModFluid;
 
 public class BrFluids {
 

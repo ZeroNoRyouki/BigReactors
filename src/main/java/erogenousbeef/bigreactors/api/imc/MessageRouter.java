@@ -1,11 +1,12 @@
 package erogenousbeef.bigreactors.api.imc;
 
+import erogenousbeef.bigreactors.common.BRLog;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import erogenousbeef.bigreactors.common.BRLog;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 /**
  * This class routes IMC messages to their designated handlers.

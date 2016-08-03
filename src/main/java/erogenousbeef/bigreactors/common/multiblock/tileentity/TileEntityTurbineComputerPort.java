@@ -1,8 +1,11 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedPeripheral;
@@ -10,12 +13,9 @@ import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.common.Optional;
-import dan200.computercraft.api.lua.ILuaContext;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),

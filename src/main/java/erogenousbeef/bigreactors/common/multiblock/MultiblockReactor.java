@@ -1,14 +1,34 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
+import erogenousbeef.bigreactors.api.IHeatEntity;
+import erogenousbeef.bigreactors.api.registry.Reactants;
+import erogenousbeef.bigreactors.api.registry.ReactorInterior;
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.data.RadiationData;
+import erogenousbeef.bigreactors.common.data.StandardReactants;
+import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
+import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
+import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
+import erogenousbeef.bigreactors.common.multiblock.helpers.FuelContainer;
+import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.net.CommonPacketHandler;
+import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
+import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
+import erogenousbeef.bigreactors.utils.StaticUtils;
 import io.netty.buffer.ByteBuf;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.ItemHelper;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -22,39 +42,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidBlock;
-import erogenousbeef.bigreactors.api.IHeatEntity;
-import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.api.registry.ReactorInterior;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.data.RadiationData;
-import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
-import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
-import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
-import erogenousbeef.bigreactors.common.multiblock.helpers.FuelContainer;
-import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.net.CommonPacketHandler;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateMessage;
-import erogenousbeef.bigreactors.net.message.multiblock.ReactorUpdateWasteEjectionMessage;
-import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
-import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import it.zerono.mods.zerocore.lib.block.ModTileEntity;
-import it.zerono.mods.zerocore.util.ItemHelper;
-import it.zerono.mods.zerocore.util.WorldHelper;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo,
 		IMultipleFluidHandler, IActivateable {
@@ -558,7 +553,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 * @param newEnergy Base, unmultiplied energy to generate
 	 */
 	protected void generateEnergy(float newEnergy) {
-		newEnergy = newEnergy * BigReactors.powerProductionMultiplier * BigReactors.reactorPowerProductionMultiplier;
+		newEnergy = newEnergy * BigReactors.CONFIG.powerProductionMultiplier * BigReactors.CONFIG.reactorPowerProductionMultiplier;
 		this.energyGeneratedLastTick += newEnergy;
 		this.addStoredEnergy(newEnergy);
 	}
@@ -1303,17 +1298,17 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected int getMaximumXSize() {
-		return BigReactors.maximumReactorSize;
+		return BigReactors.CONFIG.maxReactorSize;
 	}
 
 	@Override
 	protected int getMaximumZSize() {
-		return BigReactors.maximumReactorSize;
+		return BigReactors.CONFIG.maxReactorSize;
 	}
 
 	@Override
 	protected int getMaximumYSize() {
-		return BigReactors.maximumReactorHeight;
+		return BigReactors.CONFIG.maxReactorHeight;
 	}
 
 	/**

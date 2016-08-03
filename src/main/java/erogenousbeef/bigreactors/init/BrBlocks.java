@@ -1,7 +1,6 @@
 package erogenousbeef.bigreactors.init;
 
-import erogenousbeef.bigreactors.common.BRConfig;
-import erogenousbeef.bigreactors.common.BRLoader;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.*;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
@@ -61,12 +60,8 @@ public final class BrBlocks {
 
     static {
 
-        CommonProxy proxy = BRLoader.proxy;
-        boolean regCreativeParts;
-
-        BRConfig.CONFIGURATION.load();
-        regCreativeParts = BRConfig.CONFIGURATION.get("General", "registerCreativeMultiblockParts", true, "If true, creative parts for reactors, turbines and other multiblocks will be registered.").getBoolean(true);
-        BRConfig.CONFIGURATION.save();
+        CommonProxy proxy = BigReactors.getProxy();
+        boolean regCreativeParts = BigReactors.CONFIG.registerCreativeMultiblockParts;
 
         // register blocks
 
@@ -77,8 +72,8 @@ public final class BrBlocks {
         blockMetals = (BlockBRMetal)proxy.register(new BlockBRMetal("blockMetals"));
         
         // - reactor parts
-        reactorGlass = (BlockMultiblockGlass)proxy.register(new BlockMultiblockGlass(PartType.ReactorGlass, "reactorGlass"));
         reactorCasing = (BlockMultiblockCasing)proxy.register(new BlockMultiblockCasing(PartType.ReactorCasing, "reactorCasing"));
+        reactorGlass = (BlockMultiblockGlass)proxy.register(new BlockMultiblockGlass(PartType.ReactorGlass, "reactorGlass"));
         reactorController = (BlockReactorController)proxy.register(new BlockReactorController("reactorController"));
         reactorPowerTapRF = (BlockReactorPowerTap)proxy.register(new BlockReactorPowerTap("reactorPowerTapRF", PowerSystem.RedstoneFlux));
         reactorPowerTapTesla = (BlockReactorPowerTap)proxy.register(new BlockReactorPowerTap("reactorPowerTapTesla", PowerSystem.Tesla));

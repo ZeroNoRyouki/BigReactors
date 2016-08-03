@@ -6,24 +6,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+
 //import buildcraft.api.tools.IToolWrench;
 //import cofh.api.item.IToolHammer;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
-import scala.tools.nsc.interpreter.Power;
 
 public class StaticUtils {
 
@@ -391,8 +384,11 @@ public class StaticUtils {
 		 * @return True if world generation should proceed, false if it should be skipped altogether.
 		 */
 		public static boolean shouldGenerateInDimension(int dimensionId) {
-			return dimensionId >= 0 || BigReactors.enableWorldGenInNegativeDimensions ||
-					BigReactors.dimensionWhitelist.contains(dimensionId);
+			/*
+			return dimensionId >= 0 || BigReactors.CONFIG.enableWorldGenInNegativeDimensions ||
+					BigReactors.CONFIG.dimensionWhitelist.contains(dimensionId);
+			*/
+			return false; // TODO fix
 		}
 	}
 }

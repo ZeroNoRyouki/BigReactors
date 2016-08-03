@@ -1,8 +1,8 @@
 package erogenousbeef.bigreactors.utils.intermod;
 
+import dan200.computercraft.api.ComputerCraftAPI;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraftforge.fml.common.Optional;
-import dan200.computercraft.api.ComputerCraftAPI;
 
 public class ModHelperComputerCraft extends ModHelperBase {
 

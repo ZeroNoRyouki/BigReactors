@@ -1,12 +1,10 @@
 package erogenousbeef.bigreactors.gui;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
 import org.lwjgl.opengl.GL11;
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 
 public abstract class BeefGuiControlBase implements IBeefGuiControl {
 

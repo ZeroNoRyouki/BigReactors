@@ -1,19 +1,18 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import com.google.common.collect.Maps;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.lib.PropertyBlockFacings;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -23,19 +22,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import it.zerono.mods.zerocore.lib.BlockFacings;
-import it.zerono.mods.zerocore.lib.PropertyBlockFacings;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class BlockMultiblockGlass extends BlockTieredPart {
 

@@ -1,10 +1,10 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import org.lwjgl.opengl.GL11;
 
 public abstract class BeefGuiTextureProgressBar extends BeefGuiVerticalProgressBar {

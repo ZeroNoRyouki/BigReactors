@@ -1,13 +1,5 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
-
-import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.input.Keyboard;
-
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
@@ -18,6 +10,12 @@ import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodChangeInsertionMessage;
 import erogenousbeef.bigreactors.net.message.ControlRodChangeNameMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.input.Keyboard;
 
 public class GuiReactorControlRod extends BeefGuiBase {
 

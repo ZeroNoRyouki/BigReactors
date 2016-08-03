@@ -1,15 +1,18 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.common.BRLoader;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,13 +27,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
-import it.zerono.mods.zerocore.lib.block.ModTileEntity;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
 /**
  * Base class for a multiblock part
@@ -87,7 +83,7 @@ public class BlockPart extends BlockBR {
 
                 if (modTe.canOpenGui(world, posistion, state)) {
 
-                    player.openGui(BRLoader.instance, 0, world, posistion.getX(), posistion.getY(), posistion.getZ());
+                    player.openGui(BigReactors.getInstance(), 0, world, posistion.getX(), posistion.getY(), posistion.getZ());
                     return true;
                 }
             }

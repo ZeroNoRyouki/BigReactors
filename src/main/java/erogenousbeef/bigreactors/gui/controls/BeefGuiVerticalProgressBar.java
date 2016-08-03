@@ -1,16 +1,13 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 
 public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 	private final static int controlWidth = 20;

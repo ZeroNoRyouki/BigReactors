@@ -1,11 +1,11 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.entity.passive.EntitySheep;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefGuiControl;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 
 public class BeefGuiRedNetChannelSelector extends BeefGuiControlBase implements IBeefGuiControl,

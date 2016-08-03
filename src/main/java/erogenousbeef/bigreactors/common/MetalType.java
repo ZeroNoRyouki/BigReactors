@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common;
 
-import net.minecraft.util.IStringSerializable;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import net.minecraft.util.IStringSerializable;
 
 public enum MetalType implements IStringSerializable {
 

@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.common;
 
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
-import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;

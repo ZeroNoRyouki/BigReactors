@@ -1,9 +1,8 @@
 package erogenousbeef.bigreactors.common.block;
 
-import java.util.List;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.Properties;
-import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.lib.MetalSize;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,7 +18,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import it.zerono.mods.zerocore.lib.MetalSize;
+
+import java.util.List;
 
 public class BlockBRMetal extends BlockBR {
 
@@ -96,23 +96,6 @@ public class BlockBRMetal extends BlockBR {
 
 	public ItemStack createItemStack(MetalType type, int amount) {
 		return new ItemStack(this, amount, type.toMeta());
-	}
-
-	// TODO move this out of this class
-	public void registerIngotRecipes() {
-
-		MetalType[] metals = MetalType.values();
-		ItemStack block, ingot;
-
-		for (MetalType metal : metals) {
-
-			block = this.createItemStack(metal, 1);
-			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
-
-			GameRegistry.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
-			ingot.stackSize = 9;
-			GameRegistry.addShapelessRecipe(ingot, block);
-		}
 	}
 
 	@Override

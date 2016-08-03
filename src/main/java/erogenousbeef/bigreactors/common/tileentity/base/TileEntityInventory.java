@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.tileentity.base;
 
+import erogenousbeef.bigreactors.utils.AdjacentInventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -7,7 +8,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import erogenousbeef.bigreactors.utils.AdjacentInventoryHelper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 

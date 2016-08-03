@@ -1,26 +1,21 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiFluidBar;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiIcon;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiPowerBar;
-import erogenousbeef.bigreactors.gui.controls.BeefGuiRpmBar;
-import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
+import erogenousbeef.bigreactors.gui.controls.*;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeInductorMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeMaxIntakeMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeVentMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiTurbineController extends BeefGuiBase {
 

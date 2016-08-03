@@ -1,6 +1,9 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
@@ -11,9 +14,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.Optional;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.lib.BlockFacings;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorPowerTapTesla extends TileEntityReactorPowerTap {
 

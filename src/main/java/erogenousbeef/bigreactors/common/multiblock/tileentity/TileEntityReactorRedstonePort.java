@@ -1,7 +1,14 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedstonePort;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CircuitType;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
+import erogenousbeef.bigreactors.gui.container.ContainerBasic;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,13 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.gui.container.ContainerBasic;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase implements ITickableMultiblockPart {
 
@@ -302,7 +302,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 	 */
 	public void onMultiblockServerTick() {
 
-		if (!this.isConnected() || (this.ticksSinceLastUpdate++ < BigReactors.ticksPerRedstoneUpdate))
+		if (!this.isConnected() || (this.ticksSinceLastUpdate++ < BigReactors.CONFIG.ticksPerRedstoneUpdate))
 			return;
 
 		this.updateRedstoneStateAndNotify();

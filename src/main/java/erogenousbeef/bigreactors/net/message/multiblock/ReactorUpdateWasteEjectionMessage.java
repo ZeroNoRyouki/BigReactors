@@ -1,10 +1,9 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.net.message.base.ReactorMessageClient;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ReactorUpdateWasteEjectionMessage extends ReactorMessageClient {
 

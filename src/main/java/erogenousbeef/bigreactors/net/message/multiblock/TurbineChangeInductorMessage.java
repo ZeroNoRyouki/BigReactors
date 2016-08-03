@@ -1,9 +1,9 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.net.message.base.TurbineMessageServer;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class TurbineChangeInductorMessage extends TurbineMessageServer {
 

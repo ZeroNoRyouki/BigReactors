@@ -1,10 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.InventoryPlayer;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.common.BRLog;
@@ -12,15 +7,15 @@ import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
+import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.BlockFacings;
 import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 
 public abstract class TileEntityReactorPartBase extends
 		RectangularMultiblockTileEntityBase implements IHeatEntity,

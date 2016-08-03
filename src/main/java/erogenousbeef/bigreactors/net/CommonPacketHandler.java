@@ -1,19 +1,11 @@
 package erogenousbeef.bigreactors.net;
 
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.net.message.*;
 import erogenousbeef.bigreactors.net.message.multiblock.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.net.message.ControlRodChangeInsertionMessage;
-import erogenousbeef.bigreactors.net.message.ControlRodChangeNameMessage;
-import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
-import erogenousbeef.bigreactors.net.message.DeviceChangeExposureMessage;
-import erogenousbeef.bigreactors.net.message.DeviceUpdateExposureMessage;
-import erogenousbeef.bigreactors.net.message.DeviceUpdateMessage;
-import erogenousbeef.bigreactors.net.message.DeviceUpdateRotationMessage;
-import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
-import erogenousbeef.bigreactors.net.message.ReactorAccessPortChangeDirectionMessage;
 // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
 //import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
 //import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
@@ -34,7 +26,7 @@ public class CommonPacketHandler {
 	 *   Generic Format: [Machine|TileEntity][Operation][Type]Message
 	 */
 	
-    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(BigReactors.CHANNEL.toLowerCase());
+    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(BigReactors.MODID);
 
     /**
      * Initialize the messages. Note that all messages (server>client and client>server)

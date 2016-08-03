@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.data;
 
-import net.minecraftforge.fluids.Fluid;
 import erogenousbeef.bigreactors.api.IReactorFuel;
+import net.minecraftforge.fluids.Fluid;
 
 public class ReactorFuel implements IReactorFuel {
 	protected Fluid referenceFluid;
