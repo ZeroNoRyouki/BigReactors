@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "plate":"bigreactors:blocks/reactor/standard/plate",
-            "machineA":"bigreactors:blocks/reactor/standard/powerTapTesla.disconnected",
+            "plate":"bigreactors:blocks/reactor/legacy/plate",
+            "machineA":"bigreactors:blocks/reactor/legacy/powerTapTesla.disconnected",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -17,25 +17,24 @@
     },
     "variants":{  
         "tier":{  
-            "standard":{  
+            "legacy":{  
 				"transform":"forge:default-block",
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/standard/plate",
-                    "machineA":"bigreactors:blocks/reactor/standard/powerTapTesla.disconnected",
-                    "machineB":"bigreactors:blocks/reactor/standard/powerTapTesla.connected"
+                    "plate":"bigreactors:blocks/reactor/legacy/plate",
+                    "machineA":"bigreactors:blocks/reactor/legacy/powerTapTesla.disconnected",
+                    "machineB":"bigreactors:blocks/reactor/legacy/powerTapTesla.connected"
                 }
             },
-            "advanced":{  
+            "basic":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/advanced/plate",
-                    "machineA":"bigreactors:blocks/reactor/advanced/powerTapTesla.disconnected",
-                    "machineB":"bigreactors:blocks/reactor/advanced/powerTapTesla.connected"
+                    "plate":"bigreactors:blocks/reactor/basic/plate",
+                    "machineA":"bigreactors:blocks/reactor/basic/powerTapTesla.disconnected",
+                    "machineB":"bigreactors:blocks/reactor/basic/powerTapTesla.connected"
                 }
             }
         },
         "afstate":{  
             "disassembled":{  
-
             },
             "assemblednorth":{  
                 "textures":{  

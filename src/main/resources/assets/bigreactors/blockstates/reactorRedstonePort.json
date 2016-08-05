@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "plate":"bigreactors:blocks/reactor/standard/plate",
-            "machineA":"bigreactors:blocks/reactor/standard/redstonePort.unlit",
+            "plate":"bigreactors:blocks/reactor/legacy/plate",
+            "machineA":"bigreactors:blocks/reactor/legacy/redstonePort.unlit",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -17,25 +17,24 @@
     },
     "variants":{  
         "tier":{  
-            "standard":{  
+            "legacy":{  
 				"transform":"forge:default-block",
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/standard/plate",
-                    "machineA":"bigreactors:blocks/reactor/standard/redstonePort.unlit",
-                    "machineB":"bigreactors:blocks/reactor/standard/redstonePort.lit"
+                    "plate":"bigreactors:blocks/reactor/legacy/plate",
+                    "machineA":"bigreactors:blocks/reactor/legacy/redstonePort.unlit",
+                    "machineB":"bigreactors:blocks/reactor/legacy/redstonePort.lit"
                 }
             },
-            "advanced":{  
+            "basic":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/advanced/plate",
-                    "machineA":"bigreactors:blocks/reactor/advanced/redstonePort.unlit",
-                    "machineB":"bigreactors:blocks/reactor/advanced/redstonePort.lit"
+                    "plate":"bigreactors:blocks/reactor/basic/plate",
+                    "machineA":"bigreactors:blocks/reactor/basic/redstonePort.unlit",
+                    "machineB":"bigreactors:blocks/reactor/basic/redstonePort.lit"
                 }
             }
         },
         "afstate":{  
             "disassembled":{  
-
             },
             "assemblednorth":{  
                 "textures":{  

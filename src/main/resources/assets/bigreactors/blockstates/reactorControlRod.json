@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "plate":"bigreactors:blocks/reactor/standard/plate",
-            "machine":"bigreactors:blocks/reactor/standard/controlRod",
+            "plate":"bigreactors:blocks/reactor/legacy/plate",
+            "machine":"bigreactors:blocks/reactor/legacy/controlRod",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -16,23 +16,22 @@
     },
     "variants":{  
         "tier":{  
-            "standard":{  
+            "legacy":{  
 				"transform":"forge:default-block",
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/standard/plate",
-                    "machine":"bigreactors:blocks/reactor/standard/controlRod"
+                    "plate":"bigreactors:blocks/reactor/legacy/plate",
+                    "machine":"bigreactors:blocks/reactor/legacy/controlRod"
                 }
             },
-            "advanced":{  
+            "basic":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/advanced/plate",
-					"machine":"bigreactors:blocks/reactor/advanced/controlRod"
+                    "plate":"bigreactors:blocks/reactor/basic/plate",
+					"machine":"bigreactors:blocks/reactor/basic/controlRod"
                 }
             }
         },
         "afstate":{  
             "disassembled":{  
-
             },
             "assemblednorth":{  
                 "textures":{  

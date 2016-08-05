@@ -2,17 +2,26 @@ package erogenousbeef.bigreactors.common.item;
 
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.config.Config;
+import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBRMetal extends ItemBase {
@@ -24,31 +33,6 @@ public class ItemBRMetal extends ItemBase {
 		this.setMaxDamage(0);
 		this._size = size;
 		this._subItems = null;
-	}
-
-	public void onPostRegister() {
-
-		super.onPostRegister();
-
-		//boolean registerYelloriumAsUranium = BRConfig.CONFIGURATION.get("Recipes", "registerYelloriumAsUranium", true, "If set, yellorium will be registered in the ore dictionary as ingotUranium as well as ingotYellorium. Otherwise, it will only be registered as ingotYellorium. (Default: true)").getBoolean(true);
-
-		// Register all generic ingots & dusts
-
-		MetalType[] types = MetalType.values();
-		int length = types.length;
-
-		for (int i = 0; i < length; ++i)
-			OreDictionary.registerOre(types[i].getOreDictionaryName(this._size), this.createItemStack(types[i], 1));
-
-		// Add aliases, if appropriate
-
-		if (BigReactors.CONFIG.registerYelloriumAsUranium) {
-
-			ItemStack yellorium = this.createItemStack(MetalType.Yellorium, 1);
-			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Uranium", yellorium);
-
-			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Plutonium", yellorium);
-		}
 	}
 
 	@Override
@@ -65,6 +49,59 @@ public class ItemBRMetal extends ItemBase {
 	}
 
 	@Override
+	public void registerOreDictionaryEntries() {
+
+		// Register all generic ingots & dusts
+
+		MetalType[] types = MetalType.values();
+		int length = types.length;
+
+		for (int i = 0; i < length; ++i)
+			OreDictionary.registerOre(types[i].getOreDictionaryName(this._size), this.createItemStack(types[i], 1));
+
+		// Add aliases, if appropriate
+
+		if (BigReactors.CONFIG.registerYelloriumAsUranium) {
+
+			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Uranium", this.createItemStack(MetalType.Yellorium, 1));
+			OreDictionary.registerOre(this._size.oreDictionaryPrefix + "Plutonium", this.createItemStack(MetalType.Blutonium, 1));
+		}
+	}
+
+	@Override
+	public void registerRecipes() {
+
+		final Config configs = BigReactors.CONFIG;
+		final ItemStack ingotGraphite = OreDictionaryHelper.getOre("ingotGraphite");
+		final ItemStack ingotCyanite = OreDictionaryHelper.getOre("ingotCyanite");
+
+		// Graphite & Cyanite
+
+		// -- Coal -> Graphite
+		if (configs.registerCoalForSmelting)
+			GameRegistry.addSmelting(Items.COAL, ingotGraphite, 1);
+
+		// -- Charcoal -> Graphite
+		if (configs.registerCharcoalForSmelting)
+			GameRegistry.addSmelting(new ItemStack(Items.COAL, 1, 1), ingotGraphite, 1);
+
+		// -- Gravel + Coal -> Graphite
+		if (configs.registerGraphiteCoalCraftingRecipes)
+			GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
+					new ItemStack(Items.COAL, 1, 0)));
+
+		// -- Gravel + Charcoal -> Graphite
+		if (configs.registerGraphiteCharcoalCraftingRecipes)
+			GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
+					new ItemStack(Items.COAL, 1, 1)));
+
+		// -- Yellorium ingot + Sand -> Cyanite
+		if (configs.enableCyaniteFromYelloriumRecipe)
+			GameRegistry.addRecipe(new ShapelessOreRecipe(ingotCyanite, configs.recipeYelloriumIngotName, Blocks.SAND ));
+
+	}
+
+	@Override
 	public int getMetadata(int damage)
 	{
 		return damage;
@@ -77,25 +114,20 @@ public class ItemBRMetal extends ItemBase {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
-
-		int length;
+	public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
 
 		if (null == this._subItems) {
 
-			MetalType[] types = MetalType.values();
+			MetalType[] types = MetalType.VALUES;
+			int length = types.length;
 
-			length = types.length;
-			this._subItems = new ItemStack[length];
+			this._subItems = new ArrayList<>(length);
 
 			for (int i = 0; i < length; ++i)
-				this._subItems[i] = new ItemStack(item, 1, types[i].toMeta());
+				this._subItems.add(new ItemStack(item, 1, types[i].toMeta()));
 		}
 
-		length = this._subItems.length;
-
-		for (int i = 0; i < length; ++i)
-			list.add(this._subItems[i]);
+		list.addAll(this._subItems);
 	}
 
 	/*
@@ -118,5 +150,5 @@ public class ItemBRMetal extends ItemBase {
 	}
 
 	private MetalSize _size;
-	private ItemStack[] _subItems;
+	private List<ItemStack> _subItems;
 }

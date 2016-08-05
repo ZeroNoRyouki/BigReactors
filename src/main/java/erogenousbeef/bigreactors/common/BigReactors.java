@@ -9,10 +9,7 @@ import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
-import erogenousbeef.bigreactors.init.BrBlocks;
-import erogenousbeef.bigreactors.init.BrFluids;
-import erogenousbeef.bigreactors.init.BrItems;
-import erogenousbeef.bigreactors.init.BrRecipes;
+import erogenousbeef.bigreactors.init.*;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
@@ -92,16 +89,10 @@ public class BigReactors implements IModInitializationHandler {
 	public void onPreInit(FMLPreInitializationEvent event) {
 
 		CONFIG.onPreInit(event);
-
-		BrFluids.initialize();
-		BrItems.initialize();
-		BrBlocks.initialize();
-
+		InitHandler.INSTANCE.onPreInit(event);
 		StandardReactants.register();
-
 		MinecraftForge.EVENT_BUS.register(new BREventHandler());
 		MinecraftForge.EVENT_BUS.register(BigReactors.s_proxy);
-
 		BigReactors.s_proxy.onPreInit(event);
 
 		// Force-load water to prevent startup crashes
@@ -113,7 +104,7 @@ public class BigReactors implements IModInitializationHandler {
 	public void onInit(FMLInitializationEvent event) {
 
 		CONFIG.onInit(event);
-
+		InitHandler.INSTANCE.onInit(event);
 		BrRecipes.initialize();
 
 		// add world generator for our ores
@@ -134,6 +125,7 @@ public class BigReactors implements IModInitializationHandler {
 	public void onPostInit(FMLPostInitializationEvent event) {
 
 		CONFIG.onPostInit(event);
+		InitHandler.INSTANCE.onPostInit(event);
 		BigReactors.s_proxy.onPostInit(event);
 	}
 

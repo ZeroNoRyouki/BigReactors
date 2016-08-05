@@ -1,11 +1,12 @@
 package erogenousbeef.bigreactors.common.item;
 
+import it.zerono.mods.zerocore.lib.IGameObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBase extends Item {
+public class ItemBase extends Item implements IGameObject {
 
 	public ItemBase(String itemName) {
 
@@ -24,11 +25,21 @@ public class ItemBase extends Item {
 		return new ItemStack(this, amount, meta);
 	}
 
+	@Override
 	public void onPostRegister() {
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void onPostClientRegister() {
+	}
+
+	@Override
+	public void registerOreDictionaryEntries() {
+	}
+
+	@Override
+	public void registerRecipes() {
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.block;
 
 import erogenousbeef.bigreactors.common.BigReactors;
+import it.zerono.mods.zerocore.lib.IGameObject;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -14,7 +15,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBRGenericFluid extends BlockFluidClassic {
+public class BlockBRGenericFluid extends BlockFluidClassic implements IGameObject {
 
 	public BlockBRGenericFluid(Fluid fluid, String blockName, Material material) {
 
@@ -40,6 +41,14 @@ public class BlockBRGenericFluid extends BlockFluidClassic {
 				return location;
 			}
 		});
+	}
+
+	@Override
+	public void registerOreDictionaryEntries() {
+	}
+
+	@Override
+	public void registerRecipes() {
 	}
 
 	/**

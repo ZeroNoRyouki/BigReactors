@@ -5,15 +5,21 @@ import net.minecraft.util.IStringSerializable;
 
 public enum MetalType implements IStringSerializable {
 
-    Yellorium,
-    Cyanite,
-    Graphite,
-    Blutonium,
-    Ludicrite;
+    Yellorium(0),
+    Cyanite(1),
+    Graphite(2),
+    Blutonium(3),
+    Ludicrite(4);
 
-    MetalType() {
+    /**
+     * All the enum values indexed by the meta-data value
+     */
+    public static final MetalType[] VALUES;
+
+    MetalType(int meta) {
 
         this._name = this.name().toLowerCase();
+        this._meta = meta;
     }
 
     @Override
@@ -34,18 +40,26 @@ public enum MetalType implements IStringSerializable {
     }
 
     public int toMeta() {
-        return this.ordinal();
+        return this._meta;
     }
 
     public static MetalType fromMeta(int meta) {
 
-        MetalType[] values = MetalType.values();
+        if (meta < 0 || meta >= VALUES.length)
+            meta = 0;
 
-        if (meta < 0 || meta >= values.length)
-            throw new IllegalArgumentException("Invalid meta data value");
-
-        return values[meta];
+        return VALUES[meta];
     }
 
     private final String _name;
+    private final int _meta;
+
+    static {
+
+        MetalType[] metals = MetalType.values();
+
+        VALUES = new MetalType[metals.length];
+        for (MetalType metal: metals)
+            VALUES[metal.toMeta()] = metal;
+    }
 }

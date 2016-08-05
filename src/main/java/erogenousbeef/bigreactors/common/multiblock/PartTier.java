@@ -2,15 +2,20 @@ package erogenousbeef.bigreactors.common.multiblock;
 
 import net.minecraft.util.IStringSerializable;
 
+import java.util.EnumSet;
+
 public enum PartTier implements IStringSerializable {
 
-    Standard(0),
-    Advanced(1);
+    Legacy(0),
+    Basic(1);
 
     /**
      * All the enum values indexed by the meta-data value
      */
     public static final PartTier[] VALUES;
+
+    public static final EnumSet<PartTier> REACTOR_TIERS;
+    public static final EnumSet<PartTier> TURBINE_TIERS;
 
     PartTier(int meta) {
 
@@ -45,10 +50,13 @@ public enum PartTier implements IStringSerializable {
 
     static {
 
-        PartTier[] tiers = PartTier.values();
+        final PartTier[] tiers = PartTier.values();
 
         VALUES = new PartTier[tiers.length];
         for (PartTier tier: tiers)
             VALUES[tier.toMeta()] = tier;
+
+        REACTOR_TIERS = EnumSet.of(Legacy, Basic);
+        TURBINE_TIERS = EnumSet.of(Legacy, Basic);
     }
 }

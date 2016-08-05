@@ -111,6 +111,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	private FuelAssembly[] _fuelAssemblies;
 
+	private boolean legacyMode;
+
 	// Updates
 	private Set<EntityPlayer> updatePlayers;
 	private int ticksSinceLastUpdate;
@@ -127,7 +129,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		powerSystem = PowerSystem.RedstoneFlux;
 		energyStored = 0f;
 		wasteEjection = WasteEjectionSetting.kAutomatic;
-		this.partsTier = PartTier.Standard;
+		this.partsTier = PartTier.Legacy;
 
 		// Derived stats
 		fuelToReactorHeatTransferCoefficient = 0f;
@@ -159,6 +161,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		coolantContainer = new CoolantContainer();
 		
 		reactorVolume = 0;
+
+		this.legacyMode = false;
 	}
 	
 	public void beginUpdatingPlayer(EntityPlayer playerToUpdate) {
@@ -1197,6 +1201,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 
 		this.partsTier = candidateTier;
+		this.legacyMode = PartTier.Legacy == candidateTier;
 
 		// determine machine power system
 

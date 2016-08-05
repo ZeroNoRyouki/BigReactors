@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import it.zerono.mods.zerocore.lib.IGameObject;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -17,9 +18,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class BlockTieredPart extends BlockPart {
+public class BlockTieredPart extends BlockPart implements IGameObject {
 
     public BlockTieredPart(PartType type, String blockName, Material material) {
         super(type, blockName, material);
@@ -91,23 +93,18 @@ public class BlockTieredPart extends BlockPart {
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-        int length;
-
         if (null == this._subBlocks) {
 
             PartTier[] tiers = PartTier.VALUES;
+            int length = tiers.length;
 
-            length = tiers.length;
-            this._subBlocks = new ItemStack[length];
+            this._subBlocks = new ArrayList<>(length);
 
             for (int i = 0; i < length; ++i)
-                this._subBlocks[i] = new ItemStack(item, 1, tiers[i].toMeta());
+                this._subBlocks.add(new ItemStack(item, 1, tiers[i].toMeta()));
         }
 
-        length = this._subBlocks.length;
-
-        for (int i = 0; i < length; ++i)
-            list.add(this._subBlocks[i]);
+        list.addAll(this._subBlocks);
     }
 
     public PartTier getTierFromState(IBlockState state) {
@@ -123,8 +120,8 @@ public class BlockTieredPart extends BlockPart {
 
     @Override
     protected IBlockState buildDefaultState(IBlockState state) {
-        return super.buildDefaultState(state).withProperty(Properties.TIER, PartTier.Standard);
+        return super.buildDefaultState(state).withProperty(Properties.TIER, PartTier.Legacy);
     }
 
-    private ItemStack[] _subBlocks;
+    private List<ItemStack> _subBlocks;
 }

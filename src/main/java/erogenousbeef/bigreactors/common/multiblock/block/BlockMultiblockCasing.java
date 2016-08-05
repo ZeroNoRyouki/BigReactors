@@ -1,6 +1,8 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartStandard;
@@ -14,6 +16,8 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockMultiblockCasing extends BlockTieredPart {
 
@@ -34,6 +38,25 @@ public class BlockMultiblockCasing extends BlockTieredPart {
 
             default:
                 throw new IllegalArgumentException("Unrecognized part");
+        }
+    }
+
+    @Override
+    public void registerRecipes() {
+
+        if (PartType.ReactorCasing == this._type) {
+
+            if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
+                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "GUG", "IGI",
+                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+
+            if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
+                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "GUG", "IGI",
+                    'I', "ingotSteel", 'G', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+
+        } else if (PartType.TurbineHousing == this._type) {
+
+            // TODO no recipes yet
         }
     }
 

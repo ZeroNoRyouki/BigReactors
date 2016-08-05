@@ -344,15 +344,14 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		EnumFacing facing = this.getOutwardFacing();
 		IItemHandler candidateInventory = null;
 
-		if (null == facing)
-			// this should never happen
-			throw new IllegalStateException("Reactor access port report multiple outward facing!");
+		if (null != facing) {
 
-		TileEntity te = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
+			TileEntity te = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
 
-		if (null != te && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
-			candidateInventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
-		
+			if (null != te && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
+				candidateInventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
+		}
+
 		if (this._adjacentInventory != candidateInventory) {
 
 			this._adjacentInventory = candidateInventory;

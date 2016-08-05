@@ -1,28 +1,26 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
+import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.Random;
-
-// TODO put back in when Minefactory Reloaded is available for MC 1.9.x
-//import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-//import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
-//import net.minecraftforge.fml.common.Optional;
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
 /*
@@ -41,7 +39,19 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 		return new TileEntityReactorRedstonePort();
 	}
 
-    /**
+	@Override
+	public void registerRecipes() {
+
+		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
+			GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
+				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
+
+		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
+			GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
+				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
+	}
+
+	/**
      * A randomly called display update to be able to add particles or other items for display
      */
     @Override

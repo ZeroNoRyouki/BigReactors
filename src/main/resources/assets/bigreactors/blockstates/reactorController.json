@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "plate":"bigreactors:blocks/reactor/standard/plate",
-            "machineA":"bigreactors:blocks/reactor/standard/controller.off.png",
+            "plate":"bigreactors:blocks/reactor/legacy/plate",
+            "machineA":"bigreactors:blocks/reactor/legacy/controller.off.png",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -17,26 +17,25 @@
     },
     "variants":{  
         "tier":{  
-            "standard":{  
+            "legacy":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/standard/plate",
-                    "machineA":"bigreactors:blocks/reactor/standard/controller.off",
-                    "machineB":"bigreactors:blocks/reactor/standard/controller.active",
-					"machineC":"bigreactors:blocks/reactor/standard/controller.idle"
+                    "plate":"bigreactors:blocks/reactor/legacy/plate",
+                    "machineA":"bigreactors:blocks/reactor/legacy/controller.off",
+                    "machineB":"bigreactors:blocks/reactor/legacy/controller.active",
+					"machineC":"bigreactors:blocks/reactor/legacy/controller.idle"
                 }
             },
-            "advanced":{  
+            "basic":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/advanced/plate",
-                    "machineA":"bigreactors:blocks/reactor/advanced/controller.off",
-                    "machineB":"bigreactors:blocks/reactor/advanced/controller.active",
-					"machineC":"bigreactors:blocks/reactor/advanced/controller.idle"
+                    "plate":"bigreactors:blocks/reactor/basic/plate",
+                    "machineA":"bigreactors:blocks/reactor/basic/controller.off",
+                    "machineB":"bigreactors:blocks/reactor/basic/controller.active",
+					"machineC":"bigreactors:blocks/reactor/basic/controller.idle"
                 }
             }
         },
         "afstate":{  
             "disassembled":{  
-
             },
             "assemblednorth":{  
                 "textures":{  

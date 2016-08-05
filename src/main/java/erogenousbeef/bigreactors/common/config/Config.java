@@ -56,6 +56,10 @@ public class Config extends ConfigHandler {
     public int yelloriteOrePerCluster;
     public int yelloriteOreMaxY;
 
+    // not persisted
+    public String recipeYelloriumIngotName;
+    public String recipeBlutoniumIngotName;
+
     public Config() {
         super(BigReactors.MODID + ".cfg", BigReactors.MODID);
     }
@@ -126,6 +130,11 @@ public class Config extends ConfigHandler {
         this.yelloriteOreMaxClustersPerChunk = this.getValue("yelloriteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of clusters per chunk");
         this.yelloriteOrePerCluster = this.getValue("yelloriteOrePerCluster", this.WORLDGEN, 5, "Maximum number of blocks to generate in each cluster");
         this.yelloriteOreMaxY = this.getValue("yelloriteOreMaxY", this.WORLDGEN, 32, "Maximum height (Y coordinate) in the world to generate yellorite ore");
+
+        // not persisted...
+
+        this.recipeYelloriumIngotName = this.registerYelloriumAsUranium ? "ingotUranium" : "ingotYellorium";
+        this.recipeBlutoniumIngotName = this.registerYelloriumAsUranium ? "ingotPlutonium" : "ingotBlutonium";
     }
 
     @Override

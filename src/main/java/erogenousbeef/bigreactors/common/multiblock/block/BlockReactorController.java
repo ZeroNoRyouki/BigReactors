@@ -1,17 +1,23 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorController;
+import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockReactorController extends BlockMultiblockDevice {
 
@@ -24,6 +30,20 @@ public class BlockReactorController extends BlockMultiblockDevice {
     public TileEntity createTileEntity(World world, IBlockState state) {
 
         return new TileEntityReactorController();
+    }
+
+    @Override
+    public void registerRecipes() {
+
+        if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
+            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "GDG", "CRC",
+                'D', Items.DIAMOND, 'G', BigReactors.CONFIG.recipeYelloriumIngotName,
+                'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE));
+
+        if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
+            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "GDG", "CRC",
+                'D', Items.DIAMOND, 'G', BigReactors.CONFIG.recipeYelloriumIngotName,
+                'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE));
     }
 
     @Override

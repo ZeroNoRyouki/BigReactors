@@ -1,6 +1,10 @@
 package erogenousbeef.bigreactors.common.block;
 
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,13 +33,7 @@ public class BlockBROre extends BlockBR {
 
 	@Override
 	public void onPostRegister() {
-
 		GameRegistry.register(new ItemBlockOre(this).setRegistryName(this.getRegistryName()));
-
-		ItemStack stack = new ItemStack(this, 1);
-
-		OreDictionary.registerOre("oreYellorite", stack);
-		OreDictionary.registerOre("oreYellorium", stack); // For convenience of mods which fiddle with recipes
 	}
 
 	@Override
@@ -48,6 +46,40 @@ public class BlockBROre extends BlockBR {
 		for (OreType ore : OreType.values())
 			ModelLoader.setCustomModelResourceLocation(item, ore.toMeta(),
 					new ModelResourceLocation(location, String.format("ore=%s", ore.getName())));
+	}
+
+	@Override
+	public void registerOreDictionaryEntries() {
+
+		ItemStack stack = this.createItemStack();
+
+		OreDictionary.registerOre("oreYellorite", stack);
+		OreDictionary.registerOre("oreYellorium", stack); // For convenience of mods which fiddle with recipes
+	}
+
+	@Override
+	public void registerRecipes() {
+
+		// - Yellorium
+
+		ItemStack product;
+
+		if (BigReactors.CONFIG.registerYelloriteSmeltToUranium) {
+
+			product = OreDictionaryHelper.getOre("ingotUranium");
+
+			if (null == product) {
+
+				BRLog.warning("Config value registerYelloriteSmeltToUranium is set to True, but there are no ores registered as ingotUranium in the ore dictionary! Falling back to using standard yellorium only.");
+				product = OreDictionaryHelper.getOre("ingotYellorium");
+			}
+
+		} else {
+
+			product = OreDictionaryHelper.getOre("ingotYellorium");
+		}
+
+		GameRegistry.addSmelting(this, product, 0.5f);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.block;
 
+import it.zerono.mods.zerocore.lib.IGameObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -10,7 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockBR extends Block {
+public abstract class BlockBR extends Block implements IGameObject {
 
     public BlockBR(String blockName, Material material) {
 
@@ -22,17 +23,26 @@ public abstract class BlockBR extends Block {
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        return 0;
-    }
-
     public void onPostRegister() {
-
         GameRegistry.register(new ItemBlock(this).setRegistryName(this.getRegistryName()));
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void onPostClientRegister() {
+    }
+
+    @Override
+    public void registerOreDictionaryEntries() {
+    }
+
+    @Override
+    public void registerRecipes() {
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
     }
 
     public ItemStack createItemStack() {

@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "plate":"bigreactors:blocks/reactor/standard/plate",
-            "machine":"bigreactors:blocks/reactor/standard/computerPort.png",
+            "plate":"bigreactors:blocks/reactor/legacy/plate",
+            "machine":"bigreactors:blocks/reactor/legacy/computerPort.png",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -16,16 +16,16 @@
     },
     "variants":{  
         "tier":{  
-            "standard":{  
+            "legacy":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/standard/plate",
-                    "machine":"bigreactors:blocks/reactor/standard/computerPort"
+                    "plate":"bigreactors:blocks/reactor/legacy/plate",
+                    "machine":"bigreactors:blocks/reactor/legacy/computerPort"
                 }
             },
-            "advanced":{  
+            "basic":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/advanced/plate",
-					"machine":"bigreactors:blocks/reactor/advanced/computerPort"
+                    "plate":"bigreactors:blocks/reactor/basic/plate",
+					"machine":"bigreactors:blocks/reactor/basic/computerPort"
                 }
             }
         },

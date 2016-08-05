@@ -65,6 +65,61 @@ tile.fluid.blutonium.still.name=Fluid Blutonium
 
 # 1.9.4 / 1.10.2 stuff from there one ...
 
+# Items - ingots
+item.bigreactors:ingotMetals.yellorium.name=Yellorium Ingot
+item.bigreactors:ingotMetals.cyanite.name=Cyanite Ingot
+item.bigreactors:ingotMetals.blutonium.name=Blutonium Ingot
+item.bigreactors:ingotMetals.graphite.name=Graphite Bar
+item.bigreactors:ingotMetals.ludicrite.name=Ludicrite Ingot
+
+# Items - dusts
+item.bigreactors:dustMetals.yellorium.name=Yellorium Dust
+item.bigreactors:dustMetals.cyanite.name=Cyanite Dust
+item.bigreactors:dustMetals.blutonium.name=Blutonium Dust
+item.bigreactors:dustMetals.graphite.name=Graphite Dust
+item.bigreactors:dustMetals.ludicrite.name=Ludicrite Dust
+
+# Items - reactor casing cores
+item.bigreactors:reactorCasingCores.legacy.name=Reactor Casing Core (Legacy)
+item.bigreactors:reactorCasingCores.basic.name=Reactor Casing Core (Basic)
+
+# Blocks - metal blocks
+tile.bigreactors:blockMetals.yellorium.name=Yellorium Block
+tile.bigreactors:blockMetals.cyanite.name=Cyanite Block
+tile.bigreactors:blockMetals.blutonium.name=Blutonium Block
+tile.bigreactors:blockMetals.graphite.name=Graphite Block
+tile.bigreactors:blockMetals.ludicrite.name=Ludicrite Block
+
+# Blocks - reactor parts (legacy)
+tile.bigreactors:reactorGlass.legacy.name=Reactor Glass (Legacy)
+
+tile.bigreactors:reactorGlass.legacy.name=Reactor Glass (Legacy)
+tile.bigreactors:reactorCasing.legacy.name=Reactor Casing (Legacy)
+tile.bigreactors:reactorController.legacy.name=Reactor Controller (Legacy)
+tile.bigreactors:reactorPowerTapRF.legacy.name=Reactor Redstone Flux Power Tap (Legacy)
+tile.bigreactors:reactorPowerTapTesla.legacy.name=Reactor Tesla Power Tap (Legacy)
+tile.bigreactors:reactorAccessPort.legacy.name=Reactor Access Port (Legacy)
+tile.bigreactors:reactorCoolantPort.legacy.name=Reactor Coolant Port (Legacy)
+tile.bigreactors:reactorControlRod.legacy.name=Reactor Control Rod (Legacy)
+tile.bigreactors:reactorComputerPort.legacy.name=Reactor Computer Port (Legacy)
+tile.bigreactors:reactorRedstonePort.legacy.name=Reactor Redstone Port (Legacy)
+tile.bigreactors:reactorFuelRod.legacy.name=Reactor Fuel Rod (Legacy)
+tile.bigreactors:reactorRedNetPort.legacy.name=Reactor RedNet Port (Legacy)
+
+# Blocks - reactor parts (basic)
+tile.bigreactors:reactorGlass.basic.name=Reactor Glass (Basic)
+tile.bigreactors:reactorCasing.basic.name=Reactor Casing (Basic)
+tile.bigreactors:reactorController.basic.name=Reactor Controller (Basic)
+tile.bigreactors:reactorPowerTapRF.basic.name=Reactor Redstone Flux Power Tap (Basic)
+tile.bigreactors:reactorPowerTapTesla.basic.name=Reactor Tesla Power Tap (Basic)
+tile.bigreactors:reactorAccessPort.basic.name=Reactor Access Port (Basic)
+tile.bigreactors:reactorCoolantPort.basic.name=Reactor Coolant Port (Basic)
+tile.bigreactors:reactorControlRod.basic.name=Reactor Control Rod (Basic)
+tile.bigreactors:reactorComputerPort.basic.name=Reactor Computer Port (Basic)
+tile.bigreactors:reactorRedstonePort.basic.name=Reactor Redstone Port (Basic)
+tile.bigreactors:reactorFuelRod.basic.name=Reactor Fuel Rod (Basic)
+tile.bigreactors:reactorRedNetPort.basic.name=Reactor RedNet Port (Basic)
+
 # Error messages
 multiblock.validation.block_not_connected=Block is not connected to a reactor. This could be due to lag, or a bug. If the problem persists, try breaking and re-placing the block
 

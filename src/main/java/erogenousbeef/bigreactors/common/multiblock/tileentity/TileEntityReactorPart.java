@@ -66,6 +66,6 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	}
 
 	public PartTier getMachineTier() {
-		return this.isConnected() ? this.getReactorController().getMachineTier() : PartTier.Standard;
+		return this.isConnected() ? this.getReactorController().getMachineTier() : PartTier.Legacy;
 	}
 }

@@ -2,11 +2,11 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-			"plate":"bigreactors:blocks/reactor/standard/casing.plate",
-			"face":"bigreactors:blocks/reactor/standard/casing.face",
-			"eastwest":"bigreactors:blocks/reactor/standard/casing.eastwest",
-			"updown":"bigreactors:blocks/reactor/standard/casing.updown",
-			"corner":"bigreactors:blocks/reactor/standard/casing.corner",
+			"plate":"bigreactors:blocks/reactor/legacy/casing.plate",
+			"face":"bigreactors:blocks/reactor/legacy/casing.face",
+			"eastwest":"bigreactors:blocks/reactor/legacy/casing.eastwest",
+			"updown":"bigreactors:blocks/reactor/legacy/casing.updown",
+			"corner":"bigreactors:blocks/reactor/legacy/casing.corner",
             "side":"#plate",
             "particle":"#side",
             "down":"#side",
@@ -20,22 +20,22 @@
     },
     "variants":{  
 		"tier":{  
-            "standard":{
+            "legacy":{
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/standard/casing.plate",
-					"face":"bigreactors:blocks/reactor/standard/casing.face",
-					"eastwest":"bigreactors:blocks/reactor/standard/casing.eastwest",
-					"updown":"bigreactors:blocks/reactor/standard/casing.updown",
-					"corner":"bigreactors:blocks/reactor/standard/casing.corner"
+                    "plate":"bigreactors:blocks/reactor/legacy/casing.plate",
+					"face":"bigreactors:blocks/reactor/legacy/casing.face",
+					"eastwest":"bigreactors:blocks/reactor/legacy/casing.eastwest",
+					"updown":"bigreactors:blocks/reactor/legacy/casing.updown",
+					"corner":"bigreactors:blocks/reactor/legacy/casing.corner"
                 }
             },
-            "advanced":{  
+            "basic":{  
                 "textures":{  
-                    "plate":"bigreactors:blocks/reactor/advanced/casing.plate",
-					"face":"bigreactors:blocks/reactor/advanced/casing.face",
-					"eastwest":"bigreactors:blocks/reactor/advanced/casing.eastwest",
-					"updown":"bigreactors:blocks/reactor/advanced/casing.updown",
-					"corner":"bigreactors:blocks/reactor/advanced/casing.corner"
+                    "plate":"bigreactors:blocks/reactor/basic/casing.plate",
+					"face":"bigreactors:blocks/reactor/basic/casing.face",
+					"eastwest":"bigreactors:blocks/reactor/basic/casing.eastwest",
+					"updown":"bigreactors:blocks/reactor/basic/casing.updown",
+					"corner":"bigreactors:blocks/reactor/basic/casing.corner"
                 }
             }
         },
