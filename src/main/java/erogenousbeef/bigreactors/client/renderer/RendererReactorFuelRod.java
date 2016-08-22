@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,12 +34,9 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
         final EnumFacing.Axis axis = assembly.getAxis();
         BlockFacings facesToDraw;
 
-        // TODO FIX! get real fluids from reactor
-        final Fluid fuelFluid = BrFluids.fluidYellorium;
-        final Fluid wasteFluid = BrFluids.fluidCyanite;
-
-        final int fuelColor = fuelFluid.getColor();
-        final int wasteColor = wasteFluid.getColor();
+        final Fluid fluid = BrFluids.fluidFuelColumn;
+        final int fuelColor = assembly.getFuelColor();
+        final int wasteColor = assembly.getWasteColor();
 
         final float rodCapacity = MultiblockReactor.FuelCapacityPerFuelRod;
         float wasteHight, fuelHight;
@@ -64,14 +62,14 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
 
                 final float offset = MathHelper.sin((world.getTotalWorldTime() + partialTicks) * 0.1f) * 0.01f;
 
-                brightness = world.getCombinedLight(rodPosition, fuelFluid.getLuminosity());
+                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
 
                 // - waste
                 facesToDraw = facesToDraw.set(EnumFacing.DOWN, 0 == rodIndex);
                 facesToDraw = facesToDraw.set(EnumFacing.UP, false);
 
                 wasteHight += offset;
-                ModRenderHelper.renderFluidCube(wasteFluid, facesToDraw, x, y, z,
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
                         0.005, 0.0, 0.005,
                         0.995, wasteHight, 0.995,
                         wasteColor, brightness);
@@ -83,7 +81,7 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                         (rodData.getFuelAmount() + (rodCapacity * rodIndex) >= assembly.getFuelQuota()));
 
                 fuelHight -= offset;
-                ModRenderHelper.renderFluidCube(fuelFluid, facesToDraw, x, y + wasteHight, z,
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
                         0.005, 0.0, 0.005,
                         0.995, fuelHight, 0.995,
                         fuelColor, brightness);
@@ -98,8 +96,8 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                                 (rodData.getWasteAmount() + (rodCapacity * rodIndex) >= assembly.getWasteQuota())
                 );
 
-                brightness = world.getCombinedLight(rodPosition, wasteFluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(wasteFluid, facesToDraw, x, y, z,
+                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
                         0.005, 0.0, 0.005,
                         0.995, wasteHight, 0.995,
                         wasteColor, brightness);
@@ -116,8 +114,8 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
 
                 );
 
-                brightness = world.getCombinedLight(rodPosition, fuelFluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(fuelFluid, facesToDraw, x, y + wasteHight, z,
+                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
                         0.005, 0.0, 0.005,
                         0.995, fuelHight, 0.995,
                         fuelColor, brightness);
@@ -161,14 +159,14 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
 
                 final float offset = MathHelper.sin((world.getTotalWorldTime() + partialTicks) * 0.1f) * 0.01f;
 
-                brightness = world.getCombinedLight(rodPosition, fuelFluid.getLuminosity());
+                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
 
                 // - waste
                 facesToDraw = BlockFacings.from(true, false, axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.Z,
                         axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
 
                 wasteHight += offset;
-                ModRenderHelper.renderFluidCube(wasteFluid, facesToDraw, x, y, z,
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
                         x1, 0.005, z1,
                         x2, wasteHight, z2,
                         wasteColor, brightness);
@@ -178,7 +176,7 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                 facesToDraw = facesToDraw.set(EnumFacing.UP, true);
 
                 fuelHight -= offset;
-                ModRenderHelper.renderFluidCube(fuelFluid, facesToDraw, x, y + wasteHight, z,
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
                         x1, 0.000, z1,
                         x2, fuelHight - 0.005, z2,
                         fuelColor, brightness);
@@ -190,8 +188,8 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                 facesToDraw = BlockFacings.from(true, true, axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.Z,
                         axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
 
-                brightness = world.getCombinedLight(rodPosition, wasteFluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(wasteFluid, facesToDraw, x, y, z,
+                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
                         x1, 0.005, z1,
                         x2, wasteHight - 0.005, z2,
                         wasteColor, brightness);
@@ -203,8 +201,8 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                 facesToDraw = BlockFacings.from(true, true, axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.Z,
                         axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
 
-                brightness = world.getCombinedLight(rodPosition, fuelFluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(fuelFluid, facesToDraw, x, y + wasteHight, z,
+                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
+                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
                         x1, 0.005, z1,
                         x2, fuelHight - 0.005, z2,
                         fuelColor, brightness);
