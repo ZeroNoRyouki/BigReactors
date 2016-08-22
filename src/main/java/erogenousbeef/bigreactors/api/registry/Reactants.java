@@ -18,9 +18,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-//import cofh.core.util.oredict.OreDictionaryArbiter;
-//import cofh.lib.util.helpers.ItemHelper;
-
 public class Reactants {
 	
 	public static final int standardSolidReactantAmount = 1000; // 1 item = 1000 mB, standard
@@ -64,7 +61,7 @@ public class Reactants {
 	 * @param color The color of the reactant, format 0xRRGGBB.
 	 */
 	public static void registerReactant(String name, int type, int color) {
-		if(type < 0 || type >= ReactantData.s_Types.length) {
+		if(type < 0 || type >= ReactantData.TYPES.length) {
 			throw new IllegalArgumentException("Unsupported type; value may only be 0 or 1");
 		}
 		
@@ -72,7 +69,7 @@ public class Reactants {
 			BRLog.warning("Overwriting data for reactant %s - someone may be altering BR game data or have duplicate reactant names!", name);
 		}
 		
-		ReactantData data = new ReactantData(name, ReactantData.s_Types[type], color);
+		ReactantData data = new ReactantData(name, ReactantData.TYPES[type], color);
 		_reactants.put(name, data);
 	}
 	
