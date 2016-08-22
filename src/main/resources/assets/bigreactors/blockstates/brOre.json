@@ -12,6 +12,16 @@
                 "textures":{
 					"all":"bigreactors:blocks/oreYellorite"
                 }
+            },
+			 "anglesite":{  
+                "textures":{
+					"all":"bigreactors:blocks/oreAnglesite"
+                }
+            },
+			 "benitoite":{  
+                "textures":{
+					"all":"bigreactors:blocks/oreBenitoite"
+                }
             }
         },
         "inventory":{  

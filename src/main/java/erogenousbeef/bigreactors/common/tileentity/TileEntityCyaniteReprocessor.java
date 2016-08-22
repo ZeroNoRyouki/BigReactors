@@ -21,8 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 
-//import cofh.core.util.oredict.OreDictionaryArbiter;
-
 public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFluid {
 
 	public static final int SLOT_INLET = 0;

@@ -1,8 +1,10 @@
 package erogenousbeef.bigreactors.common.config;
 
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.ConfigCategory;
 
@@ -55,6 +57,14 @@ public class Config extends ConfigHandler {
     public int yelloriteOreMaxClustersPerChunk;
     public int yelloriteOrePerCluster;
     public int yelloriteOreMaxY;
+
+    public boolean netherOreEnableWorldGen;
+    public int netherOreMaxClustersPerChunk;
+    public int netherOrePerCluster;
+
+    public boolean endOreEnableWorldGen;
+    public int endOreMaxClustersPerChunk;
+    public int endOrePerCluster;
 
     // not persisted
     public String recipeYelloriumIngotName;
@@ -126,10 +136,16 @@ public class Config extends ConfigHandler {
         this.enableWorldRegeneration = this.getValue("enableWorldRegeneration", this.WORLDGEN, false, "Run BR World Generation in chunks that have already been generated, but have not been modified by Big Reactors before. This is largely useful for worlds that existed before BigReactors was released");
         this.userWorldGenVersion = this.getValue("userWorldGenVersion", this.WORLDGEN, 0, "User-set world generation version. Increase this by 1 if you want Big Reactors to re-run world generation in your world");
         this.dimensionWhitelist = this.getValue("dimensionWhitelist", this.WORLDGEN, new int[] {0}, "World gen will be performed only in the dimensions listed here");
-        this.yelloriteOreEnableWorldGen = this.getValue("yelloriteOreEnableWorldGen", this.WORLDGEN, true, "");
-        this.yelloriteOreMaxClustersPerChunk = this.getValue("yelloriteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of clusters per chunk");
-        this.yelloriteOrePerCluster = this.getValue("yelloriteOrePerCluster", this.WORLDGEN, 5, "Maximum number of blocks to generate in each cluster");
+        this.yelloriteOreEnableWorldGen = this.getValue("yelloriteOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of yellorite ore");
+        this.yelloriteOreMaxClustersPerChunk = this.getValue("yelloriteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of yellorite clusters per chunk");
+        this.yelloriteOrePerCluster = this.getValue("yelloriteOrePerCluster", this.WORLDGEN, 5, "Maximum number of yellorite ore to generate in each cluster");
         this.yelloriteOreMaxY = this.getValue("yelloriteOreMaxY", this.WORLDGEN, 32, "Maximum height (Y coordinate) in the world to generate yellorite ore");
+        this.netherOreEnableWorldGen = this.getValue("netherOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of NETHER ore");
+        this.netherOreMaxClustersPerChunk = this.getValue("netherOreMaxClustersPerChunk", this.WORLDGEN, 1, "Maximum number of NETHER clusters per chunk");
+        this.netherOrePerCluster = this.getValue("netherOrePerCluster", this.WORLDGEN, 4, "Maximum number of NETHER ore to generate in each cluster");
+        this.endOreEnableWorldGen = this.getValue("endOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of END ore");
+        this.endOreMaxClustersPerChunk = this.getValue("endOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of END clusters per chunk");
+        this.endOrePerCluster = this.getValue("endOrePerCluster", this.WORLDGEN, 5, "Maximum number of END ore to generate in each cluster");
 
         // not persisted...
 
@@ -141,14 +157,35 @@ public class Config extends ConfigHandler {
     public void onConfigChanged() {
 
         // update world-gen configs
-        if (this.enableWorldGen && this.yelloriteOreEnableWorldGen) {
+        if (this.enableWorldGen) {
 
-            BigReactors.WORLDGEN_ORES.clearOres();
-            // - add yellorite ore
-            BigReactors.WORLDGEN_ORES.addOre(BrBlocks.brOre, Blocks.AIR, 11, this.yelloriteOreMaxY, this.yelloriteOrePerCluster, this.yelloriteOreMaxClustersPerChunk);
+            if (this.yelloriteOreEnableWorldGen) {
 
-            BigReactors.WHITELIST_WORLDGEN_ORES.clearWhiteList();
-            BigReactors.WHITELIST_WORLDGEN_ORES.whiteListDimensions(this.dimensionWhitelist);
+                BigReactors.WORLDGEN_ORES.clearOres();
+                BigReactors.WORLDGEN_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Yellorite),
+                        Blocks.STONE.getDefaultState(), 11, this.yelloriteOreMaxY,
+                        this.yelloriteOrePerCluster, this.yelloriteOreMaxClustersPerChunk);
+
+                BigReactors.WHITELIST_WORLDGEN_ORES.clearWhiteList();
+                BigReactors.WHITELIST_WORLDGEN_ORES.whiteListDimensions(this.dimensionWhitelist);
+            }
+
+            if (this.netherOreEnableWorldGen) {
+
+                final IBlockState ore = BrBlocks.brOre.getStateFromType(OreType.Anglesite);
+                final IBlockState netherrack = Blocks.NETHERRACK.getDefaultState();
+
+                BigReactors.NETHER_ORES.clearOres();
+                BigReactors.NETHER_ORES.addOre(ore, netherrack , 2, 21, this.netherOrePerCluster, this.netherOreMaxClustersPerChunk);
+                BigReactors.NETHER_ORES.addOre(ore, netherrack, 104, 123, this.netherOrePerCluster, this.netherOreMaxClustersPerChunk);
+            }
+
+            if (this.endOreEnableWorldGen) {
+
+                BigReactors.END_ORES.clearOres();
+                BigReactors.END_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Benitoite),
+                        Blocks.END_STONE.getDefaultState(), 10, 90, this.endOrePerCluster, this.endOreMaxClustersPerChunk);
+            }
         }
     }
 

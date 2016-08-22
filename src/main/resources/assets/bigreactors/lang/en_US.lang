@@ -1,54 +1,51 @@
 # Big Reactors Language File - English
 # @author Erogenous Beef
 
-itemGroup.bigreactors=Big Reactors Reborn
+itemGroup.bigreactors=Big Reactors
 
 # Blocks
-tile.bigreactors:brOre.yellorite.name=Yellorite Ore
-tile.bigreactors:brMetalBlock.yellorium.name=Yellorium Block
-tile.bigreactors:brMetalBlock.cyanite.name=Cyanite Block
-tile.bigreactors:brMetalBlock.graphite.name=Graphite Block
-tile.bigreactors:brMetalBlock.blutonium.name=Blutonium Block
-tile.bigreactors:brMetalBlock.ludicrite.name=Ludicrite Block
-tile.yelloriumFuelRod.name=Yellorium Fuel Rod
-tile.bigreactors:reactorGlass.name=Reactor Glass
-tile.brMultiblockGlass.1.name=Turbine Glass
-tile.bigreactors:reactorRedstonePort.name=Reactor Redstone Port
-tile.bigreactors:reactorCasing.name=Reactor Casing
-tile.bigreactors:reactorController.name=Reactor Controller
-tile.bigreactors:reactorControlRod.name=Reactor Control Rod
-tile.bigreactors:reactorPowerTap.name=Reactor Power Tap
-tile.bigreactors:reactorAccessPort.name=Reactor Access Port
-tile.bigreactors:reactorRedNetPort.name=Reactor RedNet Port
-tile.bigreactors:reactorComputerPort.name=Reactor Computer Port
-tile.bigreactors:reactorCoolantPort.name=Reactor Coolant Port
+xtile.bigreactors:brMetalBlock.yellorium.name=Yellorium Block
+xtile.bigreactors:brMetalBlock.cyanite.name=Cyanite Block
+xtile.bigreactors:brMetalBlock.graphite.name=Graphite Block
+xtile.bigreactors:brMetalBlock.blutonium.name=Blutonium Block
+xtile.bigreactors:brMetalBlock.ludicrite.name=Ludicrite Block
+xtile.yelloriumFuelRod.name=Yellorium Fuel Rod
+xtile.bigreactors:reactorGlass.name=Reactor Glass
+xtile.bigreactors:reactorRedstonePort.name=Reactor Redstone Port
+xtile.bigreactors:reactorCasing.name=Reactor Casing
+xtile.bigreactors:reactorController.name=Reactor Controller
+xtile.bigreactors:reactorControlRod.name=Reactor Control Rod
+xtile.bigreactors:reactorPowerTap.name=Reactor Power Tap
+xtile.bigreactors:reactorAccessPort.name=Reactor Access Port
+xtile.bigreactors:reactorRedNetPort.name=Reactor RedNet Port
+xtile.bigreactors:reactorComputerPort.name=Reactor Computer Port
+xtile.bigreactors:reactorCoolantPort.name=Reactor Coolant Port
 tile.blockRadiothermalGen.0=Radiothermal Generator
 tile.blockBRDevice.0.name=Cyanite Reprocesssor
-tile.bigreactors:turbineHousing.name=Turbine Housing
-tile.blockTurbinePart.1.name=Turbine Controller
-tile.blockTurbinePart.2.name=Turbine Power Port
-tile.blockTurbinePart.3.name=Turbine Fluid Port
-tile.blockTurbinePart.4.name=Turbine Rotor Bearing
-tile.blockTurbinePart.5.name=Turbine Computer Port
-tile.blockTurbineRotorPart.0.name=Turbine Rotor Shaft
-tile.blockTurbineRotorPart.1.name=Turbine Rotor Blade
-tile.blockMBCreativePart.0.name=Reactor Creative Coolant Port
-tile.blockMBCreativePart.1.name=Turbine Creative Steam Generator
+xtile.blockTurbinePart.1.name=Turbine Controller
+xtile.blockTurbinePart.2.name=Turbine Power Port
+xtile.blockTurbinePart.3.name=Turbine Fluid Port
+xtile.blockTurbinePart.4.name=Turbine Rotor Bearing
+xtile.blockTurbinePart.5.name=Turbine Computer Port
+xtile.blockTurbineRotorPart.0.name=Turbine Rotor Shaft
+xtile.blockTurbineRotorPart.1.name=Turbine Rotor Blade
+xtile.blockMBCreativePart.0.name=Reactor Creative Coolant Port
+xtile.blockMBCreativePart.1.name=Turbine Creative Steam Generator
 
 # Items
-item.ingotYellorium.name=Yellorium Ingot
-item.ingotCyanite.name=Cyanite Ingot
-item.ingotGraphite.name=Graphite Bar
-item.ingotBlutonium.name=Blutonium Ingot
-item.ingotLudicrite.name=Ludicrite Ingot
-item.dustYellorium.name=Yellorium Dust
-item.dustCyanite.name=Cyanite Dust
-item.dustBlutonium.name=Blutonium Dust
-item.dustGraphite.name=Graphite Dust
-item.dustLudicrite.name=Ludicrite Dust
-item.bucket.cyanite.name=Fluid Cyanite Bucket
-item.bucket.yellorium.name=Fluid Yellorium Bucket
-item.beefDebugTool.name=BeefTronic™ Diagnostics Tool
+xitem.ingotYellorium.name=Yellorium Ingot
+xitem.ingotCyanite.name=Cyanite Ingot
+xitem.ingotGraphite.name=Graphite Bar
+xitem.ingotBlutonium.name=Blutonium Ingot
+xitem.ingotLudicrite.name=Ludicrite Ingot
+xitem.dustYellorium.name=Yellorium Dust
+xitem.dustCyanite.name=Cyanite Dust
+xitem.dustBlutonium.name=Blutonium Dust
+xitem.dustGraphite.name=Graphite Dust
+xitem.dustLudicrite.name=Ludicrite Dust
+xitem.bucket.cyanite.name=Fluid Cyanite Bucket
+xitem.bucket.yellorium.name=Fluid Yellorium Bucket
+xitem.beefDebugTool.name=BeefTronic™ Diagnostics Tool
 
 # Fluids
 fluid.tile.water=Water
@@ -71,6 +68,7 @@ item.bigreactors:ingotMetals.cyanite.name=Cyanite Ingot
 item.bigreactors:ingotMetals.blutonium.name=Blutonium Ingot
 item.bigreactors:ingotMetals.graphite.name=Graphite Bar
 item.bigreactors:ingotMetals.ludicrite.name=Ludicrite Ingot
+item.bigreactors:ingotMetals.steel.name=Steel Ingot
 
 # Items - dusts
 item.bigreactors:dustMetals.yellorium.name=Yellorium Dust
@@ -78,21 +76,32 @@ item.bigreactors:dustMetals.cyanite.name=Cyanite Dust
 item.bigreactors:dustMetals.blutonium.name=Blutonium Dust
 item.bigreactors:dustMetals.graphite.name=Graphite Dust
 item.bigreactors:dustMetals.ludicrite.name=Ludicrite Dust
+item.bigreactors:dustMetals.steel.name=Steel Dust
 
 # Items - reactor casing cores
 item.bigreactors:reactorCasingCores.legacy.name=Reactor Casing Core (Legacy)
 item.bigreactors:reactorCasingCores.basic.name=Reactor Casing Core (Basic)
+item.bigreactors:turbineHousingCores.legacy.name=Turbine Housing Core (Legacy)
+item.bigreactors:turbineHousingCores.basic.name=Turbine Housing Core (Basic)
 
-# Blocks - metal blocks
+# Items - minerals
+item.bigreactors:minerals.anglesite.name=Anglesite (PbSO4)
+item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
+
+# Blocks - metal blocks / ores
 tile.bigreactors:blockMetals.yellorium.name=Yellorium Block
 tile.bigreactors:blockMetals.cyanite.name=Cyanite Block
 tile.bigreactors:blockMetals.blutonium.name=Blutonium Block
 tile.bigreactors:blockMetals.graphite.name=Graphite Block
 tile.bigreactors:blockMetals.ludicrite.name=Ludicrite Block
+tile.bigreactors:blockMetals.steel.name=Steel Block
+
+# Blocks - ores
+tile.bigreactors:brOre.yellorite.name=Yellorite Ore
+tile.bigreactors:brOre.anglesite.name=Anglesite Ore
+tile.bigreactors:brOre.benitoite.name=Benitoite Ore
 
 # Blocks - reactor parts (legacy)
-tile.bigreactors:reactorGlass.legacy.name=Reactor Glass (Legacy)
-
 tile.bigreactors:reactorGlass.legacy.name=Reactor Glass (Legacy)
 tile.bigreactors:reactorCasing.legacy.name=Reactor Casing (Legacy)
 tile.bigreactors:reactorController.legacy.name=Reactor Controller (Legacy)
@@ -105,6 +114,7 @@ tile.bigreactors:reactorComputerPort.legacy.name=Reactor Computer Port (Legacy)
 tile.bigreactors:reactorRedstonePort.legacy.name=Reactor Redstone Port (Legacy)
 tile.bigreactors:reactorFuelRod.legacy.name=Reactor Fuel Rod (Legacy)
 tile.bigreactors:reactorRedNetPort.legacy.name=Reactor RedNet Port (Legacy)
+tile.bigreactors:reactorCreativeCoolantPort.legacy.name=Reactor Creative Coolant Port (Legacy)
 
 # Blocks - reactor parts (basic)
 tile.bigreactors:reactorGlass.basic.name=Reactor Glass (Basic)
@@ -119,6 +129,31 @@ tile.bigreactors:reactorComputerPort.basic.name=Reactor Computer Port (Basic)
 tile.bigreactors:reactorRedstonePort.basic.name=Reactor Redstone Port (Basic)
 tile.bigreactors:reactorFuelRod.basic.name=Reactor Fuel Rod (Basic)
 tile.bigreactors:reactorRedNetPort.basic.name=Reactor RedNet Port (Basic)
+tile.bigreactors:reactorCreativeCoolantPort.basic.name=Reactor Creative Coolant Port (Basic)
+
+# Blocks - turbine parts (legacy)
+tile.bigreactors:turbineGlass.legacy.name=Turbine Glass (Legacy)
+tile.bigreactors:turbineHousing.legacy.name=Turbine Housing (Legacy)
+tile.bigreactors:turbineController.legacy.name=Turbine Controller (Legacy)
+tile.bigreactors:turbinePowerTapRF.legacy.name=Turbine Redstone Flux Power Tap (Legacy)
+tile.bigreactors:turbinePowerTapTesla.legacy.name=Turbine Tesla Power Tap (Legacy)
+tile.bigreactors:turbineComputerPort.legacy.name=Turbine Computer Port (Legacy)
+tile.bigreactors:turbineFluidPort.legacy.name=Turbine Fluid Port (Legacy)
+tile.bigreactors:turbineBearing.legacy.name=Turbine Rotor Bearing (Legacy)
+tile.bigreactors:turbineCreativeSteamGenerator.legacy.name=Turbine Creative Steam Generator (Legacy)
+tile.bigreactors:turbineHousingxx.legacy.name=Turbine Rotor (Legacy)
+
+# Blocks - turbine parts (basic)
+tile.bigreactors:turbineGlass.basic.name=Turbine Glass (Basic)
+tile.bigreactors:turbineHousing.basic.name=Turbine Housing (Basic)
+tile.bigreactors:turbineController.basic.name=Turbine Controller (Basic)
+tile.bigreactors:turbinePowerTapRF.basic.name=Turbine Redstone Flux Power Tap (Basic)
+tile.bigreactors:turbinePowerTapTesla.basic.name=Turbine Tesla Power Tap (Basic)
+tile.bigreactors:turbineComputerPort.basic.name=Turbine Computer Port (Basic)
+tile.bigreactors:turbineFluidPort.basic.name=Turbine Fluid Port (Basic)
+tile.bigreactors:turbineBearing.basic.name=Turbine Rotor Bearing (Basic)
+tile.bigreactors:turbineCreativeSteamGenerator.basic.name=Turbine Creative Steam Generator (Basic)
+tile.bigreactors:turbineHousingxx.basic.name=Turbine Rotor (Basic)
 
 # Error messages
 multiblock.validation.block_not_connected=Block is not connected to a reactor. This could be due to lag, or a bug. If the problem persists, try breaking and re-placing the block
@@ -149,6 +184,7 @@ multiblock.validation.reactor.mixed_power_systems=Redstone Flux and Testa power 
 multiblock.validation.reactor.mixed_tiers=All blocks in the reactor must be of the same tier
 
 # Multiblock validation errors (turbines)
+multiblock.validation.turbine.incomplete=The turbine is not yet complete
 multiblock.validation.turbine.invalid_block_for_interior=%1$d, %2$d, %3$d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed.
 multiblock.validation.turbine.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s is not valid for a turbine's exterior
 multiblock.validation.turbine.invalid_rotor_count=Turbines require exactly 1 rotor bearing

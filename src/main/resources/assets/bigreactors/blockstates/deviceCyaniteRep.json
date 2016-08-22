@@ -48,11 +48,8 @@
                 }
             }
         },
-        "inventory":{  
-            "transform":"forge:default-block",
-			"textures":{  
-				"north":"bigreactors:blocks/tile.blockBRDevice.cyaniteReprocessor"
-			}
+        "inventory":{ 
+			"transform":"forge:default-block"
         }
     }
 }

@@ -1,0 +1,21 @@
+{  
+    "forge_marker":1,
+    "defaults": {
+		"model": "builtin/generated",
+		"transform": "forge:default-item"
+	},
+    "variants":{  
+        "mineral":{  
+            "anglesite":{  
+                "textures":{
+					"layer0":"bigreactors:items/mineralAnglesite"
+                }
+            },
+			"benitoite":{  
+                "textures":{
+					"layer0":"bigreactors:items/mineralBenitoite"
+                }
+            }			
+        }
+    }
+}

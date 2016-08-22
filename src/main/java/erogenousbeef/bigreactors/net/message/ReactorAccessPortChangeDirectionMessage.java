@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.net.message;
 
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import io.netty.buffer.ByteBuf;
 import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
@@ -41,7 +42,7 @@ public class ReactorAccessPortChangeDirectionMessage extends ModTileEntityMessag
 		protected void processTileEntityMessage(ReactorAccessPortChangeDirectionMessage message, MessageContext ctx, TileEntity tileEntity) {
 
 			if (tileEntity instanceof TileEntityReactorAccessPort)
-				((TileEntityReactorAccessPort)tileEntity).setInlet(message._newSetting);
+				((TileEntityReactorAccessPort)tileEntity).setDirection(IInputOutputPort.Direction.from(message._newSetting), true);
 		}
 	}
 }

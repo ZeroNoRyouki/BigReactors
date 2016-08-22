@@ -1,23 +1,25 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
+import java.util.EnumSet;
 
-public class BlockTurbineRotorPart extends Block {
+public class BlockTurbineRotorPart extends BlockTieredPart implements ITurbineRotorPart {
 
 	public static final int METADATA_SHAFT = 0;
 	public static final int METADATA_BLADE = 1;
@@ -27,23 +29,11 @@ public class BlockTurbineRotorPart extends Block {
 															  "blade",
 															};
 
-	// TODO blockstate
-	/*
-	private IIcon[] _icons = new IIcon[_subBlocks.length];
-	private IIcon[] _subIcons = new IIcon[1];
-	*/
+	public BlockTurbineRotorPart(String blockName) {
 
-	public BlockTurbineRotorPart(Material material) {
-		super(material);
-
-		this.setSoundType(SoundType.METAL);
-		setLightLevel(0.9f);
-		setHardness(2.0f);
-		//setRegistryName("blockTurbineRotorPart");
-		setUnlocalizedName("blockTurbineRotorPart");
-		// TODO blockstate
-		//this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + "blockTurbineRotorPart");
-		setCreativeTab(BigReactors.TAB);
+		super(PartType.TurbineRotorBlade, blockName, Material.IRON); // TODO fix type
+		this.setLightLevel(0.9f);
+		this._neighbors = new IBlockState[EnumFacing.VALUES.length];
 	}
 
 	// TODO blockstate
@@ -75,20 +65,6 @@ public class BlockTurbineRotorPart extends Block {
 	}
 	*/
 
-	/**
-	 * Called throughout the code as a replacement for block instanceof BlockContainer
-	 * Moving this to the Block base class allows for mods that wish to extend vanilla
-	 * blocks, and also want to have a tile entity on that block, may.
-	 *
-	 * Return true from this function to specify this block has a tile entity.
-	 *
-	 * @param state State of the current block
-	 * @return True if block has a tile entity, false otherwise
-	 */
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTurbineRotorPart();
@@ -108,13 +84,7 @@ public class BlockTurbineRotorPart extends Block {
 	}
 	*/
 
-	@Override
-	public int damageDropped(IBlockState state) {
-		// TODO fix metadata
-		// return metadata;
-		return super.damageDropped(state);
-	}
-	
+	/*
 	public ItemStack getItemStack(String name) {
 		int metadata = -1;
 		for(int i = 0; i < _subBlocks.length; i++) {
@@ -129,28 +99,26 @@ public class BlockTurbineRotorPart extends Block {
 		}
 		
 		return new ItemStack(this, 1, metadata);
-	}
-	
+	}*/
+
+	/**
+	 * Override and add custom masses when you add non-standard turbine parts
+	 */
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		for(int i = 0; i < _subBlocks.length; i++) {
-			par3List.add(new ItemStack(this, 1, i));
-		}
+	public int getMass(IBlockState blockState) {
+		return 10;
 	}
-	
-	public int getRotorMass(Block block, int metadata) {
-		if(this == block) {
-			switch(metadata) {
-			// TODO: add masses when you add non-standard turbine parts
-			default:
-				return 10;
-			}
-		}
-		
-		return 0;
+
+	@Override
+	public boolean isShaft() {
+		return true;
 	}
-	
+
+	@Override
+	public boolean isBlade() {
+		return false;
+	}
+
 	public static boolean isRotorBlade(int metadata) {
 		return metadata == METADATA_BLADE;
 	}
@@ -160,7 +128,135 @@ public class BlockTurbineRotorPart extends Block {
 	}
 
 	@Override
-	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
-		return false;
+	protected void buildBlockState(BlockStateContainer.Builder builder) {
+
+		super.buildBlockState(builder);
+		builder.add(Properties.ROTORSHAFTSTATE);
+	}
+
+	@Override
+	protected IBlockState buildDefaultState(IBlockState state) {
+		return super.buildDefaultState(state).withProperty(Properties.ROTORSHAFTSTATE, RotorShaftState.Y_NOBLADES);
+	}
+
+	@Override
+	protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
+
+		EnumFacing.Axis rotorAxis = EnumFacing.Axis.Y;
+		final int neighborsSlotCount = this._neighbors.length;
+
+		for (int i = 0; i < neighborsSlotCount; ++i)
+			this._neighbors[i] = null;
+
+		for (EnumFacing facing: EnumFacing.VALUES) {
+
+			// select an axis based on the first rotor shaft found nearby
+
+			final IBlockState neighbor = world.getBlockState(position.offset(facing));
+
+			this._neighbors[facing.getIndex()] = neighbor;
+
+			if (this == neighbor.getBlock()) {
+
+				rotorAxis = facing.getAxis();
+				break;
+			}
+		}
+
+		// any blade around?
+
+		final EnumFacing.AxisDirection[] directions = EnumFacing.AxisDirection.values();
+		final EnumSet<EnumFacing.Axis> candidateBladeAxis = EnumSet.allOf(EnumFacing.Axis.class);
+		final EnumSet<EnumFacing.Axis> bladeAxis;
+
+		candidateBladeAxis.remove(rotorAxis);
+		bladeAxis = EnumSet.copyOf(candidateBladeAxis);
+
+		for (EnumFacing.Axis axis : candidateBladeAxis) {
+			for (EnumFacing.AxisDirection direction : directions) {
+
+				final EnumFacing facing = EnumFacing.getFacingFromAxis(direction, axis);
+				final int index = facing.getIndex();
+				IBlockState neighbor = this._neighbors[index];
+
+				if (null == neighbor)
+					neighbor = world.getBlockState(position.offset(facing));
+
+				if (BrBlocks.turbineRotorBlade != neighbor.getBlock()) {
+
+					bladeAxis.remove(axis);
+					break;
+				}
+			}
+		}
+
+		// final rotor state
+
+		RotorShaftState rotorState = this.getStateFromBladePosition(rotorAxis, bladeAxis);
+
+		return super.buildActualState(state, world, position, part).withProperty(Properties.ROTORSHAFTSTATE, rotorState);
+	}
+
+	private RotorShaftState getStateFromBladePosition(EnumFacing.Axis rotorAxis, EnumSet<EnumFacing.Axis> bladeAxis) {
+
+		final int count = bladeAxis.size();
+		final RotorShaftState[] states = ROTOR_STATE_MAP[rotorAxis.ordinal()];
+		RotorShaftState result = RotorShaftState.Y_NOBLADES;
+
+		switch (count) {
+
+			case 0:
+				result = states[3];
+				break;
+
+			case 1:
+				for (EnumFacing.Axis axis : bladeAxis)
+					if (bladeAxis.contains(axis)) {
+
+						result = states[axis.ordinal()];
+						break;
+					}
+				break;
+
+			case 2:
+				result = states[4];
+				break;
+		}
+
+		return result;
+	}
+
+	private IBlockState[] _neighbors;
+	private static final RotorShaftState[][] ROTOR_STATE_MAP;
+
+	static {
+
+		ROTOR_STATE_MAP = new RotorShaftState[3][5];
+
+		int xIndex = EnumFacing.Axis.X.ordinal();
+		int yIndex = EnumFacing.Axis.Y.ordinal();
+		int zIndex = EnumFacing.Axis.Z.ordinal();
+		RotorShaftState[] entry;
+
+		entry = ROTOR_STATE_MAP[xIndex];
+		entry[xIndex] = null;
+		entry[yIndex] = RotorShaftState.X_Y;
+		entry[zIndex] = RotorShaftState.X_Z;
+		entry[3] = RotorShaftState.X_NOBLADES;
+		entry[4] = RotorShaftState.X_YZ;
+
+		entry = ROTOR_STATE_MAP[yIndex];
+		entry[xIndex] = RotorShaftState.Y_X;
+		entry[yIndex] = null;
+		entry[zIndex] = RotorShaftState.Y_Z;
+		entry[3] = RotorShaftState.Y_NOBLADES;
+		entry[4] = RotorShaftState.Y_XZ;
+
+		entry = ROTOR_STATE_MAP[zIndex];
+		entry[xIndex] = RotorShaftState.Z_X;
+		entry[yIndex] = RotorShaftState.Z_Y;
+		entry[zIndex] = null;
+		entry[3] = RotorShaftState.Z_NOBLADES;
+		entry[4] = RotorShaftState.Z_XY;
 	}
 }

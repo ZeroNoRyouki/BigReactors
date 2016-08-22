@@ -2,7 +2,12 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockTurbinePart.housing",
+			"plate":"bigreactors:blocks/turbine/legacy/housing.plate",
+			"face":"bigreactors:blocks/turbine/legacy/housing.face",
+			"eastwest":"bigreactors:blocks/turbine/legacy/housing.eastwest",
+			"updown":"bigreactors:blocks/turbine/legacy/housing.updown",
+			"corner":"bigreactors:blocks/turbine/legacy/housing.corner",
+            "side":"#plate",
             "particle":"#side",
             "down":"#side",
             "up":"#side",
@@ -14,51 +19,63 @@
         "model":"cube"
     },
     "variants":{  
+		"tier":{  
+            "legacy":{
+                "textures":{  
+                    "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
+					"face":"bigreactors:blocks/turbine/legacy/housing.face",
+					"eastwest":"bigreactors:blocks/turbine/legacy/housing.eastwest",
+					"updown":"bigreactors:blocks/turbine/legacy/housing.updown",
+					"corner":"bigreactors:blocks/turbine/legacy/housing.corner"
+                }
+            },
+            "basic":{  
+                "textures":{  
+                    "plate":"bigreactors:blocks/turbine/basic/housing.plate",
+					"face":"bigreactors:blocks/turbine/basic/housing.face",
+					"eastwest":"bigreactors:blocks/turbine/basic/housing.eastwest",
+					"updown":"bigreactors:blocks/turbine/basic/housing.updown",
+					"corner":"bigreactors:blocks/turbine/basic/housing.corner"
+                }
+            }
+        },
         "casing":{  
             "single":{  
                 "textures":{  
-                    "side":"bigreactors:blocks/tile.blockTurbinePart.housing"
+                    "side":"#plate"
                 }
             },
             "wall":{  
                 "textures":{  
-                    "side":"bigreactors:blocks/tile.blockTurbinePart.housing.face"
+                    "side":"#face"
                 }
             },
             "frameew":{  
                 "textures":{  
-                    "side":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest"
+                    "side":"#eastwest"
                 }
             },
             "framesn":{  
                 "textures":{  
-                    "up":"bigreactors:blocks/tile.blockReactorPart.casing.vertical",
-					"down":"bigreactors:blocks/tile.blockReactorPart.casing.vertical",
-					"east":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest",
-					"west":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest"
+                    "up":"#updown",
+					"down":"#updown",
+					"east":"#eastwest",
+					"west":"#eastwest"
                 }
             },
             "frameud":{  
                 "textures":{  
-                    "up":"bigreactors:blocks/tile.blockTurbinePart.housing.face",
-					"down":"bigreactors:blocks/tile.blockTurbinePart.housing.face",
-					"north":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest",
-					"south":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest",
-					"east":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest",
-					"west":"bigreactors:blocks/tile.blockReactorPart.casing.eastwest"
+                    "side":"#updown"
                 }
             },
             "corner":{  
                 "textures":{  
-                    "side":"tile.blockTurbinePart.housing.corner"
+                    "side":"#corner"
                 }
             }
         },
         "inventory":{  
-            "transform":"forge:default-block",
-            "textures":{  
-                    "side":"bigreactors:blocks/tile.blockTurbinePart.housing"
-			}
+            "transform":"forge:default-block"
         }
     }
 }

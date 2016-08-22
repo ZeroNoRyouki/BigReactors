@@ -1,11 +1,13 @@
 package erogenousbeef.bigreactors.utils;
 
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -16,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 //import buildcraft.api.tools.IToolWrench;
-//import cofh.api.item.IToolHammer;
+import cofh.api.item.IToolHammer;
 
 public class StaticUtils {
 
@@ -78,17 +80,17 @@ public class StaticUtils {
 		 * Is this player holding a goddamn wrench?
 		 * @return True if the player is holding a goddamn wrench. BC only, screw you.
 		 */
-		public static boolean isPlayerHoldingWrench(EntityPlayer player) {
-			// TODO Commented temporarily to allow this thing to compile...
-			/*
-			if(player.inventory.getCurrentItem() == null) { 
+		public static boolean isPlayerHoldingWrench(ItemStack heldItemStack) {
+
+			if (null == heldItemStack)
 				return false;
-			}
-			Item currentItem = player.inventory.getCurrentItem().getItem();
-			return (ModHelperBase.useCofh && currentItem instanceof IToolHammer) ||
-					(ModHelperBase.useBuildcraftTools && currentItem instanceof IToolWrench);
-					*/
-			return false;
+
+			Item heldItem = heldItemStack.getItem();
+
+			return null != heldItem &&
+					(ModHelperBase.useCofh && heldItem instanceof IToolHammer);
+					// TODO waiting for BuildCraft 1.9.4+
+					// && (ModHelperBase.useBuildcraftTools && heldItem instanceof IToolWrench);
 		}
 		
 		/**

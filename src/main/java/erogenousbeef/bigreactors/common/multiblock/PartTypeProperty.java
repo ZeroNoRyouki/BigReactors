@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.multiblock;
 
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -29,3 +30,4 @@ public class PartTypeProperty implements IUnlistedProperty<PartType> {
     private PartTypeProperty() {
     }
 }
+*/

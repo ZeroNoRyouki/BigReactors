@@ -1,20 +1,14 @@
 package erogenousbeef.bigreactors.init;
 
-import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.config.Config;
-import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import java.util.List;
 
 public final class BrRecipes {
 
@@ -48,21 +42,17 @@ public final class BrRecipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineHousing.createItemStack(4), "IGI", "QCQ", "IGI",
                 'C', "ingotCyanite", 'I', ironOrSteelIngot, 'Q', Items.QUARTZ, 'G', "ingotGraphite"));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineController.createItemStack(), "H H", "BDB", "H H",
-                'H', "turbineHousing", 'D', Items.DIAMOND, 'B', blutoniumIngot));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbinePowerTap.createItemStack(), "HRH", "R R", "HRH",
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbinePowerTapRF.createItemStack(), "HRH", "R R", "HRH",
                 'H', "turbineHousing", 'R', Items.REDSTONE));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineFluidPort.createItemStack(), "H H", "IVI", "HPH",
-                'H', "turbineHousing", 'I', ironOrSteelIngot, 'V', Items.BUCKET, 'P', Blocks.PISTON));
+
 
         GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                 'H', "turbineHousing", 'D', Items.DIAMOND, 'R', "turbineRotorShaft"));
 
-        if (computerSupport)
-            GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.turbineComputerPort.createItemStack(), "HRH", "GPG", "HRH",
-                    'H', "turbineHousing", 'G', "ingotGold", 'R', "turbineRotorShaft"));
+
 
         /* TODO add back when turbine rotor is in
         if (blockTurbineRotorPart != null) {

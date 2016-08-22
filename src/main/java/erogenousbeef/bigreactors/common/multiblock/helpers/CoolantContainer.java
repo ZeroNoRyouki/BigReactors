@@ -2,12 +2,14 @@ package erogenousbeef.bigreactors.common.multiblock.helpers;
 
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class CoolantContainer extends FluidHelper {
+public class CoolantContainer extends FluidHelper implements IFluidHandlerInfo {
 
 	public static final int HOT = 0;
 	public static final int COLD = 1;
@@ -192,5 +194,10 @@ public class CoolantContainer extends FluidHelper {
 	
 	public int getFluidVaporizedLastTick() {
 		return fluidVaporizedLastTick;
+	}
+
+	@Override
+	public IFluidTankProperties[] getTankProperties() {
+		return new IFluidTankProperties[0];
 	}
 }

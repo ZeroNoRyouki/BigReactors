@@ -5,8 +5,6 @@ import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort.FluidFlow;
-import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
@@ -28,6 +26,7 @@ import java.util.Random;
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft"),
 })
+@Deprecated
 public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripheralProvider {
 
 	public static final int METADATA_HOUSING = 0;
@@ -237,29 +236,29 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 			return new TileEntityTurbineComputerPort();
 		}
 		else {
-			return new TileEntityTurbinePartStandard();
+			return new TileEntityTurbinePart();
 		}
 	}*/
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		switch (this._type) {
-
+			/*
 			case TurbinePowerPort:
 				return new TileEntityTurbinePowerTap();
 
 			case TurbineFluidPort:
 				return new TileEntityTurbineFluidPort();
-
+		*/
 			case TurbineRotorBearing:
 				return new TileEntityTurbineRotorBearing();
-
+		/*
 			case TurbineComputerPort:
 				return new TileEntityTurbineComputerPort();
 
 			case TurbineController:
-				return new TileEntityTurbinePartStandard();
-
+				return new TileEntityTurbinePart();
+		*/
 			default:
 				throw new IllegalArgumentException("Unrecognized part");
 		}
@@ -275,7 +274,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 
 		// TODO Commented temporarily to allow this thing to compile...
 		int metadata = -1;/*world.getBlockMetadata(x, y, z);*/
-		
+		/*
 		if(metadata == METADATA_FLUIDPORT && StaticUtils.Inventory.isPlayerHoldingWrench(player)) {
 			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof TileEntityTurbineFluidPort) {
@@ -284,7 +283,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 				fluidPort.setFluidFlowDirection(flow == FluidFlow.In ? FluidFlow.Out : FluidFlow.In, true);
 				return true;
 			}
-		}
+		}*/
 		
 		if(world.isRemote) {
 			return true;
@@ -292,6 +291,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 		
 		// If the player's hands are empty and they rightclick on a multiblock, they get a 
 		// multiblock-debugging message if the machine is not assembled.
+		/*
 		if(heldItem == null) {
 			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof IMultiblockPart) {
@@ -309,8 +309,8 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 					}
 				}
 			}
-		}
-		
+		}*/
+		/*
 		// Does this machine even have a GUI?
 		if(metadata != METADATA_CONTROLLER) { return false; }
 
@@ -326,6 +326,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 		}
 		
 		player.openGui(BigReactors.getInstance(), 0, world, pos.getX(), pos.getY(), pos.getZ());
+		*/
 		return true;
 	}
 
@@ -343,21 +344,7 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 		return super.damageDropped(state);
 	}
 	
-	public ItemStack getItemStack(String name) {
-		int metadata = -1;
-		for(int i = 0; i < _subBlocks.length; i++) {
-			if(_subBlocks[i].equals(name)) {
-				metadata = i;
-				break;
-			}
-		}
-		
-		if(metadata < 0) {
-			throw new IllegalArgumentException("Unable to find a block with the name " + name);
-		}
-		
-		return new ItemStack(this, 1, metadata);
-	}
+
 	/*
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -367,82 +354,20 @@ public class BlockTurbinePart extends BlockMultiblockDevice implements IPeripher
 		}
 	}*/
 
-	/**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-	@Override
-    @SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState world, World pos, BlockPos state, Random rand) {
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-    	int metadata = world.getBlockMetadata(x, y, z);
-    	if(metadata == METADATA_BEARING) {
-        	TileEntity te = world.getTileEntity(x, y, z);
-    		if(te instanceof TileEntityTurbinePartStandard) {
-    			// Rotor bearing found!
-    			TileEntityTurbinePartStandard bearing = (TileEntityTurbinePartStandard)te;
-    			MultiblockTurbine turbine = bearing.getTurbine();
-    			if(turbine != null && turbine.getActive()) {
-    				// Spawn particles!
-    				int numParticles = Math.min(20, Math.max(1, turbine.getFluidConsumedLastTick() / 40));
-    				ForgeDirection inwardsDir = bearing.getOutwardsDir().getOpposite();
-					BlockPos minCoord, maxCoord;
-    				minCoord = turbine.getMinimumCoord().add(1, 1, 1);
-    				maxCoord = turbine.getMaximumCoord().add(-1, -1, -1);
-    				if(inwardsDir.offsetX != 0) {
-    					minCoord.x = maxCoord.x = bearing.xCoord + inwardsDir.offsetX;
-    				}
-    				else if(inwardsDir.offsetY != 0) {
-    					minCoord.y = maxCoord.y = bearing.yCoord + inwardsDir.offsetY;
-    				}
-    				else {
-    					minCoord.z = maxCoord.z = bearing.zCoord + inwardsDir.offsetZ;
-    				}
-    				
-                    double particleX, particleY, particleZ;
-    				for(int i = 0; i < numParticles; i++) {
-    					particleX = minCoord.x + par5Random.nextFloat() * (maxCoord.x - minCoord.x + 1);
-    					particleY = minCoord.y + par5Random.nextFloat() * (maxCoord.y - minCoord.y + 1);
-    					particleZ = minCoord.z + par5Random.nextFloat() * (maxCoord.z - minCoord.z + 1);
-                        world.spawnParticle(BigReactors.VALENTINES_DAY ? "heart" : "cloud", particleX, particleY, particleZ,
-                        		par5Random.nextFloat() * inwardsDir.offsetX,
-                        		par5Random.nextFloat() * inwardsDir.offsetY,
-                        		par5Random.nextFloat() * inwardsDir.offsetZ);
-    				}
-    			}
-    		}
-    	}
-    	*/
-    }
 
-	// TODO Commented temporarily to allow this thing to compile...
-	/*
-    
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-    	int metadata = world.getBlockMetadata(x, y, z);
-    	if(metadata == METADATA_BEARING) {
-        	TileEntity te = world.getTileEntity(x, y, z);
-        	if(te instanceof TileEntityTurbineRotorBearing) {
-        		TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
-        		if(bearing.isConnected() && bearing.getTurbine().getActive()) {
-        			return bearing.getAABB();
-        		}
-        	}
-    	}
-    	
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-    */
 
+
+	/**/
     // IPeripheralProvider
 	@Optional.Method(modid = "ComputerCraft")
 	@Override
 	public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
-
+		/*
 		TileEntity te = world.getTileEntity(pos);
 
 		return (te instanceof TileEntityTurbineComputerPort) ? (IPeripheral)te : null;
+		*/
+		return null;
 	}
+	/**/
 }

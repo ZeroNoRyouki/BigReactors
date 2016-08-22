@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
@@ -31,11 +32,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
-public class TileEntityReactorAccessPort extends TileEntityReactorPart implements INeighborUpdatableEntity {
+public class TileEntityReactorAccessPort extends TileEntityReactorPart implements INeighborUpdatableEntity, IInputOutputPort {
 
 	public TileEntityReactorAccessPort() {
 
-		this._isInlet = true;
+		this._direction = Direction.Input;
 		this._adjacentInventory = null;
 		this._fuelInventoryWrapper = this._wasteInventoryWrapper = null;
 		this._fuelInventory = new TileEntityItemStackHandler(this, 1);
@@ -56,7 +57,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 		if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == capability) {
 
-			if (this._isInlet) {
+			if (Direction.Input == this._direction) {
 
 				if (null == this._fuelInventoryWrapper)
 					this._fuelInventoryWrapper = new CapabWrapper(this._fuelInventory) {
@@ -254,7 +255,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 		if (SyncReason.FullSync == syncReason) {
 
-			this._isInlet = !data.hasKey("isInlet") || data.getBoolean("isInlet");
+			this._direction = Direction.from(!data.hasKey("isInlet") || data.getBoolean("isInlet"));
 
 			if (data.hasKey("invI"))
 				this._fuelInventory.deserializeNBT((NBTTagCompound) data.getTag("invI"));
@@ -265,7 +266,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		} else {
 
 			if (data.hasKey("inlet"))
-				this.setInlet(data.getBoolean("inlet"));
+				this.setDirection(Direction.from(data.getBoolean("inlet")), true);
 		}
 	}
 
@@ -276,13 +277,13 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 		if (SyncReason.FullSync == syncReason) {
 
-			data.setBoolean("isInlet", this._isInlet);
+			data.setBoolean("isInlet", Direction.Input == this._direction);
 			data.setTag("invI", this._fuelInventory.serializeNBT());
 			data.setTag("invO", this._wasteInventory.serializeNBT());
 
 		} else {
 
-			data.setBoolean("inlet", this._isInlet);
+			data.setBoolean("inlet", Direction.Input == this._direction);
 		}
 	}
 
@@ -305,33 +306,40 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		markChunkDirty();
 	}
 
-	public boolean isInlet() { return this._isInlet; }
 
-	public void setInlet(boolean shouldBeInlet) {
+	@Override
+	public Direction getDirection() {
+		return this._direction;
+	}
 
-		if (this._isInlet == shouldBeInlet)
+	@Override
+	public void setDirection(Direction direction, boolean markForUpdate) {
+
+		if (direction == this._direction)
 			return;
 
-		this._isInlet = shouldBeInlet;
+		this._direction = direction;
 
-		WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+		WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
 
 		if (!this.worldObj.isRemote) {
 
-			distributeItems();
+			this.distributeItems();
 			this.markDirty();
 		}
 
 		notifyNeighborsOfTileChange();
+
 	}
 
-	public void toggleInlet() {
-		this.setInlet(!this._isInlet);
+	@Override
+	public void toggleDirection(boolean markForUpdate) {
+		this.setDirection(this._direction.opposite(), markForUpdate);
 	}
-	
+
 	protected void distributeItems() {
 
-		if (worldObj.isRemote || this._adjacentInventory == null || this.isInlet())
+		if (worldObj.isRemote || this._adjacentInventory == null || this.getDirection().isInput())
 			return;
 
 		this._wasteInventory.setStackInSlot(0, ItemHandlerHelper.insertItem(this._adjacentInventory,
@@ -382,7 +390,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	protected IItemHandler _fuelInventoryWrapper;
 	protected IItemHandler _wasteInventoryWrapper;
 	protected IItemHandler _adjacentInventory;
-	protected boolean _isInlet;
+	protected IInputOutputPort.Direction _direction;
 
 	private abstract class CapabWrapper implements IItemHandler {
 

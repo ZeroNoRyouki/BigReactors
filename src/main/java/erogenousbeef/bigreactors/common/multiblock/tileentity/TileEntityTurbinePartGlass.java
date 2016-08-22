@@ -5,9 +5,6 @@ import net.minecraft.util.math.BlockPos;
 
 public class TileEntityTurbinePartGlass extends TileEntityTurbinePartBase {
 
-	public TileEntityTurbinePartGlass() {
-	}
-
 	@Override
 	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
 

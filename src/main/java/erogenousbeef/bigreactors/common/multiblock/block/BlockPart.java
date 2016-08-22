@@ -28,6 +28,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
+
 /**
  * Base class for a multiblock part
  */
@@ -44,6 +46,7 @@ public class BlockPart extends BlockBR {
         return this._type;
     }
 
+    /*
     @Override
     public void onPostRegister() {
 
@@ -53,7 +56,8 @@ public class BlockPart extends BlockBR {
 
         if (name.length() > 0)
             OreDictionary.registerOre(name, this.createItemStack());
-    }
+
+    }*/
 
     /**
      * Called throughout the code as a replacement for block instanceof BlockContainer
@@ -197,7 +201,8 @@ public class BlockPart extends BlockBR {
         return state;
     }
 
-    protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
+    protected IBlockState buildActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos position,
+                                           @Nonnull MultiblockTileEntityBase part) {
         return state;
     }
 

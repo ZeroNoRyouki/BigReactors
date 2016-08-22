@@ -5,7 +5,8 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartStandard;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePart;
+import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.PartPosition;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 import net.minecraft.block.material.Material;
@@ -34,7 +35,7 @@ public class BlockMultiblockCasing extends BlockTieredPart {
                 return new TileEntityReactorPart();
 
             case TurbineHousing:
-                return new TileEntityTurbinePartStandard();
+                return new TileEntityTurbinePart();
 
             default:
                 throw new IllegalArgumentException("Unrecognized part");
@@ -47,16 +48,22 @@ public class BlockMultiblockCasing extends BlockTieredPart {
         if (PartType.ReactorCasing == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "GUG", "IGI",
-                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 4), "IGI", "GUG", "IGI",
+                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BrItems.reactorCasingCores.createItemStack(PartTier.Legacy, 1)));
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "GUG", "IGI",
-                    'I', "ingotSteel", 'G', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
+                    'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.reactorCasingCores.createItemStack(PartTier.Basic, 1)));
 
         } else if (PartType.TurbineHousing == this._type) {
 
-            // TODO no recipes yet
+            if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
+                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 4), "IGI", "GUG", "IGI",
+                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Legacy, 1)));
+
+            if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
+                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
+                        'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Basic, 1)));
         }
     }
 

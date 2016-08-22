@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.client.gui;
 
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
@@ -108,10 +109,10 @@ public class GuiTurbineController extends BeefGuiBase {
 		powerBar = new BeefGuiPowerBar(this, guiLeft + 152, guiTop + 22, this.turbine);
 		
 		steamIcon = new BeefGuiIcon(this, guiLeft + 113, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("hotFluidIn"), new String[] { TextFormatting.AQUA + "Intake Fluid Tank" });
-		steamBar = new BeefGuiFluidBar(this, guiLeft + 112, guiTop + 22, turbine, MultiblockTurbine.TANK_INPUT);
+		steamBar = new BeefGuiFluidBar(this, guiLeft + 112, guiTop + 22, turbine.getFluidHandlerInfo(IInputOutputPort.Direction.Input));
 
 		waterIcon = new BeefGuiIcon(this, guiLeft + 133, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("coolantOut"), new String[] { TextFormatting.AQUA + "Exhaust Fluid Tank" });
-		waterBar = new BeefGuiFluidBar(this, guiLeft + 132, guiTop + 22, turbine, MultiblockTurbine.TANK_OUTPUT);
+		waterBar = new BeefGuiFluidBar(this, guiLeft + 132, guiTop + 22, turbine.getFluidHandlerInfo(IInputOutputPort.Direction.Output));
 
 		rpmIcon = new BeefGuiIcon(this, guiLeft + 93, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("rpm"), new String[] { TextFormatting.AQUA + "Rotor Speed" });
 		rpmBar = new BeefGuiRpmBar(this, guiLeft + 92, guiTop + 22, turbine, "Rotor Speed", new String[] {"Rotors perform best at", "900 or 1800 RPM.", "", "Rotors kept overspeed for too", "long may fail.", "", "Catastrophically."});

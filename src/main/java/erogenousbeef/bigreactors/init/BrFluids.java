@@ -12,6 +12,7 @@ public class BrFluids {
     public static final Fluid fluidYellorium;
     public static final Fluid fluidCyanite;
     public static final Fluid fluidSteam;
+    public static final Fluid fluidFuelColumn;
 
     public static void initialize() {
     }
@@ -86,5 +87,20 @@ public class BrFluids {
         }
 
         FluidRegistry.addBucketForFluid(fluidSteam = fluid);
+
+        // - fuel column for rendering
+        if (null == (fluid = FluidRegistry.getFluid("fuelcolumn"))) {
+
+            FluidRegistry.registerFluid(fluid = new ModFluid("fuelcolumn",
+                    BigReactors.createBlockResourceLocation("fuelColumnStill"),
+                    BigReactors.createBlockResourceLocation("fuelColumnFlowing")) {
+
+                @Override
+                protected void initialize() {
+                }
+            });
+        }
+
+        fluidFuelColumn = fluid;
     }
 }

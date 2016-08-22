@@ -86,7 +86,6 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 	 */
 	@Override
 	public int getMetaFromState(IBlockState state) {
-
 		return (state.getValue(Orientation.HFACING)).getIndex();
 	}
 
@@ -145,7 +144,7 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 		if(entityPlayer.isSneaking()) {
 
 			// Wrench + Sneak = Dismantle
-			if(StaticUtils.Inventory.isPlayerHoldingWrench(entityPlayer)) {
+			if(StaticUtils.Inventory.isPlayerHoldingWrench(heldItem)) {
 				// Pass simulate == true on the client to prevent creation of "ghost" item stacks
 				dismantleBlock(entityPlayer, world, pos, false);
 				return true;
@@ -154,7 +153,7 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 			return false;
 		}
 		
-		if(te instanceof IWrenchable && StaticUtils.Inventory.isPlayerHoldingWrench(entityPlayer)) {
+		if(te instanceof IWrenchable && StaticUtils.Inventory.isPlayerHoldingWrench(heldItem)) {
 			return ((IWrenchable)te).onWrench(entityPlayer, side);
 		}
 

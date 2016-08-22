@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
  * @author Erogenous Beef
  *
  */
+@Deprecated //use IFluidHandlerInfo
 public interface IMultipleFluidHandler {
 	public FluidTankInfo[] getTankInfo();
 }

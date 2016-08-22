@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
@@ -18,66 +19,49 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements IFluidHandler, INeighborUpdatableEntity, ITickableMultiblockPart {
+public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements IFluidHandler, INeighborUpdatableEntity,
+		ITickableMultiblockPart, IInputOutputPort {
 
-	boolean inlet;
-	IFluidHandler pumpDestination;
-	
 	public TileEntityReactorCoolantPort() {
+
 		super();
-		
-		inlet = true;
-		pumpDestination = null;
-	}
-	
-	public boolean isInlet() { return inlet; }
-
-	public void setInlet(boolean shouldBeInlet, boolean markDirty) {
-		if(inlet == shouldBeInlet) { return; }
-
-		inlet = shouldBeInlet;
-		WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
-		
-		if(!worldObj.isRemote) {
-			if(!inlet) {
-				checkForAdjacentTank();
-			}
-
-			if(markDirty) {
-				markDirty();
-			}
-			else {
-				notifyNeighborsOfTileChange();
-			}
-		}
-		else {
-			notifyNeighborsOfTileChange();
-		}
+		this._direction = Direction.Input;
+		this.pumpDestination = null;
 	}
 
-	public void toggleInlet(boolean markDirty) {
-
-		this.setInlet(!this.inlet, markDirty);
-	}
-
-	/*
-	// MultiblockTileEntityBase
 	@Override
-	protected void encodeDescriptionPacket(NBTTagCompound packetData) {
-		super.encodeDescriptionPacket(packetData);
-		
-		packetData.setBoolean("inlet", inlet);
+	public Direction getDirection() {
+		return this._direction;
 	}
-	
+
 	@Override
-	protected void decodeDescriptionPacket(NBTTagCompound packetData) {
-		super.decodeDescriptionPacket(packetData);
-		
-		if(packetData.hasKey("inlet")) {
-			setInlet(packetData.getBoolean("inlet"), false);
-		}
-	}*/
-	
+	public void setDirection(Direction direction, boolean markForUpdate) {
+
+		if (direction == this._direction)
+			return;
+
+		this._direction = direction;
+		WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
+
+		if (!worldObj.isRemote) {
+
+			if (!direction.isInput())
+				this.checkForAdjacentTank();
+
+			if (markForUpdate)
+				this.markDirty();
+			else
+				this.notifyNeighborsOfTileChange();
+
+		} else
+			this.notifyNeighborsOfTileChange();
+	}
+
+	@Override
+	public void toggleDirection(boolean markForUpdate) {
+		this.setDirection(this._direction.opposite(), markForUpdate);
+	}
+
 	@Override
 	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase)
 	{
@@ -112,23 +96,23 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			return;
 
 		if (SyncReason.FullSync == syncReason)
-			this.inlet = data.getBoolean("inlet");
+			this._direction = Direction.from(data.getBoolean("inlet"));
 		else
-			this.setInlet(data.getBoolean("inlet"), false);
+			this.setDirection(Direction.from(data.getBoolean("inlet")), false);
 	}
 
 	@Override
 	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
 		super.syncDataTo(data, syncReason);
-		data.setBoolean("inlet", this.inlet);
+		data.setBoolean("inlet", this._direction.isInput());
 	}
 
 	// IFluidHandler
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (!isConnected() || !inlet || null == from || from != this.getOutwardFacing())
+		if (!isConnected() || !this._direction.isInput() || null == from || from != this.getOutwardFacing())
 			return 0;
 		
 		CoolantContainer cc = getReactorController().getCoolantContainer();
@@ -158,7 +142,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	@Override
 	public boolean canFill(EnumFacing from, Fluid fluid) {
 
-		if (!isConnected() || null == from || from != this.getOutwardFacing() || !inlet)
+		if (!isConnected() || null == from || from != this.getOutwardFacing() || !this._direction.isInput())
 			// Also prevent pipes from filling up the output tank inadvertently
 			return false;
 
@@ -193,7 +177,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	@Override
 	public void onMultiblockServerTick() {
 		// Try to pump steam out, if an outlet
-		if(pumpDestination == null || isInlet())
+		if(pumpDestination == null || this._direction.isInput())
 			return;
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
@@ -220,19 +204,14 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	// Private Helpers
 	private int getConnectedTank() {
-		if(inlet) {
-			return CoolantContainer.COLD;
-		}
-		else {
-			return CoolantContainer.HOT;
-		}
+		return this._direction.isInput() ? CoolantContainer.COLD : CoolantContainer.HOT;
 	}
 
 	protected void checkForAdjacentTank() {
 
 		this.pumpDestination = null;
 
-		if (this.worldObj.isRemote || this.isInlet())
+		if (this.worldObj.isRemote || this._direction.isInput())
 			return;
 
 		EnumFacing out = this.getOutwardFacing();
@@ -245,4 +224,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		if (neighbor instanceof IFluidHandler)
 			this.pumpDestination = (IFluidHandler)neighbor;
 	}
+
+	private Direction _direction;
+	private IFluidHandler pumpDestination;
 }

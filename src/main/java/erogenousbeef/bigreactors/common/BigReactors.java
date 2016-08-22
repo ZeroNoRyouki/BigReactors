@@ -51,10 +51,12 @@ public class BigReactors implements IModInitializationHandler {
 	public static final CreativeTabs TAB;
 	public static final IWorldGenWhiteList WHITELIST_WORLDGEN_ORES;
 	public static final WorldGenMinableOres WORLDGEN_ORES;
+	public static final WorldGenMinableOres NETHER_ORES;
+	public static final WorldGenMinableOres END_ORES;
 	public static final BigReactorsTickHandler TICK_HANDLER;
 	public static final boolean VALENTINES_DAY; // Easter Egg :)
 
-	private static final String[] LANGUAGES_SUPPORTED = new String[]{"de_DE", "en_US", "es_SP", "nl_NL", "pl_PL", "pt_BR", "ru_RU", "sv_SE", "zh_CN"};
+	//private static final String[] LANGUAGES_SUPPORTED = new String[]{"de_DE", "en_US", "es_SP", "nl_NL", "pl_PL", "pt_BR", "ru_RU", "sv_SE", "zh_CN"};
 
 	// TODO move all to BrBlocks
 	public static BlockTurbineRotorPart blockTurbineRotorPart;
@@ -111,6 +113,8 @@ public class BigReactors implements IModInitializationHandler {
 		if (CONFIG.enableWorldGen) {
 
 			GameRegistry.registerWorldGenerator(WORLDGEN_ORES, 0);
+			GameRegistry.registerWorldGenerator(NETHER_ORES, 0);
+			GameRegistry.registerWorldGenerator(END_ORES, 0);
 			MinecraftForge.EVENT_BUS.register(TICK_HANDLER);
 		}
 
@@ -264,6 +268,9 @@ public class BigReactors implements IModInitializationHandler {
 	@SideOnly(Side.CLIENT)
 	public static void registerNonBlockFluidIcons(TextureMap map) {
 
+		map.registerSprite(BrFluids.fluidFuelColumn.getStill());
+		map.registerSprite(BrFluids.fluidFuelColumn.getFlowing());
+		/*
 		map.registerSprite(BigReactors.iconFuelColumnStill);
 		map.registerSprite(BigReactors.iconFuelColumnFlowing);
 		
@@ -271,6 +278,7 @@ public class BigReactors implements IModInitializationHandler {
 			map.registerSprite(BigReactors.iconSteamStill);
 			map.registerSprite(BigReactors.iconSteamFlowing);
 		}
+		*/
 	}
 
 	@Mod.Instance(MODID)
@@ -293,6 +301,16 @@ public class BigReactors implements IModInitializationHandler {
 		WHITELIST_WORLDGEN_ORES = new WorldGenWhiteList();
 		WORLDGEN_ORES = new WorldGenMinableOres(WHITELIST_WORLDGEN_ORES);
 		TICK_HANDLER = new BigReactorsTickHandler(WORLDGEN_ORES);
+
+		WorldGenWhiteList whiteList;
+
+		whiteList = new WorldGenWhiteList();
+		whiteList.whiteListDimension(-1);
+		NETHER_ORES = new WorldGenMinableOres(whiteList);
+
+		whiteList = new WorldGenWhiteList();
+		whiteList.whiteListDimension(1);
+		END_ORES = new WorldGenMinableOres(whiteList);
 
 		TAB = new CreativeTabBR(MODID);
 

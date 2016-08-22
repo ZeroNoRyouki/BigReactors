@@ -19,7 +19,8 @@ public class TileEntityReactorCreativeCoolantPort extends TileEntityReactorCoola
 		
 		MultiblockReactor reactor = getReactorController();
 
-		if(isInlet()) {
+		if (this.getDirection().isInput()) {
+
 			CoolantContainer cc = reactor.getCoolantContainer();
 			if(cc.getCoolantAmount() < cc.getCapacity())
 			{

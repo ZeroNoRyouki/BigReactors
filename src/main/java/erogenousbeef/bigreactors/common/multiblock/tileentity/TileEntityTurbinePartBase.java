@@ -3,18 +3,18 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
+import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements /*IMultiblockGuiHandler,*/
-		IActivateable, IBeefDebuggableTile {
+public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IActivateable, IBeefDebuggableTile {
 
-	public TileEntityTurbinePartBase() {
-	}
-	
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
 		return new MultiblockTurbine(worldObj);
@@ -52,23 +52,6 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	@Override
 	public void onMachineDeactivated() {
 	}
-
-	/// GUI Support - IMultiblockGuiHandler
-	/**
-	 * @return The Container object for use by the GUI. Null if there isn't any.
-	 */
-	/*
-	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
-		return null;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		return null;
-	}
-	*/
 
 	public MultiblockTurbine getTurbine() {
 		return (MultiblockTurbine)getMultiblockController();
@@ -117,5 +100,13 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 		}
 		sb.append(t.getDebugInfo());
 		return sb.toString();
+	}
+
+	public PartTier getPartTier() {
+
+		IBlockState state = this.worldObj.getBlockState(this.getWorldPosition());
+		Block block = state.getBlock();
+
+		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
 	}
 }

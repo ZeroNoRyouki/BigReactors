@@ -4,6 +4,7 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
 import li.cil.oc.api.machine.Arguments;
@@ -11,7 +12,11 @@ import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedPeripheral;
 import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.Optional;
 
 import java.util.HashMap;
@@ -23,7 +28,7 @@ import java.util.Map;
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft")
 })
 public class TileEntityTurbineComputerPort extends
-		TileEntityTurbinePartStandard implements IPeripheral, SimpleComponent, ManagedPeripheral {
+		TileEntityTurbinePart implements IPeripheral, SimpleComponent, ManagedPeripheral {
 
 	public enum ComputerMethod {
 		getConnected,			// No arguments
@@ -106,37 +111,13 @@ public class TileEntityTurbineComputerPort extends
 		case getFluidFlowRateMaxMax:
 			return new Object[] { turbine.getMaxIntakeRateMax() };
 		case getInputAmount:
-			ti = turbine.getTankInfo(MultiblockTurbine.TANK_INPUT);
-			if(ti != null && ti.fluid != null) {
-				return new Object[] { ti.fluid.amount };
-			}
-			else {
-				return new Object[] { 0f };
-			}
+			return new Object[] { this.getFluidAmount(IInputOutputPort.Direction.Input) };
 		case getInputType:
-			ti = turbine.getTankInfo(MultiblockTurbine.TANK_INPUT);
-			if(ti != null && ti.fluid != null) {
-				return new Object[] { ti.fluid.getFluid().getName() };
-			}
-			else {
-				return null;
-			}
+			return new Object[] { this.getFluidName(IInputOutputPort.Direction.Input) };
 		case getOutputAmount:
-			ti = turbine.getTankInfo(MultiblockTurbine.TANK_OUTPUT);
-			if(ti != null && ti.fluid != null) {
-				return new Object[] { ti.fluid.amount };
-			}
-			else {
-				return new Object[] { 0f };
-			}
+			return new Object[] { this.getFluidAmount(IInputOutputPort.Direction.Output) };
 		case getOutputType:
-			ti = turbine.getTankInfo(MultiblockTurbine.TANK_OUTPUT);
-			if(ti != null && ti.fluid != null) {
-				return new Object[] { ti.fluid.getFluid().getName() };
-			}
-			else {
-				return null;
-			}
+			return new Object[] { this.getFluidName(IInputOutputPort.Direction.Output) };
 		case getRotorSpeed:
 			return new Object[] { turbine.getRotorSpeed() };
 		case getNumberOfBlades:
@@ -201,6 +182,32 @@ public class TileEntityTurbineComputerPort extends
 		}
 		
 		return null;
+	}
+
+	private IFluidTankProperties getTankProperties(IInputOutputPort.Direction direction) {
+
+		MultiblockTurbine turbine = this.getTurbine();
+		IFluidHandler handler = null != turbine ? turbine.getFluidHandler(direction) : null;
+		IFluidTankProperties[] properties = null != handler ? handler.getTankProperties() : null;
+
+		return null != properties && properties.length > 0 ? properties[0] : null;
+	}
+
+	private int getFluidAmount(IInputOutputPort.Direction direction) {
+
+		IFluidTankProperties properties = this.getTankProperties(direction);
+		FluidStack stack = null != properties ? properties.getContents() : null;
+
+		return null != stack ? stack.amount : 0;
+	}
+
+	private String getFluidName(IInputOutputPort.Direction direction) {
+
+		IFluidTankProperties properties = this.getTankProperties(direction);
+		FluidStack stack = null != properties ? properties.getContents() : null;
+		Fluid fluid = null != stack ? stack.getFluid() : null;
+
+		return null != fluid ? fluid.getName() : null;
 	}
 	
 	// ComputerCraft

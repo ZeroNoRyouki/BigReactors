@@ -10,6 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+import javax.annotation.Nonnull;
+
 public class BlockMultiblockDevice extends BlockTieredPart {
 
     public BlockMultiblockDevice(PartType type, String blockName) {
@@ -31,8 +33,8 @@ public class BlockMultiblockDevice extends BlockTieredPart {
     }
 
     @Override
-    protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position,
-                                           MultiblockTileEntityBase part) {
+    protected IBlockState buildActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos position,
+                                           @Nonnull MultiblockTileEntityBase part) {
 
         state = super.buildActualState(state, world, position, part);
 

@@ -1,14 +1,21 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
 import cofh.api.energy.IEnergyProvider;
+import erogenousbeef.bigreactors.api.data.CoilPartData;
+import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.block.BlockBRMetal;
+import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
 import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
+import erogenousbeef.bigreactors.common.multiblock.block.ITurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FloatUpdateTracker;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
+import erogenousbeef.bigreactors.init.BrFluids;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
 import io.netty.buffer.ByteBuf;
@@ -19,25 +26,33 @@ import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
 import it.zerono.mods.zerocore.lib.config.IConfigListener;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MultiblockTurbine extends RectangularMultiblockControllerBase
-		implements IPowerGenerator, IEnergyProvider, IMultipleFluidHandler, ISlotlessUpdater, IActivateable, IConfigListener {
+		implements IPowerGenerator, IEnergyProvider, ISlotlessUpdater, IActivateable, IConfigListener {
 
 	public enum VentStatus {
 		VentOverflow,
@@ -52,14 +67,16 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	private static final int ticksBetweenUpdates = 3;
 
 	// Fluid tanks. Input = Steam, Output = Water.
-	public static final int TANK_INPUT = 0;
-	public static final int TANK_OUTPUT = 1;
-	public static final int NUM_TANKS = 2;
+	//public static final int TANK_INPUT = 0;
+	//public static final int TANK_OUTPUT = 1;
+	//public static final int NUM_TANKS = 2;
 	public static final int FLUID_NONE = -1;
 	public static final int TANK_SIZE = 4000;
 	public static final int MAX_PERMITTED_FLOW = 2000;
 
-	private FluidTank[] tanks;
+	//private FluidTank[] tanks;
+	private FluidTank _inputTank;
+	private FluidTank _outputTank;
 	
 	static final float maxEnergyStored = 1000000f; // 1 MegaRF
 	
@@ -108,7 +125,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	private Set<ITickableMultiblockPart> attachedTickables;
 	
 	private Set<TileEntityTurbineRotorPart> attachedRotorShafts;
-	private Set<TileEntityTurbineRotorPart> attachedRotorBlades;
+	private Set<TileEntityTurbineRotorBlade> attachedRotorBlades;
 	
 	private Set<TileEntityTurbinePartGlass> attachedGlass; 
 	
@@ -119,24 +136,25 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	
 	private static final EnumFacing[] RotorXBladeDirections = new EnumFacing[] { EnumFacing.UP, EnumFacing.SOUTH, EnumFacing.DOWN, EnumFacing.NORTH };
 	private static final EnumFacing[] RotorZBladeDirections = new EnumFacing[] { EnumFacing.UP, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.WEST };
-	
+
 	public MultiblockTurbine(World world) {
 		super(world);
 
 		updatePlayers = new HashSet<EntityPlayer>();
 		
 		ticksSinceLastUpdate = 0;
-		
+		/*
 		tanks = new FluidTank[NUM_TANKS];
 		for(int i = 0; i < NUM_TANKS; i++)
 			tanks[i] = new FluidTank(TANK_SIZE);
+		*/
 		
 		attachedControllers = new HashSet<IMultiblockPart>();
 		attachedRotorBearings = new HashSet<TileEntityTurbineRotorBearing>();
 		attachedPowerTaps = new HashSet<TileEntityTurbinePowerTap>();
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedRotorShafts = new HashSet<TileEntityTurbineRotorPart>();
-		attachedRotorBlades = new HashSet<TileEntityTurbineRotorPart>();
+		attachedRotorBlades = new HashSet<TileEntityTurbineRotorBlade>();
 		attachedGlass = new HashSet<TileEntityTurbinePartGlass>();
 		
 		energyStored = 0f;
@@ -157,6 +175,25 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		foundCoils = new HashSet<BlockPos>();
 		
 		rpmUpdateTracker = new FloatUpdateTracker(100, 5, 10f, 100f); // Minimum 10RPM difference for slow updates, if change > 100 RPM, update every 5 ticks
+
+		this._inputTank = new FluidTank(TANK_SIZE) {
+
+			@Override
+			public int fill(FluidStack resource, boolean doFill) {
+
+				// allow only steam in the input tank
+
+				if (null == resource || BrFluids.fluidSteam != resource.getFluid())
+					return 0;
+
+				return super.fill(resource, doFill);
+			}
+		};
+
+		this._inputTank.setCanDrain(false);
+
+		this._outputTank = new FluidTank(TANK_SIZE);
+		this._outputTank.setCanFill(false);
 	}
 
 	@Override
@@ -214,21 +251,15 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			attachedTickables.add((ITickableMultiblockPart)newPart);
 		}
 		
-		if(newPart instanceof TileEntityTurbineRotorPart) {
-			TileEntityTurbineRotorPart turbinePart = (TileEntityTurbineRotorPart)newPart;
-			if(turbinePart.isRotorShaft()) {
-				attachedRotorShafts.add(turbinePart);
-			}
-			
-			if(turbinePart.isRotorBlade()) {
-				attachedRotorBlades.add(turbinePart);
-			}
-		}
+		if (newPart instanceof TileEntityTurbineRotorPart)
+			this.attachedRotorShafts.add((TileEntityTurbineRotorPart)newPart);
+
+		if (newPart instanceof TileEntityTurbineRotorBlade)
+			this.attachedRotorBlades.add((TileEntityTurbineRotorBlade)newPart);
 		
 		if(newPart instanceof TileEntityTurbinePartGlass) {
 			attachedGlass.add((TileEntityTurbinePartGlass)newPart);
 		}
-		
 	}
 
 	@Override
@@ -238,26 +269,21 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		}
 		
 		if(oldPart instanceof TileEntityTurbinePowerTap) {
-			attachedPowerTaps.remove((TileEntityTurbinePowerTap)oldPart);
+			attachedPowerTaps.remove(oldPart);
 		}
 
 		if(oldPart instanceof ITickableMultiblockPart) {
-			attachedTickables.remove((ITickableMultiblockPart)oldPart);
+			attachedTickables.remove(oldPart);
 		}
-		
-		if(oldPart instanceof TileEntityTurbineRotorPart) {
-			TileEntityTurbineRotorPart turbinePart = (TileEntityTurbineRotorPart)oldPart;
-			if(turbinePart.isRotorShaft()) {
-				attachedRotorShafts.remove(turbinePart);
-			}
-			
-			if(turbinePart.isRotorBlade()) {
-				attachedRotorBlades.remove(turbinePart);
-			}
-		}
+
+		if (oldPart instanceof TileEntityTurbineRotorPart)
+			this.attachedRotorShafts.remove(oldPart);
+
+		if (oldPart instanceof TileEntityTurbineRotorBlade)
+			this.attachedRotorBlades.remove(oldPart);
 		
 		if(oldPart instanceof TileEntityTurbinePartGlass) {
-			attachedGlass.remove((TileEntityTurbinePartGlass)oldPart);
+			attachedGlass.remove(oldPart);
 		}
 	}
 
@@ -288,7 +314,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	// Validation code
 	@Override
 	protected boolean isMachineWhole(IMultiblockValidator validatorCallback) {
+
 		if(attachedRotorBearings.size() != 1) {
+
 			validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_count");
 			return false;
 		}
@@ -302,72 +330,69 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		// Now do additional validation based on the coils/blades/rotors that were found
 		
 		// Check that we have a rotor that goes all the way up the bearing
-		TileEntityTurbinePartBase rotorPart = attachedRotorBearings.iterator().next();
+		final TileEntityTurbinePartBase rotorBearing = attachedRotorBearings.iterator().next();
 		
 		// Rotor bearing must calculate outwards dir, as this is normally only calculated in onMachineAssembled().
-		rotorPart.recalculateOutwardsDirection(getMinimumCoord(), getMaximumCoord());
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
+		rotorBearing.recalculateOutwardsDirection(getMinimumCoord(), getMaximumCoord());
 
 		// Find out which way the rotor runs. Obv, this is inwards from the bearing.
-		ForgeDirection rotorDir = rotorPart.getOutwardsDir().getOpposite();
-		*/
-		BlockPos rotorCoord = rotorPart.getPos();
+		EnumFacing rotorDir = rotorBearing.getOutwardFacing();
+		final EnumFacing.Axis rotatedDirAxis = rotorDir.getAxis();
 
-		BlockPos minRotorCoord = getMinimumCoord();
-		BlockPos maxRotorCoord = getMaximumCoord();
-		/*
-		// Constrain min/max rotor coords to where the rotor bearing is and the block opposite it
-		if(rotorDir.offsetX == 0) {
-			minRotorCoord.x = maxRotorCoord.x = rotorCoord.x;
-		}
-		if(rotorDir.offsetY == 0) {
-			minRotorCoord.y = maxRotorCoord.y = rotorCoord.y;
-		}
-		if(rotorDir.offsetZ == 0) {
-			minRotorCoord.z = maxRotorCoord.z = rotorCoord.z;
-		}
-		*/
+		if (null != rotorDir) {
 
+			rotorDir = rotorDir.getOpposite();
+
+		} else {
+
+			validatorCallback.setLastError("multiblock.validation.turbine.incomplete");
+			return false;
+		}
 
 		// Figure out where the rotor ends and which directions are normal to the rotor's 4 faces (this is where blades emit from)
-		BlockPos endRotorCoord = rotorCoord.equals(minRotorCoord) ? maxRotorCoord : minRotorCoord;
-		/*
-		endRotorCoord.translate(rotorDir.getOpposite());
 
-		EnumFacing[] bladeDirections;
-		if(rotorDir.offsetY != 0) { 
-			bladeDirections = StaticUtils.CardinalDirections;
-		}
-		else if(rotorDir.offsetX != 0) {
-			bladeDirections = RotorXBladeDirections;
-		}
-		else {
-			bladeDirections = RotorZBladeDirections;
+		BlockPos turbineMinCoord = this.getMinimumCoord();
+		BlockPos turbineMaxCoord = this.getMaximumCoord();
+		int turbineLength;
+
+		switch (rotorDir.getAxis()) {
+
+			case X:
+				turbineLength = turbineMaxCoord.getX() - turbineMinCoord.getX();
+				break;
+
+			default:
+			case Y:
+				turbineLength = turbineMaxCoord.getY() - turbineMinCoord.getY();
+				break;
+
+			case Z:
+				turbineLength = turbineMaxCoord.getZ() - turbineMinCoord.getZ();
+				break;
 		}
 
-		*/
+		turbineLength = Math.abs(turbineLength) - 1;
 
+		BlockPos rotorCoord = rotorBearing.getWorldPosition();
+		BlockPos endRotorCoord = rotorCoord.offset(rotorDir, turbineLength);
+		final EnumFacing[] bladeDirections = RotorShaftState.getBladesDirections(rotorDir.getAxis());
 		Set<BlockPos> rotorShafts = new HashSet<BlockPos>(attachedRotorShafts.size());
 		Set<BlockPos> rotorBlades = new HashSet<BlockPos>(attachedRotorBlades.size());
 		
 		for(TileEntityTurbineRotorPart part : attachedRotorShafts) {
-			rotorShafts.add(part.getPos());
+			rotorShafts.add(part.getWorldPosition());
 		}
 
-		for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
-			rotorBlades.add(part.getPos());
+		for(TileEntityTurbineRotorBlade part : attachedRotorBlades) {
+			rotorBlades.add(part.getWorldPosition());
 		}
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-
 
 		// Move along the length of the rotor, 1 block at a time
 		boolean encounteredCoils = false;
-		while(!rotorShafts.isEmpty() && !rotorCoord.equals(endRotorCoord)) {
-			rotorCoord.translate(rotorDir);
+
+		while (!rotorShafts.isEmpty() && !rotorCoord.equals(endRotorCoord)) {
+
+			rotorCoord = rotorCoord.offset(rotorDir);
 			
 			// Ensure we find a rotor block along the length of the entire rotor
 			if(!rotorShafts.remove(rotorCoord)) {
@@ -376,12 +401,14 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			}
 			
 			// Now move out in the 4 rotor normals, looking for blades and coils
-			BlockPos checkCoord = rotorCoord.copy(); // TODO is a copy really needed here?
+			BlockPos checkCoord;
 			boolean encounteredBlades = false;
-			for(ForgeDirection bladeDir : bladeDirections) {
-				checkCoord.copy(rotorCoord);
+
+			for(EnumFacing bladeDir : bladeDirections) {
+
 				boolean foundABlade = false;
-				checkCoord.translate(bladeDir);
+
+				checkCoord = rotorCoord.offset(bladeDir);
 				
 				// If we find 1 blade, we can keep moving along the normal to find more blades
 				while(rotorBlades.remove(checkCoord)) {
@@ -391,7 +418,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 						return false;
 					}
 					foundABlade = encounteredBlades = true;
-					checkCoord.translate(bladeDir);
+					checkCoord = checkCoord.offset(bladeDir);
 				}
 
 				// If this block wasn't a blade, check to see if it was a coil
@@ -406,11 +433,16 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 						}
 						
 						// Check the two coil spots in the 'corners', which are permitted if they're connected to the main rotor coil somehow
-						BlockPos coilCheck = checkCoord.copy(); // TODO is a copy really needed here?
-						coilCheck.translate(bladeDir.getRotation(rotorDir));
+
+						BlockPos coilCheck;
+						EnumFacing rotatedDir;
+
+						rotatedDir = bladeDir.rotateAround(rotatedDirAxis);
+						coilCheck = checkCoord.offset(rotatedDir);
 						foundCoils.remove(coilCheck);
-						coilCheck.copy(checkCoord);
-						coilCheck.translate(bladeDir.getRotation(rotorDir.getOpposite()));
+
+						rotatedDir = rotatedDir.rotateAround(rotatedDirAxis).rotateAround(rotatedDirAxis);
+						coilCheck = checkCoord.offset(rotatedDir);
 						foundCoils.remove(coilCheck);
 					}
 					// Else: It must have been air.
@@ -418,8 +450,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			}
 		}
 
-		*/
-		
 		if(!rotorCoord.equals(endRotorCoord)) {
 			validatorCallback.setLastError("multiblock.validation.turbine.shaft_too_short");
 			return false;
@@ -453,17 +483,12 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		// Air is ok
 		if(world.isAirBlock(position)) { return true; }
 
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		Block block = world.getBlock(x, y, z);
-		int metadata = world.getBlockMetadata(x,y,z);
-
 		// Coil windings below here:
-		if(getCoilPartData(x, y, z, block, metadata) != null) {
+		if (this.getCoilPartData(world.getBlockState(position)) != null) {
+
 			foundCoils.add(position);
 			return true;
 		}
-		*/
 
 		// Everything else, gtfo
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_interior", x, y, z);
@@ -574,11 +599,11 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		if(getActive()) {
 			// Spin up via steam inputs, convert some steam back into water.
 			// Use at most the user-configured max, or the amount in the tank, whichever is less.
-			steamIn = Math.min(maxIntakeRate, tanks[TANK_INPUT].getFluidAmount());
+			steamIn = Math.min(maxIntakeRate, this._inputTank.getFluidAmount());
 			
 			if(ventStatus == VentStatus.DoNotVent) {
 				// Cap steam used to available space, if not venting
-				int availableSpace = tanks[TANK_OUTPUT].getCapacity() - tanks[TANK_OUTPUT].getFluidAmount();
+				int availableSpace = this._outputTank.getCapacity() - this._outputTank.getFluidAmount();
 				steamIn = Math.min(steamIn, availableSpace);
 			}
 		}
@@ -632,13 +657,16 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			
 			// And create some water
 			if(steamIn > 0) {
-				fluidConsumedLastTick = steamIn;
-				drain(TANK_INPUT, steamIn, true);
+
+				this.fluidConsumedLastTick = steamIn;
+				this._inputTank.drain(steamIn, true);
 				
 				if(ventStatus != VentStatus.VentAll) {
+
 					Fluid effluent = FluidRegistry.WATER;
 					FluidStack effluentStack = new FluidStack(effluent, steamIn);
-					fill(TANK_OUTPUT, effluentStack, true);
+
+					this._outputTank.fill(effluentStack, true);
 				}
 			}
 		}
@@ -661,7 +689,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 					if(energyRemaining <= 0) { break; }
 					if(powerTap == null || !powerTap.isConnected()) { continue; }
 
-					energyRemaining = powerTap.onProvidePower(energyRemaining);
+					energyRemaining = (int)powerTap.onProvidePower(energyRemaining);
 				}
 			}
 		}
@@ -695,11 +723,11 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	protected void syncDataFrom(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
 		if(data.hasKey("inputTank")) {
-			tanks[TANK_INPUT].readFromNBT(data.getCompoundTag("inputTank"));
+			this._inputTank.readFromNBT(data.getCompoundTag("inputTank"));
 		}
 
 		if(data.hasKey("outputTank")) {
-			tanks[TANK_OUTPUT].readFromNBT(data.getCompoundTag("outputTank"));
+			this._outputTank.readFromNBT(data.getCompoundTag("outputTank"));
 		}
 
 		if(data.hasKey("active")) {
@@ -734,8 +762,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	@Override
 	protected void syncDataTo(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
 
-		data.setTag("inputTank", tanks[TANK_INPUT].writeToNBT(new NBTTagCompound()));
-		data.setTag("outputTank", tanks[TANK_OUTPUT].writeToNBT(new NBTTagCompound()));
+		data.setTag("inputTank", this._inputTank.writeToNBT(new NBTTagCompound()));
+		data.setTag("outputTank", this._outputTank.writeToNBT(new NBTTagCompound()));
 		data.setBoolean("active", active);
 		data.setFloat("energy", energyStored);
 		data.setInteger("ventStatus", ventStatus.ordinal());
@@ -817,8 +845,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		int inputFluidID, inputFluidAmt, outputFluidID, outputFluidAmt;
 		{
 			FluidStack inputFluid, outputFluid;
-			inputFluid = tanks[TANK_INPUT].getFluid();
-			outputFluid = tanks[TANK_OUTPUT].getFluid();
+			inputFluid = this._inputTank.getFluid();
+			outputFluid = this._outputTank.getFluid();
 			
 			if(inputFluid == null || inputFluid.amount <= 0) {
 				inputFluidID = FLUID_NONE;
@@ -890,33 +918,44 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		int outputFluidAmt = buf.readInt();
 
 		if(inputFluidID == FLUID_NONE || inputFluidAmt <= 0) {
-			tanks[TANK_INPUT].setFluid(null);
+			this._inputTank.setFluid(null);
 		}
 		else {
 			Fluid fluid = FluidRegistry.getFluid(inputFluidID);
 			if(fluid == null) {
 				BRLog.warning("[CLIENT] Multiblock Turbine received an unknown fluid of type %d, setting input tank to empty", inputFluidID);
-				tanks[TANK_INPUT].setFluid(null);
+				this._inputTank.setFluid(null);
 			}
 			else {
-				tanks[TANK_INPUT].setFluid(new FluidStack(fluid, inputFluidAmt));
+				this._inputTank.setFluid(new FluidStack(fluid, inputFluidAmt));
 			}
 		}
 
 		if(outputFluidID == FLUID_NONE || outputFluidAmt <= 0) {
-			tanks[TANK_OUTPUT].setFluid(null);
+			this._outputTank.setFluid(null);
 		}
 		else {
 			Fluid fluid = FluidRegistry.getFluid(outputFluidID);
 			if(fluid == null) {
 				BRLog.warning("[CLIENT] Multiblock Turbine received an unknown fluid of type %d, setting output tank to empty", outputFluidID);
-				tanks[TANK_OUTPUT].setFluid(null);
+				this._outputTank.setFluid(null);
 			}
 			else {
-				tanks[TANK_OUTPUT].setFluid(new FluidStack(fluid, outputFluidAmt));
+				this._outputTank.setFluid(new FluidStack(fluid, outputFluidAmt));
 			}
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+	/*
 
 	// Nondirectional FluidHandler implementation, similar to IFluidHandler
 	public int fill(int tank, FluidStack resource, boolean doFill) {
@@ -981,6 +1020,19 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		return tanks[tankIdx].getInfo();
 	}
 
+
+	*/
+
+
+
+
+
+
+
+
+
+
+
 	// IEnergyProvider
 
 	@Override
@@ -1014,12 +1066,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 		energyStored = Math.max(0f, Math.min(maxEnergyStored, newEnergy));
 	}
-	
-	// Energy Helpers
-	/*public float getEnergyStored() {
-		return energyStored;
-	}*/
-	
+
 	/**
 	 * Remove some energy from the internal storage buffer.
 	 * Will not reduce the buffer below 0.
@@ -1090,7 +1137,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
 			}
 			
-			for(TileEntityTurbineRotorPart part : attachedRotorBlades) {
+			for(TileEntityTurbineRotorBlade part : attachedRotorBlades) {
 				WorldHelper.notifyBlockUpdate(WORLD, part.getPos(), null, null);
 			}
 			
@@ -1128,56 +1175,73 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		return true;
 	}
 
-	// TODO Commented temporarily to allow this thing to compile...
-	/*
-	private CoilPartData getCoilPartData(int x, int y, int z, Block block, int metadata) {
-		// Allow vanilla iron and gold blocks
-		if(block == Blocks.iron_block) { return TurbineCoil.getBlockData("blockIron"); }
-		if(block == Blocks.gold_block) { return TurbineCoil.getBlockData("blockGold"); }
-		
-		if(block == BrBlocks.blockMetals && metadata == BlockBRMetal.METADATA_LUDICRITE) { return TurbineCoil.getBlockData("blockLudicrite"); }
-		
-		// Check the oredict to see if it's copper, or a funky kind of gold/iron block
-		// TODO Commented temporarily to allow this thing to compile...
-		String oreName = null;//ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata));
+	private CoilPartData getCoilPartData(IBlockState coilState) {
+
+		Block block = coilState.getBlock();
+		String oreName;
+
+		// allow vanilla iron ...
+		if (Blocks.IRON_BLOCK == block)
+			oreName ="blockIron";
+
+		// ... and gold blocks
+		else if (Blocks.GOLD_BLOCK == block)
+			oreName = "blockGold";
+
+		// is it Ludicrite?
+		else if (BlockBRMetal.isMetal(coilState, MetalType.Ludicrite))
+			oreName = "blockLudicrite";
+
+		// fall back to the Ore Dictionary
+		else
+			oreName = OreDictionaryHelper.getFirstOreName(coilState);
+
 		return TurbineCoil.getBlockData(oreName);
 	}
-	*/
-	
+
 	/**
 	 * Recalculate rotor and coil parameters
 	 */
 	private void recalculateDerivedStatistics() {
-		BlockPos minInterior, maxInterior;
-		minInterior = getMinimumCoord().add(1, 1, 1);
-		maxInterior = getMaximumCoord().add(-1, -1, -1);
+
+		BlockPos minInterior = this.getMinimumCoord().add(1, 1, 1);
+		BlockPos maxInterior = this.getMaximumCoord().add(-1, -1, -1);
 		
 		rotorMass = 0;
 		bladeSurfaceArea = 0;
 		coilSize = 0;
+
 		float coilEfficiency = 0f;
 		float coilBonus = 0f;
 		float coilDragCoefficient = 0f;
 
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
 		// Loop over interior space. Calculate mass and blade area of rotor and size of coils
-		for(int x = minInterior.x; x <= maxInterior.x; x++) {
-			for(int y = minInterior.y; y <= maxInterior.y; y++) {
-				for(int z = minInterior.z; z <= maxInterior.z; z++) {
-					Block block = WORLD.getBlock(x, y, z);
-					int metadata = WORLD.getBlockMetadata(x, y, z);
-					CoilPartData coilData = null;
 
-					if(block == BigReactors.blockTurbineRotorPart) {
-						rotorMass += BigReactors.blockTurbineRotorPart.getRotorMass(block, metadata);
-						if(BlockTurbineRotorPart.isRotorBlade(metadata)) {
+		int maxX = maxInterior.getX();
+		int maxY = maxInterior.getY();
+		int maxZ = maxInterior.getZ();
+
+		for (int x = minInterior.getX(); x <= maxX; ++x) {
+			for (int y = minInterior.getY(); y <= maxY; ++y) {
+				for (int z = minInterior.getZ(); z <= maxZ; ++z) {
+
+					IBlockState state = this.WORLD.getBlockState(new BlockPos(x, y, z));
+					Block block = state.getBlock();
+
+					if (block instanceof ITurbineRotorPart) {
+
+						ITurbineRotorPart rotorPart = (ITurbineRotorPart)block;
+
+						rotorMass += rotorPart.getMass(state);
+
+						if (rotorPart.isBlade())
 							bladeSurfaceArea += 1;
-						}
 					}
-					
-					coilData = getCoilPartData(x, y, z, block, metadata);
-					if(coilData != null) {
+
+					CoilPartData coilData = this.getCoilPartData(state);
+
+					if (coilData != null) {
+
 						coilEfficiency += coilData.efficiency;
 						coilBonus += coilData.bonus;
 						coilDragCoefficient += coilData.energyExtractionRate;
@@ -1186,7 +1250,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 				} // end z
 			} // end y
 		} // end x loop - looping over interior
-		*/
 		
 		// Precalculate some stuff now that we know how big the rotor and blades are
 		frictionalDrag = rotorMass * rotorDragCoefficient * BigReactors.CONFIG.turbineMassDragMultiplier;
@@ -1259,11 +1322,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 		rpmUpdateTracker.onExternalUpdate();
 
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		TileEntity saveTe = WORLD.getTileEntity(referenceCoord.x, referenceCoord.y, referenceCoord.z);
-		WORLD.markTileEntityChunkModified(referenceCoord.x, referenceCoord.y, referenceCoord.z, saveTe);
-		*/
+		TileEntity saveTe = WORLD.getTileEntity(referenceCoord);
+
+		this.WORLD.markChunkDirty(referenceCoord, saveTe);
 		WorldHelper.notifyBlockUpdate(WORLD, referenceCoord, null, null);
 	}
 
@@ -1315,7 +1376,11 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			sb.append("\nRotor Drag CoEff: ").append(Float.toString(rotorDragCoefficient));
 			sb.append("\nBlade Drag: ").append(Float.toString(bladeDrag));
 			sb.append("\nFrict Drag: ").append(Float.toString(frictionalDrag));
+
 			sb.append("\n\nFluid Tanks:\n");
+
+			sb.append("WIP");
+			/* TODO put back tank infos
 			for(int i = 0; i < tanks.length; i++) {
 				sb.append(String.format("[%d] %s ", i, i == TANK_OUTPUT ? "outlet":"inlet"));
 				if(tanks[i] == null || tanks[i].getFluid() == null) {
@@ -1327,6 +1392,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 				}
 				sb.append("\n");
 			}
+			*/
 		}
 
 		return sb.toString();
@@ -1366,5 +1432,17 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	@Override
 	public PowerSystem getPowerSystem() {
 		return this.powerSystem;
+	}
+
+	/*
+	 * IFluidHandler capability support
+	 */
+
+	public IFluidHandler getFluidHandler(IInputOutputPort.Direction direction) {
+		return IInputOutputPort.Direction.Input == direction ? this._inputTank : this._outputTank;
+	}
+
+	public IFluidHandlerInfo getFluidHandlerInfo(IInputOutputPort.Direction direction) {
+		return IInputOutputPort.Direction.Input == direction ? (IFluidHandlerInfo)this._inputTank : (IFluidHandlerInfo)this._outputTank;
 	}
 }

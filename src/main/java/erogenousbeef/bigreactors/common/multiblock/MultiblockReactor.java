@@ -7,6 +7,7 @@ import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
+import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
 import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
@@ -676,6 +677,13 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		ItemStack stack = ItemHelper.createItemStack(blockState, 1);
 
+		if (null == stack) {
+
+			BRLog.error("Got null ItemStack for blockstate %s", blockState);
+			validatorCallback.setLastError("multiblock.validation.reactor.null_block_found", x, y, z);
+			return false;
+		}
+
 		if(ReactorInterior.getBlockData(stack) != null) {
 			return true;
 		}
@@ -862,6 +870,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		// Fuel & waste data
 		fuelContainer.deserialize(buf);
 		this.updateFuelAssembliesQuota();
+		this.updateFuelAssembliesReactants();
 
 
 		if (coolantName.isEmpty())
@@ -913,7 +922,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
         int initialWasteAmount = itemsToDistribute.stackSize;
 
         // Dump waste preferentially to outlets, unless we only have one access port
-        if (!port.isInlet() || (distributeToInputs || this.attachedAccessPorts.size() < 2)) {
+        if (!port.getDirection().isInput() || (distributeToInputs || this.attachedAccessPorts.size() < 2)) {
 
             itemsToDistribute = ItemHandlerHelper.insertItem(port.getItemStackHandler(false), itemsToDistribute, false);
             port.onItemsReceived();
@@ -1026,7 +1035,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(fuelContainer.getRemainingSpace() < Reactants.standardSolidReactantAmount) {
 			return;
 		}
-		
+
+		final boolean wasEmpty = this.fuelContainer.getFuelAmount() <= 0;
 		int amtAdded = 0;
 		
 		// Loop: Consume input reactants from all ports
@@ -1060,6 +1070,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 		
 		if(amtAdded > 0) {
+
+			if (wasEmpty)
+				this.updateFuelAssembliesReactants();
+
 			markReferenceCoordForUpdate();
 			markReferenceCoordDirty();
 		}
@@ -1094,7 +1108,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 				}
 				
 				// First time through, we eject only to outlet ports
-				if(destination == null && !port.isInlet()) {
+				if(destination == null && !port.getDirection().isInput()) {
 					int reactantEjected = port.emitReactant(wasteReactantType, fuelContainer.getWasteAmount());
 					fuelContainer.dumpWaste(reactantEjected);
 					amtEjected += reactantEjected;
@@ -1488,6 +1502,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(WORLD.isRemote) {
 
             this.updateFuelAssembliesQuota();
+			this.updateFuelAssembliesReactants();
 
 			// On the client, re-render all the fuel rod blocks when the fuel status changes
 			for(TileEntityReactorFuelRod fuelRod : attachedFuelRods) {
@@ -1496,15 +1511,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 	}
 
-	private static final FluidTankInfo[] emptyTankInfo = new FluidTankInfo[0];
-	
-	@Override
-	public FluidTankInfo[] getTankInfo() {
-		if(isPassivelyCooled()) { return emptyTankInfo; }
-		
-		return coolantContainer.getTankInfo(-1);
-	}
-	
 	protected void markReferenceCoordForUpdate() {
 		BlockPos rc = getReferenceCoord();
 		if(WORLD != null && rc != null) {
@@ -1585,15 +1591,26 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
     private void updateFuelAssembliesQuota() {
 
-        if (null == this._fuelAssemblies)
-            return;
+		if (null == this._fuelAssemblies)
+			return;
 
-        int count = this._fuelAssemblies.length;
-        int fuelRodsTotalCount = this.attachedFuelRods.size();
+		int count = this._fuelAssemblies.length;
+		int fuelRodsTotalCount = this.attachedFuelRods.size();
 
-        for (int i = 0; i < count; ++i)
-            this._fuelAssemblies[i].updateQuota(this.fuelContainer, fuelRodsTotalCount);
-    }
+		for (int i = 0; i < count; ++i)
+			this._fuelAssemblies[i].updateQuota(this.fuelContainer, fuelRodsTotalCount);
+	}
+
+	private void updateFuelAssembliesReactants() {
+
+		if (null == this._fuelAssemblies)
+			return;
+
+		int count = this._fuelAssemblies.length;
+
+		for (int i = 0; i < count; ++i)
+			this._fuelAssemblies[i].updateReactants(this.fuelContainer);
+	}
 
 	/*
 	 * Power exchange API (replacement for IEnergyProvider)
@@ -1623,4 +1640,23 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	public PowerSystem getPowerSystem() {
 		return this.powerSystem;
 	}
+
+	/*
+	 * IFluidHandler capability support
+	 */
+	public IFluidHandlerInfo getFluidHandlerInfo(IInputOutputPort.Direction direction) {
+		return IInputOutputPort.Direction.Input == direction ? (IFluidHandlerInfo)this._inputTank : (IFluidHandlerInfo)this._outputTank;
+	}
+
+	/**/
+	private static final FluidTankInfo[] emptyTankInfo = new FluidTankInfo[0];
+
+	@Override
+	public FluidTankInfo[] getTankInfo() {
+		if(isPassivelyCooled()) { return emptyTankInfo; }
+
+		return coolantContainer.getTankInfo(-1);
+	}
+	/**/
+
 }

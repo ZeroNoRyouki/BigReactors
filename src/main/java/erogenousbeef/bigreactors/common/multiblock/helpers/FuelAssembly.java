@@ -1,5 +1,9 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
+import erogenousbeef.bigreactors.api.data.ReactantData;
+import erogenousbeef.bigreactors.api.registry.Reactants;
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
@@ -7,10 +11,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FuelAssembly {
 
     public FuelAssembly(final TileEntityReactorControlRod controlRod) {
+
+        this._wasteColor = this._fuelColor = 0;
 
         if (null == controlRod || !this.build(controlRod))
             throw new IllegalStateException("Invalid fuel assembly");
@@ -48,6 +57,12 @@ public class FuelAssembly {
         return this._fuelRods[rodIndex];
     }
 
+    @SideOnly(Side.CLIENT)
+    public int getFuelColor() { return this._fuelColor; }
+
+    @SideOnly(Side.CLIENT)
+    public int getWasteColor() { return this._wasteColor; }
+
     public float getFuelQuota() {
         return this._totalFuelQuota;
     }
@@ -62,6 +77,27 @@ public class FuelAssembly {
 
     public float getFuelRodWasteQuota() {
         return this._totalWasteQuota / this.getFueldRodsCount();
+    }
+
+    public void updateReactants(FuelContainer data) {
+
+        int color;
+
+        color = this.getReactantColor(data.getFuelType());
+        this._fuelColor = -1 == color ? BigReactors.defaultFluidColorFuel : color | 0xFF000000;
+
+        color = this.getReactantColor(data.getWasteType());
+        this._wasteColor = -1 == color ? BigReactors.defaultFluidColorWaste : color | 0xFF000000;
+    }
+
+    private int getReactantColor(String reactantName) {
+
+        if (null == reactantName || reactantName.isEmpty())
+            return -1;
+
+        ReactantData reactant = Reactants.getReactant(reactantName);
+
+        return null == reactant ? -1 : reactant.getColor();
     }
 
     public void updateQuota(FuelContainer data, int fuelRodsTotalCount) {
@@ -209,6 +245,8 @@ public class FuelAssembly {
     private EnumFacing _cachedOutwardFacing;
     private float _totalFuelQuota;
     private float _totalWasteQuota;
+    private int _fuelColor;
+    private int _wasteColor;
 
     private static final EnumFacing[] RADIATE_DIRECTIONS_X_AXIS = {EnumFacing.UP, EnumFacing.NORTH, EnumFacing.DOWN, EnumFacing.SOUTH};
     private static final EnumFacing[] RADIATE_DIRECTIONS_Y_AXIS = EnumFacing.HORIZONTALS;

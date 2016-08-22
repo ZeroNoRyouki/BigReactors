@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "all":"bigreactors:blocks/tile.brMetal.blockYellorium"
+            "all":"bigreactors:blocks/blockYellorium"
         },
         "model":"cube_all"
     },
@@ -10,29 +10,34 @@
         "metal":{  
             "yellorium":{  
                 "textures":{
-					"all":"bigreactors:blocks/tile.brMetal.blockYellorium"
+					"all":"bigreactors:blocks/blockYellorium"
                 }
             },
 			"cyanite":{  
                 "textures":{
-					"all":"bigreactors:blocks/tile.brMetal.blockCyanite"
+					"all":"bigreactors:blocks/blockCyanite"
                 }
             },
 			"graphite":{  
                 "textures":{
-					"all":"bigreactors:blocks/tile.brMetal.blockGraphite"
+					"all":"bigreactors:blocks/blockGraphite"
                 }
             },
 			"blutonium":{  
                 "textures":{
-					"all":"bigreactors:blocks/tile.brMetal.blockBlutonium"
+					"all":"bigreactors:blocks/blockBlutonium"
                 }
             },
 			"ludicrite":{  
                 "textures":{
-					"all":"bigreactors:blocks/tile.brMetal.blockLudicrite"
+					"all":"bigreactors:blocks/blockLudicrite"
                 }
-            }			
+            },
+			"steel":{  
+                "textures":{
+					"all":"bigreactors:blocks/blockSteel"
+                }
+            }				
         },
         "inventory":{  
             "transform":"forge:default-block"

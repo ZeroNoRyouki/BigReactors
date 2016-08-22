@@ -2,51 +2,104 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockTurbinePart.fluidPort",
-            "particle":"#side",
-            "down":"#side",
-            "up":"#side",
-            "north":"#side",
-            "south":"#side",
-            "west":"#side",
-            "east":"#side"
+            "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
+            "machineA":"bigreactors:blocks/turbine/legacy/fluidPort.inlet",
+            "machine":"#machineA",
+            "particle":"#machine",
+            "down":"#machine",
+            "up":"#machine",
+            "north":"#machine",
+            "south":"#machine",
+            "west":"#machine",
+            "east":"#machine"
         },
         "model":"cube"
     },
     "variants":{  
-        "assembled":{  
-            "true":{  
+        "tier":{  
+            "legacy":{  
+				"transform":"forge:default-block",
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockTurbinePart.fluidPort",
-                    "side":"bigreactors:tile.blockTurbinePart.housing"
+                    "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
+                    "machineA":"bigreactors:blocks/turbine/legacy/fluidPort.inlet",
+                    "machineB":"bigreactors:blocks/turbine/legacy/fluidPort.outlet"
                 }
             },
-            "false":{  
+            "basic":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockTurbinePart.fluidPort",
-                    "side":"bigreactors:blocks/tile.blockTurbinePart.fluidPort"
+                    "plate":"bigreactors:blocks/turbine/basic/housing.plate",
+                    "machineA":"bigreactors:blocks/turbine/basic/fluidPort.inlet",
+                    "machineB":"bigreactors:blocks/turbine/basic/fluidPort.outlet"
                 }
             }
         },
-        "hfacing":{  
-            "north":{  
+        "afstate":{  
+            "disassembled":{  
+            },
+            "assemblednorth":{  
                 "textures":{  
-                    "north":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
-            "south":{  
+            "assembledsouth":{  
                 "textures":{  
-                    "south":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
-            "west":{  
+            "assembledwest":{  
                 "textures":{  
-                    "west":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "east":"#plate"
                 }
             },
-            "east":{  
+            "assembledeast":{  
                 "textures":{  
-                    "east":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate"
+                }
+            },
+            "assembledup":{  
+                "textures":{  
+                    "down":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembleddown":{  
+                "textures":{  
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            }
+        },
+        "portdirection":{  
+            "outlet":{  
+                "textures":{  
+                    "machine":"#machineB"
+                }
+            },
+            "inlet":{  
+                "textures":{  
+                    "machine":"#machineA"
                 }
             }
         },

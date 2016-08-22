@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockTieredPart extends BlockPart implements IGameObject {
+public class BlockTieredPart extends BlockPart {
 
     public BlockTieredPart(PartType type, String blockName, Material material) {
         super(type, blockName, material);

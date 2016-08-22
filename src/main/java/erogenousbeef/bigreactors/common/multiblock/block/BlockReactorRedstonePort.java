@@ -161,13 +161,11 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 
 	@Override
 	protected IBlockState buildDefaultState(IBlockState state) {
-
 		return super.buildDefaultState(state).withProperty(Properties.LIT, false);
 	}
 
 	@Override
 	protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
-
 		return super.buildActualState(state, world, position, part).withProperty(Properties.LIT,
 				(part instanceof TileEntityReactorRedstonePort) && ((TileEntityReactorRedstonePort)part).isLit());
 	}

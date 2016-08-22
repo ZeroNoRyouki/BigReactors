@@ -16,11 +16,10 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	@Override
 	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
 
-		BlockPos position = this.getPos();
-		IBlockState state = this.worldObj.getBlockState(position);
-
-		if (BrBlocks.reactorCasing == state.getBlock())
+		if (this.getBlockType() == BrBlocks.reactorCasing)
 			return true;
+
+		BlockPos position = this.getWorldPosition();
 
 		validatorCallback.setLastError("multiblock.validation.reactor.invalid_frame_block", position.getX(), position.getY(), position.getZ());
 		return false;
@@ -47,22 +46,16 @@ public class TileEntityReactorPart extends TileEntityReactorPartBase {
 	@Override
 	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
 
-		validatorCallback.setLastError("multiblock.validation.reactor.invalid_part_for_interior", this.getPos());
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_part_for_interior", this.getWorldPosition());
 		return false;
 	}
 
 	@Override
 	public void onMachineActivated() {
-		// Re-render controllers on client
-		if (this.worldObj.isRemote && (this.getBlockType() == BrBlocks.reactorController))
-			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 	}
 
 	@Override
 	public void onMachineDeactivated() {
-		// Re-render controllers on client
-		if (this.worldObj.isRemote && (this.getBlockType() == BrBlocks.reactorController))
-			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 	}
 
 	public PartTier getMachineTier() {

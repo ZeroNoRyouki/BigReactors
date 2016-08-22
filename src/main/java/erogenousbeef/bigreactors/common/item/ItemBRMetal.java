@@ -41,8 +41,6 @@ public class ItemBRMetal extends ItemBase {
 
 		ResourceLocation location = this.getRegistryName();
 
-		location = new ResourceLocation(location.getResourceDomain(), "items/" + location.getResourcePath());
-
 		for (MetalType metal : MetalType.values())
 			ModelLoader.setCustomModelResourceLocation(this, metal.toMeta(),
 					new ModelResourceLocation(location, String.format("metal=%s", metal.getName())));

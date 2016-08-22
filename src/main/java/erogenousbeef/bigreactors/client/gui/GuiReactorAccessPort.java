@@ -78,7 +78,7 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 	
 	protected void updateIcons() {
 
-		if(_port.isInlet()) {
+		if(_port.getDirection().isInput()) {
 			btnInlet.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.INLET_ON));
 			btnOutlet.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.OUTLET_OFF));
 		}

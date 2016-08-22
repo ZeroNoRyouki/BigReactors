@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.Properties;
@@ -28,10 +29,10 @@ public class BlockMBCreativePart extends BlockTieredPart {
 	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		switch (this._type) {
-			/*
+
 			case ReactorCreativeCoolantPort:
 				return new TileEntityReactorCreativeCoolantPort();
-			*/
+
 			case TurbineCreativeSteamGenerator:
 				return new TileEntityTurbineCreativeSteamGenerator();
 
@@ -57,3 +58,4 @@ public class BlockMBCreativePart extends BlockTieredPart {
 		return state;
 	}
 }
+*/

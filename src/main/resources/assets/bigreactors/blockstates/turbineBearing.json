@@ -2,51 +2,89 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/tile.blockTurbinePart.bearing",
-            "particle":"#side",
-            "down":"#side",
-            "up":"#side",
-            "north":"#side",
-            "south":"#side",
-            "west":"#side",
-            "east":"#side"
+            "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
+            "machine":"bigreactors:blocks/turbine/legacy/bearing",
+            "particle":"#machine",
+            "down":"#machine",
+            "up":"#machine",
+            "north":"#machine",
+            "south":"#machine",
+            "west":"#machine",
+            "east":"#machine"
         },
         "model":"cube"
     },
     "variants":{  
-        "assembled":{  
-            "true":{  
+        "tier":{  
+            "legacy":{  
+				"transform":"forge:default-block",
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockTurbinePart.bearing",
-                    "side":"bigreactors:tile.blockTurbinePart.housing"
+                    "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
+                    "machine":"bigreactors:blocks/turbine/legacy/bearing"
                 }
             },
-            "false":{  
+            "basic":{  
                 "textures":{  
-                    "facing":"bigreactors:blocks/tile.blockTurbinePart.bearing",
-                    "side":"bigreactors:blocks/tile.blockTurbinePart.bearing"
+                    "plate":"bigreactors:blocks/turbine/basic/housing.plate",
+                    "machineB":"bigreactors:blocks/turbine/basic/bearing"
                 }
             }
         },
-        "hfacing":{  
-            "north":{  
+        "afstate":{  
+            "disassembled":{  
+            },
+            "assemblednorth":{  
                 "textures":{  
-                    "north":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
-            "south":{  
+            "assembledsouth":{  
                 "textures":{  
-                    "south":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             },
-            "west":{  
+            "assembledwest":{  
                 "textures":{  
-                    "west":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate"
                 }
             },
-            "east":{  
+            "assembledeast":{  
                 "textures":{  
-                    "east":"#facing"
+                    "down":"#plate",
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembledup":{  
+                "textures":{  
+                    "up":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
+                }
+            },
+            "assembleddown":{  
+                "textures":{  
+                    "down":"#plate",
+                    "north":"#plate",
+                    "south":"#plate",
+                    "west":"#plate",
+                    "east":"#plate"
                 }
             }
         },

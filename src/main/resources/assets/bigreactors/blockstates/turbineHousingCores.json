@@ -1,0 +1,23 @@
+{  
+    "forge_marker":1,
+    "defaults": {
+		"model":"bigreactors:item/turbineHousingCores",
+		"transform": "forge:default-block"
+	},
+    "variants":{ 
+	     "tier":{  
+            "legacy":{  
+                "textures":{
+					"side": "bigreactors:items/turbine/legacy/housingCoreSide",
+					"top": "bigreactors:items/turbine/legacy/housingCoreTop"
+                }
+            },
+            "basic":{  
+                "textures":{
+					"side": "bigreactors:items/turbine/legacy/housingCoreSide",
+					"top": "bigreactors:items/turbine/legacy/housingCoreTop"
+                }
+            }
+        }
+    }
+}

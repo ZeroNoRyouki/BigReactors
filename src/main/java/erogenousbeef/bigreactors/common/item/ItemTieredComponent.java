@@ -28,8 +28,6 @@ public class ItemTieredComponent extends ItemBase {
 
         ResourceLocation location = this.getRegistryName();
 
-        location = new ResourceLocation(location.getResourceDomain(), "items/" + location.getResourcePath());
-
         for (PartTier tier : PartTier.values())
             ModelLoader.setCustomModelResourceLocation(this, tier.toMeta(),
                     new ModelResourceLocation(location, String.format("tier=%s", tier.getName())));

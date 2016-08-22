@@ -9,7 +9,8 @@ public enum MetalType implements IStringSerializable {
     Cyanite(1),
     Graphite(2),
     Blutonium(3),
-    Ludicrite(4);
+    Ludicrite(4),
+    Steel(5);
 
     /**
      * All the enum values indexed by the meta-data value
@@ -24,13 +25,11 @@ public enum MetalType implements IStringSerializable {
 
     @Override
     public String toString() {
-
         return this._name;
     }
 
     @Override
     public String getName() {
-
         return this._name;
     }
 

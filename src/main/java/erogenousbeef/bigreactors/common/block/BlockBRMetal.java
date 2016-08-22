@@ -137,6 +137,10 @@ public class BlockBRMetal extends BlockBR {
 		return new ItemStack(this, amount, type.toMeta());
 	}
 
+	public static boolean isMetal(IBlockState state, MetalType metal) {
+		return BrBlocks.blockMetals == state.getBlock() && state.getValue(Properties.METAL) == metal;
+	}
+
 	@Override
 	protected void buildBlockState(BlockStateContainer.Builder builder) {
 		builder.add(Properties.METAL);

@@ -19,7 +19,7 @@ public enum PartType implements IStringSerializable {
     TurbineGlass("glassTurbine"),
     TurbineHousing("turbineHousing"),
     TurbineController("turbineController"),
-    TurbinePowerPort("turbinePowerTap"),
+    TurbinePowerPort("turbinePowerTapRF"),
     TurbineFluidPort("turbineFluidPort"),
     TurbineRotorBearing("turbineBearing"),
     TurbineComputerPort("turbineComputerPort"),

@@ -2,8 +2,9 @@ package erogenousbeef.bigreactors.common.block;
 
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.MineralType;
 import erogenousbeef.bigreactors.common.Properties;
-import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,7 +22,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BlockBROre extends BlockBR {
 
@@ -89,36 +93,60 @@ public class BlockBROre extends BlockBR {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		// so far we only have Yellorite ...
 		if (null == this._subBlocks) {
 
-			this._subBlocks = new ItemStack(item, 1, OreType.Yellorite.toMeta());
+			OreType[] types = OreType.VALUES;
+			int length = types.length;
+
+			this._subBlocks = new ArrayList<>(length);
+
+			for (int i = 0; i < length; ++i)
+				this._subBlocks.add(new ItemStack(item, 1, types[i].toMeta()));
 		}
 
-		list.add(this._subBlocks);
+		list.addAll(this._subBlocks);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-
 		return this.getDefaultState().withProperty(Properties.ORE, OreType.fromMeta(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-
 		return state.getValue(Properties.ORE).toMeta();
+	}
+
+
+	@Nullable
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+
+		OreType type = state.getValue(Properties.ORE);
+		MineralType mineral = type.getMineralDropped();
+
+		return null == mineral ? super.getItemDropped(state, rand, fortune) : BrItems.minerals;
 	}
 
 	@Override
 	public int damageDropped(IBlockState state) {
 
-		return state.getValue(Properties.ORE).toMeta();
+		OreType type = state.getValue(Properties.ORE);
+		MineralType mineral = type.getMineralDropped();
+
+		return null == mineral ? super.damageDropped(state) : mineral.toMeta();
+	}
+
+	public ItemStack createItemStack(OreType type, int amount) {
+		return new ItemStack(this, amount, type.toMeta());
+	}
+
+	public IBlockState getStateFromType(OreType type) {
+		return this.getDefaultState().withProperty(Properties.ORE, type);
 	}
 
 	@Override
 	protected void buildBlockState(BlockStateContainer.Builder builder) {
-
 		builder.add(Properties.ORE);
 	}
 
@@ -133,16 +161,14 @@ public class BlockBROre extends BlockBR {
 
 		@Override
 		public String getUnlocalizedName(ItemStack stack) {
-
 			return super.getUnlocalizedName() + "." + OreType.fromMeta(stack.getMetadata()).getName();
 		}
 
 		@Override
 		public int getMetadata(int meta) {
-
 			return meta;
 		}
 	}
 
-	private ItemStack _subBlocks;
+	private List<ItemStack> _subBlocks;
 }
