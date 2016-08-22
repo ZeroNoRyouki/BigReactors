@@ -1,12 +1,14 @@
 package erogenousbeef.bigreactors.client;
 
 import erogenousbeef.bigreactors.client.renderer.RendererReactorFuelRod;
+import erogenousbeef.bigreactors.client.renderer.RotorSpecialRenderer;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -109,5 +111,9 @@ public class ClientProxy extends CommonProxy {
 
 		// reactor fuel rods
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
+		/*
+		// turbine rotor
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
+		*/
 	}
 }
