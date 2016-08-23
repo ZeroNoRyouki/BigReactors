@@ -56,7 +56,7 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 
 		ModelLoader.setCustomStateMapper(this, (new StateMap.Builder()).withName(Properties.TIER).withSuffix("_" + path).build());
 
-		for (PartTier tier: PartTier.VALUES) {
+		for (PartTier tier: PartTier.RELEASED_TIERS) {
 
 			ResourceLocation location = new ResourceLocation(domain, tier.getName() + "_" + path);
 

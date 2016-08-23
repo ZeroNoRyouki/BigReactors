@@ -10,7 +10,6 @@ import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrFluids;
-import erogenousbeef.bigreactors.init.BrRecipes;
 import erogenousbeef.bigreactors.init.InitHandler;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
@@ -102,7 +101,6 @@ public class BigReactors implements IModInitializationHandler {
 
 		CONFIG.onInit(event);
 		InitHandler.INSTANCE.onInit(event);
-		BrRecipes.initialize();
 
 		// add world generator for our ores
 		if (CONFIG.enableWorldGen) {

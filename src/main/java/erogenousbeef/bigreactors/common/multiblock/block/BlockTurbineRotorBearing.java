@@ -1,10 +1,14 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
+import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
 
@@ -15,6 +19,20 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityTurbineRotorBearing();
+    }
+
+    @Override
+    public void registerRecipes() {
+
+        if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
+            GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
+                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND,
+                    'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Legacy, 1));
+
+        if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
+            GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
+                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND,
+                    'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Basic, 1));
     }
 
     // TODO Commented until the new rotor animation is in

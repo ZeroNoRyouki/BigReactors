@@ -19,9 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-//import cofh.core.util.oredict.OreDictionaryArbiter;
-//import cofh.lib.util.helpers.ItemHelper;
-
 public class ItemBeefDebugTool extends ItemBase {
 
 	public ItemBeefDebugTool(String itemName) {

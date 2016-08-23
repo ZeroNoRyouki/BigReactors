@@ -50,7 +50,7 @@ public final class BrBlocks {
     public static final BlockMultiblockIOPort turbineCreativeSteamGenerator;
     
     // Devices
-    public static final BlockBRDevice deviceCyaniteRep;
+    //public static final BlockBRDevice deviceCyaniteRep; // Bye Bye ...
 
     // Fluid blocks
     public static final BlockBRGenericFluid yellorium;
@@ -102,7 +102,7 @@ public final class BrBlocks {
 
 
         // - devices
-        deviceCyaniteRep = (BlockBRDevice)init.register(new BlockBRDevice(DeviceType.CyaniteReprocessor, "deviceCyaniteRep"));
+        //deviceCyaniteRep = (BlockBRDevice)init.register(new BlockBRDevice(DeviceType.CyaniteReprocessor, "deviceCyaniteRep"));
 
         // - fluid blocks
         yellorium = init.register(new BlockBRGenericFluid(BrFluids.fluidYellorium, "yellorium", new MaterialLiquid(MapColor.YELLOW)));
@@ -110,7 +110,7 @@ public final class BrBlocks {
 
         // - register block tile entities
 
-        init.register(TileEntityCyaniteReprocessor.class);
+        //init.register(TileEntityCyaniteReprocessor.class);
 
         init.register(TileEntityReactorPart.class);
         init.register(TileEntityReactorGlass.class);

@@ -13,6 +13,7 @@ public enum PartTier implements IStringSerializable {
      * All the enum values indexed by the meta-data value
      */
     public static final PartTier[] VALUES;
+    public static final PartTier[] RELEASED_TIERS;
 
     public static final EnumSet<PartTier> REACTOR_TIERS;
     public static final EnumSet<PartTier> TURBINE_TIERS;
@@ -56,7 +57,9 @@ public enum PartTier implements IStringSerializable {
         for (PartTier tier: tiers)
             VALUES[tier.toMeta()] = tier;
 
-        REACTOR_TIERS = EnumSet.of(Legacy, Basic);
-        TURBINE_TIERS = EnumSet.of(Legacy, Basic);
+        REACTOR_TIERS = EnumSet.of(Legacy);
+        TURBINE_TIERS = EnumSet.of(Legacy);
+
+        RELEASED_TIERS = new PartTier[] { Legacy };
     }
 }

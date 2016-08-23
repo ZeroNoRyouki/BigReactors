@@ -66,39 +66,6 @@ public class ItemBRMetal extends ItemBase {
 	}
 
 	@Override
-	public void registerRecipes() {
-
-		final Config configs = BigReactors.CONFIG;
-		final ItemStack ingotGraphite = OreDictionaryHelper.getOre("ingotGraphite");
-		final ItemStack ingotCyanite = OreDictionaryHelper.getOre("ingotCyanite");
-
-		// Graphite & Cyanite
-
-		// -- Coal -> Graphite
-		if (configs.registerCoalForSmelting)
-			GameRegistry.addSmelting(Items.COAL, ingotGraphite, 1);
-
-		// -- Charcoal -> Graphite
-		if (configs.registerCharcoalForSmelting)
-			GameRegistry.addSmelting(new ItemStack(Items.COAL, 1, 1), ingotGraphite, 1);
-
-		// -- Gravel + Coal -> Graphite
-		if (configs.registerGraphiteCoalCraftingRecipes)
-			GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
-					new ItemStack(Items.COAL, 1, 0)));
-
-		// -- Gravel + Charcoal -> Graphite
-		if (configs.registerGraphiteCharcoalCraftingRecipes)
-			GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
-					new ItemStack(Items.COAL, 1, 1)));
-
-		// -- Yellorium ingot + Sand -> Cyanite
-		if (configs.enableCyaniteFromYelloriumRecipe)
-			GameRegistry.addRecipe(new ShapelessOreRecipe(ingotCyanite, configs.recipeYelloriumIngotName, Blocks.SAND ));
-
-	}
-
-	@Override
 	public int getMetadata(int damage)
 	{
 		return damage;

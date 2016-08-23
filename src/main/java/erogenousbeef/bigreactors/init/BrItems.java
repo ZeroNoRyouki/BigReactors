@@ -1,15 +1,21 @@
 package erogenousbeef.bigreactors.init;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemBeefDebugTool;
 import erogenousbeef.bigreactors.common.item.ItemMineral;
 import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public final class BrItems {
 
@@ -25,7 +31,7 @@ public final class BrItems {
     public static final ItemTieredComponent turbineHousingCores;
 
     // Miscellanea
-    public static final ItemBeefDebugTool beefDebugTool;
+    //public static final ItemBeefDebugTool beefDebugTool;
 
     public static void initialize() {
     }
@@ -37,7 +43,46 @@ public final class BrItems {
         // register items
 
         // - Ingots & dusts
-        ingotMetals = (ItemBRMetal)init.register(new ItemBRMetal("ingotMetals", MetalSize.Ingot));
+        ingotMetals = (ItemBRMetal)init.register(new ItemBRMetal("ingotMetals", MetalSize.Ingot) {
+
+             @Override
+             public void registerRecipes() {
+
+                 final Config configs = BigReactors.CONFIG;
+                 final ItemStack ingotGraphite = OreDictionaryHelper.getOre("ingotGraphite");
+                 final ItemStack ingotCyanite = OreDictionaryHelper.getOre("ingotCyanite");
+
+                 // Graphite & Cyanite
+
+                 // -- Coal -> Graphite
+                 if (configs.registerCoalForSmelting)
+                     GameRegistry.addSmelting(Items.COAL, ingotGraphite, 1);
+
+                 // -- Charcoal -> Graphite
+                 if (configs.registerCharcoalForSmelting)
+                     GameRegistry.addSmelting(new ItemStack(Items.COAL, 1, 1), ingotGraphite, 1);
+
+                 // -- Gravel + Coal -> Graphite
+                 if (configs.registerGraphiteCoalCraftingRecipes)
+                     GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
+                             new ItemStack(Items.COAL, 1, 0)));
+
+                 // -- Gravel + Charcoal -> Graphite
+                 if (configs.registerGraphiteCharcoalCraftingRecipes)
+                     GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
+                             new ItemStack(Items.COAL, 1, 1)));
+
+                 // -- Yellorium ingot + Sand -> Cyanite
+                 if (configs.enableCyaniteFromYelloriumRecipe)
+                     GameRegistry.addRecipe(new ShapelessOreRecipe(ingotCyanite, configs.recipeYelloriumIngotName, Blocks.SAND));
+
+
+                 // TEMPORARY recipe for the blutonium ingot
+
+                 GameRegistry.addShapelessRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1),
+                         ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite);
+             }
+        });
 
         dustMetals = (ItemBRMetal)init.register(new ItemBRMetal("dustMetals", MetalSize.Dust) {
 
@@ -93,6 +138,6 @@ public final class BrItems {
 
 
         // - Miscellanea
-        beefDebugTool = (ItemBeefDebugTool)init.register(new ItemBeefDebugTool("beefDebugTool"));
+        //beefDebugTool = (ItemBeefDebugTool)init.register(new ItemBeefDebugTool("beefDebugTool"));
     }
 }

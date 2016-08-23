@@ -61,7 +61,7 @@ public class BlockTieredPart extends BlockPart {
 
         String mapFormat = sb.toString();
 
-        for (PartTier tier : PartTier.VALUES)
+        for (PartTier tier : PartTier.RELEASED_TIERS)
             ModelLoader.setCustomModelResourceLocation(item, tier.toMeta(),
                     new ModelResourceLocation(location, String.format(mapFormat, tier.getName())));
     }
@@ -94,7 +94,7 @@ public class BlockTieredPart extends BlockPart {
 
         if (null == this._subBlocks) {
 
-            PartTier[] tiers = PartTier.VALUES;
+            PartTier[] tiers = PartTier.RELEASED_TIERS;
             int length = tiers.length;
 
             this._subBlocks = new ArrayList<>(length);

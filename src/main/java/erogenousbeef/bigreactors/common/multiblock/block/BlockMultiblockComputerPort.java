@@ -53,25 +53,25 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
                 GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "GPG", "CRC",
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
-                        'G', "ingotGold", 'P', Items.REPEATER));
+                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
+                    'G', "ingotGold", 'P', Items.REPEATER));
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
                 GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "GPG", "CRC",
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
-                        'G', "ingotGold", 'P', Items.REPEATER));
+                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
+                    'G', "ingotGold", 'P', Items.REPEATER));
 
         } else if (PartType.TurbineComputerPort == this._type) {
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
                 GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "GPG", "HRH",
-                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'G', "ingotGold",
-                    'R', "turbineRotorShaft")); // TODO fix turbineRotorShaft to actual block
+                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
+                    'G', "ingotGold", 'P', Items.REPEATER));
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
                 GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "GPG", "HRH",
-                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'G', "ingotGold",
-                    'R', "turbineRotorShaft")); // TODO fix turbineRotorShaft to actual block
+                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
+                    'G', "ingotGold", 'P', Items.REPEATER));
         }
     }
 

@@ -51,7 +51,7 @@ public class ItemTieredComponent extends ItemBase {
 
         if (null == this._subItems) {
 
-            PartTier[] types = PartTier.VALUES;
+            PartTier[] types = PartTier.RELEASED_TIERS;
             int length = types.length;
 
             this._subItems = new ArrayList<>(length);

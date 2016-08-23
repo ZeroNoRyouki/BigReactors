@@ -25,6 +25,14 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice /*implements I
         //return new TileEntityReactorRedNetPort();
     }
 
+    /* TODO but back recipe when MineFactory Reloaded is back
+    if (Loader.isModLoaded("MineFactoryReloaded")) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorRedNetPort.createItemStack(), "CRC", "RGR", "CRC", 'C',
+                "reactorCasing", 'R', "cableRedNet", 'G', "ingotGold"));
+    }
+    */
+
+
     /*
     // We do this to skip DISABLED
     @SideOnly(Side.CLIENT)

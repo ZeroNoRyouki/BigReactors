@@ -1,8 +1,7 @@
 {  
     "forge_marker":1,
     "defaults":{
-      "model":"bigreactors:turbine/rotor_shaft_z_0c",
-      "x": -90
+      "model":"bigreactors:turbine/rotor_shaft_z_4c"
     },
     "variants":{  
 		"tier":{  
@@ -65,8 +64,9 @@
 				"model":"bigreactors:turbine/rotor_shaft_z_4c"
             }
 		},
-        "inventory":{  
-            "transform":"forge:default-item"
+        "inventory":{
+            "model":"bigreactors:turbine/rotor_shaft_z_4c",
+            "transform":"forge:default-block"
         }
     }
 }

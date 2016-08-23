@@ -1,6 +1,8 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorShaft;
@@ -9,11 +11,14 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.EnumSet;
 
@@ -24,6 +29,18 @@ public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineR
 		super(PartType.TurbineRotorShaft, blockName, Material.IRON);
 		this.setLightLevel(0.9f);
 		this._neighbors = new IBlockState[EnumFacing.VALUES.length];
+	}
+
+	@Override
+	public void registerRecipes() {
+
+		if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
+			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI",
+				'C', "ingotCyanite", 'I', "ingotIron"));
+
+		if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
+			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "ICI",
+				'C', "ingotCyanite", 'I', "ingotIron"));
 	}
 
 	@Override
