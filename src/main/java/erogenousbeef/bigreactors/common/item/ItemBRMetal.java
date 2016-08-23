@@ -3,7 +3,6 @@ package erogenousbeef.bigreactors.common.item;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.config.Config;
-import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

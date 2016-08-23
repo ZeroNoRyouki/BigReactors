@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.utils;
 
+import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 //import buildcraft.api.tools.IToolWrench;
-import cofh.api.item.IToolHammer;
 
 public class StaticUtils {
 

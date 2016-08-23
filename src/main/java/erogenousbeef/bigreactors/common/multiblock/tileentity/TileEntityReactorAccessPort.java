@@ -4,6 +4,7 @@ import erogenousbeef.bigreactors.api.data.SourceProductMapping;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
 import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.ItemHandlerWrapper;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
@@ -60,7 +61,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			if (Direction.Input == this._direction) {
 
 				if (null == this._fuelInventoryWrapper)
-					this._fuelInventoryWrapper = new CapabWrapper(this._fuelInventory) {
+					this._fuelInventoryWrapper = new ItemHandlerWrapper(this._fuelInventory) {
 						@Override
 						public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 							return null != stack && Reactants.isFuel(stack) ? this._handler.insertItem(slot, stack, simulate) : stack;
@@ -72,7 +73,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			} else {
 
 				if (null == this._wasteInventoryWrapper)
-					this._wasteInventoryWrapper = new CapabWrapper(this._wasteInventory) {
+					this._wasteInventoryWrapper = new ItemHandlerWrapper(this._wasteInventory) {
 						@Override
 						public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 							return stack;
@@ -391,28 +392,4 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	protected IItemHandler _wasteInventoryWrapper;
 	protected IItemHandler _adjacentInventory;
 	protected IInputOutputPort.Direction _direction;
-
-	private abstract class CapabWrapper implements IItemHandler {
-
-		public CapabWrapper(TileEntityItemStackHandler handler) {
-			this._handler = handler;
-		}
-
-		@Override
-		public int getSlots() {
-			return this._handler.getSlots();
-		}
-
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			return this._handler.getStackInSlot(slot);
-		}
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return this._handler.extractItem(slot, amount, simulate);
-		}
-
-		protected TileEntityItemStackHandler _handler;
-	}
 }

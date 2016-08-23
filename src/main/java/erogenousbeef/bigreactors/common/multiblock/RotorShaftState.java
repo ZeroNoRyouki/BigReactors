@@ -1,12 +1,9 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
-import com.google.common.collect.Maps;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Map;
 
 public enum RotorShaftState implements IStringSerializable {
 

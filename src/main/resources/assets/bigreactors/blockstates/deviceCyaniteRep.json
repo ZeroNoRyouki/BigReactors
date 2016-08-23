@@ -3,6 +3,7 @@
     "defaults":{  
         "textures":{  
             "side":"bigreactors:blocks/tile.blockBRDevice",
+            "facing":"bigreactors:blocks/tile.blockBRDevice.cyaniteReprocessor",
             "particle":"#side",
             "down":"#side",
             "up":"#side",
@@ -49,7 +50,10 @@
             }
         },
         "inventory":{ 
-			"transform":"forge:default-block"
+			"transform":"forge:default-item",
+            "textures":{
+                "north":"#facing"
+            }
         }
     }
 }
