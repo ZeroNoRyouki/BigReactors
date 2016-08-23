@@ -5,6 +5,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartBase;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import erogenousbeef.bigreactors.gui.controls.*;
@@ -13,6 +14,7 @@ import erogenousbeef.bigreactors.net.message.MachineCommandActivateMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeInductorMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeMaxIntakeMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineChangeVentMessage;
+import erogenousbeef.bigreactors.utils.StaticUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -103,16 +105,15 @@ public class GuiTurbineController extends BeefGuiBase {
 		topY += rotorEfficiencyIcon.getHeight() + 4;
 
 		statusString = new BeefGuiLabel(this, "", leftX, topY);
-		topY += statusString.getHeight() + 4;
 		
 		powerIcon = new BeefGuiIcon(this, guiLeft + 153, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("energyStored"), new String[] { TextFormatting.AQUA + "Energy Storage" });
 		powerBar = new BeefGuiPowerBar(this, guiLeft + 152, guiTop + 22, this.turbine);
 		
 		steamIcon = new BeefGuiIcon(this, guiLeft + 113, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("hotFluidIn"), new String[] { TextFormatting.AQUA + "Intake Fluid Tank" });
-		steamBar = new BeefGuiFluidBar(this, guiLeft + 112, guiTop + 22, turbine.getFluidHandlerInfo(IInputOutputPort.Direction.Input));
+		steamBar = new BeefGuiFluidBar(this, guiLeft + 112, guiTop + 22, turbine.getFluidHandler(IInputOutputPort.Direction.Input));
 
 		waterIcon = new BeefGuiIcon(this, guiLeft + 133, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("coolantOut"), new String[] { TextFormatting.AQUA + "Exhaust Fluid Tank" });
-		waterBar = new BeefGuiFluidBar(this, guiLeft + 132, guiTop + 22, turbine.getFluidHandlerInfo(IInputOutputPort.Direction.Output));
+		waterBar = new BeefGuiFluidBar(this, guiLeft + 132, guiTop + 22, turbine.getFluidHandler(IInputOutputPort.Direction.Output));
 
 		rpmIcon = new BeefGuiIcon(this, guiLeft + 93, guiTop + 4, 16, 16, ClientProxy.GuiIcons.getIcon("rpm"), new String[] { TextFormatting.AQUA + "Rotor Speed" });
 		rpmBar = new BeefGuiRpmBar(this, guiLeft + 92, guiTop + 22, turbine, "Rotor Speed", new String[] {"Rotors perform best at", "900 or 1800 RPM.", "", "Rotors kept overspeed for too", "long may fail.", "", "Catastrophically."});
@@ -179,7 +180,13 @@ public class GuiTurbineController extends BeefGuiBase {
 		}
 		
 		speedString.setLabelText(String.format("%.1f RPM", turbine.getRotorSpeed()));
-		energyGeneratedString.setLabelText(String.format("%.0f RF/t", turbine.getEnergyGeneratedLastTick()));
+
+		final float number = this.turbine.getEnergyGeneratedLastTick();
+		final PowerSystem powerSystem = this.turbine.getPowerSystem();
+
+		energyGeneratedString.setLabelText(StaticUtils.Strings.formatEnergy(number, powerSystem) + "/t");
+		energyGeneratedString.setLabelTooltip(String.format("%.2f %s per tick", number, powerSystem.unitOfMeasure));
+
 		governorString.setLabelText(String.format("%d mB/t", turbine.getMaxIntakeRate()));
 		
 		if(turbine.getActive()) {

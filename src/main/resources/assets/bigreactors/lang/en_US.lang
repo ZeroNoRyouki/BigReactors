@@ -4,47 +4,11 @@
 itemGroup.bigreactors=Big Reactors
 
 # Blocks
-xtile.bigreactors:brMetalBlock.yellorium.name=Yellorium Block
-xtile.bigreactors:brMetalBlock.cyanite.name=Cyanite Block
-xtile.bigreactors:brMetalBlock.graphite.name=Graphite Block
-xtile.bigreactors:brMetalBlock.blutonium.name=Blutonium Block
-xtile.bigreactors:brMetalBlock.ludicrite.name=Ludicrite Block
-xtile.yelloriumFuelRod.name=Yellorium Fuel Rod
-xtile.bigreactors:reactorGlass.name=Reactor Glass
-xtile.bigreactors:reactorRedstonePort.name=Reactor Redstone Port
-xtile.bigreactors:reactorCasing.name=Reactor Casing
-xtile.bigreactors:reactorController.name=Reactor Controller
-xtile.bigreactors:reactorControlRod.name=Reactor Control Rod
-xtile.bigreactors:reactorPowerTap.name=Reactor Power Tap
-xtile.bigreactors:reactorAccessPort.name=Reactor Access Port
-xtile.bigreactors:reactorRedNetPort.name=Reactor RedNet Port
-xtile.bigreactors:reactorComputerPort.name=Reactor Computer Port
-xtile.bigreactors:reactorCoolantPort.name=Reactor Coolant Port
+
 tile.blockRadiothermalGen.0=Radiothermal Generator
 tile.blockBRDevice.0.name=Cyanite Reprocesssor
-xtile.blockTurbinePart.1.name=Turbine Controller
-xtile.blockTurbinePart.2.name=Turbine Power Port
-xtile.blockTurbinePart.3.name=Turbine Fluid Port
-xtile.blockTurbinePart.4.name=Turbine Rotor Bearing
-xtile.blockTurbinePart.5.name=Turbine Computer Port
-xtile.blockTurbineRotorPart.0.name=Turbine Rotor Shaft
-xtile.blockTurbineRotorPart.1.name=Turbine Rotor Blade
-xtile.blockMBCreativePart.0.name=Reactor Creative Coolant Port
-xtile.blockMBCreativePart.1.name=Turbine Creative Steam Generator
 
 # Items
-xitem.ingotYellorium.name=Yellorium Ingot
-xitem.ingotCyanite.name=Cyanite Ingot
-xitem.ingotGraphite.name=Graphite Bar
-xitem.ingotBlutonium.name=Blutonium Ingot
-xitem.ingotLudicrite.name=Ludicrite Ingot
-xitem.dustYellorium.name=Yellorium Dust
-xitem.dustCyanite.name=Cyanite Dust
-xitem.dustBlutonium.name=Blutonium Dust
-xitem.dustGraphite.name=Graphite Dust
-xitem.dustLudicrite.name=Ludicrite Dust
-xitem.bucket.cyanite.name=Fluid Cyanite Bucket
-xitem.bucket.yellorium.name=Fluid Yellorium Bucket
 xitem.beefDebugTool.name=BeefTronic™ Diagnostics Tool
 
 # Fluids
@@ -141,7 +105,8 @@ tile.bigreactors:turbineComputerPort.legacy.name=Turbine Computer Port (Legacy)
 tile.bigreactors:turbineFluidPort.legacy.name=Turbine Fluid Port (Legacy)
 tile.bigreactors:turbineBearing.legacy.name=Turbine Rotor Bearing (Legacy)
 tile.bigreactors:turbineCreativeSteamGenerator.legacy.name=Turbine Creative Steam Generator (Legacy)
-tile.bigreactors:turbineHousingxx.legacy.name=Turbine Rotor (Legacy)
+tile.bigreactors:turbineRotorShaft.legacy.name=Turbine Rotor Shaft (Legacy)
+tile.bigreactors:turbineRotorBlade.legacy.name=Turbine Rotor Blade (Legacy)
 
 # Blocks - turbine parts (basic)
 tile.bigreactors:turbineGlass.basic.name=Turbine Glass (Basic)
@@ -153,7 +118,8 @@ tile.bigreactors:turbineComputerPort.basic.name=Turbine Computer Port (Basic)
 tile.bigreactors:turbineFluidPort.basic.name=Turbine Fluid Port (Basic)
 tile.bigreactors:turbineBearing.basic.name=Turbine Rotor Bearing (Basic)
 tile.bigreactors:turbineCreativeSteamGenerator.basic.name=Turbine Creative Steam Generator (Basic)
-tile.bigreactors:turbineHousingxx.basic.name=Turbine Rotor (Basic)
+tile.bigreactors:turbineRotorShaft.basic.name=Turbine Rotor Shaft (Basic)
+tile.bigreactors:turbineRotorBlade.basic.name=Turbine Rotor Blade (Basic)
 
 # Error messages
 multiblock.validation.block_not_connected=Block is not connected to a reactor. This could be due to lag, or a bug. If the problem persists, try breaking and re-placing the block
@@ -166,8 +132,8 @@ multiblock.validation.reactor.invalid_fluid_for_interior=%1$d, %2$d, %3$d - The 
 multiblock.validation.reactor.invalid_block_for_interior=%1$d, %2$d, %3$d - %4$s is not valid for the reactor's interior
 multiblock.validation.reactor.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s is not valid for the reactor's exterior
 multiblock.validation.reactor.null_block_found=%1$d, %2$d, %3$d - Null block found, not valid for the reactor's interior
-multiblock.validation.reactor.too_few_rods=Not enough control rods. Reactors require at least 1.
-multiblock.validation.reactor.too_few_controllers=Not enough controllers. Reactors require at least 1.
+multiblock.validation.reactor.too_few_rods=Not enough control rods. Reactors require at least 1
+multiblock.validation.reactor.too_few_controllers=Not enough controllers. Reactors require at least 1
 multiblock.validation.reactor.invalid_control_rods_position=%1$d, %2$d, %3$d - Control rods may only be placed on the top face
 multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - Control rods may only be placed on the top face, atop a column of fuel rods
 multiblock.validation.reactor.invalid_control_side=Control rods may only be placed on one side of the reactor
@@ -185,21 +151,24 @@ multiblock.validation.reactor.mixed_tiers=All blocks in the reactor must be of t
 
 # Multiblock validation errors (turbines)
 multiblock.validation.turbine.incomplete=The turbine is not yet complete
-multiblock.validation.turbine.invalid_block_for_interior=%1$d, %2$d, %3$d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed.
+multiblock.validation.turbine.invalid_block_for_interior=%1$d, %2$d, %3$d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed
 multiblock.validation.turbine.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s is not valid for a turbine's exterior
 multiblock.validation.turbine.invalid_rotor_count=Turbines require exactly 1 rotor bearing
 multiblock.validation.turbine.block_must_be_rotor=%1$s - This block must contain a rotor. The rotor must begin at the bearing and run the entire length of the turbine
 multiblock.validation.turbine.blades_too_far=%1$s - Rotor blades must be placed closer to the rotor bearing than all other parts inside a turbine
 multiblock.validation.turbine.metal_too_near=%1$s - Metal blocks must by placed further from the rotor bearing than all rotor blades
-multiblock.validation.turbine.shaft_too_short=The rotor shaft must extend the entire length of the turbine interior.
-multiblock.validation.turbine.found_loose_rotor_blocks=Found %1$d rotor blocks that are not attached to the main rotor. All rotor blocks must be in a column extending the entire length of the turbine, starting from the bearing.
-multiblock.validation.turbine.found_loose_rotor_blades=Found %1$d rotor blades that are not attached to the rotor. All rotor blades must extend continuously from the rotor's shaft.
-multiblock.validation.turbine.invalid_metals_shape=Found %1$d metal blocks which were not in a ring around the rotor. All metal blocks must be in rings, or partial rings, around the rotor.
+multiblock.validation.turbine.shaft_too_short=The rotor shaft must extend the entire length of the turbine interior
+multiblock.validation.turbine.found_loose_rotor_blocks=Found %1$d rotor blocks that are not attached to the main rotor. All rotor blocks must be in a column extending the entire length of the turbine, starting from the bearing
+multiblock.validation.turbine.found_loose_rotor_blades=Found %1$d rotor blades that are not attached to the rotor. All rotor blades must extend continuously from the rotor's shaft
+multiblock.validation.turbine.invalid_metals_shape=Found %1$d metal blocks which were not in a ring around the rotor. All metal blocks must be in rings, or partial rings, around the rotor
 multiblock.validation.turbine.glass_invalid_on_frame=%1$d, %2$d, %3$d - Glass cannot be used as part of a turbine's frame
 multiblock.validation.turbine.glass_invalid_on_interior=%1$d, %2$d, %3$d - Glass can only be used as part of a turbine's exterior
-multiblock.validation.turbine.invalid_part_for_interior=%1$d, %2$d, %3$d - this part is not valid for the interior of a turbine
-multiblock.validation.turbine.invalid_part_for_frame=%1$d, %2$d, %3$d - only turbine housing may be used as part of the turbine's frame
+multiblock.validation.turbine.invalid_part_for_interior=%1$d, %2$d, %3$d - This part is not valid for the interior of a turbine
+multiblock.validation.turbine.invalid_part_for_frame=%1$d, %2$d, %3$d - Only turbine housing may be used as part of the turbine's frame
 multiblock.validation.turbine.invalid_rotor_position=Rotor parts may only be placed in the turbine interior
+multiblock.validation.turbine.invalid_rotor_end=Rotor must end against a turbine housing block
+multiblock.validation.turbine.mixed_power_systems=Redstone Flux and Testa power taps cannot be used in the same turbine
+multiblock.validation.turbine.mixed_tiers=All blocks in the turbine must be of the same tier
 
 # Configs
 config.bigreactors.compatibility=Compatibility
@@ -245,9 +214,15 @@ config.bigreactors.recipes.registerCreativeMultiblockParts=Register creative par
 config.bigreactors.worldgen.enableWorldGen=Enable world generation
 config.bigreactors.worldgen.enableWorldRegeneration=Re-generate existing chunks
 config.bigreactors.worldgen.userWorldGenVersion=User-set world generation version
-config.bigreactors.worldgen.dimensionWhitelist=Allowed dimensions (IDs)
+config.bigreactors.worldgen.dimensionWhitelist=Allowed dimensions (IDs) for yellorite generation
 config.bigreactors.worldgen.yelloriteOreEnableWorldGen=Generate yellorite ore
 config.bigreactors.worldgen.yelloriteOreMaxClustersPerChunk=Max number of cluster of yellorite ore per chunks
 config.bigreactors.worldgen.yelloriteOrePerCluster=Maximum number of yellorite ore per cluster
 config.bigreactors.worldgen.yelloriteOreMaxY=Yellorite ore maximum height
+config.bigreactors.worldgen.anglesiteOreEnableWorldGen=Generate anglesite ore
+config.bigreactors.worldgen.anglesiteOreMaxClustersPerChunk=Max number of cluster of anglesite ore per chunks
+config.bigreactors.worldgen.anglesiteOrePerCluster=Maximum number of anglesite ore per cluster
+config.bigreactors.worldgen.benitoiteOreEnableWorldGen=Generate benitoite ore
+config.bigreactors.worldgen.benitoiteOreMaxClustersPerChunk=Max number of cluster of benitoite ore per chunks
+config.bigreactors.worldgen.benitoiteOrePerCluster=Maximum number of benitoite ore per cluster
 

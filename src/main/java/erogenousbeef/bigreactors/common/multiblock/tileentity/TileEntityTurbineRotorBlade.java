@@ -1,17 +1,8 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 
 public class TileEntityTurbineRotorBlade extends TileEntityTurbinePartBase {
-
-    public TileEntityTurbineRotorBlade() {
-        //this._state = RotorBladeState.Y;
-    }
-
-    public RotorBladeState getShaftState() {
-        return this._state;
-    }
 
     @Override
     public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
@@ -45,6 +36,4 @@ public class TileEntityTurbineRotorBlade extends TileEntityTurbinePartBase {
     public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
         return true;
     }
-
-    private RotorBladeState _state;
 }

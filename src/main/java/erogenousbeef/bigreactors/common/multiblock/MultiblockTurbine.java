@@ -1,20 +1,18 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
-import cofh.api.energy.IEnergyProvider;
 import erogenousbeef.bigreactors.api.data.CoilPartData;
 import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.block.BlockBRMetal;
-import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
 import erogenousbeef.bigreactors.common.multiblock.block.ITurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FloatUpdateTracker;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.gui.container.ISlotlessUpdater;
+import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrFluids;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
@@ -43,16 +41,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MultiblockTurbine extends RectangularMultiblockControllerBase
-		implements IPowerGenerator, IEnergyProvider, ISlotlessUpdater, IActivateable, IConfigListener {
+		implements IPowerGenerator, /*IEnergyProvider,*/ ISlotlessUpdater, IActivateable, IConfigListener {
 
 	public enum VentStatus {
 		VentOverflow,
@@ -82,7 +79,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	
 	// Persistent game data
 	float energyStored;
-	private PowerSystem powerSystem;
+	private PowerSystem _powerSystem;
+	private PartTier _partsTier;
+	private boolean _legacyMode;
 	boolean active;
 	float rotorEnergy;
 	boolean inductorEngaged;
@@ -124,7 +123,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	private Set<TileEntityTurbinePowerTap> attachedPowerTaps;
 	private Set<ITickableMultiblockPart> attachedTickables;
 	
-	private Set<TileEntityTurbineRotorPart> attachedRotorShafts;
+	private Set<TileEntityTurbineRotorShaft> attachedRotorShafts;
 	private Set<TileEntityTurbineRotorBlade> attachedRotorBlades;
 	
 	private Set<TileEntityTurbinePartGlass> attachedGlass; 
@@ -153,12 +152,12 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		attachedRotorBearings = new HashSet<TileEntityTurbineRotorBearing>();
 		attachedPowerTaps = new HashSet<TileEntityTurbinePowerTap>();
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
-		attachedRotorShafts = new HashSet<TileEntityTurbineRotorPart>();
+		attachedRotorShafts = new HashSet<TileEntityTurbineRotorShaft>();
 		attachedRotorBlades = new HashSet<TileEntityTurbineRotorBlade>();
 		attachedGlass = new HashSet<TileEntityTurbinePartGlass>();
 		
 		energyStored = 0f;
-		this.powerSystem = PowerSystem.RedstoneFlux;
+		this._powerSystem = PowerSystem.RedstoneFlux;
 		active = false;
 		inductorEngaged = true;
 		ventStatus = VentStatus.VentOverflow;
@@ -194,6 +193,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 		this._outputTank = new FluidTank(TANK_SIZE);
 		this._outputTank.setCanFill(false);
+
+		this._partsTier = PartTier.Legacy;
+		this._legacyMode = false;
 	}
 
 	@Override
@@ -251,8 +253,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			attachedTickables.add((ITickableMultiblockPart)newPart);
 		}
 		
-		if (newPart instanceof TileEntityTurbineRotorPart)
-			this.attachedRotorShafts.add((TileEntityTurbineRotorPart)newPart);
+		if (newPart instanceof TileEntityTurbineRotorShaft)
+			this.attachedRotorShafts.add((TileEntityTurbineRotorShaft)newPart);
 
 		if (newPart instanceof TileEntityTurbineRotorBlade)
 			this.attachedRotorBlades.add((TileEntityTurbineRotorBlade)newPart);
@@ -276,7 +278,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			attachedTickables.remove(oldPart);
 		}
 
-		if (oldPart instanceof TileEntityTurbineRotorPart)
+		if (oldPart instanceof TileEntityTurbineRotorShaft)
 			this.attachedRotorShafts.remove(oldPart);
 
 		if (oldPart instanceof TileEntityTurbineRotorBlade)
@@ -289,12 +291,64 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 	@Override
 	protected void onMachineAssembled() {
-		recalculateDerivedStatistics();
+
+		this.recalculateDerivedStatistics();
+
+		// determine machine tier
+
+		PartTier candidateTier = null;
+
+		for (IMultiblockPart part: this.connectedParts) {
+
+			if (part instanceof TileEntityReactorPartBase) {
+
+				PartTier tier = ((TileEntityReactorPartBase)part).getPartTier();
+
+				if (null == candidateTier)
+					candidateTier = tier;
+
+				else if (candidateTier != tier) {
+
+					// this should never happen but ...
+					throw new IllegalStateException("Found block of a different tier while assembling the machine!");
+				}
+			}
+		}
+
+		this._partsTier = candidateTier;
+		this._legacyMode = PartTier.Legacy == candidateTier;
+
+		// determine machine power system
+
+		PowerSystem candidatePowerSystem = PowerSystem.RedstoneFlux;
+
+		if (this.attachedPowerTaps.size() > 0) {
+
+			int rf = 0, tesla = 0;
+
+			for (TileEntityTurbinePowerTap tap : this.attachedPowerTaps) {
+
+				if (tap instanceof TileEntityTurbinePowerTapRedstoneFlux)
+					++rf;
+				else if (tap instanceof TileEntityTurbinePowerTapTesla)
+					++tesla;
+			}
+
+			if (rf != 0 && tesla != 0) {
+
+				// this should never happen but ...
+				throw new IllegalStateException("Found different power taps while assembling the machine!");
+			}
+
+			candidatePowerSystem = tesla > 0 ? PowerSystem.Tesla : PowerSystem.RedstoneFlux;
+		}
+
+		this.switchPowerSystem(candidatePowerSystem);
 	}
 
 	@Override
 	protected void onMachineRestored() {
-		recalculateDerivedStatistics();
+		this.onMachineAssembled();
 	}
 
 	@Override
@@ -379,7 +433,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		Set<BlockPos> rotorShafts = new HashSet<BlockPos>(attachedRotorShafts.size());
 		Set<BlockPos> rotorBlades = new HashSet<BlockPos>(attachedRotorBlades.size());
 		
-		for(TileEntityTurbineRotorPart part : attachedRotorShafts) {
+		for(TileEntityTurbineRotorShaft part : attachedRotorShafts) {
 			rotorShafts.add(part.getWorldPosition());
 		}
 
@@ -450,25 +504,80 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			}
 		}
 
-		if(!rotorCoord.equals(endRotorCoord)) {
+		if (!rotorCoord.equals(endRotorCoord)) {
+
 			validatorCallback.setLastError("multiblock.validation.turbine.shaft_too_short");
 			return false;
 		}
 		
 		// Ensure that we encountered all the rotor, blade and coil blocks. If not, there's loose stuff inside the turbine.
-		if(!rotorShafts.isEmpty()) {
+		if (!rotorShafts.isEmpty()) {
+
 			validatorCallback.setLastError("multiblock.validation.turbine.found_loose_rotor_blocks", rotorShafts.size());
 			return false;
 		}
 
-		if(!rotorBlades.isEmpty()) {
+		if (!rotorBlades.isEmpty()) {
+
 			validatorCallback.setLastError("multiblock.validation.turbine.found_loose_rotor_blades", rotorBlades.size());
 			return false;
 		}
 		
-		if(!foundCoils.isEmpty()) {
+		if (!foundCoils.isEmpty()) {
+
 			validatorCallback.setLastError("multiblock.validation.turbine.invalid_metals_shape", foundCoils.size());
 			return false;
+		}
+
+		final TileEntity te = this.WORLD.getTileEntity(rotorCoord.offset(rotorDir));
+		final boolean rotorEndValid = (te instanceof TileEntityTurbinePart) && BrBlocks.turbineHousing == te.getBlockType();
+
+		if (!rotorEndValid) {
+
+			validatorCallback.setLastError("multiblock.validation.turbine.invalid_rotor_end");
+			return false;
+		}
+
+		// check if the machine is single-tier
+
+		PartTier candidateTier = null;
+
+		for (IMultiblockPart part: this.connectedParts) {
+
+			if (part instanceof TileEntityTurbinePartBase) {
+
+				PartTier tier = ((TileEntityTurbinePartBase)part).getPartTier();
+
+				if (null == candidateTier)
+					candidateTier = tier;
+
+				else if (candidateTier != tier) {
+
+					validatorCallback.setLastError("multiblock.validation.turbine.mixed_tiers");
+					return false;
+				}
+			}
+		}
+
+		// check if the machine has a single power system
+
+		if (this.attachedPowerTaps.size() > 0) {
+
+			int rf = 0, tesla = 0;
+
+			for (TileEntityTurbinePowerTap tap : this.attachedPowerTaps) {
+
+				if (tap instanceof TileEntityTurbinePowerTapRedstoneFlux)
+					++rf;
+				else if (tap instanceof TileEntityTurbinePowerTapTesla)
+					++tesla;
+			}
+
+			if (rf != 0 && tesla != 0) {
+
+				validatorCallback.setLastError("multiblock.validation.turbine.mixed_power_systems");
+				return false;
+			}
 		}
 
 		// A-OK!
@@ -494,7 +603,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		validatorCallback.setLastError("multiblock.validation.turbine.invalid_block_for_interior", x, y, z);
 		return false;
 	}
-
 
 	@Override
 	protected boolean isBlockGoodForFrame(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
@@ -842,29 +950,28 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	 */
 	public void serialize(ByteBuf buf) {
 		// Capture compacted fluid data first
-		int inputFluidID, inputFluidAmt, outputFluidID, outputFluidAmt;
+		String inputFluidID, outputFluidID;
+		int inputFluidAmt, outputFluidAmt;
 		{
 			FluidStack inputFluid, outputFluid;
 			inputFluid = this._inputTank.getFluid();
 			outputFluid = this._outputTank.getFluid();
 			
 			if(inputFluid == null || inputFluid.amount <= 0) {
-				inputFluidID = FLUID_NONE;
+				inputFluidID = "";
 				inputFluidAmt = 0;
 			}
 			else {
-				// TODO Commented temporarily to allow this thing to compile...
-				inputFluidID = -1/*inputFluid.getFluid().getID()*/;
+				inputFluidID = inputFluid.getFluid().getName();
 				inputFluidAmt = inputFluid.amount;
 			}
 			
 			if(outputFluid == null || outputFluid.amount <= 0) {
-				outputFluidID = FLUID_NONE;
+				outputFluidID = "";
 				outputFluidAmt = 0;
 			}
 			else {
-				// TODO Commented temporarily to allow this thing to compile...
-				outputFluidID = -1/*outputFluid.getFluid().getID()*/;
+				outputFluidID = outputFluid.getFluid().getName();
 				outputFluidAmt = outputFluid.amount;
 			}
 		}
@@ -885,9 +992,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		buf.writeFloat(rotorEfficiencyLastTick);
 		
 		// Fluid data
-		buf.writeInt(inputFluidID);
+		ByteBufUtils.writeUTF8String(buf, inputFluidID);
 		buf.writeInt(inputFluidAmt);
-		buf.writeInt(outputFluidID);
+		ByteBufUtils.writeUTF8String(buf, outputFluidID);
 		buf.writeInt(outputFluidAmt);
 	}
 	
@@ -912,15 +1019,14 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		rotorEfficiencyLastTick = buf.readFloat();
 	
 		// Fluid data
-		int inputFluidID = buf.readInt();
+		String inputFluidID = ByteBufUtils.readUTF8String(buf);
 		int inputFluidAmt = buf.readInt();
-		int outputFluidID = buf.readInt();
+		String outputFluidID = ByteBufUtils.readUTF8String(buf);
 		int outputFluidAmt = buf.readInt();
 
-		if(inputFluidID == FLUID_NONE || inputFluidAmt <= 0) {
+		if(inputFluidID.isEmpty() || inputFluidAmt <= 0) {
 			this._inputTank.setFluid(null);
-		}
-		else {
+		} else {
 			Fluid fluid = FluidRegistry.getFluid(inputFluidID);
 			if(fluid == null) {
 				BRLog.warning("[CLIENT] Multiblock Turbine received an unknown fluid of type %d, setting input tank to empty", inputFluidID);
@@ -931,7 +1037,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			}
 		}
 
-		if(outputFluidID == FLUID_NONE || outputFluidAmt <= 0) {
+		if(outputFluidID.isEmpty() || outputFluidAmt <= 0) {
 			this._outputTank.setFluid(null);
 		}
 		else {
@@ -945,15 +1051,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			}
 		}
 	}
-
-
-
-
-
-
-
-
-
 
 	/*
 
@@ -1023,16 +1120,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 	*/
 
-
-
-
-
-
-
-
-
-
-
+	/*
 	// IEnergyProvider
 
 	@Override
@@ -1060,6 +1148,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	public int getMaxEnergyStored(EnumFacing from) {
 		return (int)maxEnergyStored;
 	}
+	*/
 
 	private void setEnergyStored(float newEnergy) {
 		if(Float.isInfinite(newEnergy) || Float.isNaN(newEnergy)) { return; }
@@ -1138,11 +1227,11 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			}
 			
 			for(TileEntityTurbineRotorBlade part : attachedRotorBlades) {
-				WorldHelper.notifyBlockUpdate(WORLD, part.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
 			}
 			
-			for(TileEntityTurbineRotorPart part : attachedRotorShafts) {
-				WorldHelper.notifyBlockUpdate(WORLD, part.getPos(), null, null);
+			for(TileEntityTurbineRotorShaft part : attachedRotorShafts) {
+				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
 			}
 		}
 	}
@@ -1307,7 +1396,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		if(markReferenceCoordDirty)
 			markReferenceCoordDirty();
 	}
-	
 
 	private void setRotorEnergy(float newEnergy) {
 		if(Float.isNaN(newEnergy) || Float.isInfinite(newEnergy)) { return; }
@@ -1328,7 +1416,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		WorldHelper.notifyBlockUpdate(WORLD, referenceCoord, null, null);
 	}
 
-	// TODO Commented temporarily to allow this thing to compile...
+	// TODO Commented until the new rotor animation is in
 	/*
 	// For client usage only
 	public ForgeDirection getRotorDirection() {
@@ -1353,7 +1441,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
 		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
 
-		// TODO Commented temporarily to allow this thing to compile...
+		// TODO Commented until we redo multiblock debugging
 		/*
 		if(lastError != null) {
 			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
@@ -1380,7 +1468,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 			sb.append("\n\nFluid Tanks:\n");
 
 			sb.append("WIP");
-			/* TODO put back tank infos
+			/* TODO Commented until we redo multiblock debugging - put back tank infos
 			for(int i = 0; i < tanks.length; i++) {
 				sb.append(String.format("[%d] %s ", i, i == TANK_OUTPUT ? "outlet":"inlet"));
 				if(tanks[i] == null || tanks[i].getFluid() == null) {
@@ -1410,7 +1498,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
  	*/
 	@Override
 	public long getEnergyCapacity() {
-		return this.powerSystem.maxCapacity;
+		return Math.min((long)maxEnergyStored, this._powerSystem.maxCapacity);
 	}
 
 	@Override
@@ -1431,7 +1519,19 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 	@Override
 	public PowerSystem getPowerSystem() {
-		return this.powerSystem;
+		return this._powerSystem;
+	}
+
+	public PartTier getMachineTier() {
+		return this._partsTier;
+	}
+
+	protected void switchPowerSystem(PowerSystem newPowerSystem) {
+
+		this._powerSystem = newPowerSystem;
+
+		if (this.energyStored > this._powerSystem.maxCapacity)
+			this.energyStored = this._powerSystem.maxCapacity;
 	}
 
 	/*
@@ -1440,9 +1540,5 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 	public IFluidHandler getFluidHandler(IInputOutputPort.Direction direction) {
 		return IInputOutputPort.Direction.Input == direction ? this._inputTank : this._outputTank;
-	}
-
-	public IFluidHandlerInfo getFluidHandlerInfo(IInputOutputPort.Direction direction) {
-		return IInputOutputPort.Direction.Input == direction ? (IFluidHandlerInfo)this._inputTank : (IFluidHandlerInfo)this._outputTank;
 	}
 }

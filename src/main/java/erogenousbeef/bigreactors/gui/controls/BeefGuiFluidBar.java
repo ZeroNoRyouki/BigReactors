@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements IBeefTooltipControl {
 
-	public BeefGuiFluidBar(BeefGuiBase container, int x, int y, IFluidHandlerInfo handlerInfo) {
+	public BeefGuiFluidBar(BeefGuiBase container, int x, int y, IFluidHandler handlerInfo) {
 
 		super(container, x, y);
 		this._fluidInfo = handlerInfo;
@@ -103,6 +102,6 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements IBeefTool
 		return null != properties && properties.length > 0 ? properties[0] : null;
 	}
 
-	private IFluidHandlerInfo _fluidInfo;
+	private IFluidHandler _fluidInfo;
 	private static ResourceLocation s_bgTexture;
 }

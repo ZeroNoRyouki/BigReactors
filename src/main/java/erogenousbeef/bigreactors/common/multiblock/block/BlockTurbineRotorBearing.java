@@ -22,7 +22,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
         return new TileEntityTurbineRotorBearing();
     }
 
-    // TODO Commented temporarily to allow this thing to compile...
+    // TODO Commented until the new rotor animation is in
 	/*
 
     @Override
@@ -48,11 +48,12 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
+    // TODO Commented until the new rotor animation is in
+    /*
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState world, World pos, BlockPos state, Random rand) {
-        // TODO Commented temporarily to allow this thing to compile...
-		/*
+
     	int metadata = world.getBlockMetadata(x, y, z);
     	if(metadata == METADATA_BEARING) {
         	TileEntity te = world.getTileEntity(x, y, z);
@@ -90,7 +91,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     			}
     		}
     	}
-    	*/
     }
+    */
 
 }

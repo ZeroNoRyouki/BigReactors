@@ -16,13 +16,11 @@ class ItemBlockPartTier extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-
         return super.getUnlocalizedName() + "." + PartTier.fromMeta(stack.getMetadata()).getName();
     }
 
     @Override
     public int getMetadata(int meta) {
-
         return meta;
     }
 }

@@ -1,7 +1,9 @@
 {  
     "forge_marker":1,
     "defaults":{  
-        "model":"bigreactors:turbine/rotor_blade_z"
+        "model":"bigreactors:turbine/rotor_blade_z",
+        "x": 90,
+        "y": 90
     },
     "variants":{  
 		"tier":{  
@@ -56,7 +58,7 @@
           }
         },
         "inventory":{  
-            "transform":"forge:default-block"
+            "transform":"forge:default-item"
         }
     }
 }

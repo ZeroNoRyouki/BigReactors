@@ -1,15 +1,13 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
 import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
+import erogenousbeef.bigreactors.init.BrFluids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class CoolantContainer extends FluidHelper implements IFluidHandlerInfo {
+public class CoolantContainer extends FluidHelper {
 
 	public static final int HOT = 0;
 	public static final int COLD = 1;
@@ -177,7 +175,7 @@ public class CoolantContainer extends FluidHelper implements IFluidHandlerInfo {
 	private Fluid getVaporizedCoolantFluid(Fluid fluid) {
 		if(fluid == null) { throw new IllegalArgumentException("Cannot pass a null fluid to getVaporizedCoolantFluid"); } // just in case
 
-		return BigReactors.fluidSteam;
+		return BrFluids.fluidSteam;
 	}
 
 	@Override
@@ -194,10 +192,5 @@ public class CoolantContainer extends FluidHelper implements IFluidHandlerInfo {
 	
 	public int getFluidVaporizedLastTick() {
 		return fluidVaporizedLastTick;
-	}
-
-	@Override
-	public IFluidTankProperties[] getTankProperties() {
-		return new IFluidTankProperties[0];
 	}
 }

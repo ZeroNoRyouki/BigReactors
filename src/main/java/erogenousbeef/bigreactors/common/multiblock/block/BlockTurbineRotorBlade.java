@@ -5,11 +5,9 @@ import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
 import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBlade;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.block.properties.Orientation;
-import li.cil.oc.api.event.RackMountableRenderEvent;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineRotorPart {
 
@@ -71,8 +70,9 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
     @Override
     protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
 
-        RotorBladeState candidatState = null;
+        RotorBladeState candidateState = null;
         final int neighborsSlotCount = this._neighbors.length;
+        final Block turbineRotorShaft = BrBlocks.turbineRotorShaft;
 
         for (int i = 0; i < neighborsSlotCount; ++i)
             this._neighbors[i] = null;
@@ -82,71 +82,71 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
         for (EnumFacing facing: EnumFacing.VALUES) {
 
             final BlockPos neighborPos = position.offset(facing);
-            IBlockState neighbor = world.getBlockState(neighborPos);
+            IBlockState neighborState;
 
-            this._neighbors[facing.getIndex()] = neighbor;
+            this._neighbors[facing.getIndex()] = neighborState = world.getBlockState(neighborPos);
 
-            if (BrBlocks.turbineRotorShaft == neighbor.getBlock()) {
+            if (turbineRotorShaft == neighborState.getBlock()) {
 
                 // found a rotor shaft: orient the blade toward it
 
-                neighbor = BrBlocks.turbineRotorShaft.getActualState(neighbor, world, neighborPos);
-
-                final RotorShaftState shaftState = neighbor.getValue(Properties.ROTORSHAFTSTATE);
-                String name;
-
-                switch (shaftState) {
-
-                    case X_YZ:
-                        name ="x_" + facing.getAxis().getName() + (facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE ? "_neg" : "_pos");
-                        break;
-
-                    case Y_XZ:
-                        name ="y_" + facing.getAxis().getName() + (facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE ? "_neg" : "_pos");
-                        break;
-
-                    case Z_XY:
-                        name ="z_" + facing.getAxis().getName() + (facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE ? "_neg" : "_pos");
-                        break;
-
-                    default:
-                        name = shaftState.getName() + (facing.getOpposite().getAxisDirection() == EnumFacing.AxisDirection.POSITIVE ? "_pos" : "_neg");
-                        break;
-                }
-
-                candidatState = RotorBladeState.fromName(name);
+                neighborState = turbineRotorShaft.getActualState(neighborState, world, neighborPos);
+                candidateState = RotorBladeState.from(neighborState.getValue(Properties.ROTORSHAFTSTATE), facing);
                 break;
             }
         }
-        /*
-        if (null == candidatFacing) {
+
+        if (null == candidateState) {
 
             // no rotor shaft found, let's search for other blades then
 
             for (EnumFacing facing: EnumFacing.VALUES) {
 
                 final int index = facing.getIndex();
-                IBlockState neighbor = this._neighbors[index];
+                IBlockState neighborState = this._neighbors[index];
 
-                if (null == neighbor)
-                    neighbor = world.getBlockState(position.offset(facing));
+                if (null == neighborState)
+                    neighborState = world.getBlockState(position.offset(facing));
 
-                if (this == neighbor.getBlock()) {
+                if (this == neighborState.getBlock()) {
 
-                    // found another blade: orient the blade toward it
+                    // found another blade, looking for a rotor shaft along this direction
 
-                    candidateAxis = facing.getAxis();
-                    break;
+                    BlockPos checkPos = position;
+                    IBlockState checkState;
+                    Block checkBlock;
+
+                    while (true) {
+
+                        checkPos = checkPos.offset(facing);
+                        checkState = world.getBlockState(checkPos);
+                        checkBlock = checkState.getBlock();
+
+                        if (turbineRotorShaft == checkBlock) {
+
+                            // found a rotor shaft
+                            checkState = turbineRotorShaft.getActualState(checkState, world, checkPos);
+                            candidateState = RotorBladeState.from(checkState.getValue(Properties.ROTORSHAFTSTATE), facing);
+                            break;
+
+                        } else if (this != checkBlock) {
+
+                            // not a rotor shaft nor a blade... give up
+                            break;
+                        }
+                    }
+
+                    if (null != candidateState)
+                        break;
                 }
             }
         }
-        */
 
-        if (null == candidatState)
+        if (null == candidateState)
             // still no joy? let's go with EAST then
-            candidatState = RotorBladeState.Z_X_POS;
+            candidateState = RotorBladeState.Z_X_POS;
 
-        return super.buildActualState(state, world, position, part).withProperty(Properties.ROTORBLADESTATE, candidatState);
+        return super.buildActualState(state, world, position, part).withProperty(Properties.ROTORBLADESTATE, candidateState);
     }
 
     private IBlockState[] _neighbors;

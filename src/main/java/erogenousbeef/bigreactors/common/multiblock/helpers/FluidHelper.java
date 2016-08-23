@@ -5,6 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 
 public abstract class FluidHelper implements IConditionalUpdater {
 
@@ -364,6 +367,31 @@ public abstract class FluidHelper implements IConditionalUpdater {
 		}
 
 		return info;
+	}
+
+	public IFluidTankProperties[] getTankProperties(int idx) {
+
+		if (idx >= this.fluids.length)
+			return EmptyFluidHandler.EMPTY_TANK_PROPERTIES_ARRAY;
+
+		IFluidTankProperties[] properties;
+		final int capacity = this.getCapacity();
+
+		if (idx < 0) {
+
+			// All tanks
+			properties = new IFluidTankProperties[this.fluids.length];
+
+			for (int i = 0; i < this.fluids.length; i++)
+				properties[i] = new FluidTankProperties(this.fluids[i] == null ? null : this.fluids[i].copy(), capacity);
+
+		} else {
+
+			properties = new IFluidTankProperties[1];
+			properties[0] = new FluidTankProperties(this.fluids[idx] == null ? null : this.fluids[idx].copy(), capacity);
+		}
+
+		return properties;
 	}
 	
 	public String getDebugInfo() {

@@ -17,8 +17,7 @@
     "variants":{  
         "tier":{  
             "legacy":{  
-				"transform":"forge:default-block",
-                "textures":{  
+				"textures":{  
                     "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
                     "machine":"bigreactors:blocks/turbine/legacy/creativeSteamGenerator"
                 }
@@ -89,10 +88,7 @@
             }
         },
 		"portdirection":{  
-            "outlet":{  
-                "textures":{  
-                    "machine":"#plate"
-                }
+            "outlet":{ 
             },
             "inlet":{
             }

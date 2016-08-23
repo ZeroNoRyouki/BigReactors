@@ -9,15 +9,13 @@ import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -27,7 +25,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	public TileEntityTurbineFluidPort() {
 
 		this._direction = Direction.Input;
-		pumpDestination = null;
+		_pumpDestination = null;
 	}
 
 	@Override
@@ -62,8 +60,8 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase)
-	{
+	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+
 		super.onMachineAssembled(multiblockControllerBase);
 		checkForAdjacentTank();
 		
@@ -74,7 +72,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	public void onMachineBroken()
 	{
 		super.onMachineBroken();
-		pumpDestination = null;
+		_pumpDestination = null;
 	}
 
 	@Override
@@ -110,76 +108,12 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 		return super.getCapability(capability, facing);
 	}
 
-	/*
-
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-
-		MultiblockTurbine turbine = this.getTurbine();
-
-		return null == turbine || !turbine.isAssembled() || from != this.getOutwardFacing() || !this._direction.isInput() ?
-				0 : turbine.fill(getTankIndex(), resource, doFill);
-	}
-
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-
-		MultiblockTurbine turbine = this.getTurbine();
-
-		return null == resource || null == turbine || from != this.getOutwardFacing() ?
-				resource : turbine.drain(getTankIndex(), resource, doDrain);
-	}
-
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		MultiblockTurbine turbine = this.getTurbine();
-
-		return null == turbine || from != this.getOutwardFacing() ?
-				null : turbine.drain(getTankIndex(), maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		MultiblockTurbine turbine = this.getTurbine();
-
-		return !(null == turbine || from != this.getOutwardFacing()) &&
-				this._direction.isInput() && turbine.canFill(getTankIndex(), fluid);
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		MultiblockTurbine turbine = this.getTurbine();
-
-		return !(null == turbine || from != this.getOutwardFacing()) &&
-				turbine.canDrain(getTankIndex(), fluid);
-	}
-
-	protected static final FluidTankInfo[] emptyTankInfoArray = new FluidTankInfo[0];
-	
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		MultiblockTurbine turbine = this.getTurbine();
-
-		return null == turbine || from != this.getOutwardFacing() ?
-				emptyTankInfoArray : new FluidTankInfo[] { turbine.getTankInfo(getTankIndex()) };
-	}
-	
-	private int getTankIndex() {
-		return this._direction.isInput() ?  MultiblockTurbine.TANK_INPUT : MultiblockTurbine.TANK_OUTPUT;
-	}
-	*/
-
 	// ITickableMultiblockPart
-	
 	@Override
 	public void onMultiblockServerTick() {
 
 		// Try to pump steam out, if an outlet
-		if (null == this.pumpDestination || this._direction.isInput())
+		if (null == this._pumpDestination || this._direction.isInput())
 			return;
 
 		final IFluidHandler fluidHandler = this.getTurbine().getFluidHandler(Direction.Output);
@@ -187,7 +121,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 		
 		if (fluidToDrain != null && fluidToDrain.amount > 0) {
 
-			fluidToDrain.amount = this.pumpDestination.fill(fluidToDrain, true);
+			fluidToDrain.amount = this._pumpDestination.fill(fluidToDrain, true);
 			fluidHandler.drain(fluidToDrain, true);
 		}
 	}
@@ -202,32 +136,28 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
-		if(!worldObj.isRemote) {
+
+		if(!worldObj.isRemote)
 			checkForAdjacentTank();
-		}
-	}
-	
-	// Private Helpers
-	protected void checkForAdjacentTank()
-	{
-		pumpDestination = null;
-		if (worldObj.isRemote || this._direction.isInput())
-			return;
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		ForgeDirection outDir = getOutwardsDir();
-		if(outDir == ForgeDirection.UNKNOWN) {
-			return;
-		}
-		
-		TileEntity neighbor = WORLD.getTileEntity(xCoord + outDir.offsetX, yCoord + outDir.offsetY, zCoord + outDir.offsetZ);
-		if(neighbor instanceof IFluidHandler) {
-			pumpDestination = (IFluidHandler)neighbor;
-		}
-		*/
 	}
 
-	Direction _direction;
-	IFluidHandler pumpDestination;
+	private void checkForAdjacentTank() {
+
+		EnumFacing facing = this.getOutwardFacing();
+
+		this._pumpDestination = null;
+
+		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) || this._direction.isInput())
+			return;
+
+		TileEntity neighbor = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
+
+		facing = facing.getOpposite();
+
+		if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+			this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+	}
+
+	private Direction _direction;
+	private IFluidHandler _pumpDestination;
 }

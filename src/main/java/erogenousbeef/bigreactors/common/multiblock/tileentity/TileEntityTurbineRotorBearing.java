@@ -38,7 +38,7 @@ public class TileEntityTurbineRotorBearing extends
 
 	@Override
 	public double getMaxRenderDistanceSquared() {
-		return super.getMaxRenderDistanceSquared() * 3; // TODO temp
+		return super.getMaxRenderDistanceSquared();
 	}
 
 	@Override

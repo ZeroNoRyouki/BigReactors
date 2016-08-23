@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults": {
 		"model":"bigreactors:item/turbineHousingCores",
-		"transform": "forge:default-block"
+		"transform": "forge:default-item"
 	},
     "variants":{ 
 	     "tier":{  
@@ -18,6 +18,9 @@
 					"top": "bigreactors:items/turbine/legacy/housingCoreTop"
                 }
             }
+        },
+        "inventory":{
+          "transform":"forge:default-block"
         }
     }
 }

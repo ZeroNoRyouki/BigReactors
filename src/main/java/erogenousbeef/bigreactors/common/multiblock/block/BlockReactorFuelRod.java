@@ -2,17 +2,20 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,6 +23,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import java.util.Random;
 
 public class BlockReactorFuelRod extends BlockTieredPart {
 
@@ -61,32 +66,22 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 		return new TileEntityReactorFuelRod();
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 
-	/*
-	 * TODO Have to make my own particle for this. :/
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random par5Random)
-    {
-    	TileEntity te = world.getBlockTileEntity(x, y, z);
-    	if(te instanceof TileEntityReactorFuelRod) {
-    		TileEntityReactorFuelRod fuelRod = (TileEntityReactorFuelRod)te;
-    		MultiblockReactor reactor = fuelRod.getReactorController();
-    		if(reactor != null && reactor.isActive() && reactor.getFuelConsumedLastTick() > 0) {
-    			int numParticles = par5Random.nextInt(4) + 1;
-    			while(numParticles > 0) {
-                    world.spawnParticle(BigReactors.VALENTINES_DAY ? "heart" : "crit",
-                    		fuelRod.xCoord + 0.5D,
-                    		fuelRod.yCoord + 0.5D,
-                    		fuelRod.zCoord + 0.5D,
-                    		par5Random.nextFloat() * 3f - 1.5f,
-                    		par5Random.nextFloat() * 3f - 1.5f,
-                    		par5Random.nextFloat() * 3f - 1.5f);
-    				numParticles--;
-    			}
-    		}
-    	}
-    }
-     **/
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof TileEntityReactorFuelRod) {
+
+			TileEntityReactorFuelRod fuelRod = (TileEntityReactorFuelRod) te;
+			MultiblockReactor reactor = fuelRod.getReactorController();
+
+			if (reactor != null && reactor.getActive() && reactor.getFuelConsumedLastTick() > 0)
+				WorldHelper.spawnVanillaParticles(world, BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CRIT,
+						1, random.nextInt(4) + 1, pos.getX(), pos.getY(), pos.getZ(), 1, 1, 1);
+		}
+	}
 
 	@Override
 	protected void buildBlockState(BlockStateContainer.Builder builder) {

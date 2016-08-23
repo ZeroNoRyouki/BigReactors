@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
@@ -14,19 +15,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements IFluidHandler, INeighborUpdatableEntity,
+public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements INeighborUpdatableEntity,
 		ITickableMultiblockPart, IInputOutputPort {
 
 	public TileEntityReactorCoolantPort() {
 
-		super();
 		this._direction = Direction.Input;
-		this.pumpDestination = null;
+		this._pumpDestination = null;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		this._direction = direction;
 		WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
 
-		if (!worldObj.isRemote) {
+		if (WorldHelper.calledByLogicalServer(this.worldObj)) {
 
 			if (!direction.isInput())
 				this.checkForAdjacentTank();
@@ -63,28 +63,19 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase)
-	{
+	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+
 		super.onMachineAssembled(multiblockControllerBase);
 		checkForAdjacentTank();
 
 		this.notifyNeighborsOfTileChange();
-
-		// Re-render on the client
-		if(worldObj.isRemote) {
-			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
-		}
 	}
 	
 	@Override
-	public void onMachineBroken()
-	{
+	public void onMachineBroken() {
+
 		super.onMachineBroken();
-		pumpDestination = null;
-		
-		if(worldObj.isRemote) {
-			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
-		}
+		_pumpDestination = null;
 	}
 
 	@Override
@@ -108,76 +99,29 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		data.setBoolean("inlet", this._direction.isInput());
 	}
 
-	// IFluidHandler
 	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-
-		if (!isConnected() || !this._direction.isInput() || null == from || from != this.getOutwardFacing())
-			return 0;
-		
-		CoolantContainer cc = getReactorController().getCoolantContainer();
-		return cc.fill(getConnectedTank(), resource, doFill);
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isConnected()) ||
+				super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
-		if (!isConnected() || null == from || from != this.getOutwardFacing())
-			return null;
+		MultiblockReactor reactor;
 
-		CoolantContainer cc = getReactorController().getCoolantContainer();
-		return cc.drain(getConnectedTank(), resource, doDrain);
+		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && null != (reactor = this.getReactorController()))
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(reactor.getFluidHandler(this._direction));
+
+		return super.getCapability(capability, facing);
 	}
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		if (!isConnected() || null == from || from != this.getOutwardFacing())
-			return null;
-
-		CoolantContainer cc = getReactorController().getCoolantContainer();
-		return cc.drain(getConnectedTank(), maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		if (!isConnected() || null == from || from != this.getOutwardFacing() || !this._direction.isInput())
-			// Also prevent pipes from filling up the output tank inadvertently
-			return false;
-
-		CoolantContainer cc = getReactorController().getCoolantContainer();
-		return cc.canFill(getConnectedTank(), fluid);
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		if (!isConnected() || null == from || from != this.getOutwardFacing())
-			return false;
-
-		CoolantContainer cc = getReactorController().getCoolantContainer();
-		return cc.canDrain(getConnectedTank(), fluid);
-	}
-
-	private static FluidTankInfo[] emptyTankArray = new FluidTankInfo[0];
-	
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		if (!isConnected() || null == from || from != this.getOutwardFacing())
-			return emptyTankArray;
-
-		CoolantContainer cc = getReactorController().getCoolantContainer();
-		return cc.getTankInfo(getConnectedTank());
-	}
-	
 	// ITickableMultiblockPart
-	
 	@Override
 	public void onMultiblockServerTick() {
+
 		// Try to pump steam out, if an outlet
-		if(pumpDestination == null || this._direction.isInput())
+		if(_pumpDestination == null || this._direction.isInput())
 			return;
 
 		CoolantContainer cc = getReactorController().getCoolantContainer();
@@ -186,7 +130,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		if (fluidToDrain != null && fluidToDrain.amount > 0 && null != out) {
 
-			fluidToDrain.amount = pumpDestination.fill(out.getOpposite(), fluidToDrain, true);
+			fluidToDrain.amount = _pumpDestination.fill(fluidToDrain, true);
 			cc.drain(CoolantContainer.HOT, fluidToDrain, true);
 		}
 	}
@@ -194,37 +138,35 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	// INeighborUpdatableEntity
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
-		checkForAdjacentTank();
+
+		if (WorldHelper.calledByLogicalServer(world))
+			checkForAdjacentTank();
 	}
 	
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
-		checkForAdjacentTank();
+
+		if(!worldObj.isRemote)
+			checkForAdjacentTank();
 	}
 
-	// Private Helpers
-	private int getConnectedTank() {
-		return this._direction.isInput() ? CoolantContainer.COLD : CoolantContainer.HOT;
-	}
+	private void checkForAdjacentTank() {
 
-	protected void checkForAdjacentTank() {
+		EnumFacing facing = this.getOutwardFacing();
 
-		this.pumpDestination = null;
+		this._pumpDestination = null;
 
-		if (this.worldObj.isRemote || this._direction.isInput())
+		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) || this._direction.isInput())
 			return;
 
-		EnumFacing out = this.getOutwardFacing();
+		TileEntity neighbor = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
 
-		if (null == out)
-			return;
+		facing = facing.getOpposite();
 
-		TileEntity neighbor = this.worldObj.getTileEntity(this.getPos().offset(out));
-
-		if (neighbor instanceof IFluidHandler)
-			this.pumpDestination = (IFluidHandler)neighbor;
+		if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+			this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
 	}
 
 	private Direction _direction;
-	private IFluidHandler pumpDestination;
+	private IFluidHandler _pumpDestination;
 }

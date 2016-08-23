@@ -205,33 +205,6 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		return null != fuelDirection && this.worldObj.getTileEntity(this.getWorldPosition().offset(fuelDirection)) instanceof TileEntityReactorFuelRod;
 	}
 
-
-
-	/*
-	// TODO check with ModTileEntity
-	@Override
-	protected void encodeDescriptionPacket(NBTTagCompound packet) {
-		super.encodeDescriptionPacket(packet);
-		NBTTagCompound localData = new NBTTagCompound();
-		this.writeLocalDataToNBT(localData);
-		packet.setTag("reactorControlRod", localData);
-	}
-
-	// TODO check with ModTileEntity
-	@Override
-	protected void decodeDescriptionPacket(NBTTagCompound packet) {
-		super.decodeDescriptionPacket(packet);
-		
-		if(packet.hasKey("reactorControlRod")) {
-			NBTTagCompound localData = packet.getCompoundTag("reactorControlRod");
-			this.readLocalDataFromNBT(localData);
-			
-			if(WORLD != null && WORLD.isRemote) {
-				WorldHelper.notifyBlockUpdate(this.WORLD, this.getPos(), null, null);
-			}
-		}
-	}*/
-	
 	// Save/Load Helpers
 	private void readLocalDataFromNBT(NBTTagCompound data) {
 		if(data.hasKey("controlRodInsertion")) {

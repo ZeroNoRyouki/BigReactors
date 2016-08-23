@@ -7,7 +7,6 @@ import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import erogenousbeef.bigreactors.init.*;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
@@ -16,13 +15,10 @@ import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
 import it.zerono.mods.zerocore.lib.world.IWorldGenWhiteList;
 import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
 import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -30,8 +26,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Calendar;
 
@@ -58,26 +52,27 @@ public class BigReactors implements IModInitializationHandler {
 
 	//private static final String[] LANGUAGES_SUPPORTED = new String[]{"de_DE", "en_US", "es_SP", "nl_NL", "pl_PL", "pt_BR", "ru_RU", "sv_SE", "zh_CN"};
 
-	// TODO move all to BrBlocks
-	public static BlockTurbineRotorPart blockTurbineRotorPart;
+	/*
+	public static BlockTurbineRotorShaft blockTurbineRotorPart;
 	public static Block blockRadiothermalGen;
-
+	*/
+	/*
 	public static Fluid fluidYellorium;
 	public static Fluid fluidCyanite;
 
 	public static Fluid fluidSteam;
 	public static boolean registeredOwnSteam;
-
+	*/
 	public static final int defaultFluidColorFuel = 0xbcba50;
 	public static final int defaultFluidColorWaste = 0x4d92b5;
 
 	// Game Balance values
-
+	/*
 	protected static ResourceLocation iconSteamStill = BigReactors.createResourceLocation("fluids\\fluid.steam.still");
 	protected static ResourceLocation iconSteamFlowing = BigReactors.createResourceLocation("fluids\\fluid.steam.flowing");
 	protected static ResourceLocation iconFuelColumnStill = BigReactors.createResourceLocation("fluids\\fluid.fuelColumn.still");
 	protected static ResourceLocation iconFuelColumnFlowing = BigReactors.createResourceLocation("fluids\\fluid.fuelColumn.flowing");
-
+	*/
 	public static BigReactors getInstance() {
 		return BigReactors.s_instance;
 	}
@@ -96,9 +91,6 @@ public class BigReactors implements IModInitializationHandler {
 		MinecraftForge.EVENT_BUS.register(new BREventHandler());
 		MinecraftForge.EVENT_BUS.register(BigReactors.s_proxy);
 		BigReactors.s_proxy.onPreInit(event);
-
-		// Force-load water to prevent startup crashes
-		Fluid waterFluid = FluidRegistry.WATER; // TODO is this still needed? (Z)
 	}
 
 	@Mod.EventHandler
@@ -148,8 +140,8 @@ public class BigReactors implements IModInitializationHandler {
 		Reactants.registerSolid(blockBlutonium, StandardReactants.blutonium, Reactants.standardSolidReactantAmount * 9);
 
 		// Register fluid => reactant mappings
-		Reactants.registerFluid(fluidYellorium, StandardReactants.yellorium);
-		Reactants.registerFluid(fluidCyanite, StandardReactants.cyanite);
+		Reactants.registerFluid(BrFluids.fluidYellorium, StandardReactants.yellorium);
+		Reactants.registerFluid(BrFluids.fluidCyanite, StandardReactants.cyanite);
 
 		// Register reactant => reactant conversions for making cyanite
 		ReactorConversions.register(StandardReactants.yellorium, StandardReactants.cyanite);
@@ -261,24 +253,6 @@ public class BigReactors implements IModInitializationHandler {
 	public static ResourceLocation createBlockResourceLocation(String path) {
 
 		return BigReactors.createResourceLocation("blocks/" + path);
-	}
-
-
-	// Thanks KingLemming!
-	@SideOnly(Side.CLIENT)
-	public static void registerNonBlockFluidIcons(TextureMap map) {
-
-		map.registerSprite(BrFluids.fluidFuelColumn.getStill());
-		map.registerSprite(BrFluids.fluidFuelColumn.getFlowing());
-		/*
-		map.registerSprite(BigReactors.iconFuelColumnStill);
-		map.registerSprite(BigReactors.iconFuelColumnFlowing);
-		
-		if (registeredOwnSteam) {
-			map.registerSprite(BigReactors.iconSteamStill);
-			map.registerSprite(BigReactors.iconSteamFlowing);
-		}
-		*/
 	}
 
 	@Mod.Instance(MODID)

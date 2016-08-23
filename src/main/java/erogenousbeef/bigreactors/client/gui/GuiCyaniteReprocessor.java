@@ -39,7 +39,7 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 		// TODO Commented temporarily to allow this thing to compile...
 		titleString = new BeefGuiLabel(this, "FIXME"/*_entity.getInventoryName()*/, guiLeft + 8, guiTop + 6);
 
-		fluidBar = new BeefGuiFluidBar(this, guiLeft + 8, guiTop + 16, _entity, 0);
+		fluidBar = new BeefGuiFluidBar(this, guiLeft + 8, guiTop + 16, /*_entity , 0*/null /* TODO fix */);
 		// TODO Commented temporarily to allow this thing to compile...
 		//powerBar = new BeefGuiPowerBar(this, guiLeft + 148, guiTop + 16, _entity);
 		progressArrow = new BeefGuiProgressArrow(this, guiLeft + 76, guiTop + 41, 0, 178, _entity);

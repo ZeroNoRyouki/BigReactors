@@ -45,7 +45,7 @@ public final class BrBlocks {
     public static final BlockMultiblockComputerPort turbineComputerPort;
     public static final BlockMultiblockIOPort turbineFluidPort;
     public static final BlockTurbineRotorBearing turbineBearing;
-    public static final BlockTurbineRotorPart turbineRotorShaft; // TEMP ?
+    public static final BlockTurbineRotorShaft turbineRotorShaft;
     public static final BlockTurbineRotorBlade turbineRotorBlade;
     public static final BlockMultiblockIOPort turbineCreativeSteamGenerator;
     
@@ -96,7 +96,7 @@ public final class BrBlocks {
         turbineComputerPort = (BlockMultiblockComputerPort)init.register(new BlockMultiblockComputerPort(PartType.TurbineComputerPort, "turbineComputerPort"));
         turbineFluidPort = (BlockMultiblockIOPort)init.register(new BlockMultiblockIOPort(PartType.TurbineFluidPort, "turbineFluidPort"));
         turbineBearing = (BlockTurbineRotorBearing)init.register(new BlockTurbineRotorBearing("turbineBearing"));
-        turbineRotorShaft = (BlockTurbineRotorPart)init.register(new BlockTurbineRotorPart("turbineRotorShaft"));
+        turbineRotorShaft = (BlockTurbineRotorShaft)init.register(new BlockTurbineRotorShaft("turbineRotorShaft"));
         turbineRotorBlade = (BlockTurbineRotorBlade)init.register(new BlockTurbineRotorBlade("turbineRotorBlade"));
         turbineCreativeSteamGenerator = !regCreativeParts ? null : (BlockMultiblockIOPort)init.register(new BlockMultiblockIOPort(PartType.TurbineCreativeSteamGenerator, "turbineCreativeSteamGenerator"));
 
@@ -131,7 +131,7 @@ public final class BrBlocks {
         init.register(TileEntityTurbineFluidPort.class);
         init.register(TileEntityTurbinePartGlass.class);
         init.register(TileEntityTurbineRotorBearing.class);
-        init.register(TileEntityTurbineRotorPart.class);
+        init.register(TileEntityTurbineRotorShaft.class);
         init.register(TileEntityTurbineRotorBlade.class);
         init.register(TileEntityTurbineCreativeSteamGenerator.class);
         init.register(TileEntityTurbineComputerPort.class);

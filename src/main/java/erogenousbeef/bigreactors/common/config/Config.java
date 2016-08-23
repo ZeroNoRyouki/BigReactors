@@ -57,32 +57,30 @@ public class Config extends ConfigHandler {
     public int yelloriteOreMaxClustersPerChunk;
     public int yelloriteOrePerCluster;
     public int yelloriteOreMaxY;
-
-    public boolean netherOreEnableWorldGen;
-    public int netherOreMaxClustersPerChunk;
-    public int netherOrePerCluster;
-
-    public boolean endOreEnableWorldGen;
-    public int endOreMaxClustersPerChunk;
-    public int endOrePerCluster;
+    public boolean anglesiteOreEnableWorldGen;
+    public int anglesiteOreMaxClustersPerChunk;
+    public int anglesiteOrePerCluster;
+    public boolean benitoiteOreEnableWorldGen;
+    public int benitoiteOreMaxClustersPerChunk;
+    public int benitoiteOrePerCluster;
 
     // not persisted
     public String recipeYelloriumIngotName;
     public String recipeBlutoniumIngotName;
 
     public Config() {
-        super(BigReactors.MODID + ".cfg", BigReactors.MODID);
+        super(BigReactors.NAME + ".cfg", BigReactors.NAME);
     }
 
     @Override
     protected void loadConfigurationCategories() {
 
-        this.GENERAL = this.getCategory("general");
-        this.REACTOR = this.getCategory("reactor");
-        this.TURBINE = this.getCategory("turbine");
+        this.GENERAL = this.getCategory("general", "General options");
+        this.REACTOR = this.getCategory("reactor", "Define how Reactors works");
+        this.TURBINE = this.getCategory("turbine", "Define how Turbines works");
         this.COMPATIBILITY = this.getCategory("compatibility", "Define how Big Reactor interact with other mods");
-        this.RECIPES = this.getCategory("recipes");
-        this.WORLDGEN = this.getCategory("worldgen");
+        this.RECIPES = this.getCategory("recipes", "Recipes options");
+        this.WORLDGEN = this.getCategory("worldgen", "Define how ores generates in the world");
     }
 
     @Override
@@ -140,12 +138,12 @@ public class Config extends ConfigHandler {
         this.yelloriteOreMaxClustersPerChunk = this.getValue("yelloriteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of yellorite clusters per chunk");
         this.yelloriteOrePerCluster = this.getValue("yelloriteOrePerCluster", this.WORLDGEN, 5, "Maximum number of yellorite ore to generate in each cluster");
         this.yelloriteOreMaxY = this.getValue("yelloriteOreMaxY", this.WORLDGEN, 32, "Maximum height (Y coordinate) in the world to generate yellorite ore");
-        this.netherOreEnableWorldGen = this.getValue("netherOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of NETHER ore");
-        this.netherOreMaxClustersPerChunk = this.getValue("netherOreMaxClustersPerChunk", this.WORLDGEN, 1, "Maximum number of NETHER clusters per chunk");
-        this.netherOrePerCluster = this.getValue("netherOrePerCluster", this.WORLDGEN, 4, "Maximum number of NETHER ore to generate in each cluster");
-        this.endOreEnableWorldGen = this.getValue("endOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of END ore");
-        this.endOreMaxClustersPerChunk = this.getValue("endOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of END clusters per chunk");
-        this.endOrePerCluster = this.getValue("endOrePerCluster", this.WORLDGEN, 5, "Maximum number of END ore to generate in each cluster");
+        this.anglesiteOreEnableWorldGen = this.getValue("anglesiteOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of Anglesite ore");
+        this.anglesiteOreMaxClustersPerChunk = this.getValue("anglesiteOreMaxClustersPerChunk", this.WORLDGEN, 1, "Maximum number of Anglesite clusters per chunk");
+        this.anglesiteOrePerCluster = this.getValue("anglesiteOrePerCluster", this.WORLDGEN, 4, "Maximum number of Anglesite ore to generate in each cluster");
+        this.benitoiteOreEnableWorldGen = this.getValue("benitoiteOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of Benitoite ore");
+        this.benitoiteOreMaxClustersPerChunk = this.getValue("benitoiteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of Benitoite clusters per chunk");
+        this.benitoiteOrePerCluster = this.getValue("benitoiteOrePerCluster", this.WORLDGEN, 5, "Maximum number of Benitoite ore to generate in each cluster");
 
         // not persisted...
 
@@ -170,21 +168,21 @@ public class Config extends ConfigHandler {
                 BigReactors.WHITELIST_WORLDGEN_ORES.whiteListDimensions(this.dimensionWhitelist);
             }
 
-            if (this.netherOreEnableWorldGen) {
+            if (this.anglesiteOreEnableWorldGen) {
 
                 final IBlockState ore = BrBlocks.brOre.getStateFromType(OreType.Anglesite);
                 final IBlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 
                 BigReactors.NETHER_ORES.clearOres();
-                BigReactors.NETHER_ORES.addOre(ore, netherrack , 2, 21, this.netherOrePerCluster, this.netherOreMaxClustersPerChunk);
-                BigReactors.NETHER_ORES.addOre(ore, netherrack, 104, 123, this.netherOrePerCluster, this.netherOreMaxClustersPerChunk);
+                BigReactors.NETHER_ORES.addOre(ore, netherrack , 2, 21, this.anglesiteOrePerCluster, this.anglesiteOreMaxClustersPerChunk);
+                BigReactors.NETHER_ORES.addOre(ore, netherrack, 104, 123, this.anglesiteOrePerCluster, this.anglesiteOreMaxClustersPerChunk);
             }
 
-            if (this.endOreEnableWorldGen) {
+            if (this.benitoiteOreEnableWorldGen) {
 
                 BigReactors.END_ORES.clearOres();
                 BigReactors.END_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Benitoite),
-                        Blocks.END_STONE.getDefaultState(), 10, 90, this.endOrePerCluster, this.endOreMaxClustersPerChunk);
+                        Blocks.END_STONE.getDefaultState(), 10, 90, this.benitoiteOrePerCluster, this.benitoiteOreMaxClustersPerChunk);
             }
         }
     }

@@ -10,10 +10,12 @@ import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
+import erogenousbeef.bigreactors.init.BrFluids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -65,20 +67,6 @@ public class ClientProxy extends CommonProxy {
 
 		// register TESRs
 		this.registerTESRs();
-
-		// TODO Commented temporarily to allow this thing to compile...
-		/*
-		BlockReactorFuelRod.renderId = RenderingRegistry.getNextAvailableRenderId();
-		ISimpleBlockRenderingHandler fuelRodISBRH = new SimpleRendererFuelRod();
-		RenderingRegistry.registerBlockHandler(BlockReactorFuelRod.renderId, fuelRodISBRH);
-		
-		BlockTurbineRotorPart.renderId = RenderingRegistry.getNextAvailableRenderId();
-		ISimpleBlockRenderingHandler rotorISBRH = new RotorSimpleRenderer();
-		RenderingRegistry.registerBlockHandler(BlockTurbineRotorPart.renderId, rotorISBRH);	
-
-		if(BigReactors.blockTurbinePart != null) {
-			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
-		}*/
 	}
 
 	@Override
@@ -86,9 +74,11 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 
-		TextureMap map = event.getMap();
+		final TextureMap map = event.getMap();
 
-		BigReactors.registerNonBlockFluidIcons(map);
+		this.registerFluidTextures(map, BrFluids.fluidSteam);
+		this.registerFluidTextures(map, BrFluids.fluidFuelColumn);
+
 		GuiIcons.registerIcons(map);
 		CommonBlockIcons.registerIcons(map);
 
@@ -113,7 +103,14 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
 		/*
 		// turbine rotor
+		TODO Commented until the new rotor animation is in
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
 		*/
+	}
+
+	private void registerFluidTextures(final TextureMap map, final Fluid fluid) {
+
+		map.registerSprite(fluid.getStill());
+		map.registerSprite(fluid.getFlowing());
 	}
 }

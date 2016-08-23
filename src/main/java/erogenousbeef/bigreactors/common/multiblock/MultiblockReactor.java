@@ -7,8 +7,6 @@ import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.interfaces.IFluidHandlerInfo;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
@@ -43,23 +41,28 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo,
-		IMultipleFluidHandler, IActivateable {
+public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo, IActivateable {
 
 	public static final int FuelCapacityPerFuelRod = 4 * Reactants.standardSolidReactantAmount; // 4 ingots per rod
-	
+	/*
 	public static final int FLUID_SUPERHEATED = CoolantContainer.HOT;
 	public static final int FLUID_COOLANT = CoolantContainer.COLD;
-	
+	*/
 	private static final float passiveCoolingPowerEfficiency = 0.5f; // 50% power penalty, so this comes out as about 1/3 a basic water-cooled reactor
 	private static final float passiveCoolingTransferEfficiency = 0.2f; // 20% of available heat transferred per tick when passively cooled
 	private static final float reactorHeatLossConductivity = 0.001f; // circa 1RF per tick per external surface block
@@ -70,8 +73,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private float fuelHeat;
 	private WasteEjectionSetting wasteEjection;
 
-	private PowerSystem powerSystem;
-	private PartTier partsTier;
+	private PowerSystem _powerSystem;
+	private PartTier _partsTier;
 	private float energyStored;
 
 
@@ -112,14 +115,13 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	private FuelAssembly[] _fuelAssemblies;
 
-	private boolean legacyMode;
+	private boolean _legacyMode;
 
 	// Updates
 	private Set<EntityPlayer> updatePlayers;
 	private int ticksSinceLastUpdate;
 	private static final int ticksBetweenUpdates = 3;
 
-	
 	public MultiblockReactor(World world) {
 		super(world);
 
@@ -127,10 +129,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		active = false;
 		reactorHeat = 0f;
 		fuelHeat = 0f;
-		powerSystem = PowerSystem.RedstoneFlux;
+		_powerSystem = PowerSystem.RedstoneFlux;
 		energyStored = 0f;
 		wasteEjection = WasteEjectionSetting.kAutomatic;
-		this.partsTier = PartTier.Legacy;
+		this._partsTier = PartTier.Legacy;
 
 		// Derived stats
 		fuelToReactorHeatTransferCoefficient = 0f;
@@ -163,7 +165,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		
 		reactorVolume = 0;
 
-		this.legacyMode = false;
+		this._coolantHandlers = new IFluidHandler[2];
+		this._legacyMode = false;
 	}
 	
 	public void beginUpdatingPlayer(EntityPlayer playerToUpdate) {
@@ -339,17 +342,12 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			return false;
 		}
 
-
 		// check if the machine is single-tier
 
 		PartTier candidateTier = null;
 
 		for (IMultiblockPart part: this.connectedParts) {
-			/*
-			if (part instanceof TileEntityReactorControlRod ||
-				part instanceof TileEntityReactorFuelRod)
-				continue;
-			*/
+
 			if (part instanceof TileEntityReactorPartBase) {
 
 				PartTier tier = ((TileEntityReactorPartBase)part).getPartTier();
@@ -364,9 +362,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 				}
 			}
 		}
-
-		//this.partsTier = candidateTier;
-
 
 		// check if the machine has a single power system
 
@@ -548,8 +543,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(energyStored < 0.0 || Float.isNaN(energyStored)) {
 			energyStored = 0.0f;
 		}
-		else if(energyStored > this.powerSystem.maxCapacity) {
-			energyStored = this.powerSystem.maxCapacity;
+		else if(energyStored > this._powerSystem.maxCapacity) {
+			energyStored = this._powerSystem.maxCapacity;
 		}
 	}
 	
@@ -575,8 +570,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		this.energyStored += newEnergy;
 
-		if (this.energyStored > this.powerSystem.maxCapacity) {
-			this.energyStored = this.powerSystem.maxCapacity;
+		if (this.energyStored > this._powerSystem.maxCapacity) {
+			this.energyStored = this._powerSystem.maxCapacity;
 		}
 		if (-0.00001f < this.energyStored && this.energyStored < 0.00001f) {
 			// Clamp to zero
@@ -1214,8 +1209,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			}
 		}
 
-		this.partsTier = candidateTier;
-		this.legacyMode = PartTier.Legacy == candidateTier;
+		this._partsTier = candidateTier;
+		this._legacyMode = PartTier.Legacy == candidateTier;
 
 		// determine machine power system
 
@@ -1247,7 +1242,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected void onMachineRestored() {
-		//recalculateDerivedValues();
 		this.onMachineAssembled();
 	}
 
@@ -1446,7 +1440,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	public int getEnergyStoredPercentage() {
-		return (int)(this.energyStored / (float)this.powerSystem.maxCapacity * 100f);
+		return (int)(this.energyStored / (float)this._powerSystem.maxCapacity * 100f);
 	}
 
 	@Override
@@ -1538,7 +1532,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
 		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
 
-		// TODO Commented temporarily to allow this thing to compile...
+		// TODO Commented until we redo multiblock debugging
 		/*
 		if(getLastValidationException() != null) {
 			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
@@ -1563,15 +1557,15 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	}
 
 	public PartTier getMachineTier() {
-		return this.partsTier;
+		return this._partsTier;
 	}
 
 	protected void switchPowerSystem(PowerSystem newPowerSystem) {
 
-		this.powerSystem = newPowerSystem;
+		this._powerSystem = newPowerSystem;
 
-		if (this.energyStored > this.powerSystem.maxCapacity)
-			this.energyStored = this.powerSystem.maxCapacity;
+		if (this.energyStored > this._powerSystem.maxCapacity)
+			this.energyStored = this._powerSystem.maxCapacity;
 	}
 
 	public int getFuelAssembliesCount() {
@@ -1617,7 +1611,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
  	*/
 	@Override
 	public long getEnergyCapacity() {
-		return this.powerSystem.maxCapacity;
+		return this._powerSystem.maxCapacity;
 	}
 
 	@Override
@@ -1638,25 +1632,61 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	public PowerSystem getPowerSystem() {
-		return this.powerSystem;
+		return this._powerSystem;
 	}
 
 	/*
 	 * IFluidHandler capability support
 	 */
-	public IFluidHandlerInfo getFluidHandlerInfo(IInputOutputPort.Direction direction) {
-		return IInputOutputPort.Direction.Input == direction ? (IFluidHandlerInfo)this._inputTank : (IFluidHandlerInfo)this._outputTank;
+	public IFluidHandler getFluidHandler(IInputOutputPort.Direction direction) {
+
+		final int idx = IInputOutputPort.Direction.Input == direction ? CoolantContainer.COLD : CoolantContainer.HOT;
+		IFluidHandler handler = this._coolantHandlers[idx];
+
+		if (null == handler)
+			this._coolantHandlers[idx] = handler = new CoolantFluidHandlerWrapper(this, direction);
+
+		return handler;
 	}
 
-	/**/
-	private static final FluidTankInfo[] emptyTankInfo = new FluidTankInfo[0];
+	private IFluidHandler[] _coolantHandlers;
 
-	@Override
-	public FluidTankInfo[] getTankInfo() {
-		if(isPassivelyCooled()) { return emptyTankInfo; }
+	private class CoolantFluidHandlerWrapper implements IFluidHandler {
 
-		return coolantContainer.getTankInfo(-1);
+		public CoolantFluidHandlerWrapper(MultiblockReactor reactor, IInputOutputPort.Direction direction) {
+
+			this._reactor = reactor;
+			this._tankId = IInputOutputPort.Direction.Input == direction ? CoolantContainer.COLD : CoolantContainer.HOT;
+		}
+
+		@Override
+		public IFluidTankProperties[] getTankProperties() {
+
+			if (null == this._properties)
+				this._properties = this._reactor.getCoolantContainer().getTankProperties(this._tankId);
+
+			return this._properties;
+		}
+
+		@Override
+		public int fill(FluidStack resource, boolean doFill) {
+			return this._reactor.getCoolantContainer().fill(this._tankId, resource, doFill);
+		}
+
+		@Nullable
+		@Override
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return this._reactor.getCoolantContainer().drain(this._tankId, resource, doDrain);
+		}
+
+		@Nullable
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return this._reactor.getCoolantContainer().drain(this._tankId, maxDrain, doDrain);
+		}
+
+		private final MultiblockReactor _reactor;
+		private final int _tankId;
+		private IFluidTankProperties[] _properties;
 	}
-	/**/
-
 }

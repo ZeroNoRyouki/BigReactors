@@ -2,8 +2,10 @@ package erogenousbeef.bigreactors.client.gui;
 
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor.WasteEjectionSetting;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPart;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import erogenousbeef.bigreactors.gui.controls.*;
@@ -112,8 +114,6 @@ public class GuiReactorStatus extends BeefGuiBase {
 		topY += reactivityIcon.getHeight() + 6;
 
 		statusString = new BeefGuiLabel(this, "", leftX+1, topY);
-		topY += statusString.getHeight() + 4;
-		
 		
 		powerBar = new BeefGuiPowerBar(this, guiLeft + 152, guiTop + 22, this.reactor);
 		coreHeatBar = new BeefGuiHeatBar(this, guiLeft + 130, guiTop + 22, TextFormatting.AQUA + "Core Heat", new String[] { "Heat of the reactor's fuel.", "High heat raises fuel usage.", "", "Core heat is transferred to", "the casing. Transfer rate", "is based on the design of", "the reactor's interior."});
@@ -121,10 +121,10 @@ public class GuiReactorStatus extends BeefGuiBase {
 		fuelMixBar = new BeefGuiFuelMixBar(this, guiLeft + 86, guiTop + 22, this.reactor);
 
 		coolantIcon = new BeefGuiIcon(this, guiLeft + 132, guiTop + 91, 16, 16, ClientProxy.GuiIcons.getIcon("coolantIn"), new String[] { TextFormatting.AQUA + "Coolant Fluid Tank", "", "Casing heat will superheat", "coolant in this tank." });
-		coolantBar = new BeefGuiFluidBar(this, guiLeft + 131, guiTop + 108, this.reactor, MultiblockReactor.FLUID_COOLANT);
+		coolantBar = new BeefGuiFluidBar(this, guiLeft + 131, guiTop + 108, this.reactor.getFluidHandler(IInputOutputPort.Direction.Input));
 
 		hotFluidIcon = new BeefGuiIcon(this, guiLeft + 154, guiTop + 91, 16, 16, ClientProxy.GuiIcons.getIcon("hotFluidOut"), new String[] { TextFormatting.AQUA + "Hot Fluid Tank", "", "Superheated coolant", "will pump into this tank,", "and must be piped out", "via coolant ports" });
-		hotFluidBar = new BeefGuiFluidBar(this, guiLeft + 153, guiTop + 108, this.reactor, MultiblockReactor.FLUID_SUPERHEATED);
+		hotFluidBar = new BeefGuiFluidBar(this, guiLeft + 153, guiTop + 108, this.reactor.getFluidHandler(IInputOutputPort.Direction.Output));
 		
 		registerControl(titleString);
 		registerControl(statusString);
@@ -169,13 +169,20 @@ public class GuiReactorStatus extends BeefGuiBase {
 		else {
 			statusString.setLabelText("Status: " + TextFormatting.DARK_RED + "Offline");
 		}
-		
-		outputString.setLabelText(getFormattedOutputString());
-		if(reactor.isPassivelyCooled()) {
-			outputString.setLabelTooltip(String.format("%.2f flux per tick", reactor.getEnergyGeneratedLastTick()));
-		}
-		else {
-			outputString.setLabelTooltip(String.format("%.0f millibuckets per tick", reactor.getEnergyGeneratedLastTick()));
+
+
+		final PowerSystem powerSystem = this.reactor.getPowerSystem();
+		final float number = reactor.getEnergyGeneratedLastTick(); // Also doubles as fluid vaporized last tick
+
+		if (reactor.isPassivelyCooled()) {
+
+			outputString.setLabelText(StaticUtils.Strings.formatEnergy(number, powerSystem) + "/t");
+			outputString.setLabelTooltip(String.format("%.2f %s per tick", number, powerSystem.unitOfMeasure));
+
+		} else {
+
+			outputString.setLabelText(StaticUtils.Strings.formatMillibuckets(number) + "/t");
+			outputString.setLabelTooltip(String.format("%.0f millibuckets per tick", number));
 		}
 
 		heatString.setLabelText(Integer.toString((int)reactor.getFuelHeat()) + " C");
@@ -278,17 +285,6 @@ public class GuiReactorStatus extends BeefGuiBase {
 		"is superheated by the core."
 	};
 
-	private String getFormattedOutputString() {
-		float number = reactor.getEnergyGeneratedLastTick(); // Also doubles as fluid vaporized last tick
-
-		if(reactor.isPassivelyCooled()) {
-			return StaticUtils.Strings.formatEnergy(number, this.reactor.getPowerSystem()) + "/t";
-		}
-		else {
-			return StaticUtils.Strings.formatMillibuckets(number) + "/t";			
-		}
-	}
-	
 	private String getFuelConsumptionTooltip(float fuelConsumption) {
 		if(fuelConsumption <= 0.000001f) { return "0 millibuckets per tick"; }
 		

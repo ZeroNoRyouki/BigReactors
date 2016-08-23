@@ -67,7 +67,7 @@ public class ItemBeefDebugTool extends ItemBase {
 		IBlockState state = world.getBlockState(pos);
 		Block b = state.getBlock();
 		if(b != null) {
-			// TODO Commented temporarily to allow this thing to compile...
+			// TODO Commented until we redo multiblock debugging
 			/*
 			ItemStack blockStack = new ItemStack(b, 1, world.getBlockMetadata(x,y,z));
 			String oreName = ItemHelper.oreProxy.getOreName(blockStack);

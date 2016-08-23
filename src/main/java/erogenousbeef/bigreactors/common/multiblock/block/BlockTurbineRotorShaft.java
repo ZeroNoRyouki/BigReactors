@@ -3,15 +3,13 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorPart;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorShaft;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -19,87 +17,24 @@ import net.minecraft.world.World;
 
 import java.util.EnumSet;
 
-public class BlockTurbineRotorPart extends BlockTieredPart implements ITurbineRotorPart {
+public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineRotorPart {
 
-	public static final int METADATA_SHAFT = 0;
-	public static final int METADATA_BLADE = 1;
-	public static int renderId;
+	public BlockTurbineRotorShaft(String blockName) {
 
-	private static final String[] _subBlocks = new String[] { "rotor",
-															  "blade",
-															};
-
-	public BlockTurbineRotorPart(String blockName) {
-
-		super(PartType.TurbineRotorBlade, blockName, Material.IRON); // TODO fix type
+		super(PartType.TurbineRotorShaft, blockName, Material.IRON);
 		this.setLightLevel(0.9f);
 		this._neighbors = new IBlockState[EnumFacing.VALUES.length];
 	}
 
-	// TODO blockstate
-	/*
-	@Override
-	public int getRenderType() {
-		return renderId;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		// Base icons
-		for(int i = 0; i < _subBlocks.length; ++i) {
-			_icons[i] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + "." + _subBlocks[i]);
-		}
-		
-		_subIcons[0] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + getUnlocalizedName() + ".rotor.connector");
-	}
-	
-	@Override
-	public IIcon getIcon(int side, int metadata) {
-		return _icons[metadata];
-	}
-
-	public IIcon getRotorConnectorIcon() {
-		return _subIcons[0];
-	}
-	*/
-
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileEntityTurbineRotorPart();
+		return new TileEntityTurbineRotorShaft();
 	}
 
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-
-	// TODO Commented temporarily to allow this thing to compile...
-	/*
-	@Override
-	public boolean renderAsNormalBlock()
-	{
-		return false;
-	}
-	*/
-
-	/*
-	public ItemStack getItemStack(String name) {
-		int metadata = -1;
-		for(int i = 0; i < _subBlocks.length; i++) {
-			if(_subBlocks[i].equals(name)) {
-				metadata = i;
-				break;
-			}
-		}
-		
-		if(metadata < 0) {
-			throw new IllegalArgumentException("Unable to find a block with the name " + name);
-		}
-		
-		return new ItemStack(this, 1, metadata);
-	}*/
 
 	/**
 	 * Override and add custom masses when you add non-standard turbine parts
@@ -117,14 +52,6 @@ public class BlockTurbineRotorPart extends BlockTieredPart implements ITurbineRo
 	@Override
 	public boolean isBlade() {
 		return false;
-	}
-
-	public static boolean isRotorBlade(int metadata) {
-		return metadata == METADATA_BLADE;
-	}
-	
-	public static boolean isRotorShaft(int metadata) {
-		return metadata == METADATA_SHAFT;
 	}
 
 	@Override
