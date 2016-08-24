@@ -52,29 +52,9 @@ public class BigReactors implements IModInitializationHandler {
 	public static final BigReactorsTickHandler TICK_HANDLER;
 	public static final boolean VALENTINES_DAY; // Easter Egg :)
 
-	//private static final String[] LANGUAGES_SUPPORTED = new String[]{"de_DE", "en_US", "es_SP", "nl_NL", "pl_PL", "pt_BR", "ru_RU", "sv_SE", "zh_CN"};
-
-	/*
-	public static BlockTurbineRotorShaft blockTurbineRotorPart;
-	public static Block blockRadiothermalGen;
-	*/
-	/*
-	public static Fluid fluidYellorium;
-	public static Fluid fluidCyanite;
-
-	public static Fluid fluidSteam;
-	public static boolean registeredOwnSteam;
-	*/
 	public static final int defaultFluidColorFuel = 0xbcba50;
 	public static final int defaultFluidColorWaste = 0x4d92b5;
 
-	// Game Balance values
-	/*
-	protected static ResourceLocation iconSteamStill = BigReactors.createResourceLocation("fluids\\fluid.steam.still");
-	protected static ResourceLocation iconSteamFlowing = BigReactors.createResourceLocation("fluids\\fluid.steam.flowing");
-	protected static ResourceLocation iconFuelColumnStill = BigReactors.createResourceLocation("fluids\\fluid.fuelColumn.still");
-	protected static ResourceLocation iconFuelColumnFlowing = BigReactors.createResourceLocation("fluids\\fluid.fuelColumn.flowing");
-	*/
 	public static BigReactors getInstance() {
 		return BigReactors.s_instance;
 	}

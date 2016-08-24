@@ -59,10 +59,7 @@ import java.util.Set;
 public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo, IActivateable {
 
 	public static final int FuelCapacityPerFuelRod = 4 * Reactants.standardSolidReactantAmount; // 4 ingots per rod
-	/*
-	public static final int FLUID_SUPERHEATED = CoolantContainer.HOT;
-	public static final int FLUID_COOLANT = CoolantContainer.COLD;
-	*/
+
 	private static final float passiveCoolingPowerEfficiency = 0.5f; // 50% power penalty, so this comes out as about 1/3 a basic water-cooled reactor
 	private static final float passiveCoolingTransferEfficiency = 0.2f; // 20% of available heat transferred per tick when passively cooled
 	private static final float reactorHeatLossConductivity = 0.001f; // circa 1RF per tick per external surface block
@@ -414,9 +411,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			// Radiate from that control rod
 			TileEntityReactorFuelRod source  = currentFuelRod.next();
 			FuelAssembly fuelAssembly = source.getFuelAssembly();
-			//BlockPos sourcePosition = source.getPos();
-			//BlockPos controlRodPosition = new BlockPos(sourcePosition.getX(), getMaximumCoord().getY(), sourcePosition.getZ());
-			///TileEntityReactorControlRod sourceControlRod = (TileEntityReactorControlRod)WORLD.getTileEntity(controlRodPosition);
 			TileEntityReactorControlRod sourceControlRod = (null != fuelAssembly) ? fuelAssembly.getControlRod() : null;
 
 			if(sourceControlRod != null)
@@ -795,17 +789,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		// Hollow cube.
 		return 26;
 	}
-	/*
-	@Override
-	public void formatDescriptionPacket(NBTTagCompound data) {
-		writeToNBT(data);
-	}
-
-	@Override
-	public void decodeDescriptionPacket(NBTTagCompound data) {
-		readFromNBT(data);
-		onFuelStatusChanged();
-	}*/
 
 	// Network & Storage methods
 	/*
@@ -1364,34 +1347,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(amtFuel + amtWaste <= 0f) { return 0f; }
 		else { return (float)amtFuel / (float)(amtFuel+amtWaste); }
 	}
-
-	/*
-	// IEnergyProvider
-	@Override
-	public int extractEnergy(EnumFacing from, int maxExtract,
-			boolean simulate) {
-		int amtRemoved = (int)Math.min(maxExtract, this.energyStored);
-		if(!simulate) {
-			this.reduceStoredEnergy(amtRemoved);
-		}
-		return amtRemoved;
-	}
-
-	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
-		return false;
-	}
-
-	@Override
-	public int getEnergyStored(EnumFacing from) {
-		return (int)energyStored;
-	}
-
-	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
-		return maxEnergyStored;
-	}
-	*/
 
 	// Redstone helper
 	public void setAllControlRodInsertionValues(int newValue) {

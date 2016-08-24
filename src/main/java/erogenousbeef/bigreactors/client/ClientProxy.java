@@ -100,7 +100,7 @@ public class ClientProxy extends CommonProxy {
 
 		// reactor fuel rods
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
-		
+
 		// turbine rotor
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
 	}

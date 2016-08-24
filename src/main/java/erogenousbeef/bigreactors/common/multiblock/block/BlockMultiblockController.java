@@ -90,24 +90,10 @@ public class BlockMultiblockController extends BlockMultiblockDevice {
     protected IBlockState buildActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos position,
                                            @Nonnull MultiblockTileEntityBase part) {
 
-        //state = super.buildActualState(state, world, position, part);
-
         MultiblockControllerBase controller = part.getMultiblockController();
         ControllerState controllerState = null == controller || !controller.isAssembled() || !(controller instanceof IActivateable) ?
                 ControllerState.Off : ((IActivateable)controller).getActive() ? ControllerState.Active : ControllerState.Idle;
 
         return super.buildActualState(state, world, position, part).withProperty(Properties.CONTROLLERSTATE, controllerState);
-
-        /*
-        if (part instanceof TileEntityReactorController) {
-
-            MultiblockReactor reactor = ((TileEntityReactorController)part).getReactorController();
-            ControllerState controllerState = null == reactor || !reactor.isAssembled() ? ControllerState.Off :
-                    reactor.getActive() ? ControllerState.Active : ControllerState.Idle;
-
-            state = state.withProperty(Properties.CONTROLLERSTATE, controllerState);
-        }
-
-        return state;*/
     }
 }

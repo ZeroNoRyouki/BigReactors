@@ -3,7 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock;
 public enum PowerSystem {
 
     RedstoneFlux("Redstone Flux", "RF", 10000000),
-    Tesla("Testa", "T", 20000000);
+    Tesla("Testa", "T", 10000000);
 
     PowerSystem(String fullName, String unitOfMeasure, long maxEnergyStored) {
 

@@ -66,21 +66,12 @@ public enum RotorShaftState implements IStringSerializable {
         RotorShaftState state;
         final EnumFacing[] directions = RotorShaftState.getBladesDirections(shaftAxis);
         EnumFacing.Axis[] bladesAxis = new EnumFacing.Axis[2];
-        int pairs = 0;
 
         for (int i = 0; i < 2; ++i) {
 
-            if (directionsWithBlades[i] && directionsWithBlades[i + 2]) {
-
+            if (directionsWithBlades[i] && directionsWithBlades[i + 2])
                 bladesAxis[i] = directions[i].getAxis();
-                ++pairs;
-            }
         }
-
-
-
-
-
 
         switch (shaftAxis) {
 

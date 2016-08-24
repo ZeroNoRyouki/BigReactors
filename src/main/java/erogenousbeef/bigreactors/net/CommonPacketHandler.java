@@ -6,10 +6,6 @@ import erogenousbeef.bigreactors.net.message.multiblock.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-//import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
-//import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
-
 
 public class CommonPacketHandler {
 

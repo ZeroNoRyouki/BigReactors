@@ -20,8 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 
-//import cofh.lib.util.helpers.ItemHelper;
-
 public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implements IRadiationModerator, IHeatEntity {
 
 	public TileEntityReactorFuelRod() {

@@ -21,8 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 
-//import cofh.lib.util.helpers.ItemHelper;
-
 /**
  * Helper for reactor radiation game logic
  * @author Erogenous Beef
