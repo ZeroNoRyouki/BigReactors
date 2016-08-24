@@ -56,7 +56,7 @@ public class TileEntityTurbineRotorBearing extends
 	@SideOnly(Side.CLIENT)
 	public RotorInfo getRotorInfo() {
 
-		if (null == this.rotorInfo)
+		if (null == this.rotorInfo && this.isConnected() && this.getMultiblockController().isAssembled())
 			this.calculateRotorInfo();
 
 		return this.rotorInfo;

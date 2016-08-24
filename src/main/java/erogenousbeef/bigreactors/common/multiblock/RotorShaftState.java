@@ -125,8 +125,8 @@ public enum RotorShaftState implements IStringSerializable {
 
     static {
 
-        BLADES_DIRECTIONS_X = new EnumFacing[] { EnumFacing.UP, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.WEST };
+        BLADES_DIRECTIONS_X = new EnumFacing[] { EnumFacing.UP, EnumFacing.NORTH, EnumFacing.DOWN, EnumFacing.SOUTH };
         BLADES_DIRECTIONS_Y = new EnumFacing[] { EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST };
-        BLADES_DIRECTIONS_Z = new EnumFacing[] { EnumFacing.UP, EnumFacing.NORTH, EnumFacing.DOWN, EnumFacing.SOUTH };
+        BLADES_DIRECTIONS_Z = new EnumFacing[] { EnumFacing.UP, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.WEST };
     }
 }
