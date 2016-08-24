@@ -1,15 +1,27 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
 
@@ -57,76 +69,78 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
         return false;
     }
 
-    // TODO Commented until the new rotor animation is in
-	/*
-
+    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-    	int metadata = world.getBlockMetadata(x, y, z);
-    	if(metadata == METADATA_BEARING) {
-        	TileEntity te = world.getTileEntity(x, y, z);
-        	if(te instanceof TileEntityTurbineRotorBearing) {
-        		TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
-        		if(bearing.isConnected() && bearing.getTurbine().getActive()) {
-        			return bearing.getAABB();
-        		}
-        	}
-    	}
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
 
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        final TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof TileEntityTurbineRotorBearing) {
+
+            final TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
+
+            if (bearing.isConnected() && bearing.getTurbine().getActive())
+                return bearing.getAABB();
+        }
+
+        return super.getCollisionBoundingBox(state, world, pos);
     }
-    */
-
-
 
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    // TODO Commented until the new rotor animation is in
-    /*
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState world, World pos, BlockPos state, Random rand) {
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 
-    	int metadata = world.getBlockMetadata(x, y, z);
-    	if(metadata == METADATA_BEARING) {
-        	TileEntity te = world.getTileEntity(x, y, z);
-    		if(te instanceof TileEntityTurbinePart) {
-    			// Rotor bearing found!
-    			TileEntityTurbinePart bearing = (TileEntityTurbinePart)te;
-    			MultiblockTurbine turbine = bearing.getTurbine();
-    			if(turbine != null && turbine.getActive()) {
-    				// Spawn particles!
-    				int numParticles = Math.min(20, Math.max(1, turbine.getFluidConsumedLastTick() / 40));
-    				ForgeDirection inwardsDir = bearing.getOutwardsDir().getOpposite();
-					BlockPos minCoord, maxCoord;
-    				minCoord = turbine.getMinimumCoord().add(1, 1, 1);
-    				maxCoord = turbine.getMaximumCoord().add(-1, -1, -1);
-    				if(inwardsDir.offsetX != 0) {
-    					minCoord.x = maxCoord.x = bearing.xCoord + inwardsDir.offsetX;
-    				}
-    				else if(inwardsDir.offsetY != 0) {
-    					minCoord.y = maxCoord.y = bearing.yCoord + inwardsDir.offsetY;
-    				}
-    				else {
-    					minCoord.z = maxCoord.z = bearing.zCoord + inwardsDir.offsetZ;
-    				}
+        TileEntity te = world.getTileEntity(pos);
 
-                    double particleX, particleY, particleZ;
-    				for(int i = 0; i < numParticles; i++) {
-    					particleX = minCoord.x + par5Random.nextFloat() * (maxCoord.x - minCoord.x + 1);
-    					particleY = minCoord.y + par5Random.nextFloat() * (maxCoord.y - minCoord.y + 1);
-    					particleZ = minCoord.z + par5Random.nextFloat() * (maxCoord.z - minCoord.z + 1);
-                        world.spawnParticle(BigReactors.VALENTINES_DAY ? "heart" : "cloud", particleX, particleY, particleZ,
-                        		par5Random.nextFloat() * inwardsDir.offsetX,
-                        		par5Random.nextFloat() * inwardsDir.offsetY,
-                        		par5Random.nextFloat() * inwardsDir.offsetZ);
-    				}
-    			}
-    		}
-    	}
+        if (te instanceof TileEntityTurbineRotorBearing) {
+
+            // Rotor bearing found!
+            final TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
+            final MultiblockTurbine turbine = bearing.getTurbine();
+
+            if (turbine != null && turbine.isAssembled() && turbine.getActive()) {
+
+                // Spawn particles!
+                final int numParticles = Math.min(20, Math.max(1, turbine.getFluidConsumedLastTick() / 40));
+                final BlockPos minCoord = turbine.getMinimumCoord().add(1, 1, 1);
+                final BlockPos maxCoord = turbine.getMaximumCoord().add(-1, -1, -1);
+                final EnumFacing inwardsDir = bearing.getOutwardFacing().getOpposite();
+                final int offsetX = inwardsDir.getFrontOffsetX();
+                final int offsetY = inwardsDir.getFrontOffsetY();
+                final int offsetZ = inwardsDir.getFrontOffsetZ();
+
+                int minX = minCoord.getX();
+                int minY = minCoord.getY();
+                int minZ = minCoord.getZ();
+                int maxX = maxCoord.getX();
+                int maxY = maxCoord.getY();
+                int maxZ = maxCoord.getZ();
+
+                if (offsetX != 0)
+                    minX = maxX = bearing.getWorldPosition().getX() + offsetX;
+
+                else if (offsetY != 0)
+                    minY = maxY = bearing.getWorldPosition().getY() + offsetY;
+
+                else
+                    minZ = maxZ = bearing.getWorldPosition().getZ() + offsetZ;
+
+                int particleX, particleY, particleZ;
+
+                for (int i = 0; i < numParticles; i++) {
+
+                    particleX = minX + (int)(rand.nextFloat() * (maxX - minX + 1));
+                    particleY = minY + (int)(rand.nextFloat() * (maxY - minY + 1));
+                    particleZ = minZ + (int)(rand.nextFloat() * (maxZ - minZ + 1));
+
+                    WorldHelper.spawnVanillaParticles(bearing.getWorld(),
+                            BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CLOUD, 1, numParticles,
+                            particleX, particleY, particleZ, 0, 0, 0);
+                }
+            }
+        }
     }
-    */
-
 }
