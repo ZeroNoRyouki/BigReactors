@@ -100,11 +100,9 @@ public class ClientProxy extends CommonProxy {
 
 		// reactor fuel rods
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
-		/**/
+		
 		// turbine rotor
-		//TODO Commented until the new rotor animation is in
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
-		/**/
 	}
 
 	private void registerFluidTextures(final TextureMap map, final Fluid fluid) {

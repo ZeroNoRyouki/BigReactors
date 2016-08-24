@@ -22,20 +22,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class StaticUtils {
 
-	// TODO Commented temporarily to allow this thing to compile...
-	/*
-	public static final ForgeDirection[] CardinalDirections = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH, ForgeDirection.WEST };
-	
-	public static final ForgeDirection neighborsBySide[][] = new ForgeDirection[][] {
-		{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST},
-		{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.EAST, ForgeDirection.WEST},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.WEST, ForgeDirection.EAST},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.SOUTH, ForgeDirection.NORTH}
-	};
-	*/
-	
 	public static class Inventory {
 		/**
 		 * Consume a single item from a stack of items
@@ -342,55 +328,6 @@ public class StaticUtils {
 			default:
 				return EnumFacing.NORTH;
 			}
-		}
-	}
-
-	// TODO Commented temporarily to allow this thing to compile...
-	/*
-	public static class TE {
-		public static TileEntity getTileEntityUnsafe(IBlockAccess iba, int x, int y, int z) {
-			TileEntity te = null;
-
-			if(iba instanceof World) {
-				// We don't want to trigger tile entity loads in this method
-				te = getTileEntityUnsafe((World)iba, x, y, z);
-			}
-			else {
-				// Should never happen, generally
-				te = iba.getTileEntity(new BlockPos(x, y ,z));
-			}
-			
-			return te;
-		}
-		
-		public static TileEntity getTileEntityUnsafe(World world, int x, int y, int z) {
-			TileEntity te = null;
-			
-			Chunk chunk = world.getChunkFromBlockCoords(x, z);
-			if(chunk != null) {
-				te = chunk.getTileEntityUnsafe(x & 0x0F, y, z & 0x0F);
-				// getTileEntityMap
-
-			}
-			
-			return te;
-		}
-	}
-	*/
-	
-	public static class WorldGen {
-		/**
-		 * Check if a Big Reactors world generator should even bother to run
-		 * in a given dimension.
-		 * @param dimensionId The dimension being queried for WorldGen.
-		 * @return True if world generation should proceed, false if it should be skipped altogether.
-		 */
-		public static boolean shouldGenerateInDimension(int dimensionId) {
-			/*
-			return dimensionId >= 0 || BigReactors.CONFIG.enableWorldGenInNegativeDimensions ||
-					BigReactors.CONFIG.dimensionWhitelist.contains(dimensionId);
-			*/
-			return false; // TODO fix
 		}
 	}
 }

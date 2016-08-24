@@ -1423,23 +1423,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 		WorldHelper.notifyBlockUpdate(WORLD, referenceCoord, null, null);
 	}
 
-	// TODO Commented until the new rotor animation is in
-	/*
-	// For client usage only
-	public ForgeDirection getRotorDirection() {
-		if(attachedRotorBearings.size() < 1) {
-			return ForgeDirection.UNKNOWN;
-		}
-		
-		if(!this.isAssembled()) {
-			return ForgeDirection.UNKNOWN;
-		}
-		
-		TileEntityTurbineRotorBearing rotorBearing = attachedRotorBearings.iterator().next();
-		return rotorBearing.getOutwardsDir().getOpposite();
-	}
-	*/
-
 	public boolean hasGlass() { return attachedGlass.size() > 0; }
 	
 	public String getDebugInfo() {
