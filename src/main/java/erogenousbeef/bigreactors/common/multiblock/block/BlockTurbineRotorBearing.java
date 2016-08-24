@@ -7,6 +7,7 @@ import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -33,6 +34,27 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
             GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND,
                     'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Basic, 1));
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        // allow correct brightness of the rotor TESR
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean isFullyOpaque(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isVisuallyOpaque() {
+        return true;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 
     // TODO Commented until the new rotor animation is in

@@ -83,7 +83,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	private PowerSystem _powerSystem;
 	private PartTier _partsTier;
 	private boolean _legacyMode;
-	boolean active;
+	private boolean active;
 	float rotorEnergy;
 	boolean inductorEngaged;
 
@@ -1210,7 +1210,11 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	}
 
 	public void setActive(boolean newValue) {
-		if(newValue != active) {
+
+		if (newValue == active)
+			return;
+
+		//if(newValue != active) {
 			this.active = newValue;
 			for(IMultiblockPart part : connectedParts) {
 				if(this.active) { part.onMachineActivated(); }
@@ -1219,21 +1223,23 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 			WorldHelper.notifyBlockUpdate(WORLD, this.getReferenceCoord(), null, null);
 			markReferenceCoordDirty();
-		}
-		
-		if(WORLD.isRemote) {
+		//}
+
+		if (WorldHelper.calledByLogicalClient(this.WORLD)) {
+
 			// Force controllers to re-render on client
-			for(IMultiblockPart part : attachedControllers) {
-				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
-			}
-			
-			for(TileEntityTurbineRotorBlade part : attachedRotorBlades) {
-				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
-			}
-			
-			for(TileEntityTurbineRotorShaft part : attachedRotorShafts) {
-				WorldHelper.notifyBlockUpdate(WORLD, part.getWorldPosition(), null, null);
-			}
+
+			for (IMultiblockPart part : this.attachedControllers)
+				WorldHelper.notifyBlockUpdate(this.WORLD, part.getWorldPosition(), null, null);
+
+			for (TileEntityTurbineRotorBlade part : this.attachedRotorBlades)
+				WorldHelper.notifyBlockUpdate(this.WORLD, part.getWorldPosition(), null, null);
+
+			for (TileEntityTurbineRotorShaft part : this.attachedRotorShafts)
+				WorldHelper.notifyBlockUpdate(this.WORLD, part.getWorldPosition(), null, null);
+
+			for (TileEntityTurbineRotorBearing part : this.attachedRotorBearings)
+				part.resetRotorInfo();
 		}
 	}
 

@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
@@ -11,8 +11,8 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -46,6 +46,22 @@ public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineR
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTurbineRotorShaft();
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		// allow correct brightness of the rotor TESR
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean isFullyOpaque(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isVisuallyOpaque() {
+		return true;
 	}
 
 	@Override
@@ -85,6 +101,16 @@ public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineR
 
 	@Override
 	protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
+		return this.buildActualStateInternal(state, world, position, part, false);
+	}
+
+	public IBlockState buildActualStateInternal(IBlockState state, IBlockAccess world, BlockPos position,
+												   MultiblockTileEntityBase part, boolean buildingClientRotor) {
+
+		final MultiblockTurbine turbine = part.isConnected() ? (MultiblockTurbine)part.getMultiblockController() : null;
+
+		if (!buildingClientRotor && null != turbine && turbine.getActive())
+			return super.buildActualState(state, world, position, part).withProperty(Properties.ROTORSHAFTSTATE, RotorShaftState.HIDDEN);
 
 		EnumFacing.Axis rotorAxis = EnumFacing.Axis.Y;
 		final int neighborsSlotCount = this._neighbors.length;

@@ -13,6 +13,9 @@
             }
         },
         "state":{
+          "hidden": {
+            "model": "bigreactors:transparentBlock"
+          },
           "y_x_pos":{
             "x": 90
           },

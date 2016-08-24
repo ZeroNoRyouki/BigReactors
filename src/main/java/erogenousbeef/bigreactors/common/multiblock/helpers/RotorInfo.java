@@ -1,5 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
+import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
+import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
 import net.minecraft.util.EnumFacing;
 
 public class RotorInfo {
@@ -14,4 +16,7 @@ public class RotorInfo {
 	
 	// Array of arrays, containing rotor lengths
 	public int[][] bladeLengths = null;
+
+	public RotorShaftState[] shaftStates = null;
+	public RotorBladeState[][] bladeStates = null;
 }

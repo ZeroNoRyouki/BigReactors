@@ -4,7 +4,6 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
-import erogenousbeef.bigreactors.common.item.ItemBeefDebugTool;
 import erogenousbeef.bigreactors.common.item.ItemMineral;
 import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;

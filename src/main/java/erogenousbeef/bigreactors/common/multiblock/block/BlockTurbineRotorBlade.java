@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
@@ -12,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -43,6 +45,22 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityTurbineRotorBlade();
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        // allow correct brightness of the rotor TESR
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean isFullyOpaque(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isVisuallyOpaque() {
+        return true;
     }
 
     @Override
@@ -82,10 +100,20 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
 
     @Override
     protected IBlockState buildActualState(IBlockState state, IBlockAccess world, BlockPos position, MultiblockTileEntityBase part) {
+        return this.buildActualStateInternal(state, world, position, part, false);
+    }
+
+    public IBlockState buildActualStateInternal(IBlockState state, IBlockAccess world, BlockPos position,
+                                                   MultiblockTileEntityBase part, boolean buildingClientRotor) {
+
+        final MultiblockTurbine turbine = part.isConnected() ? (MultiblockTurbine)part.getMultiblockController() : null;
+
+        if (!buildingClientRotor && null != turbine && turbine.getActive())
+            return super.buildActualState(state, world, position, part).withProperty(Properties.ROTORBLADESTATE, RotorBladeState.HIDDEN);
 
         RotorBladeState candidateState = null;
         final int neighborsSlotCount = this._neighbors.length;
-        final Block turbineRotorShaft = BrBlocks.turbineRotorShaft;
+        final BlockTurbineRotorShaft turbineRotorShaft = BrBlocks.turbineRotorShaft;
 
         for (int i = 0; i < neighborsSlotCount; ++i)
             this._neighbors[i] = null;
@@ -103,7 +131,7 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
 
                 // found a rotor shaft: orient the blade toward it
 
-                neighborState = turbineRotorShaft.getActualState(neighborState, world, neighborPos);
+                neighborState = turbineRotorShaft.buildActualStateInternal(neighborState, world, neighborPos, part, buildingClientRotor);
                 candidateState = RotorBladeState.from(neighborState.getValue(Properties.ROTORSHAFTSTATE), facing);
                 break;
             }
@@ -138,7 +166,7 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
                         if (turbineRotorShaft == checkBlock) {
 
                             // found a rotor shaft
-                            checkState = turbineRotorShaft.getActualState(checkState, world, checkPos);
+                            checkState = turbineRotorShaft.buildActualStateInternal(checkState, world, checkPos, part, buildingClientRotor);
                             candidateState = RotorBladeState.from(checkState.getValue(Properties.ROTORSHAFTSTATE), facing);
                             break;
 

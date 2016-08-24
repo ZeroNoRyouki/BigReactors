@@ -11,6 +11,9 @@
             }
         },
 		"state":{
+            "hidden": {
+                "model": "bigreactors:transparentBlock"
+            },
 			"y_noblades":{
 				"model":"bigreactors:turbine/rotor_shaft_z_0c",
                 "x": -90

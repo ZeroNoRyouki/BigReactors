@@ -9,6 +9,7 @@ import java.util.Map;
 
 public enum RotorBladeState implements IStringSerializable {
 
+    HIDDEN,
     Y_X_POS,
     Y_X_NEG,
     Y_Z_POS,

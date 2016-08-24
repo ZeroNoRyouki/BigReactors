@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 public enum RotorShaftState implements IStringSerializable {
 
+    HIDDEN,
     // Shaft direction - blades direction
     Y_NOBLADES,
     Y_X,
