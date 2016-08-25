@@ -25,7 +25,11 @@ import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.lib.IDebugMessages;
+import it.zerono.mods.zerocore.lib.IDebuggable;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
@@ -56,7 +60,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo, IActivateable {
+public class MultiblockReactor extends RectangularMultiblockControllerBase implements IPowerGenerator, IReactorFuelInfo,
+		IActivateable, IDebuggable {
 
 	public static final int FuelCapacityPerFuelRod = 4 * Reactants.standardSolidReactantAmount; // 4 ingots per rod
 
@@ -1481,35 +1486,6 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	public boolean getActive() {
 		return this.active;
 	}
-	
-	public String getDebugInfo() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
-		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
-
-		// TODO Commented until we redo multiblock debugging
-		/*
-		if(getLastValidationException() != null) {
-			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
-		}
-		*/
-
-		if(isAssembled()) {
-			sb.append("\nActive: ").append(Boolean.toString(getActive()));
-			sb.append("\nStored Energy: ").append(Float.toString(getEnergyStored()));
-			sb.append("\nCasing Heat: ").append(Float.toString(getReactorHeat()));
-			sb.append("\nFuel Heat: ").append(Float.toString(getFuelHeat()));
-			sb.append("\n\nReactant Tanks:\n");
-			sb.append( fuelContainer.getDebugInfo() );
-			sb.append("\n\nActively Cooled: ").append(Boolean.toString(!isPassivelyCooled()));
-			if(!isPassivelyCooled()) {
-				sb.append("\n\nCoolant Tanks:\n");
-				sb.append( coolantContainer.getDebugInfo() );
-			}
-		}
-
-		return sb.toString();
-	}
 
 	public PartTier getMachineTier() {
 		return this._partsTier;
@@ -1602,6 +1578,43 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			this._coolantHandlers[idx] = handler = new CoolantFluidHandlerWrapper(this, direction);
 
 		return handler;
+	}
+
+	// IDebuggable
+
+	@Override
+	public void getDebugMessages(IDebugMessages messages) {
+
+		final boolean assembled = this.isAssembled();
+
+		messages.add("debug.bigreactors.assembled", CodeHelper.i18nValue(assembled));
+		messages.add("debug.bigreactors.attached", Integer.toString(this.connectedParts.size()));
+
+		ValidationError lastError = this.getLastError();
+
+		if (null != lastError)
+			messages.add("debug.bigreactors.lastvalidationerror", lastError.getChatMessage());
+
+		if (assembled) {
+
+			messages.add("debug.bigreactors.active", CodeHelper.i18nValue(this.getActive()));
+			messages.add("debug.bigreactors.storedenergy", this.getEnergyStored(), this.getPowerSystem().unitOfMeasure);
+			messages.add("debug.bigreactors.reactor.casingheat", this.getReactorHeat());
+			messages.add("debug.bigreactors.reactor.fuelheat", this.getFuelHeat());
+
+			messages.add("debug.bigreactors.reactor.reactanttanksIntro");
+			this.fuelContainer.getDebugMessages(messages);
+
+			final boolean passiveCooling = this.isPassivelyCooled();
+
+			messages.add("debug.bigreactors.reactor.activelycooled", CodeHelper.i18nValue(!passiveCooling));
+
+			if (!passiveCooling) {
+
+				messages.add("debug.bigreactors.reactor.coolanttanksIntro");
+				this.coolantContainer.getDebugMessages(messages);
+			}
+		}
 	}
 
 	private IFluidHandler[] _coolantHandlers;

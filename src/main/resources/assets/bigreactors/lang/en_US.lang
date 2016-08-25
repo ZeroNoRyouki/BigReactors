@@ -1,5 +1,5 @@
 # Big Reactors Language File - English
-# @author Erogenous Beef
+# @author Erogenous Beef, ZeroNoRyouki, ABookFreak
 
 itemGroup.bigreactors=Big Reactors
 
@@ -7,9 +7,6 @@ itemGroup.bigreactors=Big Reactors
 
 tile.blockRadiothermalGen.0=Radiothermal Generator
 tile.blockBRDevice.0.name=Cyanite Reprocesssor
-
-# Items
-xitem.beefDebugTool.name=BeefTronic™ Diagnostics Tool
 
 # Fluids
 fluid.tile.water=Water
@@ -23,8 +20,6 @@ fluid.steam=Steam
 tile.fluid.yellorium.still.name=Fluid Yellorium
 tile.fluid.cyanite.still.name=Fluid Cyanite
 tile.fluid.blutonium.still.name=Fluid Blutonium
-
-# 1.9.4 / 1.10.2 stuff from there one ...
 
 # Items - ingots
 item.bigreactors:ingotMetals.yellorium.name=Yellorium Ingot
@@ -226,3 +221,38 @@ config.bigreactors.worldgen.benitoiteOreEnableWorldGen=Generate benitoite ore
 config.bigreactors.worldgen.benitoiteOreMaxClustersPerChunk=Max number of cluster of benitoite ore per chunks
 config.bigreactors.worldgen.benitoiteOrePerCluster=Maximum number of benitoite ore per cluster
 
+# Debug-tools messages
+debug.bigreactors.lastvalidationerror=Last validation error: %1$s
+debug.bigreactors.teclass=Tile Entity class: %1$s
+debug.bigreactors.notattached=Part not attached to a controller
+debug.bigreactors.assembled=Assembled: %1$s
+debug.bigreactors.attached=Attached Blocks: %1$s
+debug.bigreactors.active=Active: %1$s
+debug.bigreactors.storedenergy=Stored Energy: %1$.4f %2$s
+debug.bigreactors.reactor.casingheat=Casing Heat: %1$.4f
+debug.bigreactors.reactor.fuelheat=Fuel Heat: %1$.4f
+debug.bigreactors.reactor.reactanttanksIntro=Reactant Tanks:
+debug.bigreactors.reactor.activelycooled=Actively Cooled: %1$s
+debug.bigreactors.reactor.coolanttanksIntro:=Coolant Tanks:
+debug.bigreactors.reactantcontainer.capacity=Capacity: %1$d mB
+debug.bigreactors.reactantcontainer.tank=[%1$s] %2$s: %3$d
+debug.bigreactors.fluidhelper.capacity=Capacity (per): %1$d mB
+debug.bigreactors.fluidhelper.tank=[%1$s] %2$s: %3$s, %4$d mB
+debug.bigreactors.turbine.rotorenergy=Rotor Energy: %1$.4f
+debug.bigreactors.turbine.rotorspeed=Rotor Speed: %1$.4f RPM
+debug.bigreactors.turbine.inductorengaged=Inductor Engaged: %1$s
+debug.bigreactors.turbine.ventstatus=Vent Status: %1$s
+debug.bigreactors.turbine.maxintakerate=Max Intake Rate: %1$d
+debug.bigreactors.turbine.coilsize=Coil Size: %1$d
+debug.bigreactors.turbine.rotormass=Rotor Mass: %1$d
+debug.bigreactors.turbine.bladearea=Blade Surface Area: %1$d
+debug.bigreactors.turbine.rotorblades=Rotor Blades: %1$d
+debug.bigreactors.turbine.rotorshafts=Rotor Shafts: %1$d
+debug.bigreactors.turbine.rotordragcoeff=Rotor Drag Coefficient: %1$.2f
+debug.bigreactors.turbine.bladedrag=Blade Drag: %1$.2f
+debug.bigreactors.turbine.frictdrag=Frict Drag: %1$.2f
+debug.bigreactors.turbine.fluidtanksInfo=Fluid Tanks:
+debug.bigreactors.turbine.inputempty=- Inlet : empty
+debug.bigreactors.turbine.input=- Inlet : %1$s %2$d mB
+debug.bigreactors.turbine.outputempty=- Outlet : empty
+debug.bigreactors.turbine.output=- Outlet : %1$s %2$d mB

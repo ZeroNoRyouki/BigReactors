@@ -5,22 +5,22 @@ import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
-import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.lib.IDebugMessages;
+import it.zerono.mods.zerocore.lib.IDebuggable;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntityReactorPartBase extends
-		RectangularMultiblockTileEntityBase implements IHeatEntity,
-														IRadiationModerator, IActivateable,
-														IBeefDebuggableTile {
+public abstract class TileEntityReactorPartBase extends RectangularMultiblockTileEntityBase implements IHeatEntity,
+														IRadiationModerator, IActivateable, IDebuggable {
 
 	public TileEntityReactorPartBase() {
 	}
@@ -106,19 +106,6 @@ public abstract class TileEntityReactorPartBase extends
 					position.getX(), position.getY(), position.getZ());
 		}
 	}
-	
-	@Override
-	public String getDebugInfo() {
-		MultiblockReactor r = getReactorController();
-		StringBuilder sb = new StringBuilder();
-		sb.append(getClass().toString()).append("\n");
-		if(r == null) {
-			sb.append("Not attached to controller!");
-			return sb.toString();
-		}
-		sb.append(r.getDebugInfo());
-		return sb.toString();
-	}
 
 	public PartTier getPartTier() {
 
@@ -126,5 +113,53 @@ public abstract class TileEntityReactorPartBase extends
 		Block block = state.getBlock();
 
 		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
+	}
+
+	@Override
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+		return false;
+	}
+
+	@Override
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+		return false;
+	}
+
+	@Override
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+		return false;
+	}
+
+	@Override
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+		return false;
+	}
+
+	@Override
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+		return false;
+	}
+
+	@Override
+	public void onMachineActivated() {
+	}
+
+	@Override
+	public void onMachineDeactivated() {
+	}
+
+	// IDebuggable
+
+	@Override
+	public void getDebugMessages(IDebugMessages messages) {
+
+		MultiblockReactor reactor = this.getReactorController();
+
+		messages.add("debug.bigreactors.teclass", this.getClass().toString());
+
+		if (null != reactor)
+			reactor.getDebugMessages(messages);
+		else
+			messages.add("debug.bigreactors.notattached");
 	}
 }

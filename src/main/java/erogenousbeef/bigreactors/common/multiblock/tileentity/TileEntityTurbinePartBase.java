@@ -1,19 +1,21 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.interfaces.IBeefDebuggableTile;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.IDebugMessages;
+import it.zerono.mods.zerocore.lib.IDebuggable;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IActivateable, IBeefDebuggableTile {
+public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IActivateable,
+		IDebuggable {
 
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
@@ -88,19 +90,6 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 			BRLog.error("Received a setActive command at %d, %d, %d, but not connected to a multiblock controller!", position.getX(), position.getY(), position.getZ());
 		}
 	}
-	
-	@Override
-	public String getDebugInfo() {
-		MultiblockTurbine t = getTurbine();
-		StringBuilder sb = new StringBuilder();
-		sb.append(getClass().toString()).append("\n");
-		if(t == null) {
-			sb.append("Not attached to controller!");
-			return sb.toString();
-		}
-		sb.append(t.getDebugInfo());
-		return sb.toString();
-	}
 
 	public PartTier getPartTier() {
 
@@ -108,5 +97,21 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 		Block block = state.getBlock();
 
 		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
+	}
+
+	// IDebuggable
+
+	@Override
+	public void getDebugMessages(IDebugMessages messages) {
+
+		MultiblockTurbine turbine = this.getTurbine();
+
+		messages.add("debug.bigreactors.teclass", this.getClass().toString());
+
+		if (null != turbine)
+			turbine.getDebugMessages(messages);
+		else
+			messages.add("debug.bigreactors.notattached");
+
 	}
 }

@@ -22,8 +22,11 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.lib.IDebugMessages;
+import it.zerono.mods.zerocore.lib.IDebuggable;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
 import it.zerono.mods.zerocore.lib.config.IConfigListener;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
@@ -49,8 +52,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MultiblockTurbine extends RectangularMultiblockControllerBase
-		implements IPowerGenerator, /*IEnergyProvider,*/ ISlotlessUpdater, IActivateable, IConfigListener {
+public class MultiblockTurbine extends RectangularMultiblockControllerBase implements IPowerGenerator, ISlotlessUpdater,
+		IActivateable, IConfigListener, IDebuggable {
 
 	public enum VentStatus {
 		VentOverflow,
@@ -1424,57 +1427,6 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 	}
 
 	public boolean hasGlass() { return attachedGlass.size() > 0; }
-	
-	public String getDebugInfo() {
-		StringBuilder sb = new StringBuilder();
-		ValidationError lastError = this.getLastError();
-		sb.append("Assembled: ").append(Boolean.toString(isAssembled())).append("\n");
-		sb.append("Attached Blocks: ").append(Integer.toString(connectedParts.size())).append("\n");
-
-		// TODO Commented until we redo multiblock debugging
-		/*
-		if(lastError != null) {
-			sb.append("Validation Exception:\n").append(getLastValidationException().getMessage()).append("\n");
-		}
-		*/
-		
-		if(isAssembled()) {
-			sb.append("\nActive: ").append(Boolean.toString(getActive()));
-			sb.append("\nStored Energy: ").append(Float.toString(getEnergyStored()));
-			sb.append("\nRotor Energy: ").append(Float.toString(rotorEnergy));
-			sb.append("\nRotor Speed: ").append(Float.toString(getRotorSpeed())).append(" rpm");
-			sb.append("\nInductor Engaged: ").append(Boolean.toString(inductorEngaged));
-			sb.append("\nVent Status: ").append(ventStatus.toString());
-			sb.append("\nMax Intake Rate: ").append(Integer.toString(maxIntakeRate));
-			sb.append("\nCoil Size: ").append(Integer.toString(coilSize));
-			sb.append("\nRotor Mass: ").append(Integer.toString(rotorMass));
-			sb.append("\nBlade SurfArea: ").append(Integer.toString(bladeSurfaceArea));
-			sb.append("\n# Blades: ").append(Integer.toString(attachedRotorBlades.size()));
-			sb.append("\n# Shafts: ").append(Integer.toString(attachedRotorShafts.size()));
-			sb.append("\nRotor Drag CoEff: ").append(Float.toString(rotorDragCoefficient));
-			sb.append("\nBlade Drag: ").append(Float.toString(bladeDrag));
-			sb.append("\nFrict Drag: ").append(Float.toString(frictionalDrag));
-
-			sb.append("\n\nFluid Tanks:\n");
-
-			sb.append("WIP");
-			/* TODO Commented until we redo multiblock debugging - put back tank infos
-			for(int i = 0; i < tanks.length; i++) {
-				sb.append(String.format("[%d] %s ", i, i == TANK_OUTPUT ? "outlet":"inlet"));
-				if(tanks[i] == null || tanks[i].getFluid() == null) {
-					sb.append("empty");
-				}
-				else {
-					FluidStack stack = tanks[i].getFluid();
-					sb.append(String.format("%s, %d mB", stack.getFluid().getName(), stack.amount));
-				}
-				sb.append("\n");
-			}
-			*/
-		}
-
-		return sb.toString();
-	}
 
 	@SideOnly(Side.CLIENT)
 	public void resetCachedRotors() {
@@ -1530,5 +1482,56 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase
 
 	public IFluidHandler getFluidHandler(IInputOutputPort.Direction direction) {
 		return IInputOutputPort.Direction.Input == direction ? this._inputTank : this._outputTank;
+	}
+
+	// IDebuggable
+
+	@Override
+	public void getDebugMessages(IDebugMessages messages) {
+
+		final boolean assembled = this.isAssembled();
+
+		messages.add("debug.bigreactors.assembled", CodeHelper.i18nValue(assembled));
+		messages.add("debug.bigreactors.attached", Integer.toString(this.connectedParts.size()));
+
+		ValidationError lastError = this.getLastError();
+
+		if (null != lastError)
+			messages.add("debug.bigreactors.lastvalidationerror", lastError.getChatMessage());
+
+		if (assembled) {
+
+			messages.add("debug.bigreactors.active", CodeHelper.i18nValue(this.getActive()));
+			messages.add("debug.bigreactors.storedenergy", this.getEnergyStored(), this.getPowerSystem().unitOfMeasure);
+
+			messages.add("debug.bigreactors.turbine.rotorenergy", this.rotorEnergy);
+			messages.add("debug.bigreactors.turbine.rotorspeed", this.getRotorSpeed());
+			messages.add("debug.bigreactors.turbine.inductorengaged", CodeHelper.i18nValue(this.inductorEngaged));
+			messages.add("debug.bigreactors.turbine.ventstatus", this.ventStatus.toString());
+			messages.add("debug.bigreactors.turbine.maxintakerate", this.maxIntakeRate);
+			messages.add("debug.bigreactors.turbine.coilsize", this.coilSize);
+			messages.add("debug.bigreactors.turbine.rotormass", this.rotorMass);
+			messages.add("debug.bigreactors.turbine.bladearea", this.bladeSurfaceArea);
+			messages.add("debug.bigreactors.turbine.rotorblades", this.attachedRotorBlades.size());
+			messages.add("debug.bigreactors.turbine.rotorshafts", this.attachedRotorShafts.size());
+			messages.add("debug.bigreactors.turbine.rotordragcoeff", this.rotorDragCoefficient);
+			messages.add("debug.bigreactors.turbine.bladedrag", this.bladeDrag);
+			messages.add("debug.bigreactors.turbine.frictdrag", this.frictionalDrag);
+
+			messages.add("debug.bigreactors.turbine.fluidtanksInfo");
+			this.getTankDebugMessages(true, this._inputTank, messages);
+			this.getTankDebugMessages(false, this._outputTank, messages);
+		}
+	}
+
+	private void getTankDebugMessages(final boolean isInput, final FluidTank tank, final IDebugMessages messages) {
+
+		FluidStack stack;
+
+		if (null == tank || null == (stack = tank.getFluid()))
+			messages.add(isInput ? "debug.bigreactors.turbine.inputempty" : "debug.bigreactors.turbine.outputempty");
+		else
+			messages.add(isInput ? "debug.bigreactors.turbine.input" : "debug.bigreactors.turbine.output",
+					stack.getFluid().getName(), stack.amount);
 	}
 }

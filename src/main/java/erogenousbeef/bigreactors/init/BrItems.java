@@ -29,9 +29,6 @@ public final class BrItems {
     // Turbine components
     public static final ItemTieredComponent turbineHousingCores;
 
-    // Miscellanea
-    //public static final ItemBeefDebugTool beefDebugTool;
-
     public static void initialize() {
     }
 
@@ -134,9 +131,5 @@ public final class BrItems {
                             'A', "ingotGold", 'R', Items.COMPARATOR));
             }
         });
-
-
-        // - Miscellanea
-        //beefDebugTool = (ItemBeefDebugTool)init.register(new ItemBeefDebugTool("beefDebugTool"));
     }
 }
