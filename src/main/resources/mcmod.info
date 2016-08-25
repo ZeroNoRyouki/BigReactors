@@ -11,8 +11,11 @@
   "credits": "powercrystals, skyboy, King_Lemming, & Calclavia for example code",
   "logoFile": "",
   "screenshots": [],
+  "requiredMods": [
+	"Forge", "zerocore"
+  ],
   "dependencies": [
-	"MinecraftForge"
-  ]
+  	"Forge", "zerocore"
+    ]
 }
 ]
