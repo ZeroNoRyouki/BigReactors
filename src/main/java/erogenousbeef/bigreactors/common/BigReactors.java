@@ -36,7 +36,7 @@ import java.util.Calendar;
 		guiFactory = "erogenousbeef.bigreactors.client.config.ConfigFactory")
 public class BigReactors implements IModInitializationHandler {
 
-	public static final String NAME = "Big Reactors";
+	public static final String NAME = "Extreme Reactors";
 	public static final String MODID = "bigreactors";
 	public static final String VERSION = "@VERSION@";
 	public static final String MINECRAFT_VERSION = "[1.9.4]";
