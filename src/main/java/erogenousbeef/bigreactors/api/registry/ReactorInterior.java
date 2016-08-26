@@ -54,7 +54,7 @@ public class ReactorInterior {
 
 	public static ReactorInteriorData getBlockData(ItemStack stack) {
 
-		int[] ids = OreDictionary.getOreIDs(stack);
+		int[] ids = null != stack ? OreDictionary.getOreIDs(stack) : null;
 		int len;
 
 		if (null == ids || 0 == (len = ids.length))

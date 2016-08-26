@@ -182,6 +182,9 @@ public class RadiationHelper {
 		else if(block == Blocks.EMERALD_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockEmerald");
 		}
+		else if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+			moderatorData = RadiationHelper.waterData;
+		}
 		else {
 			// Check the ore dictionary.
 			moderatorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));

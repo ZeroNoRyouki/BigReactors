@@ -216,6 +216,9 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		else if(block == Blocks.EMERALD_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockEmerald");
 		}
+		else if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+			interiorData = RadiationHelper.waterData;
+		}
 		else {
 			interiorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
 
