@@ -22,12 +22,12 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
     public void renderTileEntityAt(TileEntityReactorFuelRod rod, double x, double y, double z, float partialTicks, int destroyStage) {
 
         final FuelAssembly assembly = rod.getFuelAssembly();
+        final MultiblockReactor reactor = rod.getReactorController();
 
-        if (!rod.isConnected() || null == assembly)
+        if (null == reactor || !reactor.isAssembled() || null == assembly)
             return;
 
         final World world = this.getWorld();
-        final MultiblockReactor reactor = rod.getReactorController();
         final BlockPos rodPosition = rod.getWorldPosition();
         final int rodsCount = assembly.getFueldRodsCount();
         final EnumFacing.Axis axis = assembly.getAxis();
@@ -46,6 +46,9 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
             final FuelAssembly.FuelRodData rodData = assembly.getFuelRodData(rodIndex);
             final boolean gotFuel, gotWaste;
             int brightness;
+
+            if (null == rodData)
+                return;
 
             facesToDraw = BlockFacings.ALL;
 
