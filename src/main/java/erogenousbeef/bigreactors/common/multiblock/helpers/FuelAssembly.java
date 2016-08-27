@@ -52,7 +52,7 @@ public class FuelAssembly {
     }
 
     public FuelRodData getFuelRodData(int rodIndex) {
-        return this._fuelRods[rodIndex];
+        return rodIndex >= 0 && rodIndex < this._fuelRods.length ? this._fuelRods[rodIndex] : null;
     }
 
     @SideOnly(Side.CLIENT)
