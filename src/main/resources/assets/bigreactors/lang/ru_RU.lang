@@ -1,5 +1,6 @@
 # Big Reactors Language File - Russian
-# @author xMrVizzy
+# @author Erogenous Beef, ZeroNoRyouki, ABookFreak
+# Translated By xMrVizzy
 
 itemGroup.bigreactors=Extreme Reactors
 
@@ -130,7 +131,7 @@ multiblock.validation.reactor.null_block_found=%1$d, %2$d, %3$d - Null block fou
 multiblock.validation.reactor.too_few_rods=Not enough control rods. Reactors require at least 1
 multiblock.validation.reactor.too_few_controllers=Not enough controllers. Reactors require at least 1
 multiblock.validation.reactor.invalid_control_rods_position=%1$d, %2$d, %3$d - Control rods may only be placed on the top face
-multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - Control rods may only be placed on the top face, atop a column of fuel rods
+multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - Control rods may only be placed on the top face
 multiblock.validation.reactor.invalid_control_side=Control rods may only be placed on one side of the reactor
 multiblock.validation.reactor.invalid_glass_position=%1$d, %2$d, %3$d - Reactor glass may only be used on the exterior faces, not as part of a reactor's frame or interior
 multiblock.validation.reactor.invalid_frame_block=%1$d, %2$d, %3$d - Only casing may be used as part of a reactor's frame
@@ -203,7 +204,7 @@ config.bigreactors.recipes.registerGraphiteCoalCraftingRecipes=Craft graphite fr
 config.bigreactors.recipes.registerYelloriteSmeltToUranium=Smelt yellorite ore into uranium ingots
 config.bigreactors.recipes.registerYelloriumAsUranium=Use uranium/plutonium instead of yellorium/blutonium
 config.bigreactors.recipes.requireObsidianGlass=Use hardened or reinforced glass
-config.bigreactors.recipes.requireSteelInsteadOfIron=Use steel instead of iron ingots
+config.bigreactors.recipes.requireSteelInsteadOfIron=Use steel instead of iron ingots [NOT USED]
 config.bigreactors.recipes.registerCreativeMultiblockParts=Register creative parts
 
 config.bigreactors.worldgen.enableWorldGen=Enable world generation

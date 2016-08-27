@@ -130,7 +130,7 @@ multiblock.validation.reactor.null_block_found=%1$d, %2$d, %3$d - 在反应堆�
 multiblock.validation.reactor.too_few_rods=没有足够的控制棒。反应堆至少需要1
 multiblock.validation.reactor.too_few_controllers=没有足够的控制器。反应堆至少需要1
 multiblock.validation.reactor.invalid_control_rods_position=%1$d, %2$d, %3$d - 控制棒只能放置在顶面
-multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - 控制棒只能放置在顶面，燃料棒的上方
+multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - 控制棒只能放置在顶面
 multiblock.validation.reactor.invalid_control_side=控制棒只能放置在反应堆的一侧
 multiblock.validation.reactor.invalid_glass_position=%1$d, %2$d, %3$d - 反应堆玻璃仅能在外面使用，而不是作为一个反应堆中的框架或内部的一部分
 multiblock.validation.reactor.invalid_frame_block=%1$d, %2$d, %3$d - 只有外壳可作为反应器框架的一部分
@@ -204,7 +204,7 @@ config.bigreactors.recipes.registerGraphiteCoalCraftingRecipes=Craft graphite fr
 config.bigreactors.recipes.registerYelloriteSmeltToUranium=Smelt yellorite ore into uranium ingots
 config.bigreactors.recipes.registerYelloriumAsUranium=Use uranium/plutonium instead of yellorium/blutonium
 config.bigreactors.recipes.requireObsidianGlass=Use hardened or reinforced glass
-config.bigreactors.recipes.requireSteelInsteadOfIron=Use steel instead of iron ingots
+config.bigreactors.recipes.requireSteelInsteadOfIron=Use steel instead of iron ingots [NOT USED]
 config.bigreactors.recipes.registerCreativeMultiblockParts=Register creative parts
 
 config.bigreactors.worldgen.enableWorldGen=Enable world generation
