@@ -76,7 +76,7 @@ public class BlockPart extends BlockBR {
     public boolean onBlockActivated(World world, BlockPos posistion, IBlockState state, EntityPlayer player, EnumHand hand,
                                     ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        if (WorldHelper.calledByLogicalServer(world) && this.hasTileEntity(state) && !player.isSneaking()) {
+        if (this.hasTileEntity(state) && !player.isSneaking()) {
 
             TileEntity te = world.getTileEntity(posistion);
 
@@ -86,7 +86,11 @@ public class BlockPart extends BlockBR {
 
                 if (modTe.canOpenGui(world, posistion, state)) {
 
-                    player.openGui(BigReactors.getInstance(), 0, world, posistion.getX(), posistion.getY(), posistion.getZ());
+                    // we have to check all the above on the client side too to avoid placing a ghost-block on that side
+
+                    if (WorldHelper.calledByLogicalServer(world))
+                        player.openGui(BigReactors.getInstance(), 0, world, posistion.getX(), posistion.getY(), posistion.getZ());
+
                     return true;
                 }
             }
@@ -94,7 +98,7 @@ public class BlockPart extends BlockBR {
             // If the player's hands are empty and they rightclick on a multiblock, they get a
             // multiblock-debugging message if the machine is not assembled.
 
-            if ((te instanceof IMultiblockPart) && (null == heldItem) && (hand == EnumHand.OFF_HAND)) {
+            if ((te instanceof IMultiblockPart) && WorldHelper.calledByLogicalServer(world) && (null == heldItem) && (hand == EnumHand.OFF_HAND)) {
 
                 IMultiblockPart part = (IMultiblockPart) te;
                 MultiblockControllerBase controller = part.getMultiblockController();
@@ -106,13 +110,17 @@ public class BlockPart extends BlockBR {
 
                     if (null != error)
                         message = error.getChatMessage();
-                } else
+
+                } else {
+
                     message = new TextComponentTranslation("multiblock.validation.block_not_connected");
+                }
 
-                if (null != message)
+                if (null != message) {
+
                     player.addChatMessage(message);
-
-                return true;
+                    return true;
+                }
             }
         }
 

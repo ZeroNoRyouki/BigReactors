@@ -4,6 +4,7 @@ import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
@@ -35,7 +36,10 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 	@Override
 	public boolean canOpenGui(World world, BlockPos posistion, IBlockState state) {
-		return true;
+
+		MultiblockControllerBase controller = this.getMultiblockController();
+
+		return null != controller && controller.isAssembled();
 	}
 
 	// Data accessors

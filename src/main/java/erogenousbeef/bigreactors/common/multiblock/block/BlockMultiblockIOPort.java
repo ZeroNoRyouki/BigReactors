@@ -102,32 +102,34 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
                                     ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        if (!WorldHelper.calledByLogicalServer(world) || player.isSneaking())
-            return false;
-
         TileEntity te = world.getTileEntity(pos);
         boolean hasWrench = StaticUtils.Inventory.isPlayerHoldingWrench(heldItem);
 
         if (te instanceof TileEntityReactorCreativeCoolantPort) {
 
-            TileEntityReactorCreativeCoolantPort cp = (TileEntityReactorCreativeCoolantPort)te;
+            if (WorldHelper.calledByLogicalServer(world)) {
 
-            if (heldItem == null || hasWrench)
-                // Use wrench to change inlet/outlet state
-                cp.toggleDirection(true);
-            else
-                cp.forceAddWater();
+                TileEntityReactorCreativeCoolantPort cp = (TileEntityReactorCreativeCoolantPort) te;
+
+                if (heldItem == null || hasWrench)
+                    // Use wrench to change inlet/outlet state
+                    cp.toggleDirection(true);
+                else
+                    cp.forceAddWater();
+            }
 
             return true;
         }
 
         if (hasWrench && te instanceof IInputOutputPort) {
 
-            ((IInputOutputPort)te).toggleDirection(true);
+            if (WorldHelper.calledByLogicalServer(world))
+                ((IInputOutputPort)te).toggleDirection(true);
+
             return true;
         }
 
-        return !(te instanceof TileEntityReactorCoolantPort) && super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
     @Override
