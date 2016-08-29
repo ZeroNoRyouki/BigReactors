@@ -161,10 +161,13 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		TileEntity neighbor = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
 
-		facing = facing.getOpposite();
+		if (null != neighbor) {
 
-		if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
-			this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+			facing = facing.getOpposite();
+
+			if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+		}
 	}
 
 	private Direction _direction;

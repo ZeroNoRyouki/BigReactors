@@ -48,6 +48,9 @@ item.bigreactors:turbineHousingCores.basic.name=Ядро турбинного к
 item.bigreactors:minerals.anglesite.name=Англезит (PbSO4)
 item.bigreactors:minerals.benitoite.name=Бенитоит (BaTiSi3O9)
 
+# Items - miscellanea
+item.bigreactors:wrench.name=Гаечный ключ
+
 # Blocks - metal blocks / ores
 tile.bigreactors:blockMetals.yellorium.name=Йеллориумовый блок
 tile.bigreactors:blockMetals.cyanite.name=Цианитовый блок

@@ -47,6 +47,9 @@ item.bigreactors:turbineHousingCores.basic.name=Turbine Housing Core (Basic)
 item.bigreactors:minerals.anglesite.name=Anglesite (PbSO4)
 item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
 
+# Items - miscellanea
+item.bigreactors:wrench.name=Extreme Wrench
+
 # Blocks - metal blocks / ores
 tile.bigreactors:blockMetals.yellorium.name=Yellorium Block
 tile.bigreactors:blockMetals.cyanite.name=Cyanite Block

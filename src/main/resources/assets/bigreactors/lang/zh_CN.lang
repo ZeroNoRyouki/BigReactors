@@ -48,6 +48,9 @@ item.bigreactors:turbineHousingCores.basic.name=涡轮机外壳核心 (基本)
 item.bigreactors:minerals.anglesite.name=硫酸铅矿晶体 (PbSO4)
 item.bigreactors:minerals.benitoite.name=蓝锥矿晶体 (BaTiSi3O9)
 
+# Items - miscellanea
+item.bigreactors:wrench.name=扳手
+
 # Blocks - metal blocks / ores
 tile.bigreactors:blockMetals.yellorium.name=黄铀块
 tile.bigreactors:blockMetals.cyanite.name=蓝晶石块

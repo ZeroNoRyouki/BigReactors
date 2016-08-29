@@ -73,10 +73,11 @@ public class StaticUtils {
 
 			Item heldItem = heldItemStack.getItem();
 
-			return null != heldItem &&
-					(ModHelperBase.useCofh && heldItem instanceof IToolHammer);
+			return null != heldItem && (
+					heldItem instanceof IToolHammer
 					// TODO waiting for BuildCraft 1.9.4+
-					// && (ModHelperBase.useBuildcraftTools && heldItem instanceof IToolWrench);
+					// || (ModHelperBase.useBuildcraftTools && heldItem instanceof IToolWrench)
+					);
 		}
 		
 		/**

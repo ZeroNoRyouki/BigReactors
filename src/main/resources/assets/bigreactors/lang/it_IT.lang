@@ -48,6 +48,9 @@ item.bigreactors:turbineHousingCores.basic.name=Telaio dell'involucro della Turb
 item.bigreactors:minerals.anglesite.name=Anglesite (PbSO4)
 item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
 
+# Items - miscellanea
+item.bigreactors:wrench.name=Chiave inglese
+
 # Blocks - metal blocks / ores
 tile.bigreactors:blockMetals.yellorium.name=Blocco di Yellorium
 tile.bigreactors:blockMetals.cyanite.name=Blocco di Cianite

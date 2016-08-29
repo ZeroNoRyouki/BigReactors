@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemMineral;
 import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
+import erogenousbeef.bigreactors.common.item.ItemWrench;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
@@ -28,6 +29,9 @@ public final class BrItems {
 
     // Turbine components
     public static final ItemTieredComponent turbineHousingCores;
+
+    // Miscellanea
+    public static final ItemWrench wrench;
 
     public static void initialize() {
     }
@@ -131,5 +135,8 @@ public final class BrItems {
                             'A', "ingotGold", 'R', Items.COMPARATOR));
             }
         });
+
+        // Miscellanea
+        wrench = (ItemWrench)init.register(new ItemWrench("wrench"));
     }
 }
