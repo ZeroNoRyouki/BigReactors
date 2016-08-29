@@ -75,8 +75,8 @@ public final class BrItems {
 
                  // TEMPORARY recipe for the blutonium ingot
 
-                 GameRegistry.addShapelessRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1),
-                         ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite, ingotCyanite);
+                 GameRegistry.addRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1), "CCC", "C C", "CCC",
+                         'C', ingotCyanite);
              }
         });
 
