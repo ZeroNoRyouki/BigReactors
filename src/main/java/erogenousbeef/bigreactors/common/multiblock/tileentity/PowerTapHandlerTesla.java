@@ -18,8 +18,8 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.Optional;
 
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaHolder", modid = "Tesla"),
-        @Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaProducer", modid = "Tesla")
+        @Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaHolder", modid = "tesla"),
+        @Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaProducer", modid = "tesla")
 })
 class PowerTapHandlerTesla extends PowerTapHandler implements ITeslaHolder, ITeslaProducer {
 
