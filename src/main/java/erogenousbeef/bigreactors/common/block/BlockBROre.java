@@ -55,10 +55,10 @@ public class BlockBROre extends BlockBR {
 	@Override
 	public void registerOreDictionaryEntries() {
 
-		ItemStack stack = this.createItemStack();
+		ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
 
-		OreDictionary.registerOre("oreYellorite", stack);
-		OreDictionary.registerOre("oreYellorium", stack); // For convenience of mods which fiddle with recipes
+		OreDictionary.registerOre("oreYellorite", ore);
+		OreDictionary.registerOre("oreYellorium", ore); // For convenience of mods which fiddle with recipes
 	}
 
 	@Override
@@ -67,6 +67,7 @@ public class BlockBROre extends BlockBR {
 		// - Yellorium
 
 		ItemStack product;
+		ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
 
 		if (BigReactors.CONFIG.registerYelloriteSmeltToUranium) {
 
@@ -83,7 +84,7 @@ public class BlockBROre extends BlockBR {
 			product = OreDictionaryHelper.getOre("ingotYellorium");
 		}
 
-		GameRegistry.addSmelting(this, product, 0.5f);
+		GameRegistry.addSmelting(ore, product, 0.5f);
 	}
 
 	/**
