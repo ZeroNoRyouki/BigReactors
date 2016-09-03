@@ -135,22 +135,22 @@ public class BigReactors implements IModInitializationHandler {
 		TurbineCoil.registerBlock("blockIron", 1f, 1f, 1f);
 		TurbineCoil.registerBlock("blockGold", 2f, 1f, 1.75f);
 
-		TurbineCoil.registerBlock("blockCopper", 1.2f, 1f, 1.2f);    // TE, lots of mods
+		TurbineCoil.registerBlock("blockCopper", 1.2f, 1f, 1.2f);    // TE/Modularity, lots of mods
 		TurbineCoil.registerBlock("blockOsmium", 1.2f, 1f, 1.2f);    // Mekanism
 		TurbineCoil.registerBlock("blockZinc", 1.35f, 1f, 1.3f);
-		TurbineCoil.registerBlock("blockLead", 1.35f, 1.01f, 1.3f);// TE, Mekanism, some others
+		TurbineCoil.registerBlock("blockLead", 1.35f, 1.01f, 1.3f);// TE/Modularity, Mekanism, some others
 		TurbineCoil.registerBlock("blockBrass", 1.4f, 1f, 1.2f);    // Metallurgy
 		TurbineCoil.registerBlock("blockBronze", 1.4f, 1f, 1.2f);    // Mekanism, many others
 		TurbineCoil.registerBlock("blockAluminum", 1.5f, 1f, 1.3f);    // TiCo, couple others
 		TurbineCoil.registerBlock("blockSteel", 1.5f, 1f, 1.3f);    // Metallurgy, Mek, etc.
-		TurbineCoil.registerBlock("blockInvar", 1.5f, 1f, 1.4f);    // TE
-		TurbineCoil.registerBlock("blockSilver", 1.7f, 1f, 1.5f);    // TE, lots of mods
-		TurbineCoil.registerBlock("blockElectrum", 2.5f, 1f, 2.0f);    // TE, lots of mods
+		TurbineCoil.registerBlock("blockInvar", 1.5f, 1f, 1.4f);    // TE/Modularity
+		TurbineCoil.registerBlock("blockSilver", 1.7f, 1f, 1.5f);    // TE/Modularity, lots of mods
+		TurbineCoil.registerBlock("blockElectrum", 2.5f, 1f, 2.0f);    // TE/Modularity, lots of mods
 		TurbineCoil.registerBlock("blockElectrumFlux", 2.5f, 1.01f, 2.2f);    // Redstone Arsenal, note small energy bonus (7% at 1000RF/t output)
-		TurbineCoil.registerBlock("blockPlatinum", 3.0f, 1f, 2.5f);    // TE, lots of mods
+		TurbineCoil.registerBlock("blockPlatinum", 3.0f, 1f, 2.5f);    // TE/Modularity, lots of mods
 		TurbineCoil.registerBlock("blockShiny", 3.0f, 1f, 2.5f);    // TE
 		TurbineCoil.registerBlock("blockTitanium", 3.1f, 1f, 2.7f);    // Mariculture
-		TurbineCoil.registerBlock("blockEnderium", 3.0f, 1.02f, 3.0f);    // TE, note tiny energy bonus!	(14% at 1000RF/t output)
+		TurbineCoil.registerBlock("blockEnderium", 3.0f, 1.02f, 3.0f);    // TE/Modularity, note tiny energy bonus!	(14% at 1000RF/t output)
 
 		TurbineCoil.registerBlock("blockLudicrite", 3.5f, 1.02f, 3.5f);
 
@@ -204,13 +204,15 @@ public class BigReactors implements IModInitializationHandler {
 
 		//Water: 0.33f, 0.5f, 1.33f
 		ReactorInterior.registerFluid("water", RadiationHelper.waterData.absorption, RadiationHelper.waterData.heatEfficiency, RadiationHelper.waterData.moderation, IHeatEntity.conductivityWater);
-		ReactorInterior.registerFluid("redstone", 0.75f, 0.55f, 1.60f, IHeatEntity.conductivityEmerald);
-		ReactorInterior.registerFluid("glowstone", 0.20f, 0.60f, 1.75f, IHeatEntity.conductivityCopper);
-		ReactorInterior.registerFluid("cryotheum", 0.66f, 0.95f, 6.00f, IHeatEntity.conductivityDiamond); // Cryotheum: an amazing moderator!
-		ReactorInterior.registerFluid("ender", 0.90f, 0.75f, 2.00f, IHeatEntity.conductivityGold);
-		ReactorInterior.registerFluid("pyrotheum", 0.66f, 0.90f, 1.00f, IHeatEntity.conductivityIron);
+		ReactorInterior.registerFluid("fluidredstone", 0.75f, 0.55f, 1.60f, IHeatEntity.conductivityEmerald);
+		ReactorInterior.registerFluid("fluidtesla", 0.75f, 0.55f, 1.60f, IHeatEntity.conductivityEmerald); // Modularity
 
-		ReactorInterior.registerFluid("life essence", 0.70f, 0.55f, 1.75f, IHeatEntity.conductivityGold); // From Blood Magic
+		ReactorInterior.registerFluid("fluidglowstone", 0.20f, 0.60f, 1.75f, IHeatEntity.conductivityCopper);
+		ReactorInterior.registerFluid("fluidcryotheum", 0.66f, 0.95f, 6.00f, IHeatEntity.conductivityDiamond); // Cryotheum: an amazing moderator!
+		ReactorInterior.registerFluid("fluidender", 0.90f, 0.75f, 2.00f, IHeatEntity.conductivityGold);
+		ReactorInterior.registerFluid("fluidpyrotheum", 0.66f, 0.90f, 1.00f, IHeatEntity.conductivityIron);
+
+		ReactorInterior.registerFluid("lifeessence", 0.70f, 0.55f, 1.75f, IHeatEntity.conductivityGold); // From Blood Magic
 
 		if (enableComedy) {
 			ReactorInterior.registerBlock("blockMeat", 0.50f, 0.33f, 1.33f, IHeatEntity.conductivityStone);
