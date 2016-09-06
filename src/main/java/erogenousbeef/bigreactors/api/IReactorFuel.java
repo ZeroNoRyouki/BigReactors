@@ -3,7 +3,7 @@ package erogenousbeef.bigreactors.api;
 import net.minecraftforge.fluids.Fluid;
 
 /**
- * Implement this interface to provide information on fuel for Big Reactors.
+ * Implement this interface to provide information on fuel for Extreme Reactors.
  */
 public interface IReactorFuel {
 	/**

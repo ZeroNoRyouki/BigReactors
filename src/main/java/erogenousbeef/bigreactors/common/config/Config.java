@@ -45,7 +45,7 @@ public class Config extends ConfigHandler {
     public boolean registerYelloriteSmeltToUranium;
     public boolean registerYelloriumAsUranium;
     public boolean requireObsidianGlass;
-    public boolean requireSteelInsteadOfIron;
+    //public boolean requireSteelInsteadOfIron;
 
     // WORLDGEN
 
@@ -90,7 +90,7 @@ public class Config extends ConfigHandler {
 
         this.enableComedy = this.getValue("enableComedy", this.GENERAL, true, "If true, allows weird stuff inside reactors, like MFR sewage and pink slime. Default: true");
         this.fuelUsageMultiplier = this.getValue("fuelUsageMultiplier", this.GENERAL, 1.0f, "A multiplier for balancing fuel consumption. Default: 1.0");
-        this.powerProductionMultiplier = this.getValue("powerProductionMultiplier", this.GENERAL, 1.0f, "A multiplier for balancing overall power production from Big Reactors. Default: 1.0");
+        this.powerProductionMultiplier = this.getValue("powerProductionMultiplier", this.GENERAL, 1.0f, "A multiplier for balancing overall power production from Extreme Reactors. Default: 1.0");
         this.ticksPerRedstoneUpdate = this.getValue("ticksPerRedstoneUpdate", this.GENERAL, 20, "Number of ticks between updates for redstone/rednet ports");
 
         // REACTOR
@@ -123,16 +123,16 @@ public class Config extends ConfigHandler {
         this.registerGraphiteCharcoalCraftingRecipes = this.getValue("registerGraphiteCharcoalCraftingRecipes", this.RECIPES, false, "If set, graphite bars can be crafted from 2 gravel, 1 charcoal. Use this if other mods interfere with the smelting recipe. (Default: false)");
         this.registerGraphiteCoalCraftingRecipes = this.getValue("registerGraphiteCoalCraftingRecipes", this.RECIPES, false, "If set, graphite bars can be crafted from 2 gravel, 1 coal. Use this if other mods interfere with the smelting recipe. (Default: false)");
         this.registerYelloriteSmeltToUranium = this.getValue("registerYelloriteSmeltToUranium", this.RECIPES, true, "If set, yellorite ore will smelt into whichever item is registered as ingotUranium in the ore dictionary. If false, it will smelt into ingotYellorium. (Default: true)");
-        this.registerYelloriumAsUranium = this.getValue("registerYelloriumAsUranium", this.RECIPES, true, "If set, then all Big Reactors components will require uranium ingots (ingotUranium) in place of yellorium ingots and plutonium ingots (ingotPlutonium) in place of blutonium ingots. Will be ignored if no other mod registers uranium ingots and/ore plutonium ingots. Default: true");
+        this.registerYelloriumAsUranium = this.getValue("registerYelloriumAsUranium", this.RECIPES, true, "If set, then all Extreme Reactors components will require uranium ingots (ingotUranium) in place of yellorium ingots and plutonium ingots (ingotPlutonium) in place of blutonium ingots. Will be ignored if no other mod registers uranium ingots and/ore plutonium ingots. Default: true");
         this.enableCyaniteFromYelloriumRecipe = this.getValue("enableCyaniteFromYelloriumRecipe", this.RECIPES, true, "If set, cyanite will be craftable from yellorium ingots and sand");
-        this.requireObsidianGlass = this.getValue("requireObsidianGlass", this.RECIPES, false, "If set, then Big Reactors will require hardened or reinforced glass (blockGlassHardened or glassReinforced) instead of plain glass. Will be ignored if no other mod registers those glass types. (default: false)");
-        this.requireSteelInsteadOfIron = this.getValue("requireSteelInsteadOfIron", this.RECIPES, false, "If set, then all Big Reactors components will require steel ingots (ingotSteel) in place of iron ingots. Will be ignored if no other mod registers steel ingots. (default: false)");
+        this.requireObsidianGlass = this.getValue("requireObsidianGlass", this.RECIPES, false, "If set, then Extreme Reactors will require hardened or reinforced glass (blockGlassHardened or glassReinforced) instead of plain glass. Will be ignored if no other mod registers those glass types. (default: false)");
+        //this.requireSteelInsteadOfIron = this.getValue("requireSteelInsteadOfIron", this.RECIPES, false, "If set, then all Extreme Reactors components will require steel ingots (ingotSteel) in place of iron ingots. Will be ignored if no other mod registers steel ingots. (default: false)");
 
         // WORLDGEN
 
-        this.enableWorldGen = this.getValue("enableWorldGen", this.WORLDGEN, true, "If false, disables all world gen from Big Reactors; all other worldgen settings are automatically overridden");
-        this.enableWorldRegeneration = this.getValue("enableWorldRegeneration", this.WORLDGEN, false, "Run BR World Generation in chunks that have already been generated, but have not been modified by Big Reactors before. This is largely useful for worlds that existed before BigReactors was released");
-        this.userWorldGenVersion = this.getValue("userWorldGenVersion", this.WORLDGEN, 0, "User-set world generation version. Increase this by 1 if you want Big Reactors to re-run world generation in your world");
+        this.enableWorldGen = this.getValue("enableWorldGen", this.WORLDGEN, true, "If false, disables all world gen from Extreme Reactors; all other worldgen settings are automatically overridden");
+        this.enableWorldRegeneration = this.getValue("enableWorldRegeneration", this.WORLDGEN, false, "Run BR World Generation in chunks that have already been generated, but have not been modified by Extreme Reactors before. This is largely useful for worlds that existed before BigReactors was released");
+        this.userWorldGenVersion = this.getValue("userWorldGenVersion", this.WORLDGEN, 0, "User-set world generation version. Increase this by 1 if you want Extreme Reactors to re-run world generation in your world");
         this.dimensionWhitelist = this.getValue("dimensionWhitelist", this.WORLDGEN, new int[] {0}, "World gen will be performed only in the dimensions listed here");
         this.yelloriteOreEnableWorldGen = this.getValue("yelloriteOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of yellorite ore");
         this.yelloriteOreMaxClustersPerChunk = this.getValue("yelloriteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of yellorite clusters per chunk");
