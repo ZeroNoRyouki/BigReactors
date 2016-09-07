@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
+import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.util.WorldHelper;
@@ -219,6 +220,11 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		}
 
 		this.nofityTileEntityUpdate();
+
+		EnumFacing outward = this.getOutwardFacing();
+
+		if (null != outward)
+			this.worldObj.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -508,8 +514,15 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 
 			boolean oldLitState = this._isLit;
 
-			if (oldLitState != this.updateLitState())
+			if (oldLitState != this.updateLitState()) {
+
 				this.nofityTileEntityUpdate();
+
+				EnumFacing outward = this.getOutwardFacing();
+
+				if (null != outward)
+					this.worldObj.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
+			}
 		}
 	}
 
