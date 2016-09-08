@@ -154,7 +154,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		facing = facing.getOpposite();
 
-		if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+		if (null != neighbor && neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
 			this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
 	}
 
