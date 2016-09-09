@@ -1,37 +1,43 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
-import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.net.message.base.TurbineMessageServer;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class TurbineChangeInductorMessage extends TurbineMessageServer {
-	boolean newSetting;
-	public TurbineChangeInductorMessage() { super(); newSetting = true; }
+
+	public TurbineChangeInductorMessage() {
+		this._newSetting = true;
+	}
+
 	public TurbineChangeInductorMessage(MultiblockTurbine turbine, boolean newSetting) {
+
 		super(turbine);
-		this.newSetting = newSetting;
+		this._newSetting = newSetting;
 	}
 	
 	@Override
 	public void toBytes(ByteBuf buf) {
+
 		super.toBytes(buf);
-		buf.writeBoolean(newSetting);
+		buf.writeBoolean(this._newSetting);
 	}
 	
 	@Override
 	public void fromBytes(ByteBuf buf) {
+
 		super.fromBytes(buf);
-		newSetting = buf.readBoolean();
+		this._newSetting = buf.readBoolean();
 	}
+
+	private boolean _newSetting;
 	
 	public static class Handler extends TurbineMessageServer.Handler<TurbineChangeInductorMessage> {
+
 		@Override
-		protected IMessage handleMessage(TurbineChangeInductorMessage message,
-				MessageContext ctx, MultiblockTurbine turbine) {
-			turbine.setInductorEngaged(message.newSetting, true);
-			return null;
+		protected void processTurbineMessage(TurbineChangeInductorMessage message, MessageContext ctx, MultiblockTurbine turbine) {
+			turbine.setInductorEngaged(message._newSetting, true);
 		}
 	}
 }

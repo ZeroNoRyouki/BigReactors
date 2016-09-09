@@ -1,3 +1,4 @@
+/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import net.minecraft.block.Block;
@@ -5,13 +6,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetInputNode;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedNetPort;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
@@ -21,34 +23,12 @@ import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatable
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 
 public class TileEntityReactorRedNetPort extends TileEntityReactorPart implements ITickableMultiblockPart, INeighborUpdatableEntity {
 
-	public enum CircuitType {
-		DISABLED,
-		inputActive, 				// Input: reactor on/off
-		inputSetControlRod, 		// Input: control rod insertion (0-100)
-		inputEjectWaste,			// Input: eject waste from the reactor
 
-		outputFuelTemperature,		// Output: Temperature of the reactor fuel
-		outputCasingTemperature,	// Output: Temperature of the reactor casing
-		outputFuelMix, 		// Output: Fuel mix, % of contents that is fuel (0-100, 100 = 100% fuel)
-		outputFuelAmount, 	// Output: Fuel amount in a control rod, raw value, (0-4*height)
-		outputWasteAmount, 	// Output: Waste amount in a control rod, raw value, (0-4*height)
-		outputEnergyAmount; // Output: Energy in the reactor's buffer, percentile (0-100, 100 = 100% full)
-		
-		public static final CircuitType[] s_Types = CircuitType.values();
-		
-		public static boolean hasCoordinate(TileEntityReactorRedNetPort.CircuitType circuitType) {
-			return circuitType == CircuitType.inputSetControlRod;
-		}
-
-		public static boolean canBeToggledBetweenPulseAndNormal(CircuitType circuitType) {
-			return circuitType == CircuitType.inputActive;
-		}
-	}
 
 	protected final static int minInputEnumValue = CircuitType.inputActive.ordinal();
 	protected final static int maxInputEnumValue = CircuitType.inputEjectWaste.ordinal();
@@ -56,7 +36,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	protected final static int maxOutputEnumValue = CircuitType.outputEnergyAmount.ordinal();
 
 	protected CircuitType[] channelCircuitTypes;
-	protected CoordTriplet[] coordMappings;
+	protected BlockPos[] coordMappings;
 	protected boolean[] inputActivatesOnPulse;
 	protected int[] oldValue;
 
@@ -71,7 +51,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		super();
 		
 		channelCircuitTypes = new CircuitType[numChannels];
-		coordMappings = new CoordTriplet[numChannels];
+		coordMappings = new BlockPos[numChannels];
 		inputActivatesOnPulse = new boolean[numChannels];
 		oldValue = new int[numChannels];
 
@@ -95,7 +75,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 
 		if(this.worldObj.isRemote) { return; } 
 		
-		checkForConnections(this.worldObj, xCoord, yCoord, zCoord);
+		checkForConnections(this.worldObj, this.getPos());
 	}
 	
 	@Override
@@ -104,7 +84,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 
 		if(this.worldObj.isRemote) { return; } 
 		
-		checkForConnections(this.worldObj, xCoord, yCoord, zCoord);
+		checkForConnections(this.worldObj, this.getPos());
 	}
 
 	@Override
@@ -253,10 +233,10 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		checkForConnections(world, x, y, z);
 	}
 	
-	/**
+	/* *
 	 * Updates the connected RedNet network, if there is one.
 	 * Will only send one update per N ticks, where N is a configurable setting.
-	 */
+	 * /
 	public void onMultiblockServerTick() {
 		if(!this.isConnected()) { return; }
 
@@ -281,7 +261,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		return channelCircuitTypes[channel];
 	}
 
-	public CoordTriplet getMappedCoord(int channel) {
+	public BlockPos getMappedCoord(int channel) {
 		return this.coordMappings[channel];
 	}
 	
@@ -299,26 +279,23 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 
 	protected TileEntity getMappedTileEntity(int channel) {
 		if(channel < 0 || channel >= numChannels) { return null; }
-		if(coordMappings[channel] == null) { return null; }
-		
-		CoordTriplet coord = coordMappings[channel];
-		
-		if(coord == null) { return null; }
-		if(!this.worldObj.checkChunksExist(coord.x, coord.y, coord.z, coord.x, coord.y, coord.z)) {
+
+		BlockPos coord = coordMappings[channel];
+
+		if (coord == null || !WorldHelper.blockChunkExists(this.worldObj.getChunkProvider(), coord))
 			return null;
-		}
 		
 		return this.worldObj.getTileEntity(coord.x, coord.y, coord.z);
 	}
 	
-	protected void setControlRodInsertion(int channel, CoordTriplet coordTriplet, int newValue) {
+	protected void setControlRodInsertion(int channel, BlockPos position, int newValue) {
 		if(!this.isConnected()) { return; }
-		if(!this.worldObj.checkChunksExist(coordTriplet.x, coordTriplet.y, coordTriplet.z,
-											coordTriplet.x, coordTriplet.y, coordTriplet.z)) {
+
+
+		if(!WorldHelper.blockChunkExists(this.worldObj.getChunkProvider(), position))
 			return;
-		}
 		
-		TileEntity te = this.worldObj.getTileEntity(coordTriplet.x, coordTriplet.y, coordTriplet.z);
+		TileEntity te = this.worldObj.getTileEntity(position);
 		if(te instanceof TileEntityReactorControlRod) {
 			((TileEntityReactorControlRod)te).setControlRodInsertion((short)newValue);
 		}
@@ -336,11 +313,11 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 			entry.setBoolean("pulse", this.inputActivatesOnPulse[channel]);
 		}
 		if( CircuitType.hasCoordinate(this.channelCircuitTypes[channel]) ) {
-			CoordTriplet coord = this.coordMappings[channel];
+			BlockPos coord = this.coordMappings[channel];
 			if(coord != null) {
-				entry.setInteger("x", coord.x);
-				entry.setInteger("y", coord.y);
-				entry.setInteger("z", coord.z);
+				entry.setInteger("x", coord.getX());
+				entry.setInteger("y", coord.getY());
+				entry.setInteger("z", coord.getZ());
 			}
 		}
 		
@@ -365,7 +342,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 				x = settingTag.getInteger("x");
 				y = settingTag.getInteger("y");
 				z = settingTag.getInteger("z");
-				coordMappings[channel] = new CoordTriplet(x, y, z);
+				coordMappings[channel] = new BlockPos(x, y, z);
 			}
 		}
 	}
@@ -385,11 +362,11 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 			}
 			
 			if(CircuitType.hasCoordinate(newType)) {
-				CoordTriplet coord = changes[i].getCoord();
+				BlockPos coord = changes[i].getCoord();
 				
 				// Validate that we're pointing at the right thing, just in case.
 				if(coord != null) {
-					TileEntity te = worldObj.getTileEntity(coord.x, coord.y, coord.z);
+					TileEntity te = worldObj.getTileEntity(coord);
 					if(!(te instanceof TileEntityReactorControlRod)) {
 						BRLog.warning("Invalid tile entity reference at coordinate %s - rednet circuit expected a control rod", coord);
 						coord = null;
@@ -402,8 +379,8 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 				coordMappings[channelID] = null;
 			}
 		}
-		
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+		WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		markDirty();
 	}
 	
@@ -425,13 +402,13 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		}
 	}
 	
-	/**
+	/* *
 	 * Check for a world connection, if we're assembled.
 	 * @param world
 	 * @param x
 	 * @param y
 	 * @param z
-	 */
+	 * /
 	protected void checkForConnections(IBlockAccess world, int x, int y, int z) {
 		ForgeDirection out = getOutwardsDir();
 
@@ -460,3 +437,4 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	public static boolean isInput(CircuitType type) { return type.ordinal() >= minInputEnumValue && type.ordinal() <= maxInputEnumValue; }
 	public static boolean isOutput(CircuitType type) { return type.ordinal() >= minOutputEnumValue && type.ordinal() <= maxOutputEnumValue; }
 }
+*/

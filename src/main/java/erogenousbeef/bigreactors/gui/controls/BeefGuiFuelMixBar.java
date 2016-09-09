@@ -1,11 +1,15 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.EnumChatFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.opengl.GL11;
 
 public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 		IBeefTooltipControl {
@@ -29,7 +33,13 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 	protected double getBackgroundRightU() { return 0.2499; }
 
 	@Override
-	protected String getBackgroundTexture() { return "controls/FuelMixBar.png"; }
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == s_bgTexture)
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/FuelMixBar.png");
+
+		return s_bgTexture;
+	}
 
 	private final static double maxV = 63.0/64.0;
 	private final static double minV = 1.0/64.0;
@@ -39,6 +49,7 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 			TextureManager renderEngine, int barMinX, int barMaxX, int barMinY,
 			int barMaxY, int zLevel) {
 
+		VertexBuffer vertexbuffer = tessellator.getBuffer();
 		int barMaxHeight = this.height - 1;
 		int barHeight = Math.max(1, Math.round(getProgress() * barMaxHeight));
 
@@ -50,11 +61,12 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 		if(fuelProportion > 0) {
 			double fuelMinV = 1.0 - fullness*maxV;
 			double fuelMaxV = maxV;
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - 1, zLevel, fuelLeftU, fuelMaxV);
-			tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - 1, zLevel, fuelRightU, fuelMaxV);
-			tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - barHeight, zLevel, fuelRightU, fuelMinV);
-			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - barHeight, zLevel, fuelLeftU, fuelMinV);
+
+			vertexbuffer.begin(GL11.GL_QUADS, vertexbuffer.getVertexFormat());
+			vertexbuffer.pos(this.absoluteX, this.absoluteY + this.height - 1, zLevel).tex(fuelLeftU, fuelMaxV).endVertex();
+			vertexbuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height - 1, zLevel).tex(fuelRightU, fuelMaxV).endVertex();
+			vertexbuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height - barHeight, zLevel).tex(fuelRightU, fuelMinV).endVertex();
+			vertexbuffer.pos(this.absoluteX, this.absoluteY + this.height - barHeight, zLevel).tex(fuelLeftU, fuelMinV).endVertex();
 			tessellator.draw();
 		}
 		
@@ -65,12 +77,12 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 			
 			if(wasteHeight > 0) {
 				double wasteTop = this.absoluteY + this.height - 1 - wasteHeight;
-				
-				tessellator.startDrawingQuads();
-				tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - 1, zLevel+1, wasteLeftU, wasteMaxV);
-				tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - 1, zLevel+1, wasteRightU, wasteMaxV);
-				tessellator.addVertexWithUV(this.absoluteX + this.width, wasteTop, zLevel+1, wasteRightU, wasteMinV);
-				tessellator.addVertexWithUV(this.absoluteX, wasteTop, zLevel+1, wasteLeftU, wasteMinV);
+
+				vertexbuffer.begin(GL11.GL_QUADS, vertexbuffer.getVertexFormat());
+				vertexbuffer.pos(this.absoluteX, this.absoluteY + this.height - 1, zLevel + 1).tex(wasteLeftU, wasteMaxV).endVertex();
+				vertexbuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height - 1, zLevel + 1).tex(wasteRightU, wasteMaxV).endVertex();
+				vertexbuffer.pos(this.absoluteX + this.width, wasteTop, zLevel + 1).tex(wasteRightU, wasteMinV).endVertex();
+				vertexbuffer.pos(this.absoluteX, wasteTop, zLevel + 1).tex(wasteLeftU, wasteMinV).endVertex();
 				tessellator.draw();
 			}
 		}
@@ -99,7 +111,7 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 			}
 		}
 		return new String[] {
-				EnumChatFormatting.AQUA + "Core Fuel Status",
+				TextFormatting.AQUA + "Core Fuel Status",
 				String.format(" %2.1f%% full", fullness),
 				String.format(" %2.1f%% depleted", depletion),
 				"",
@@ -114,5 +126,7 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 	@Override
 	protected float getProgress() {
 		return (float)(entity.getFuelAmount() + entity.getWasteAmount()) / (float)entity.getCapacity();
-	}	
+	}
+
+	private static ResourceLocation s_bgTexture;
 }

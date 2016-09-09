@@ -1,30 +1,25 @@
 package erogenousbeef.bigreactors.client;
 
-import java.util.Set;
-
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.client.renderer.RotorSimpleRenderer;
+import erogenousbeef.bigreactors.client.renderer.RendererReactorFuelRod;
 import erogenousbeef.bigreactors.client.renderer.RotorSpecialRenderer;
-import erogenousbeef.bigreactors.client.renderer.SimpleRendererFuelRod;
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockFuelRod;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
+import erogenousbeef.bigreactors.common.block.BlockBR;
+import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
+import erogenousbeef.bigreactors.common.item.ItemBase;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
-import erogenousbeef.core.multiblock.MultiblockClientTickHandler;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.MultiblockRegistry;
+import erogenousbeef.bigreactors.init.BrFluids;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -37,44 +32,59 @@ public class ClientProxy extends CommonProxy {
 		GuiIcons = new BeefGuiIconManager();
 		CommonBlockIcons = new CommonBlockIconManager();
 	}
-	
-	@Override
-	public void preInit() {}
 
 	@Override
-	public void init()
-	{
-		super.init();
+	public BlockBR register(BlockBR block) {
 
-		FMLCommonHandler.instance().bus().register(new MultiblockClientTickHandler());
-        FMLCommonHandler.instance().bus().register(new BRRenderTickHandler());
+		super.register(block);
+		block.onPostClientRegister();
+		return block;
+	}
 
-		BlockFuelRod.renderId = RenderingRegistry.getNextAvailableRenderId();
-		ISimpleBlockRenderingHandler fuelRodISBRH = new SimpleRendererFuelRod();
-		RenderingRegistry.registerBlockHandler(BlockFuelRod.renderId, fuelRodISBRH);
-		
-		BlockTurbineRotorPart.renderId = RenderingRegistry.getNextAvailableRenderId();
-		ISimpleBlockRenderingHandler rotorISBRH = new RotorSimpleRenderer();
-		RenderingRegistry.registerBlockHandler(BlockTurbineRotorPart.renderId, rotorISBRH);	
-		
-		if(BigReactors.blockTurbinePart != null) {
-			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
-		}
+	@Override
+	public BlockBRGenericFluid register(BlockBRGenericFluid block) {
+
+		super.register(block);
+		block.onPostClientRegister();
+		return block;
+	}
+
+	@Override
+	public ItemBase register(ItemBase item) {
+
+		super.register(item);
+		item.onPostClientRegister();
+		return item;
+	}
+
+	@Override
+	public void onInit(FMLInitializationEvent event) {
+
+		super.onInit(event);
+
+		MinecraftForge.EVENT_BUS.register(new BRRenderTickHandler());
+
+		// register TESRs
+		this.registerTESRs();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
-		if(event.map.getTextureType() == BeefIconManager.TERRAIN_TEXTURE) {
-			BigReactors.registerNonBlockFluidIcons(event.map);
-			GuiIcons.registerIcons(event.map);
-			CommonBlockIcons.registerIcons(event.map);
-		}
-		// else if(event.map.textureType == BeefIconManager.ITEM_TEXTURE) { }
+
+		final TextureMap map = event.getMap();
+
+		this.registerFluidTextures(map, BrFluids.fluidSteam);
+		this.registerFluidTextures(map, BrFluids.fluidFuelColumn);
+
+		GuiIcons.registerIcons(map);
+		CommonBlockIcons.registerIcons(map);
 
 		// Reset any controllers which have TESRs which cache displaylists with UV data in 'em
 		// This is necessary in case a texture pack changes UV coordinates on us
+
+        /* TODO track turbines locally
 		Set<MultiblockControllerBase> controllers = MultiblockRegistry.getControllersFromWorld(FMLClientHandler.instance().getClient().theWorld);
 		if(controllers != null) {
 			for(MultiblockControllerBase controller: controllers) {
@@ -83,12 +93,21 @@ public class ClientProxy extends CommonProxy {
 				}
 			}
 		}
+		*/
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void setIcons(TextureStitchEvent.Post event) {
-		BigReactors.setNonBlockFluidIcons();
+
+	private void registerTESRs() {
+
+		// reactor fuel rods
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
+
+		// turbine rotor
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
+	}
+
+	private void registerFluidTextures(final TextureMap map, final Fluid fluid) {
+
+		map.registerSprite(fluid.getStill());
+		map.registerSprite(fluid.getFlowing());
 	}
 }

@@ -1,40 +1,27 @@
 package erogenousbeef.bigreactors.utils;
 
+import cofh.api.item.IToolHammer;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.item.IToolHammer;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
-import erogenousbeef.core.common.CoordTriplet;
+
+//import buildcraft.api.tools.IToolWrench;
 
 public class StaticUtils {
 
-	public static final ForgeDirection[] CardinalDirections = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH, ForgeDirection.WEST };
-	
-	public static final ForgeDirection neighborsBySide[][] = new ForgeDirection[][] {
-		{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST},
-		{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.EAST, ForgeDirection.WEST},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.WEST, ForgeDirection.EAST},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH},
-		{ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.SOUTH, ForgeDirection.NORTH}
-	};
-	
 	public static class Inventory {
 		/**
 		 * Consume a single item from a stack of items
@@ -79,13 +66,18 @@ public class StaticUtils {
 		 * Is this player holding a goddamn wrench?
 		 * @return True if the player is holding a goddamn wrench. BC only, screw you.
 		 */
-		public static boolean isPlayerHoldingWrench(EntityPlayer player) {
-			if(player.inventory.getCurrentItem() == null) { 
+		public static boolean isPlayerHoldingWrench(ItemStack heldItemStack) {
+
+			if (null == heldItemStack)
 				return false;
-			}
-			Item currentItem = player.inventory.getCurrentItem().getItem();
-			return (ModHelperBase.useCofh && currentItem instanceof IToolHammer) ||
-					(ModHelperBase.useBuildcraftTools && currentItem instanceof IToolWrench);
+
+			Item heldItem = heldItemStack.getItem();
+
+			return null != heldItem && (
+					heldItem instanceof IToolHammer
+					// TODO waiting for BuildCraft 1.9.4+
+					// || (ModHelperBase.useBuildcraftTools && heldItem instanceof IToolWrench)
+					);
 		}
 		
 		/**
@@ -123,17 +115,27 @@ public class StaticUtils {
                 return true;
         }
 
-        private static final ForgeDirection[] chestDirections = new ForgeDirection[] { ForgeDirection.NORTH,
-        																				ForgeDirection.SOUTH,
-        																				ForgeDirection.EAST,
-        																				ForgeDirection.WEST};
+        private static final EnumFacing[] chestDirections = new EnumFacing[] { EnumFacing.NORTH,
+				EnumFacing.SOUTH,
+				EnumFacing.EAST,
+				EnumFacing.WEST};
 
 		public static IInventory checkForDoubleChest(World worldObj, IInventory te, int x, int y, int z) {
-			for(ForgeDirection dir : chestDirections) {
-				if(worldObj.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == Blocks.chest) {
-					TileEntity otherTe = worldObj.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+			IBlockState state;
+			BlockPos position, originalPosition = new BlockPos(x, y, z);
+
+			for(EnumFacing dir : chestDirections) {
+
+				position = originalPosition.offset(dir);
+				state = worldObj.getBlockState(position);
+
+				if(state.getBlock() == Blocks.CHEST) {
+					TileEntity otherTe = worldObj.getTileEntity(position);
 					if(otherTe instanceof IInventory) {
-						return new InventoryLargeChest("Large Chest", te, (IInventory)otherTe);
+						// TODO Commented temporarily to allow this thing to compile...
+						//return new InventoryLargeChest("Large Chest", te, (IInventory)otherTe);
+						return te;
 					}
 				}
 			}
@@ -147,6 +149,8 @@ public class StaticUtils {
 		/* Below stolen from COFHLib because COFHLib itself still relies on cofh.core */
 		public static boolean fillTankWithContainer(World world, IFluidHandler handler, EntityPlayer player) {
 
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 	        ItemStack container = player.getCurrentEquippedItem();
 	        FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(container);
 
@@ -163,10 +167,13 @@ public class StaticUtils {
 	                        return true;
 	                }
 	        }
+	        */
 	        return false;
 		}
 
 		public static boolean fillContainerFromTank(World world, IFluidHandler handler, EntityPlayer player, FluidStack tankFluid) {
+			// TODO Commented temporarily to allow this thing to compile...
+			/*
 			ItemStack container = player.getCurrentEquippedItem();
 			
 			if (FluidContainerRegistry.isEmptyContainer(container)) {
@@ -194,6 +201,7 @@ public class StaticUtils {
 			        }
 			        return true;
 			}
+			*/
 			return false;
 		}
 	}
@@ -218,12 +226,12 @@ public class StaticUtils {
 		 * @param maximum Maximum coordinate.
 		 * @return The cube's volume, in blocks.
 		 */
-		public static int Volume(CoordTriplet minimum, CoordTriplet maximum) {
+		public static int Volume(BlockPos minimum, BlockPos maximum) {
 			if(minimum == null || maximum == null) { return 0; }
 
-			int xsize = Math.abs(maximum.x - minimum.x) + 1;
-			int ysize = Math.abs(maximum.y - minimum.y) + 1;
-			int zsize = Math.abs(maximum.z - minimum.z) + 1;
+			int xsize = Math.abs(maximum.getX() - minimum.getX()) + 1;
+			int ysize = Math.abs(maximum.getY() - minimum.getY()) + 1;
+			int zsize = Math.abs(maximum.getZ() - minimum.getZ()) + 1;
 			return xsize * ysize * zsize;
 		}
 	}
@@ -244,14 +252,14 @@ public class StaticUtils {
 		public static String[] sizePrefixes = {"", "Ki", "Me", "Gi", "Te", "Pe", "Ex", "Ze", "Yo", "Ho"};
 		// Ho = Hojillion
 		
-		public static String formatRF(float number) {
+		public static String formatEnergy(float number, PowerSystem powerSystem) {
 			String prefix = "";
 			if(number < 0f) {
 				prefix = "-";
 				number *= -1;
 			}
 			
-			if(number <= 0.00001f) { return "0.00 RF"; }
+			if(number <= 0.00001f) { return "0.00 " + powerSystem.unitOfMeasure; }
 			
 			int power = (int)Math.floor(Math.log10(number));
 
@@ -260,10 +268,10 @@ public class StaticUtils {
 			double divisor = Math.pow(1000f, letterIdx);
 			
 			if(divisor > 0) {
-				return String.format("%s%." + Integer.toString(decimalPoints) + "f %sRF", prefix, number/divisor, sizePrefixes[letterIdx]);
+				return String.format("%s%." + Integer.toString(decimalPoints) + "f %s%s", prefix, number/divisor, sizePrefixes[letterIdx], powerSystem.unitOfMeasure);
 			}
 			else {
-				return String.format("%s%." + Integer.toString(decimalPoints) + "f RF", prefix, number);
+				return String.format("%s%." + Integer.toString(decimalPoints) + "f %s", prefix, number, powerSystem.unitOfMeasure);
 			}
 		}
 		
@@ -309,59 +317,18 @@ public class StaticUtils {
 		 * @param entity The entity whose facing you wish to query.
 		 * @return The ForgeDirection which entity is facing (north/south/east/west)
 		 */
-		protected ForgeDirection getFacingDirection(Entity entity) {
+		protected EnumFacing getFacingDirection(Entity entity) {
 			int facingAngle = (MathHelper.floor_double((entity.rotationYaw * 4F) / 360F + 0.5D) & 3);
 			switch(facingAngle) {
 			case 1:
-				return ForgeDirection.EAST;
+				return EnumFacing.EAST;
 			case 2:
-				return ForgeDirection.SOUTH;
+				return EnumFacing.SOUTH;
 			case 3:
-				return ForgeDirection.WEST;
+				return EnumFacing.WEST;
 			default:
-				return ForgeDirection.NORTH;
+				return EnumFacing.NORTH;
 			}
-		}
-	}
-	
-	public static class TE {
-		public static TileEntity getTileEntityUnsafe(IBlockAccess iba, int x, int y, int z) {
-			TileEntity te = null;
-
-			if(iba instanceof World) {
-				// We don't want to trigger tile entity loads in this method
-				te = getTileEntityUnsafe((World)iba, x, y, z);
-			}
-			else {
-				// Should never happen, generally
-				te = iba.getTileEntity(x, y, z);
-			}
-			
-			return te;
-		}
-		
-		public static TileEntity getTileEntityUnsafe(World world, int x, int y, int z) {
-			TileEntity te = null;
-			
-			Chunk chunk = world.getChunkFromBlockCoords(x, z);
-			if(chunk != null) {
-				te = chunk.getTileEntityUnsafe(x & 0x0F, y, z & 0x0F);
-			}
-			
-			return te;
-		}
-	}
-	
-	public static class WorldGen {
-		/**
-		 * Check if a Big Reactors world generator should even bother to run
-		 * in a given dimension.
-		 * @param dimensionId The dimension being queried for WorldGen.
-		 * @return True if world generation should proceed, false if it should be skipped altogether.
-		 */
-		public static boolean shouldGenerateInDimension(int dimensionId) {
-			return dimensionId >= 0 || BigReactors.enableWorldGenInNegativeDimensions ||
-					BigReactors.dimensionWhitelist.contains(dimensionId);
 		}
 	}
 }

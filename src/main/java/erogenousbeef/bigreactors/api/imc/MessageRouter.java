@@ -1,13 +1,12 @@
 package erogenousbeef.bigreactors.api.imc;
 
+import erogenousbeef.bigreactors.common.BRLog;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
-import erogenousbeef.bigreactors.common.BRLog;
 
 /**
  * This class routes IMC messages to their designated handlers.
@@ -17,8 +16,8 @@ public class MessageRouter {
 
 	protected static Map<String, Method> handlers = new HashMap<String, Method>();
 	
-	public static void route(IMCEvent event) {
-		for(IMCMessage message : event.getMessages()) {
+	public static void route(FMLInterModComms.IMCEvent event) {
+		for(FMLInterModComms.IMCMessage message : event.getMessages()) {
 			Method handler = handlers.get(message.key);
 			if(handler != null) {
 				try {

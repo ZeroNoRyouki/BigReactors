@@ -1,8 +1,5 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.block.BlockBRDevice;
 import erogenousbeef.bigreactors.common.tileentity.TileEntityCyaniteReprocessor;
@@ -10,6 +7,11 @@ import erogenousbeef.bigreactors.gui.controls.BeefGuiFluidBar;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiPowerBar;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiProgressArrow;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+
+import java.io.IOException;
 
 public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 
@@ -34,10 +36,12 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 	public void initGui() {
 		super.initGui();
 
-		titleString = new BeefGuiLabel(this, _entity.getInventoryName(), guiLeft + 8, guiTop + 6);
+		// TODO Commented temporarily to allow this thing to compile...
+		titleString = new BeefGuiLabel(this, "FIXME"/*_entity.getInventoryName()*/, guiLeft + 8, guiTop + 6);
 
-		fluidBar = new BeefGuiFluidBar(this, guiLeft + 8, guiTop + 16, _entity, 0);
-		powerBar = new BeefGuiPowerBar(this, guiLeft + 148, guiTop + 16, _entity);
+		fluidBar = new BeefGuiFluidBar(this, guiLeft + 8, guiTop + 16, /*_entity , 0*/null /* TODO fix */);
+		// TODO Commented temporarily to allow this thing to compile...
+		//powerBar = new BeefGuiPowerBar(this, guiLeft + 148, guiTop + 16, _entity);
 		progressArrow = new BeefGuiProgressArrow(this, guiLeft + 76, guiTop + 41, 0, 178, _entity);
 		
 		registerControl(titleString);
@@ -50,7 +54,11 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation(BigReactors.GUI_DIRECTORY + "CyaniteReprocessor.png");
+
+		if (null == GuiCyaniteReprocessor.s_guiTexture)
+			GuiCyaniteReprocessor.s_guiTexture = BigReactors.createGuiResourceLocation("CyaniteReprocessor.png");
+
+		return GuiCyaniteReprocessor.s_guiTexture;
 	}
 
 	@Override
@@ -64,7 +72,7 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(GuiButton button) throws IOException {
 		super.actionPerformed(button);
 	}
 
@@ -72,4 +80,6 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 	protected int getBlockMetadata() {
 		return BlockBRDevice.META_CYANITE_REPROCESSOR;
 	}
+
+	private static ResourceLocation s_guiTexture;
 }

@@ -1,9 +1,11 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import org.lwjgl.opengl.GL11;
 
 public abstract class BeefGuiTextureProgressBar extends BeefGuiVerticalProgressBar {
 
@@ -41,18 +43,18 @@ public abstract class BeefGuiTextureProgressBar extends BeefGuiVerticalProgressB
 
 		double barMaxV = 1;
 		double barMinV = 1 - Math.min(1, Math.max(0, barHeight / this.height));
-		
+		VertexBuffer vertexBuffer = tessellator.getBuffer();
+
 		renderEngine.bindTexture(getBarTexture());
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height, zLevel, barLeftU, barMaxV);
-		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height, zLevel, barRightU, barMaxV);
-		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height - barHeight, zLevel, barRightU, barMinV);
-		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height - barHeight, zLevel, barLeftU, barMinV);
+		vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());
+		vertexBuffer.pos(this.absoluteX, this.absoluteY + this.height, zLevel).tex(barLeftU, barMaxV).endVertex();
+		vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height, zLevel).tex(barRightU, barMaxV).endVertex();
+		vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height - barHeight, zLevel).tex(barRightU, barMinV).endVertex();
+		vertexBuffer.pos(this.absoluteX, this.absoluteY + this.height - barHeight, zLevel).tex(barLeftU, barMinV).endVertex();
 		tessellator.draw();
 	}
 
 	protected double getBarMinHeight() {
 		return 3;
 	}
-
 }

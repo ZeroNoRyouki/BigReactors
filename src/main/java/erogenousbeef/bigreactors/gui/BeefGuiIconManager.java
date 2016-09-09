@@ -40,6 +40,19 @@ public class BeefGuiIconManager extends BeefIconManager {
 	public static final int ROTOR_EFFICIENCY = 33;
 	public static final int FLOW_RATE = 34;
 	public static final int COIL = 35;
+	public static final int CONTROL_ROD = 36;
+
+	public static final int REDNET_FIRST = 37;
+	public static final int REDNET_INPUTACTIVE = 38;
+	public static final int REDNET_INPUTSETCONTROLROD = 39;
+	public static final int REDNET_INPUTEJECTWASTE = 40;
+	public static final int REDNET_OUTPUTFUELTEMPERATURE = 41;
+	public static final int REDNET_OUTPUTCASINGTEMPERATURE = 42;
+	public static final int REDNET_OUTPUTFUELMIX = 43;
+	public static final int REDNET_OUTPUTFUELAMOUNT = 44;
+	public static final int REDNET_OUTPUTWASTEAMOUNT = 45;
+	public static final int REDNET_OUTPUTENERGYAMOUNT = 46;
+
 
 	@Override
 	protected String[] getIconNames() {
@@ -80,7 +93,16 @@ public class BeefGuiIconManager extends BeefIconManager {
 				"rotorEfficiency",
 				"flowRate",
 				"coil",
-				"controlRod"
+				"controlRod",
+				"redNet.inputActive",
+				"redNet.inputSetControlRod",
+				"redNet.inputEjectWaste",
+				"redNet.outputFuelTemperature",
+				"redNet.outputCasingTemperature",
+				"redNet.outputFuelMix",
+				"redNet.outputFuelAmount",
+				"redNet.outputWasteAmount",
+				"redNet.outputEnergyAmount"
 		};
 	}
 	

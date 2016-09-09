@@ -1,15 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.IFluidBlock;
-import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
@@ -19,8 +9,17 @@ import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
-import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
+import it.zerono.mods.zerocore.util.ItemHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
 
 /**
  * Helper for reactor radiation game logic
@@ -42,7 +41,11 @@ public class RadiationHelper {
 		fertility = 1f;
 	}
 
-	public RadiationData radiate(World world, FuelContainer fuelContainer, TileEntityReactorFuelRod source, TileEntityReactorControlRod controlRod, float fuelHeat, float environmentHeat, int numControlRods) {
+	public RadiationData radiate(World world, FuelContainer fuelContainer, TileEntityReactorFuelRod source, FuelAssembly fuelAssembly,
+								 float fuelHeat, float environmentHeat, int numControlRods) {
+
+		TileEntityReactorControlRod controlRod = fuelAssembly.getControlRod();
+
 		// No fuel? No radiation!
 		if(fuelContainer.getFuelAmount() <= 0) { return null; }
 
@@ -80,27 +83,28 @@ public class RadiationHelper {
 		float radHardness = 0.2f + (float)(0.8 * radiationPenaltyBase);
 
 		// Calculate based on propagation-to-self
-		float rawFuelUsage = (fuelPerRadiationUnit * rawRadIntensity / getFertilityModifier()) * BigReactors.fuelUsageMultiplier; // Not a typo. Fuel usage is thus penalized at high heats.
+		float rawFuelUsage = (fuelPerRadiationUnit * rawRadIntensity / getFertilityModifier()) * BigReactors.CONFIG.fuelUsageMultiplier; // Not a typo. Fuel usage is thus penalized at high heats.
 		data.fuelRfChange = rfPerRadiationUnit * effectiveRadIntensity;
 		data.environmentRfChange = 0f;
 
 		// Propagate radiation to others
-		CoordTriplet originCoord = source.getWorldLocation();
-		CoordTriplet currentCoord = new CoordTriplet(0, 0, 0);
+		BlockPos originCoord = source.getPos();
+		BlockPos currentCoord;
 		
 		effectiveRadIntensity *= 0.25f; // We're going to do this four times, no need to repeat
 		RadiationPacket radPacket = new RadiationPacket();
 
-		for(ForgeDirection dir : StaticUtils.CardinalDirections) {
+		for (EnumFacing dir : fuelAssembly.getRadiateDirections()) {
+
 			radPacket.hardness = radHardness;
 			radPacket.intensity = effectiveRadIntensity;
 			int ttl = 4;
-			currentCoord.copy(originCoord);
+			currentCoord = originCoord;
 
 			while(ttl > 0 && radPacket.intensity > 0.0001f) {
 				ttl--;
-				currentCoord.translate(dir);
-				performIrradiation(world, data, radPacket, currentCoord.x, currentCoord.y, currentCoord.z);
+				currentCoord = currentCoord.offset(dir);
+				performIrradiation(world, data, radPacket, currentCoord);
 			}
 		}
 
@@ -123,24 +127,30 @@ public class RadiationHelper {
 		fertility = Math.max(0f, fertility - Math.max(0.1f, fertility/denominator));
 	}
 	
-	private void performIrradiation(World world, RadiationData data, RadiationPacket radiation, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+	private void performIrradiation(World world, RadiationData data, RadiationPacket radiation, BlockPos position) {
+		TileEntity te = world.getTileEntity(position);
 		if(te instanceof IRadiationModerator) {
 			((IRadiationModerator)te).moderateRadiation(data, radiation);
 		}
-		else if (world.isAirBlock(x, y, z)) {
+		else if (world.isAirBlock(position)) {
 			moderateByAir(data, radiation);
 		}
 		else {
-			Block block = world.getBlock(x, y, z);
+			IBlockState blockState = world.getBlockState(position);
+			Block block = blockState.getBlock();
 			if(block != null) {
-				
-				if(block instanceof IFluidBlock) {
+
+				if (block.isAir(blockState, world, position)) {
+
+					moderateByAir(data, radiation);
+
+				} else if(block instanceof IFluidBlock) {
+
 					moderateByFluid(data, radiation, ((IFluidBlock)block).getFluid());
-				}
-				else {
+
+				} else {
 					// Go by block
-					moderateByBlock(data, radiation, block, world.getBlockMetadata(x, y, z));
+					moderateByBlock(data, radiation, blockState);
 				}
 			}
 			else {
@@ -155,24 +165,29 @@ public class RadiationHelper {
 		applyModerationFactors(data, radiation, airData);
 	}
 	
-	private void moderateByBlock(RadiationData data, RadiationPacket radiation, Block block, int metadata) {
-		ReactorInteriorData moderatorData = null;
+	private void moderateByBlock(RadiationData data, RadiationPacket radiation, IBlockState blockState) {
 
-		if(block == Blocks.iron_block) {
+		ReactorInteriorData moderatorData = null;
+		Block block = blockState.getBlock();
+
+		if(block == Blocks.IRON_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockIron");
 		}
-		else if(block == Blocks.gold_block) {
+		else if(block == Blocks.GOLD_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockGold");
 		}
-		else if(block == Blocks.diamond_block) {
+		else if(block == Blocks.DIAMOND_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockDiamond");
 		}
-		else if(block == Blocks.emerald_block) {
+		else if(block == Blocks.EMERALD_BLOCK) {
 			moderatorData = ReactorInterior.getBlockData("blockEmerald");
+		}
+		else if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+			moderatorData = RadiationHelper.waterData;
 		}
 		else {
 			// Check the ore dictionary.
-			moderatorData = ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));
+			moderatorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
 		}
 		
 		if(moderatorData == null) {

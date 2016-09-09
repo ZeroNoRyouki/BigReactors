@@ -1,9 +1,11 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.util.EnumChatFormatting;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 		IBeefTooltipControl {
@@ -26,12 +28,18 @@ public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 				tooltip[i+3] = extraTooltip[i];
 			}
 		}
-		tooltip[0] = EnumChatFormatting.AQUA + tooltipTitle;
+		tooltip[0] = TextFormatting.AQUA + tooltipTitle;
 		tooltip[1] = "";
 	}
 
 	@Override
-	protected String getBackgroundTexture() { return "controls/RpmBar.png"; }
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == s_bgTexture)
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/RpmBar.png");
+
+		return s_bgTexture;
+	}
 	
 	@Override
 	public String[] getTooltip() {
@@ -52,4 +60,5 @@ public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 		return Math.min(1f, turbine.getRotorSpeed() / (turbine.getMaxRotorSpeed()*1.1f)); // Give a little extra warning
 	}
 
+	private static ResourceLocation s_bgTexture;
 }

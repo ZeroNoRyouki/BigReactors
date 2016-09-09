@@ -1,138 +1,154 @@
 package erogenousbeef.bigreactors.client.renderer;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.ClientProxy;
-import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorPart;
+import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
+import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
-import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.EnumFacing;
+import org.lwjgl.opengl.GL11;
 
-public class RotorSpecialRenderer extends TileEntitySpecialRenderer {
+public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTurbineRotorBearing> {
 
-	RenderBlocks renderBlocks = new RenderBlocks();
-	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double x, double y,
-			double z, float f) {
-		TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)tileentity;
-		
-		if(bearing == null || !bearing.isConnected()) { return; }
-		
-		MultiblockTurbine turbine = bearing.getTurbine();
-		
-		if(!turbine.isAssembled() || !turbine.getActive() || !turbine.hasGlass()) { return; }
-		
+	public void renderTileEntityAt(final TileEntityTurbineRotorBearing bearing, double x, double y, double z,
+								   float partialTicks, int destroyStage) {
+
+		final MultiblockTurbine turbine = bearing.getTurbine();
+		final RotorInfo rotorInfo = bearing.getRotorInfo();
+
+		if (null == rotorInfo || null == turbine || !turbine.getActive() || !turbine.hasGlass())
+			return;
+
+		float angle = RotorSpecialRenderer.getRotorAngle(bearing, turbine);
+		final int dX = rotorInfo.rotorDirection.getFrontOffsetX();
+		final int dY = rotorInfo.rotorDirection.getFrontOffsetY();
+		final int dZ = rotorInfo.rotorDirection.getFrontOffsetZ();
+		final float rotationOffsetX = 0 == dX ? 0.5f : 0.0f;
+		final float rotationOffsetY = 0 == dY ? 0.5f : 0.0f;
+		final float rotationOffsetZ = 0 == dZ ? 0.5f : 0.0f;
+
 		Integer displayList = bearing.getDisplayList();
-		ForgeDirection rotorDir = bearing.getOutwardsDir().getOpposite();
-		
-		if(displayList == null) {
-			RotorInfo info = bearing.getRotorInfo();
-			displayList = generateRotor(info);
-			bearing.setDisplayList(displayList);
+
+		if (displayList == null) {
+
+			float brightness = bearing.getWorld().getLightBrightness(bearing.getPos().offset(rotorInfo.rotorDirection));
+
+			bearing.setDisplayList(displayList = RotorSpecialRenderer.generateRotor(rotorInfo, brightness));
 		}
-		
+
+		GlStateManager.pushMatrix();
+
+		// translate to the tile entity position
+		x += dX;
+		y += dY;
+		z += dZ;
+		GlStateManager.translate(x, y, z);
+
+		// rotate the rotor from it's center point
+		GlStateManager.translate(rotationOffsetX, rotationOffsetY, rotationOffsetZ);
+		GlStateManager.rotate(angle, dX, dY, dZ);
+		GlStateManager.translate(-rotationOffsetX, -rotationOffsetY, -rotationOffsetZ);
+
+		GlStateManager.callList(displayList);
+
+		GlStateManager.translate(-x, -y, -z);
+		GlStateManager.popMatrix();
+	}
+
+	private static float getRotorAngle(final TileEntityTurbineRotorBearing bearing, final MultiblockTurbine turbine) {
+
+		final long elapsedTime = Minecraft.getSystemTime() - ClientProxy.lastRenderTime;
+		final float speed = turbine.getRotorSpeed() / 10;
 		float angle = bearing.getAngle();
-		long elapsedTime = Minecraft.getSystemTime() - ClientProxy.lastRenderTime;
-		
-		float speed = turbine.getRotorSpeed();
-		if(speed > 0.001f) {
+
+		if (speed > 0.001f) {
+
 			angle += speed * ((float)elapsedTime / 60000f) * 360f; // RPM * time in minutes * 360 degrees per rotation
 			angle = angle % 360f;
 			bearing.setAngle(angle);
 		}
 
-		GL11.glPushMatrix();
-		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glDisable(GL11.GL_LIGHTING);
-
-		bindTexture(net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture);
-
-		GL11.glTranslated(x + rotorDir.offsetX, y + rotorDir.offsetY, z + rotorDir.offsetZ);
-		if(rotorDir.offsetX != 0) {
-			GL11.glTranslated(0, 0.5, 0.5);
-		}
-		else if(rotorDir.offsetY != 0) {
-			GL11.glTranslated(0.5, 0, 0.5);
-		}
-		else if(rotorDir.offsetZ != 0) {
-			GL11.glTranslated(0.5, 0.5, 0);
-		}
-
-		GL11.glRotatef(angle, rotorDir.offsetX, rotorDir.offsetY, rotorDir.offsetZ);
-		GL11.glColor3f(1f, 1f, 1f);
-		GL11.glCallList(displayList);
-
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glPopAttrib();
-		GL11.glPopMatrix();
+		return angle;
 	}
 
-	int generateRotor(RotorInfo rotorInfo) {
-		int list = GLAllocation.generateDisplayLists(1);
-		GL11.glNewList(list,  GL11.GL_COMPILE);
+	private static int generateRotor(RotorInfo info, float brightness) {
 
-		ForgeDirection rotorDir = rotorInfo.rotorDirection;
-		int rotorLen = rotorInfo.rotorLength;
-		CoordTriplet currentRotorCoord = new CoordTriplet(0,0,0);
+		final int list = GLAllocation.generateDisplayLists(1);
 
-		Tessellator tessellator = Tessellator.instance;
-		if(rotorDir.offsetX != 0) {
-			tessellator.setTranslation(0, -0.5, -0.5);
-		}
-		else if(rotorDir.offsetY != 0) {
-			tessellator.setTranslation(-0.5, 0, -0.5);
-		}
-		else {
-			tessellator.setTranslation(-0.5, -0.5, 0);
-		}
+		GlStateManager.glNewList(list, GL11.GL_COMPILE);
+		RotorSpecialRenderer.renderRotor(info, brightness);
+		GlStateManager.glEndList();
 
-		tessellator.startDrawingQuads();
-		tessellator.setBrightness(256);
-		tessellator.setColorOpaque(255, 255, 255);
-		
-		CoordTriplet bladeCoord = new CoordTriplet(0,0,0);
-		int rotorIdx = 0;
-		boolean[] hasBlades = new boolean[4];
-		ForgeDirection[] bladeDirs = StaticUtils.neighborsBySide[rotorInfo.rotorDirection.ordinal()];
-
-		while(rotorIdx < rotorInfo.rotorLength) {
-			
-			for(int i = 0; i < hasBlades.length; i++) {
-				hasBlades[i] = rotorInfo.bladeLengths[rotorIdx][i] > 0;
-			}
-
-			RotorSimpleRenderer.renderRotorShaft(BigReactors.blockTurbineRotorPart, renderBlocks, BlockTurbineRotorPart.METADATA_SHAFT, rotorDir, hasBlades, currentRotorCoord.x, currentRotorCoord.y, currentRotorCoord.z, false);
-			for(int bladeIdx = 0; bladeIdx < bladeDirs.length; bladeIdx++) {
-				bladeCoord.copy(currentRotorCoord);
-				int bladeLen = 0;
-				bladeCoord.translate(bladeDirs[bladeIdx]);
-				while(bladeLen < rotorInfo.bladeLengths[rotorIdx][bladeIdx]) {
-					RotorSimpleRenderer.renderBlade(renderBlocks, bladeCoord.x, bladeCoord.y, bladeCoord.z, BigReactors.blockTurbineRotorPart, BlockTurbineRotorPart.METADATA_BLADE, rotorInfo.rotorDirection);
-					bladeLen++;
-					bladeCoord.translate(bladeDirs[bladeIdx]);
-				}
-			}
-			rotorIdx++;
-			currentRotorCoord.translate(rotorDir);
-		}
-		tessellator.setTranslation(0, 0, 0);
-		tessellator.draw();
-		
-		GL11.glEndList();
 		return list;
 	}
-	
+
+	private static void renderRotor(RotorInfo info, float brightness) {
+
+		final BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+		final IBlockState defaultShaftState = BrBlocks.turbineRotorShaft.getDefaultState();
+		final EnumFacing[] bladeDirections = RotorShaftState.getBladesDirections(info.rotorDirection.getAxis());
+		final int dX = info.rotorDirection.getFrontOffsetX();
+		final int dY = info.rotorDirection.getFrontOffsetY();
+		final int dZ = info.rotorDirection.getFrontOffsetZ();
+
+		RotorBladeState[] currentBladeStates;
+		int[] currentBladeLengths;
+
+		for (int shaftIdx = 0; shaftIdx < info.rotorLength; ++shaftIdx) {
+
+			final IBlockState shaftState = defaultShaftState.withProperty(Properties.ROTORSHAFTSTATE, info.shaftStates[shaftIdx]);
+
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(dX * shaftIdx, dY * shaftIdx, dZ * shaftIdx);
+			GlStateManager.rotate(-90.0f, 0.0f, 1.0f, 0.0f); // cancel out the rotation done in render.renderBlockBrightness
+			renderer.renderBlockBrightness(shaftState, brightness);
+			GlStateManager.popMatrix();
+
+			currentBladeLengths = info.bladeLengths[shaftIdx];
+			currentBladeStates = info.bladeStates[shaftIdx];
+
+			for (int bladeIdx = 0; bladeIdx < bladeDirections.length; ++bladeIdx) {
+
+				final int bladeLength = currentBladeLengths[bladeIdx];
+				final RotorBladeState bladeState = currentBladeStates[bladeIdx];
+
+				if (bladeLength > 0 && null != bladeState)
+					renderRotorBlade2b(bladeDirections[bladeIdx], bladeLength, bladeState, dX * shaftIdx, dY * shaftIdx,
+										dZ * shaftIdx, renderer, brightness);
+			}
+		}
+	}
+
+	private static void renderRotorBlade2b(final EnumFacing bladeDir, final int bladeLength, final RotorBladeState bladeState,
+										   final int shaftOffsetX, final int shaftOffsetY, final int shaftOffsetZ,
+										   final BlockRendererDispatcher renderer, final float brightness) {
+
+		final IBlockState blockState = BrBlocks.turbineRotorBlade.getDefaultState().withProperty(Properties.ROTORBLADESTATE, bladeState);
+		final int dX = bladeDir.getFrontOffsetX();
+		final int dY = bladeDir.getFrontOffsetY();
+		final int dZ = bladeDir.getFrontOffsetZ();
+
+		for (int bladeIdx = 0; bladeIdx < bladeLength; ++bladeIdx) {
+
+			final int offsetX = shaftOffsetX + dX * (bladeIdx + 1);
+			final int offsetY = shaftOffsetY + dY * (bladeIdx + 1);
+			final int offsetZ = shaftOffsetZ + dZ * (bladeIdx + 1);
+
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(offsetX, offsetY, offsetZ);
+			GlStateManager.rotate(-90.0f, 0.0f, 1.0f, 0.0f); // cancel out the rotation done in render.renderBlockBrightness
+			renderer.renderBlockBrightness(blockState, brightness);
+			GlStateManager.popMatrix();
+		}
+	}
 }

@@ -1,12 +1,12 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
-import net.minecraft.nbt.NBTTagCompound;
 import erogenousbeef.bigreactors.api.data.ReactorReaction;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.api.registry.ReactorConversions;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.data.ReactantStack;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Class to help with fuel/waste tracking in reactors.

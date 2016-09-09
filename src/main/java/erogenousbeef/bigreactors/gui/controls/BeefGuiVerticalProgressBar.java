@@ -1,14 +1,13 @@
 package erogenousbeef.bigreactors.gui.controls;
 
+import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
-import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 
 public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 	private final static int controlWidth = 20;
@@ -27,7 +26,7 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 	public BeefGuiVerticalProgressBar(BeefGuiBase container, int x, int y) {
 		super(container, x, y, controlWidth, controlHeight);
 		
-		controlResource = new ResourceLocation(BigReactors.GUI_DIRECTORY + getBackgroundTexture());
+		this.controlResource = null;
 		
 		backgroundLeftU = getBackgroundLeftU();
 		backgroundRightU = getBackgroundRightU();
@@ -35,11 +34,11 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 		gradationRightU = getGradationRightU();
 		
 		barAbsoluteMaxHeight = this.height - 1;
-		
 	}
 	
 	protected boolean drawGradationMarks() { return false; }
-	protected String getBackgroundTexture() { return "controls/FluidTank.png"; }
+
+	protected abstract ResourceLocation getBackgroundTexture();
 
 	protected abstract float getProgress();
 	protected abstract void drawProgressBar(Tessellator tessellator, TextureManager renderEngine, int barMinX, int barMaxX, int barMinY, int barMaxY, int zLevel);
@@ -54,16 +53,22 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 		if(!this.visible) { return; }
 
 		// Draw the background
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+		if (null == this.controlResource)
+			this.controlResource = this.getBackgroundTexture();
+
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vertexBuffer = tessellator.getBuffer();
+
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 		renderEngine.bindTexture(controlResource);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height, 0, backgroundLeftU, 1.0);
-		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height, 0, backgroundRightU, 1.0);
-		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY, 0, backgroundRightU, 0);
-		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 0, backgroundLeftU, 0);
+		vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());
+		vertexBuffer.pos(this.absoluteX, this.absoluteY + this.height, 0).tex(backgroundLeftU, 1.0).endVertex();
+		vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height, 0).tex(backgroundRightU, 1.0).endVertex();
+		vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY, 0).tex(backgroundRightU, 0).endVertex();
+		vertexBuffer.pos(this.absoluteX, this.absoluteY, 0).tex(backgroundLeftU, 0).endVertex();
 		tessellator.draw();
-		
+
 		float progress = getProgress();
 		// Draw the bar itself, on top of the background
 		if(progress > 0.0) {
@@ -77,13 +82,14 @@ public abstract class BeefGuiVerticalProgressBar extends BeefGuiControlBase {
 		}
 		
 		if(drawGradationMarks()) {
-			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+			GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 			renderEngine.bindTexture(controlResource);
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height, 2, gradationLeftU, 1.0);
-			tessellator.addVertexWithUV(this.absoluteX + this.width - 4, this.absoluteY + this.height, 2, gradationRightU, 1.0);
-			tessellator.addVertexWithUV(this.absoluteX + this.width - 4, this.absoluteY, 2, gradationRightU, 0);
-			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 2, gradationLeftU, 0);
+			vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());
+			vertexBuffer.pos(this.absoluteX, this.absoluteY + this.height, 2).tex(gradationLeftU, 1.0).endVertex();
+			vertexBuffer.pos(this.absoluteX + this.width - 4, this.absoluteY + this.height, 2).tex(gradationRightU, 1.0).endVertex();
+			vertexBuffer.pos(this.absoluteX + this.width - 4, this.absoluteY, 2).tex(gradationRightU, 0).endVertex();
+			vertexBuffer.pos(this.absoluteX, this.absoluteY, 2).tex(gradationLeftU, 0).endVertex();
 			tessellator.draw();
 		}
 	}

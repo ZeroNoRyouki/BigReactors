@@ -1,16 +1,16 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.opengl.GL11;
 
 public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements IBeefTooltipControl {
 
@@ -29,7 +29,7 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 	protected float insertion = 0f;
 
 	protected String[] tooltip = {
-			EnumChatFormatting.AQUA + "Control Rod",
+			TextFormatting.AQUA + "Control Rod",
 			"",
 			"Insertion: XX%"
 	};
@@ -37,41 +37,52 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 	public BeefGuiInsertionProgressBar(BeefGuiBase container, int x, int y) {
 		super(container, x, y, controlWidth, controlHeight);
 		
-		controlResource = new ResourceLocation(BigReactors.GUI_DIRECTORY + getBackgroundTexture());
+		controlResource = this.getBackgroundTexture();
 		barAbsoluteMaxHeight = this.height - 1;
 	}
 	
 	public void setInsertion(float insertion) { this.insertion = Math.min(1f, Math.max(0f, insertion)); }
 	
-	protected String getBackgroundTexture() { return "controls/ControlRod.png"; }
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == BeefGuiInsertionProgressBar.s_texture)
+			BeefGuiInsertionProgressBar.s_texture = BigReactors.createGuiResourceLocation("controls/ControlRod.png");
+
+		return BeefGuiInsertionProgressBar.s_texture;
+	}
 	
 	@Override
 	public void drawBackground(TextureManager renderEngine, int mouseX, int mouseY) {
 		if(!this.visible) { return; }
 
 		// Draw the background
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vertexBuffer = tessellator.getBuffer();
+
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+
 		renderEngine.bindTexture(controlResource);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY + this.height, 0, backgroundLeftU, 1.0);
-		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY + this.height, 0, backgroundRightU, 1.0);
-		tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY, 0, backgroundRightU, 0);
-		tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 0, backgroundLeftU, 0);
+		vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());
+		vertexBuffer.pos(this.absoluteX, this.absoluteY + this.height, 0).tex(backgroundLeftU, 1.0).endVertex();
+		vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY + this.height, 0).tex(backgroundRightU, 1.0).endVertex();
+		vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY, 0).tex(backgroundRightU, 0).endVertex();
+		vertexBuffer.pos(this.absoluteX, this.absoluteY, 0).tex(backgroundLeftU, 0).endVertex();
 		tessellator.draw();
 		
 		// Draw the rod itself, on top of the background
+
 		if(insertion > 0f) {
 			int barHeight = Math.max(1, (int)Math.floor(insertion * barAbsoluteMaxHeight));
 			int rodMaxY = this.absoluteY + barHeight;
 			
-			float rodTopV = 1f - insertion; // TODO
-			
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(this.absoluteX, rodMaxY, 2, rodLeftU, 1f);
-			tessellator.addVertexWithUV(this.absoluteX + this.width, rodMaxY, 2, rodRightU, 1f);
-			tessellator.addVertexWithUV(this.absoluteX + this.width, this.absoluteY, 2, rodRightU, rodTopV);
-			tessellator.addVertexWithUV(this.absoluteX, this.absoluteY, 2, rodLeftU, rodTopV);
+			float rodTopV = 1f - insertion;
+
+			vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());
+			vertexBuffer.pos(this.absoluteX, rodMaxY, 2).tex(rodLeftU, 1f).endVertex();
+			vertexBuffer.pos(this.absoluteX + this.width, rodMaxY, 2).tex(rodRightU, 1f).endVertex();
+			vertexBuffer.pos(this.absoluteX + this.width, this.absoluteY, 2).tex(rodRightU, rodTopV).endVertex();
+			vertexBuffer.pos(this.absoluteX, this.absoluteY, 2).tex(rodLeftU, rodTopV).endVertex();
 			tessellator.draw();
 		}
 	}
@@ -86,5 +97,7 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 		tooltip[2] = String.format("Insertion: %.0f%%", this.insertion*100f);
 		return tooltip;
 	}
+
+	private static ResourceLocation s_texture;
 
 }

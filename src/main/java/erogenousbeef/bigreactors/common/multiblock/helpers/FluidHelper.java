@@ -1,12 +1,17 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
+import erogenousbeef.bigreactors.common.multiblock.interfaces.IConditionalUpdater;
+import it.zerono.mods.zerocore.lib.IDebugMessages;
+import it.zerono.mods.zerocore.lib.IDebuggable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.IConditionalUpdater;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 
-public abstract class FluidHelper implements IConditionalUpdater {
+public abstract class FluidHelper implements IConditionalUpdater, IDebuggable {
 
 	private FluidStack[] fluids;
 	private int capacity;
@@ -161,7 +166,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 	protected boolean canAddToStack(int idx, Fluid incoming) {
 		if(idx < 0 || idx >= fluids.length || incoming == null) { return false; }
 		else if(fluids[idx] == null) { return isFluidValidForStack(idx, incoming); }
-		return fluids[idx].getFluid().getID() == incoming.getID();
+		return fluids[idx].getFluid() == incoming;
 	}
 	
 	protected boolean canAddToStack(int idx, FluidStack incoming) {
@@ -190,7 +195,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 	protected int drainFluidFromStack(int idx, Fluid fluid, int amount) {
 		if(fluids[idx] == null) { return 0; }
 		
-		if(fluids[idx].getFluid().getID() != fluid.getID()) { return 0; }
+		if(fluids[idx].getFluid() != fluid) { return 0; }
 
 		return drainFluidFromStack(idx, amount);
 	}
@@ -300,7 +305,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 		if(resource == null || resource.amount <= 0 || idx < 0 || idx >= fluids.length) { return null; }
 		
 		Fluid existingFluid = getFluidType(idx);
-		if(existingFluid == null || existingFluid.getID() != resource.getFluid().getID()) { return null; }
+		if(existingFluid == null || existingFluid != resource.getFluid()) { return null; }
 		
 		FluidStack drained = resource.copy();
 		if(!doDrain) {
@@ -339,7 +344,7 @@ public abstract class FluidHelper implements IConditionalUpdater {
 
 		if(fluids[idx] == null) { return false; }
 		
-		return fluids[idx].getFluid().getID() == fluid.getID();
+		return fluids[idx].getFluid() == fluid;
 	}
 	
 	private static FluidTankInfo[] emptyTankArray = new FluidTankInfo[0];
@@ -365,22 +370,45 @@ public abstract class FluidHelper implements IConditionalUpdater {
 
 		return info;
 	}
-	
-	public String getDebugInfo() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Capacity (per): ").append(Integer.toString(getCapacity()));
-		String[] tankNames = getNBTTankNames();
-		for(int i = 0; i < fluids.length; i++) {
-			sb.append("[").append(Integer.toString(i)).append("] ").append(tankNames[i]).append(": ");
-			if(fluids[i] == null) {
-				sb.append("NULL");
-			}
-			else {
-				FluidStack stack = fluids[i];
-				sb.append(stack.getFluid().getName()).append(", ").append(Integer.toString(stack.amount)).append(" mB");
-			}
-			sb.append("\n");
+
+	public IFluidTankProperties[] getTankProperties(int idx) {
+
+		if (idx >= this.fluids.length)
+			return EmptyFluidHandler.EMPTY_TANK_PROPERTIES_ARRAY;
+
+		IFluidTankProperties[] properties;
+		final int capacity = this.getCapacity();
+
+		if (idx < 0) {
+
+			// All tanks
+			properties = new IFluidTankProperties[this.fluids.length];
+
+			for (int i = 0; i < this.fluids.length; i++)
+				properties[i] = new FluidTankProperties(this.fluids[i] == null ? null : this.fluids[i].copy(), capacity);
+
+		} else {
+
+			properties = new IFluidTankProperties[1];
+			properties[0] = new FluidTankProperties(this.fluids[idx] == null ? null : this.fluids[idx].copy(), capacity);
 		}
-		return sb.toString();
+
+		return properties;
+	}
+
+	@Override
+	public void getDebugMessages(IDebugMessages messages) {
+
+		final String[] tankNames = this.getNBTTankNames();
+
+		messages.add("debug.bigreactors.fluidhelper.capacity", this.getCapacity());
+
+		for (int i = 0; i < this.fluids.length; i++) {
+
+			final FluidStack stack = fluids[i];
+
+			messages.add("debug.bigreactors.fluidhelper.tank", Integer.toString(i), tankNames[i],
+					null == stack ? "?" : stack.getFluid().getName(), null == stack ? 0 : stack.amount);
+		}
 	}
 }

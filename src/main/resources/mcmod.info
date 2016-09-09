@@ -1,18 +1,21 @@
 [
 {
-  "modid": "BigReactors",
-  "name": "Big Reactors",
-  "description": "Adds large, multiblock power generation machines to Minecraft. Compatible with Redstone Flux (RF) power.",
+  "modid": "bigreactors",
+  "name": "Extreme Reactors",
+  "description": "Adds large, multiblock power generation machines to Minecraft. Compatible with Redstone Flux (RF) and Tesla power. This is a port of the 1.7.10 mod Big Reactors from ErogenousBeef",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "http://www.big-reactors.com",
+  "url": "http://zerono.it/extreme-reactors",
   "updateUrl": "",
-  "authorList": ["ErogenousBeef"],
+  "authorList": ["ErogenousBeef", "ZeroNoRyouki", "ABookFreak"],
   "credits": "powercrystals, skyboy, King_Lemming, & Calclavia for example code",
   "logoFile": "",
   "screenshots": [],
+  "requiredMods": [
+	"Forge", "zerocore"
+  ],
   "dependencies": [
-	"MinecraftForge", "CoFHCore"
-  ]
+  	"Forge", "zerocore"
+    ]
 }
 ]

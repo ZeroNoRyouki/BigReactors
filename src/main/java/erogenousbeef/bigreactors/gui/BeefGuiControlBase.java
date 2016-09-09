@@ -1,11 +1,10 @@
 package erogenousbeef.bigreactors.gui;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-
-import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import org.lwjgl.opengl.GL11;
 
 public abstract class BeefGuiControlBase implements IBeefGuiControl {
 
@@ -77,31 +76,41 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
 			yMax = temp;
 		}
 
-		Tessellator tessellator = Tessellator.instance;
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glColor4f(r, g, b, a);
-		tessellator.startDrawingQuads();
-		tessellator.addVertex(xMin, yMax, 0.0D);
-		tessellator.addVertex(xMax, yMax, 0.0D);
-		tessellator.addVertex(xMax, yMin, 0.0D);
-		tessellator.addVertex(xMin, yMin, 0.0D);
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vertexBuffer = tessellator.getBuffer();
+
+		GlStateManager.enableBlend();
+		GlStateManager.disableTexture2D();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.color(r, g, b, a);
+
+		vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());
+
+		vertexBuffer.pos(xMin, yMax, 0.0D).endVertex();
+		vertexBuffer.pos(xMax, yMax, 0.0D).endVertex();
+		vertexBuffer.pos(xMax, yMin, 0.0D).endVertex();
+		vertexBuffer.pos(xMin, yMin, 0.0D).endVertex();
+
 		tessellator.draw();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
+
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
 	}
-	
-    protected static void drawTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height)
-    {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + height), 0.0D, (double)icon.getMinU(), (double)icon.getMaxV());
-        tessellator.addVertexWithUV((double)(x + width), (double)(y + height), 0.0D, (double)icon.getMaxU(), (double)icon.getMaxV());
-        tessellator.addVertexWithUV((double)(x + width), (double)(y + 0), 0.0D, (double)icon.getMaxU(), (double)icon.getMinV());
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), 0.0D, (double)icon.getMinU(), (double)icon.getMinV());
-        tessellator.draw();
-    }
+	/*
+	protected static void drawTexturedModelRectFromIcon(int x, int y, TextureAtlasSprite texture, int width, int height) {
+
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vertexbuffer = tessellator.getBuffer();
+
+		vertexbuffer.begin(GL11.GL_QUADS, vertexbuffer.getVertexFormat());
+
+		vertexbuffer.pos(x, y + height, 0.0D).tex(texture.getMinU(), texture.getMaxV()).endVertex();
+		vertexbuffer.pos(x + width, y + height, 0.0D).tex(texture.getMaxU(), texture.getMaxV()).endVertex();
+		vertexbuffer.pos(x + width, y, 0.0D).tex(texture.getMaxU(), texture.getMinV()).endVertex();
+		vertexbuffer.pos(x, y, 0.0D).tex(texture.getMinU(), texture.getMinV()).endVertex();
+
+		tessellator.draw();
+    }*/
 	
     public boolean isVisible() { return visible; }
 }

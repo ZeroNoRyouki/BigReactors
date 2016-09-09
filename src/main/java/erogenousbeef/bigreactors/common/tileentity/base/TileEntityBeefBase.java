@@ -1,29 +1,27 @@
 package erogenousbeef.bigreactors.common.tileentity.base;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.core.block.TileCoFHBase;
-import cofh.lib.util.helpers.BlockHelper;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import erogenousbeef.bigreactors.common.interfaces.IBeefReconfigurableSides;
 import erogenousbeef.bigreactors.common.interfaces.IWrenchable;
 import erogenousbeef.bigreactors.gui.IBeefGuiEntity;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateExposureMessage;
-import erogenousbeef.bigreactors.net.message.DeviceUpdateMessage;
 import erogenousbeef.bigreactors.net.message.DeviceUpdateRotationMessage;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import zero.temp.BlockHelper;
 
-public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGuiEntity, IBeefReconfigurableSides, IReconfigurableFacing, IWrenchable {
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefGuiEntity, IBeefReconfigurableSides,
+		IReconfigurableFacing, IWrenchable, ITickable {
 	private Set<EntityPlayer> updatePlayers;
 	private int ticksSinceLastUpdate;
 	private static final int ticksBetweenUpdates = 3;
@@ -31,13 +29,13 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 	protected static final int SIDE_UNEXPOSED = -1;
 	protected static final int[] kEmptyIntArray = new int[0];
 
-	protected int facing;	// Tile rotation
+	protected EnumFacing facing;	// Tile rotation
 	int[] exposures; // Inventory/Fluid tank exposure
 
 	public TileEntityBeefBase() {
 		super();
 
-		facing = ForgeDirection.NORTH.ordinal();
+		facing = EnumFacing.NORTH;
 
 		exposures = new int[6];
 		for(int i = 0; i < exposures.length; i++) {
@@ -50,19 +48,22 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 
 	// IReconfigurableFacing
 	@Override
-	public int getFacing() { return facing; }
+	public int getFacing() { return facing.getIndex(); }
 
 	@Override
-	public boolean setFacing(int newFacing) {
+	public boolean setFacing(EnumFacing newFacing) {
 		if(facing == newFacing) { return false; }
 
-		if(!allowYAxisFacing() && (newFacing == ForgeDirection.UP.ordinal() || newFacing == ForgeDirection.DOWN.ordinal())) {
+		if(!allowYAxisFacing() && (newFacing == EnumFacing.UP || newFacing == EnumFacing.DOWN)) {
 			return false;
 		}
 		
 		facing = newFacing;
 		if(!worldObj.isRemote) {
-            CommonPacketHandler.INSTANCE.sendToAllAround(new DeviceUpdateRotationMessage(xCoord, yCoord, zCoord, facing), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			BlockPos position = this.getPos();
+            CommonPacketHandler.INSTANCE.sendToAllAround(new DeviceUpdateRotationMessage(this.getPos(), facing),
+					new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(),
+							position.getX(), position.getY(), position.getZ(), 50));
             this.markChunkDirty();
 		}
 
@@ -70,70 +71,56 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 		return true;
 	}
 	
-	public int getRotatedSide(int side) {
-		return BlockHelper.ICON_ROTATION_MAP[facing][side];
+	public int getRotatedSide(EnumFacing side) {
+		return BlockHelper.ICON_ROTATION_MAP[facing.getIndex()][side.getIndex()];
 	}
 	
 	@Override
 	public boolean rotateBlock() {
-		return setFacing(BlockHelper.SIDE_LEFT[facing]);
+		return setFacing(EnumFacing.VALUES[BlockHelper.SIDE_LEFT[facing.getIndex()]]);
 	}
 	
 	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
+	public boolean onWrench(EntityPlayer player, EnumFacing hitSide) {
 		return rotateBlock();
 	}
 	
 	@Override
 	public boolean allowYAxisFacing() { return false; }
 
-	// Save/Load
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
 		// Rotation
-		if(tag.hasKey("facing")) {
-			facing = Math.max(0, Math.min(5, tag.getInteger("facing")));
+
+		int newFacing;
+
+		if(data.hasKey("facing")) {
+			newFacing = Math.max(0, Math.min(5, data.getInteger("facing")));
 		}
 		else {
-			facing = 2;
+			newFacing = 2;
 		}
 
+		this.facing = EnumFacing.VALUES[newFacing];
+
 		// Exposure settings
-		if(tag.hasKey("exposures")) {
-			int[] tagExposures = tag.getIntArray("exposures");
+		if(data.hasKey("exposures")) {
+			int[] tagExposures = data.getIntArray("exposures");
 			assert(tagExposures.length == exposures.length);
 			System.arraycopy(tagExposures, 0, exposures, 0, exposures.length);
 		}
 	}
-	
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		
-		tag.setInteger("facing", facing);
-		tag.setIntArray("exposures", exposures);
-	}
 
-	// Network Communication
 	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		this.writeToNBT(tagCompound);
-		
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tagCompound);
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		data.setInteger("facing", facing.getIndex());
+		data.setIntArray("exposures", exposures);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager network, S35PacketUpdateTileEntity packet) {
-		this.readFromNBT(packet.func_148857_g());
-	}
-	
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
 		
 		if(!this.worldObj.isRemote && this.updatePlayers.size() > 0) {
 			ticksSinceLastUpdate++;
@@ -158,33 +145,36 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 	public void stopUpdatingPlayer(EntityPlayer player) {
 		updatePlayers.remove(player);
 	}
-	
+
+	/* TODO commented out to make this compile
 	protected IMessage getUpdatePacket() {
 		NBTTagCompound childData = new NBTTagCompound();
 		onSendUpdate(childData);
 		
-		return new DeviceUpdateMessage(xCoord, yCoord, zCoord, childData);
+		return new DeviceUpdateMessage(this.getPos(), childData);
 	}
-	
+	*/
+
 	private void sendUpdatePacketToClient(EntityPlayer recipient) {
 		if(this.worldObj.isRemote) { return; }
-
+		/* TODO commented out to make this compile
         CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)recipient);
-		
+		*/
 	}
 	
 	private void sendUpdatePacket() {
 		if(this.worldObj.isRemote) { return; }
 		if(this.updatePlayers.size() <= 0) { return; }
-
+		/* TODO commented out to make this compile
 		for(EntityPlayer player : updatePlayers) {
             CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)player);
 		}
+		*/
 	}
 	
 	// Side Exposure Helpers
 	@Override
-	public boolean setSide(int side, int config) {
+	public boolean setSide(EnumFacing side, int config) {
 		int rotatedSide = this.getRotatedSide(side);
 
 		int numConfig = getNumConfig(side);
@@ -200,7 +190,7 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 	 * @param worldSide The world side whose exposure you wish to get.
 	 * @return The current exposure setting for the world side.
 	 */
-	protected int getExposure(int worldSide) {
+	protected int getExposure(EnumFacing worldSide) {
 		return exposures[getRotatedSide(worldSide)];
 	}
 	
@@ -215,16 +205,16 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 	}
 	
 	@Override
-	public boolean incrSide(int side) {
+	public boolean incrSide(EnumFacing side) {
 		return changeSide(side, 1);
 	}
 	
 	@Override
-	public boolean decrSide(int side) {
+	public boolean decrSide(EnumFacing side) {
 		return changeSide(side, -1);
 	}
 	
-	private boolean changeSide(int side, int amount) {
+	private boolean changeSide(EnumFacing side, int amount) {
 		int rotatedSide = this.getRotatedSide(side);
 		
 		int numConfig = getNumConfig(side);
@@ -257,12 +247,15 @@ public abstract class TileEntityBeefBase extends TileCoFHBase implements IBeefGu
 	private void sendExposureUpdate() {
 		if(!this.worldObj.isRemote) {
 			// Send unrotated, as the rotation will be re-applied on the client
-            CommonPacketHandler.INSTANCE.sendToAllAround(new DeviceUpdateExposureMessage(xCoord, yCoord, zCoord, exposures), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			BlockPos position = this.getPos();
+            CommonPacketHandler.INSTANCE.sendToAllAround(new DeviceUpdateExposureMessage(this.getPos(), exposures),
+					new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(),
+							position.getX(), position.getY(), position.getZ(), 50));
             this.markChunkDirty();
 		}
 		else {
 			// Re-render block on client
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		}
 
 		this.callNeighborTileChange();

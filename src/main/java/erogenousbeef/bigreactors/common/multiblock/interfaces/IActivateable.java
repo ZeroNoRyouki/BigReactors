@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.interfaces;
 
-import erogenousbeef.core.common.CoordTriplet;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Implement this on tile entities which can be activated
@@ -12,7 +12,7 @@ public interface IActivateable {
 	 * @return The coordinate at which your entities resides,
 	 * or the reference coordinate of your multiblock.
 	 */
-	public CoordTriplet getReferenceCoord();
+	public BlockPos getReferenceCoord();
 	
 	/**
 	 * @return True if your entity is active

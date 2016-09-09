@@ -1,43 +1,55 @@
 package erogenousbeef.bigreactors.net.message.base;
 
-import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPartBase;
-import erogenousbeef.core.common.CoordTriplet;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public abstract class ReactorMessageClient extends WorldMessageClient {
-	protected MultiblockReactor reactor;
-	
-	protected ReactorMessageClient() { super(); reactor = null; }
-	protected ReactorMessageClient(MultiblockReactor reactor, CoordTriplet referenceCoord) {
-		super(referenceCoord.x, referenceCoord.y, referenceCoord.z);
-		this.reactor = reactor;
+public abstract class ReactorMessageClient extends ModTileEntityMessage {
+
+	protected final MultiblockReactor REACTOR;
+
+	protected ReactorMessageClient() {
+		this.REACTOR = null;
 	}
+
 	protected ReactorMessageClient(MultiblockReactor reactor) {
-		this(reactor, reactor.getReferenceCoord());
+
+		super(reactor.getReferenceCoord());
+		this.REACTOR = reactor;
 	}
-	
-	public static abstract class Handler<M extends ReactorMessageClient> extends WorldMessageClient.Handler<M> {
-		protected abstract IMessage handleMessage(M message, MessageContext ctx, MultiblockReactor reactor);
+
+	public static abstract class Handler<MessageT extends ReactorMessageClient> extends ModTileEntityMessageHandlerClient<MessageT> {
 
 		@Override
-		protected IMessage handleMessage(M message, MessageContext ctx, TileEntity te) {
-			if(te instanceof TileEntityReactorPartBase) {
-				MultiblockReactor reactor = ((TileEntityReactorPartBase)te).getReactorController();
-				if(reactor != null) {
-					return handleMessage(message, ctx, reactor);
+		protected void processTileEntityMessage(MessageT message, MessageContext ctx, TileEntity tileEntity) {
+
+			BlockPos position = null != tileEntity ? tileEntity.getPos() : null;
+
+			if (tileEntity instanceof TileEntityReactorPartBase) {
+
+				MultiblockReactor reactor = ((TileEntityReactorPartBase)tileEntity).getReactorController();
+
+				if (null != reactor) {
+
+					this.processReactorMessage(message, ctx, reactor);
+
+				} else {
+
+					BRLog.error("Received ReactorMessageClient for a reactor part @ %d, %d, %d which has no attached reactor",
+							position.getX(), position.getY(), position.getZ());
 				}
-				else {
-					BRLog.error("Received ReactorMessageClient for a reactor part @ %d, %d, %d which has no attached reactor", te.xCoord, te.yCoord, te.zCoord);
-				}
+			} else if (null != position) {
+
+				BRLog.error("Received ReactorMessageClient for a non-reactor-part block @ %d, %d, %d",
+						position.getX(), position.getY(), position.getZ());
 			}
-			else {
-				BRLog.error("Received ReactorMessageClient for a non-reactor-part block @ %d, %d, %d", message.x, message.y, message.z);
-			}
-			return null;
 		}
+
+		protected abstract void processReactorMessage(final MessageT message, final MessageContext ctx, final MultiblockReactor reactor);
 	}
 }

@@ -1,26 +1,25 @@
 package erogenousbeef.bigreactors.common.tileentity;
 
-import java.util.ArrayList;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import cofh.core.util.oredict.OreDictionaryArbiter;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.client.gui.GuiCyaniteReprocessor;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityPoweredInventoryFluid;
 import erogenousbeef.bigreactors.gui.container.ContainerCyaniteReprocessor;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
 
 public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFluid {
 
@@ -46,10 +45,13 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 		return NUM_SLOTS;
 	}
 
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
 	public String getInventoryName() {
 		return "Cyanite Reprocessor";
 	}
+	*/
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
@@ -110,7 +112,8 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 		}
 		else {
 			// TODO: Make this query the input for the right type of output to create.
-			ArrayList<ItemStack> candidates = OreDictionaryArbiter.getOres("ingotBlutonium");
+			// TODO Commented temporarily to allow this thing to compile...
+			ArrayList<ItemStack> candidates = null;// OreDictionaryArbiter.getOres("ingotBlutonium");
 			if(candidates == null || candidates.isEmpty()) {
 				// WTF?
 				return;
@@ -146,7 +149,7 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	@Override
 	protected boolean isFluidValidForTank(int tankIdx, FluidStack type) {
 		if(type == null) { return false; }
-		return type.getFluid().getID() == FluidRegistry.getFluid("water").getID();
+		return type.getFluid() == FluidRegistry.WATER;
 	}
 	
 	/// BeefGUI
@@ -163,13 +166,15 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	
 	@Override
 	protected int getDefaultTankForFluid(Fluid fluid) {
-		if(fluid.getName() == "water")
+		if(FluidRegistry.WATER == fluid)
 			return 0;
 		else
 			return FLUIDTANK_NONE;
 	}
 	
 	// IReconfigurableSides & IBeefReconfigurableSides
+	//TODO textures
+	/*
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconForSide(int side) {
 		if(side == facing) {
@@ -190,9 +195,10 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 			return ClientProxy.CommonBlockIcons.getIcon(ClientProxy.CommonBlockIcons.DEFAULT);
 		}
 	}
+	*/
 	
 	@Override
-	public int getNumConfig(int side) {
+	public int getNumConfig(EnumFacing side) {
 		if(facing == side) {
 			return 0;
 		}
@@ -203,16 +209,72 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 
 	@Override
 	public int getExposedTankFromSide(int side) {
-		int exposure = getExposure(side);
+		int exposure = getExposure(EnumFacing.VALUES[side]);
 		if(exposure == 2) { return FLUIDTANK_WATER; }
 		return FLUIDTANK_NONE;
 	}
 
 	@Override
 	protected int getExposedInventorySlotFromSide(int side) {
-		int exposure = getExposure(side);
+		int exposure = getExposure(EnumFacing.VALUES[side]);
 		if(exposure == 0) { return SLOT_INLET; }
 		if(exposure == 1) { return SLOT_OUTLET; }
 		return SLOT_NONE;
 	}
+
+
+	// TODO fake imp! (start)
+
+	@Override
+	public Object getIconForSide(int referenceSide) {
+		return null;
+	}
+
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		return new int[0];
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		return null;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
+	}
+
+
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
+	}
+
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+	}
+
+	// fake imp (end)
 }

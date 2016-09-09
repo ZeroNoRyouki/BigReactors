@@ -7,8 +7,9 @@ public class ReactantData {
 	public enum ReactantType {
 		Fuel,
 		Waste,
-	};
-	public static final ReactantType[] s_Types = ReactantType.values();
+	}
+
+	public static final ReactantType[] TYPES = ReactantType.values();
 	
 	private String name;
 	private ReactantType type;
@@ -23,7 +24,6 @@ public class ReactantData {
 	 * Waste will by Cyanite Cyan and fuel will be Yellorium Yellow.
 	 * @param name The name of this reactant. Must be unique.
 	 * @param type The type of this reactant. Fuel/Waste.
-	 * @param color The color to use when rendering fuel rods with this reactant in it.
 	 */
 	public ReactantData(String name, ReactantType type) {
 		this.name = name;

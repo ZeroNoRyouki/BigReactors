@@ -1,10 +1,10 @@
 package erogenousbeef.bigreactors.api.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import erogenousbeef.bigreactors.api.data.ReactorReaction;
 import erogenousbeef.bigreactors.common.BRLog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReactorConversions {
 
@@ -13,7 +13,7 @@ public class ReactorConversions {
 	
 	public static void register(String sourceName, String productName) {
 		if(_reactions.containsKey(sourceName)) {
-			BRLog.warning("Overwriting %s => %s reaction mapping! Someone may be fiddling with Big Reactors game data!", sourceName, productName);
+			BRLog.warning("Overwriting %s => %s reaction mapping! Someone may be fiddling with Extreme Reactors game data!", sourceName, productName);
 		}
 		
 		ReactorReaction mapping = new ReactorReaction(sourceName, productName);
@@ -22,7 +22,7 @@ public class ReactorConversions {
 	
 	public static void register(String sourceName, String productName, float reactivity, float fissionRate) {
 		if(_reactions.containsKey(sourceName)) {
-			BRLog.warning("Overwriting %s => %s reaction mapping! Someone may be fiddling with Big Reactors game data!", sourceName, productName);
+			BRLog.warning("Overwriting %s => %s reaction mapping! Someone may be fiddling with Extreme Reactors game data!", sourceName, productName);
 		}
 		
 		ReactorReaction mapping = new ReactorReaction(sourceName, productName, reactivity, fissionRate);

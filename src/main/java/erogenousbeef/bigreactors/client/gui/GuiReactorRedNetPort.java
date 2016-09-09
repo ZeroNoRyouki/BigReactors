@@ -1,3 +1,5 @@
+// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+/*
 package erogenousbeef.bigreactors.client.gui;
 
 import java.util.Arrays;
@@ -22,7 +24,7 @@ import erogenousbeef.bigreactors.gui.controls.grab.RedNetConfigGrabbable;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
 import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
-import erogenousbeef.core.common.CoordTriplet;
+import net.minecraft.util.math.BlockPos;
 
 public class GuiReactorRedNetPort extends BeefGuiBase {
 
@@ -47,21 +49,11 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 			"LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"
 	};
 	
-	public static final String[] grabbableTooltips = {
-		"Input: Toggle reactor on/off",
-		"Input: Change control rod insertion",
-		"Input: Eject Waste",
-		"Output: Fuel Temp (C)",
-		"Output: Casing Temp (C)",
-		"Output: Fuel mix (% fuel, 0-100)",
-		"Output: Fuel amount",
-		"Output: Waste amount",
-		"Output: Energy amount (%)"
-	};
+
 	
 	BeefGuiRedNetChannelSelector[] channelSelectors = new BeefGuiRedNetChannelSelector[numChannels];
 	RedNetConfigGrabTarget[] grabTargets = new RedNetConfigGrabTarget[numChannels];
-	private CoordTriplet[] subSettingCoords = new CoordTriplet[numChannels];
+	private BlockPos[] subSettingCoords = new BlockPos[numChannels];
 	private boolean[] pulseActivated = new boolean[numChannels];
 	
 	private int selectedChannel = 0;
@@ -303,12 +295,12 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		updateSubSettingValueText();
 	}
 	
-	private String getControlRodLabelFromLocation(CircuitType circuitType, CoordTriplet location) {
+	private String getControlRodLabelFromLocation(CircuitType circuitType, BlockPos location) {
 		if(location == null) {
 			return "-- ALL --";
 		}
 		else {
-			TileEntity te = port.getWorldObj().getTileEntity(location.x, location.y, location.z);
+			TileEntity te = port.getWorld().getTileEntity(location);
 			if( te instanceof TileEntityReactorControlRod ) {
 				TileEntityReactorControlRod rod = (TileEntityReactorControlRod)te;
 				if( rod.getName().equals("")) {
@@ -329,7 +321,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 
 		if( CircuitType.hasCoordinate(circuitType) ) {
 			// Select a new control rod
-			CoordTriplet[] controlRodLocations = port.getReactorController().getControlRodLocations();
+			BlockPos[] controlRodLocations = port.getReactorController().getControlRodLocations();
 			int newIdx = 0;
 			// Locate current idx; will be -1 if not found, which is expected.
 			int oldIdx = Arrays.asList(controlRodLocations).indexOf( subSettingCoords[selectedChannel] );
@@ -379,3 +371,4 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		}
 	}
 }
+*/

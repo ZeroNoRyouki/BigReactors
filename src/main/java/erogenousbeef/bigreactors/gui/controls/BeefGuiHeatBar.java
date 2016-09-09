@@ -1,7 +1,9 @@
 package erogenousbeef.bigreactors.gui.controls;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.util.ResourceLocation;
 
 public class BeefGuiHeatBar extends BeefGuiTextureProgressBar implements
 		IBeefTooltipControl {
@@ -36,7 +38,13 @@ public class BeefGuiHeatBar extends BeefGuiTextureProgressBar implements
 	}
 	
 	@Override
-	protected String getBackgroundTexture() { return "controls/HeatBar.png"; }
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == s_bgTexture)
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/HeatBar.png");
+
+		return s_bgTexture;
+	}
 	
 	@Override
 	protected float getProgress() {
@@ -47,4 +55,6 @@ public class BeefGuiHeatBar extends BeefGuiTextureProgressBar implements
 	public String[] getTooltip() {
 		return tooltip;
 	}
+
+	private static ResourceLocation s_bgTexture;
 }

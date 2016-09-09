@@ -1,7 +1,7 @@
 package erogenousbeef.bigreactors.common.data;
 
-import net.minecraftforge.fluids.Fluid;
 import erogenousbeef.bigreactors.api.IReactorFuel;
+import net.minecraftforge.fluids.Fluid;
 
 public class ReactorFuel implements IReactorFuel {
 	protected Fluid referenceFluid;
@@ -25,12 +25,12 @@ public class ReactorFuel implements IReactorFuel {
 
 	@Override
 	public boolean isFuelEqual(IReactorFuel otherFuel) {
-		return referenceFluid.getID() == otherFuel.getReferenceFluid().getID();
+		return referenceFluid == otherFuel.getReferenceFluid();
 	}
 
 	@Override
 	public boolean isFuelEqual(Fluid fluid) {
-		return referenceFluid.getID() == fluid.getID();
+		return referenceFluid == fluid;
 	}
 
 	@Override

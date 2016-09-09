@@ -1,13 +1,5 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.input.Keyboard;
-
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
@@ -18,6 +10,12 @@ import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodChangeInsertionMessage;
 import erogenousbeef.bigreactors.net.message.ControlRodChangeNameMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.input.Keyboard;
 
 public class GuiReactorControlRod extends BeefGuiBase {
 
@@ -36,17 +34,21 @@ public class GuiReactorControlRod extends BeefGuiBase {
 	BeefGuiInsertionProgressBar insertionBar;
 	
     private GuiTextField rodName;
-
+	private static ResourceLocation s_backGround;
 	
 	public GuiReactorControlRod(Container c, TileEntityReactorControlRod controlRod) {
 		super(c);
 		
 		entity = controlRod;
 	}
-	
+
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation (BigReactors.GUI_DIRECTORY + "BasicBackground.png");
+
+		if (null == GuiReactorControlRod.s_backGround)
+			GuiReactorControlRod.s_backGround = BigReactors.createResourceLocation("textures/gui/BasicBackground.png");
+
+		return GuiReactorControlRod.s_backGround;
 	}
 
 	@Override
@@ -63,7 +65,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 		
 		rodNameLabel = new BeefGuiLabel(this, "Name:", leftX, topY + 6);
 		
-		rodName = new GuiTextField(fontRendererObj, leftX + 4 + rodNameLabel.getWidth(), topY, 100, 20);
+		rodName = new GuiTextField(1, fontRendererObj, leftX + 4 + rodNameLabel.getWidth(), topY, 100, 20);
 		rodName.setCanLoseFocus(true);
 		rodName.setMaxStringLength(32);
 		rodName.setText(entity.getName());
@@ -73,15 +75,15 @@ public class GuiReactorControlRod extends BeefGuiBase {
 		setNameBtn.enabled = false;
 		topY += 28;
 		
-		rodInsertIcon = new BeefGuiIcon(this, leftX+42, topY, 16, 16, ClientProxy.GuiIcons.getIcon("controlRod"), new String[] { EnumChatFormatting.AQUA + "Rod Insertion", "", "Change the control rod's insertion.", "Higher insertion slows reaction rate.", "", "Lower reaction rates reduce heat,", "energy, radiation output, and", "fuel consumption." });
+		rodInsertIcon = new BeefGuiIcon(this, leftX+42, topY, 16, 16, ClientProxy.GuiIcons.getIcon("controlRod"), new String[] { TextFormatting.AQUA + "Rod Insertion", "", "Change the control rod's insertion.", "Higher insertion slows reaction rate.", "", "Lower reaction rates reduce heat,", "energy, radiation output, and", "fuel consumption." });
 		insertionLabel = new BeefGuiLabel(this, "", leftX+62, topY+5);
 		topY += 20;
 		insertionBar = new BeefGuiInsertionProgressBar(this, leftX+40, topY);
 
 		topY += 12;
-		rodRetractBtn = new GuiIconButton(0, leftX+70, topY, 20, 20, ClientProxy.GuiIcons.getIcon("upArrow"), new String[] { EnumChatFormatting.AQUA + "Insert Rod", "Increase insertion by 10.", "", "Shift: +100", "Alt: +5", "Shift+Alt: +1", "", "Ctrl: Change ALL Rods" });
+		rodRetractBtn = new GuiIconButton(0, leftX+70, topY, 20, 20, ClientProxy.GuiIcons.getIcon("upArrow"), new String[] { TextFormatting.AQUA + "Insert Rod", "Increase insertion by 10.", "", "Shift: +100", "Alt: +5", "Shift+Alt: +1", "", "Ctrl: Change ALL Rods" });
 		topY += 20;
-		rodInsertBtn = new GuiIconButton(1, leftX+70, topY, 20, 20, ClientProxy.GuiIcons.getIcon("downArrow"), new String[] { EnumChatFormatting.AQUA + "Retract Rod", "Reduce insertion by 10.", "", "Shift: -100", "Alt: -5", "Shift+Alt: -1", "", "Ctrl: Change ALL Rods" });
+		rodInsertBtn = new GuiIconButton(1, leftX+70, topY, 20, 20, ClientProxy.GuiIcons.getIcon("downArrow"), new String[] { TextFormatting.AQUA + "Retract Rod", "Reduce insertion by 10.", "", "Shift: -100", "Alt: -5", "Shift+Alt: -1", "", "Ctrl: Change ALL Rods" });
 		topY += 32;
 
 		registerControl(insertionBar);
@@ -129,7 +131,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 	protected void actionPerformed(GuiButton button) {
 		switch(button.id) {
 		case 2:
-            CommonPacketHandler.INSTANCE.sendToServer(new ControlRodChangeNameMessage(entity.xCoord, entity.yCoord, entity.zCoord, this.rodName.getText()));
+            CommonPacketHandler.INSTANCE.sendToServer(new ControlRodChangeNameMessage(entity.getPos(), this.rodName.getText()));
 			this.rodName.setFocused(false);
 			break;
 		case 0:
@@ -148,7 +150,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 				change = 5;
 			}
 			if(button.id == 1) { change = -change; }
-	        CommonPacketHandler.INSTANCE.sendToServer(new ControlRodChangeInsertionMessage(entity.xCoord, entity.yCoord, entity.zCoord, change, isCtrlKeyDown()));
+	        CommonPacketHandler.INSTANCE.sendToServer(new ControlRodChangeInsertionMessage(entity.getPos(), change, isCtrlKeyDown()));
 		}
     }
 	
@@ -173,7 +175,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 		
 		if(keyCode == Keyboard.KEY_RETURN) {
 			// Return/enter
-			this.actionPerformed((GuiButton)this.buttonList.get(2));
+			this.actionPerformed(this.buttonList.get(2));
 		}
 	}
 	

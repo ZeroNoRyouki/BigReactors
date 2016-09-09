@@ -1,22 +1,21 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.lua.LuaException;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedPeripheral;
 import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
-import cpw.mods.fml.common.Optional;
-import dan200.computercraft.api.lua.ILuaContext;
-import dan200.computercraft.api.lua.LuaException;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.core.common.CoordTriplet;
+import net.minecraftforge.fml.common.Optional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
@@ -92,7 +91,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		MultiblockReactor reactor = this.getReactorController();
 
 		ComputerMethod computerMethod = ComputerMethod.values()[method];
-		int index, newLevel;
+		int newLevel;
 		boolean newState;
 		TileEntityReactorControlRod controlRod;
 
@@ -181,14 +180,14 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 			
 		case getMinimumCoordinate:
 		{
-			CoordTriplet coord = reactor.getMinimumCoord();
-			return new Object[] { coord.x, coord.y, coord.z };
+			BlockPos coord = reactor.getMinimumCoord();
+			return new Object[] { coord.getX(), coord.getY(), coord.getZ() };
 		}
 			
 		case getMaximumCoordinate:
 		{
-			CoordTriplet coord = reactor.getMaximumCoord();
-			return new Object[] { coord.x, coord.y, coord.z };
+			BlockPos coord = reactor.getMaximumCoord();
+			return new Object[] { coord.getX(), coord.getY(), coord.getZ() };
 		}
 		
 		case getControlRodLocation:
@@ -200,12 +199,12 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 			if(!(arguments[0] instanceof Double)) {
 				throw new IllegalArgumentException("Invalid argument 0, expected Number");
 			}
-			
-			CoordTriplet rodCoord = getControlRodCoordFromArguments(reactor, arguments, 0);
-			CoordTriplet reactorMinCoord = reactor.getMinimumCoord();
-			return new Object[] { rodCoord.x - reactorMinCoord.x,
-								  rodCoord.y - reactorMinCoord.y,
-								  rodCoord.z - reactorMinCoord.z };
+
+			BlockPos rodCoord = getControlRodCoordFromArguments(reactor, arguments, 0);
+			BlockPos reactorMinCoord = reactor.getMinimumCoord();
+			return new Object[] { rodCoord.getX() - reactorMinCoord.getX(),
+								  rodCoord.getY() - reactorMinCoord.getY(),
+								  rodCoord.getZ() - reactorMinCoord.getZ() };
 		}
 
 		case setActive:
@@ -275,7 +274,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		}
 	}
 	
-	private CoordTriplet getControlRodCoordFromArguments(MultiblockReactor reactor, Object[] arguments, int index) throws Exception {
+	private BlockPos getControlRodCoordFromArguments(MultiblockReactor reactor, Object[] arguments, int index) throws Exception {
 		if(!(arguments[index] instanceof Double)) {
 			throw new IllegalArgumentException(String.format("Invalid argument %d, expected Number", index));
 		}
@@ -290,9 +289,9 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 	}
 	
 	private TileEntityReactorControlRod getControlRodFromArguments(MultiblockReactor reactor, Object[] arguments, int index) throws Exception {
-		CoordTriplet coord = getControlRodCoordFromArguments(reactor, arguments, index);
+		BlockPos coord = getControlRodCoordFromArguments(reactor, arguments, index);
 
-		TileEntity te = worldObj.getTileEntity(coord.x, coord.y, coord.z);
+		TileEntity te = worldObj.getTileEntity(coord);
 		if(!(te instanceof TileEntityReactorControlRod)) {
 			throw new Exception("Encountered an invalid tile entity when seeking a control rod. That's weird.");
 		}

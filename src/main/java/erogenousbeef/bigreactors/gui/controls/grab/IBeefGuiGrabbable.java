@@ -1,9 +1,9 @@
 package erogenousbeef.bigreactors.gui.controls.grab;
 
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 
 public interface IBeefGuiGrabbable {
 
-	public IIcon getIcon();
+	public ResourceLocation getIcon();
 	public String getName();
 }
