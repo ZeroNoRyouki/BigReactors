@@ -1,5 +1,3 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
@@ -23,7 +21,6 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-//version = "${config.mod_version_major}" + "." + "${config.mod_version_api}" + "." + "${config.mod_version_minor}" + "." + "${config.mod_version_patch}"
 version = "${config.mod_version_major}.${config.mod_version_api}.${config.mod_version_minor}.${config.mod_version_patch}"
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
@@ -49,26 +46,10 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
-    /*
-    maven {
-        name = "OpenComputers"
-        url = "http://maven.cil.li/"
-    }
-    maven {
-        name = "codechicken"
-        url = "http://chickenbones.net/maven"
-    }
-    ivy {
-        name "CoFHCore"
-        artifactPattern "http://addons.cursecdn.com/files/2221/835/[module]-[revision].[ext]"
-    }
-    */
 
-    repositories {
-        maven {
-            name "zerocore"
-            url "http://maven.zerono.it/"
-        }
+    maven {
+        name "zerocore"
+        url "http://maven.zerono.it/"
     }
 
     maven {
@@ -81,37 +62,7 @@ dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
 
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-	
-
-    /*
-	compile 'com.mod-buildcraft:buildcraft:6.0.18:dev'
-    compile 'li.cil.oc:OpenComputers:MC1.7.10-1.4.0.+:api'
-    compile name: 'CoFHCore', version: '[1.7.10]3.0.0B9-40-dev', ext: 'jar'
-    */
-
-
-    //compile "net.darkhax.tesla:Tesla:1.9-1.0.2.23"
-    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "1.9-1.0.2.23"
+    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "1.10.2-1.2.1.49"
 }
 
 processResources
