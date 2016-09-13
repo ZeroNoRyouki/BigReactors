@@ -168,21 +168,21 @@ public class Config extends ConfigHandler {
                 BigReactors.WHITELIST_WORLDGEN_ORES.whiteListDimensions(this.dimensionWhitelist);
             }
 
-            if (this.anglesiteOreEnableWorldGen) {
+            if (this.benitoiteOreEnableWorldGen) {
 
-                final IBlockState ore = BrBlocks.brOre.getStateFromType(OreType.Anglesite);
+                final IBlockState ore = BrBlocks.brOre.getStateFromType(OreType.Benitoite);
                 final IBlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 
                 BigReactors.NETHER_ORES.clearOres();
-                BigReactors.NETHER_ORES.addOre(ore, netherrack , 2, 21, this.anglesiteOrePerCluster, this.anglesiteOreMaxClustersPerChunk);
-                BigReactors.NETHER_ORES.addOre(ore, netherrack, 104, 123, this.anglesiteOrePerCluster, this.anglesiteOreMaxClustersPerChunk);
+                BigReactors.NETHER_ORES.addOre(ore, netherrack , 2, 21, this.benitoiteOrePerCluster, this.benitoiteOreMaxClustersPerChunk);
+                BigReactors.NETHER_ORES.addOre(ore, netherrack, 104, 123, this.benitoiteOrePerCluster, this.benitoiteOreMaxClustersPerChunk);
             }
 
-            if (this.benitoiteOreEnableWorldGen) {
+            if (this.anglesiteOreEnableWorldGen) {
 
                 BigReactors.END_ORES.clearOres();
-                BigReactors.END_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Benitoite),
-                        Blocks.END_STONE.getDefaultState(), 10, 90, this.benitoiteOrePerCluster, this.benitoiteOreMaxClustersPerChunk);
+                BigReactors.END_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Anglesite),
+                        Blocks.END_STONE.getDefaultState(), 10, 90, this.anglesiteOrePerCluster, this.anglesiteOreMaxClustersPerChunk);
             }
         }
     }
