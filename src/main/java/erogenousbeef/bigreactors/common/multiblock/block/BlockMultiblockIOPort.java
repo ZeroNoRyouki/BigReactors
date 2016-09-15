@@ -4,6 +4,7 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort;
@@ -130,6 +131,23 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
         }
 
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+    }
+
+    /**
+     * Called when a tile entity on a side of this block changes is created or is destroyed.
+     * @param world The world
+     * @param position Block position in world
+     * @param neighbor Block position of neighbor
+     */
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
+
+        TileEntity te = world.getTileEntity(position);
+
+        // Signal power taps and other ports when their neighbors change, etc.
+        if (te instanceof INeighborUpdatableEntity) {
+            ((INeighborUpdatableEntity)te).onNeighborTileChange(world, position, neighbor);
+        }
     }
 
     @Override

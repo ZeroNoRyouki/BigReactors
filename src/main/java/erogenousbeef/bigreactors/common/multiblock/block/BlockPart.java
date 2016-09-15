@@ -137,24 +137,7 @@ public class BlockPart extends BlockBR {
             ((INeighborUpdatableEntity)te).onNeighborBlockChange(world, position, stateAtPosition, neighbor);
         }
     }
-
-    /**
-     * Called when a tile entity on a side of this block changes is created or is destroyed.
-     * @param world The world
-     * @param position Block position in world
-     * @param neighbor Block position of neighbor
-     */
-    @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
-
-        TileEntity te = world.getTileEntity(position);
-
-        // Signal power taps and other ports when their neighbors change, etc.
-        if (te instanceof INeighborUpdatableEntity) {
-            ((INeighborUpdatableEntity)te).onNeighborTileChange(world, position, neighbor);
-        }
-    }
-
+    
     @Override
     public void breakBlock(World world, BlockPos position, IBlockState state) {
 

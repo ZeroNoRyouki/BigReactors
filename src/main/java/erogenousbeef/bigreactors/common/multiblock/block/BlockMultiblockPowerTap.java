@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.multiblock.IPowerProvider;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTapRedstoneFlux;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTapTesla;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTapRedstoneFlux;
@@ -104,6 +105,23 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
                     GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', lapis);
             }
+        }
+    }
+
+    /**
+     * Called when a tile entity on a side of this block changes is created or is destroyed.
+     * @param world The world
+     * @param position Block position in world
+     * @param neighbor Block position of neighbor
+     */
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
+
+        TileEntity te = world.getTileEntity(position);
+
+        // Signal power taps and other ports when their neighbors change, etc.
+        if (te instanceof INeighborUpdatableEntity) {
+            ((INeighborUpdatableEntity)te).onNeighborTileChange(world, position, neighbor);
         }
     }
 
