@@ -1629,11 +1629,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		@Override
 		public IFluidTankProperties[] getTankProperties() {
-
-			if (null == this._properties)
-				this._properties = this._reactor.getCoolantContainer().getTankProperties(this._tankId);
-
-			return this._properties;
+			return this._reactor.getCoolantContainer().getTankProperties(this._tankId);
 		}
 
 		@Override
@@ -1655,6 +1651,5 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		private final MultiblockReactor _reactor;
 		private final int _tankId;
-		private IFluidTankProperties[] _properties;
 	}
 }
