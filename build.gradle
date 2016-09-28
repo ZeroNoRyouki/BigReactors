@@ -27,7 +27,8 @@ archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
 minecraft {
     version = "${config.forge_version}"
-	
+    ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
+
 	if (file("../run-${config.minecraft_version}").exists()) {
 		runDir = "../run-${config.minecraft_version}"
 	} else {
@@ -38,6 +39,8 @@ minecraft {
     
 	replaceIn "BigReactors.java"
     replace "@VERSION@", project.version
+    replace "@MC_VERSION@", config.minecraft_version
+    replace "@DEPENDENCIES@", ext.dependencies
 
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
@@ -62,7 +65,7 @@ dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
 
-    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "1.10.2-1.2.1.49"
+    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
 }
 
 processResources

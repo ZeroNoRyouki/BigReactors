@@ -39,8 +39,8 @@ public class BigReactors implements IModInitializationHandler {
 	public static final String NAME = "Extreme Reactors";
 	public static final String MODID = "bigreactors";
 	public static final String VERSION = "@VERSION@";
-	public static final String MINECRAFT_VERSION = "[1.9.4]";
-	public static final String DEPENDENCIES = "required-after:Forge@[12.17.0.1976,);required-after:zerocore@[0.0.8.0,)";
+	public static final String MINECRAFT_VERSION = "[@MC_VERSION@]";
+	public static final String DEPENDENCIES = "@DEPENDENCIES@";
 	public static final int WORLDGEN_VERSION = 1; // Bump this when changing world generation so the world regens
 
 	public static final Config CONFIG;
