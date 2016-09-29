@@ -25,9 +25,11 @@ version = "${config.mod_version_major}.${config.mod_version_api}.${config.mod_ve
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
+ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
+
 minecraft {
     version = "${config.forge_version}"
-    ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
+
 
 	if (file("../run-${config.minecraft_version}").exists()) {
 		runDir = "../run-${config.minecraft_version}"
@@ -36,12 +38,6 @@ minecraft {
 	}
 
     mappings = "${config.minecraft_mappings}"
-    
-	replaceIn "BigReactors.java"
-    replace "@VERSION@", project.version
-    replace "@MC_VERSION@", config.minecraft_version
-    replace "@DEPENDENCIES@", ext.dependencies
-
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
@@ -64,7 +60,6 @@ repositories {
 dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
-
     deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
 }
 
@@ -86,4 +81,15 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+compileJava.doFirst {
+
+    File file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/common/BigReactors.java')
+    String source = file.getText('UTF-8')
+            .replaceAll('version = "0.0.0.0"', 'version = "' + project.version + '"')
+            .replaceAll('acceptedMinecraftVersions = ""', 'acceptedMinecraftVersions = "' + config.minecraft_version + '"')
+            .replaceAll('dependencies = ".*"', 'dependencies = "' + project.ext.dependencies + '"')
+
+    file.write(source, 'UTF-8')
 }

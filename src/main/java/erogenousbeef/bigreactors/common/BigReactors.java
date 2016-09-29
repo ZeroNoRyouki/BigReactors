@@ -31,18 +31,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Calendar;
 
-@Mod(modid = BigReactors.MODID, name = BigReactors.NAME, version = BigReactors.VERSION,
-		acceptedMinecraftVersions = BigReactors.MINECRAFT_VERSION, dependencies = BigReactors.DEPENDENCIES,
+@Mod(modid = BigReactors.MODID, name = BigReactors.NAME, version = "0.0.0.0",
+		acceptedMinecraftVersions = "", dependencies = "required-after:Forge;required-after:zerocore",
 		guiFactory = "erogenousbeef.bigreactors.client.config.ConfigFactory")
 public class BigReactors implements IModInitializationHandler {
 
 	public static final String NAME = "Extreme Reactors";
 	public static final String MODID = "bigreactors";
-	public static final String VERSION = "@VERSION@";
-	public static final String MINECRAFT_VERSION = "[@MC_VERSION@]";
-	public static final String DEPENDENCIES = "@DEPENDENCIES@";
 	public static final int WORLDGEN_VERSION = 1; // Bump this when changing world generation so the world regens
-
 	public static final Config CONFIG;
 	public static final CreativeTabs TAB;
 	public static final IWorldGenWhiteList WHITELIST_WORLDGEN_ORES;
