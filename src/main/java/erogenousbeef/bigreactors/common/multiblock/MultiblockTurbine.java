@@ -771,14 +771,14 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			if(steamIn > 0) {
 
 				this.fluidConsumedLastTick = steamIn;
-				this._inputTank.drain(steamIn, true);
+				this._inputTank.drainInternal(steamIn, true);
 				
 				if(ventStatus != VentStatus.VentAll) {
 
 					Fluid effluent = FluidRegistry.WATER;
 					FluidStack effluentStack = new FluidStack(effluent, steamIn);
 
-					this._outputTank.fill(effluentStack, true);
+					this._outputTank.fillInternal(effluentStack, true);
 				}
 			}
 		}

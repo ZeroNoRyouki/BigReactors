@@ -40,8 +40,9 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 			return;
 
 		this._direction = direction;
+		WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
 
-		if (!worldObj.isRemote) {
+		if (WorldHelper.calledByLogicalServer(this.worldObj)) {
 
 			if (markForUpdate)
 				this.markDirty();
@@ -50,8 +51,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		} else
 			this.notifyNeighborsOfTileChange();
-
-		WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
 	}
 
 	@Override
@@ -80,8 +79,13 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		super.syncDataFrom(data, syncReason);
 
-		if (data.hasKey("isInlet"))
+		if (!data.hasKey("isInlet"))
+			return;
+
+		if (SyncReason.FullSync == syncReason)
 			this._direction = Direction.from(data.getBoolean("isInlet"));
+		else
+			this.setDirection(Direction.from(data.getBoolean("isInlet")), false);
 	}
 
 	@Override
