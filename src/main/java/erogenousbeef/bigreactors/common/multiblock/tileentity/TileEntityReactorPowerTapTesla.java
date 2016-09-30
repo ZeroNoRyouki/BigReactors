@@ -24,14 +24,11 @@ public class TileEntityReactorPowerTapTesla extends TileEntityReactorPowerTap {
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
-        if (null != this._handler) {
+        if ((null != PowerTapHandlerTesla.CAPABILITY_TESLA_PRODUCER) && (PowerTapHandlerTesla.CAPABILITY_TESLA_PRODUCER == capability))
+            return PowerTapHandlerTesla.CAPABILITY_TESLA_PRODUCER.cast(this._handler);
 
-            if ((null != PowerTapHandlerTesla.CAPABILITY_TESLA_PRODUCER) && (PowerTapHandlerTesla.CAPABILITY_TESLA_PRODUCER == capability))
-                return PowerTapHandlerTesla.CAPABILITY_TESLA_PRODUCER.cast(this._handler);
-
-            if ((null != PowerTapHandlerTesla.CAPABILITY_TESLA_HOLDER) && (PowerTapHandlerTesla.CAPABILITY_TESLA_HOLDER == capability))
-                return PowerTapHandlerTesla.CAPABILITY_TESLA_HOLDER.cast(this._handler);
-        }
+        if ((null != PowerTapHandlerTesla.CAPABILITY_TESLA_HOLDER) && (PowerTapHandlerTesla.CAPABILITY_TESLA_HOLDER == capability))
+            return PowerTapHandlerTesla.CAPABILITY_TESLA_HOLDER.cast(this._handler);
 
         return super.getCapability(capability, facing);
     }
@@ -55,5 +52,5 @@ public class TileEntityReactorPowerTapTesla extends TileEntityReactorPowerTap {
         this._handler.checkForConnections(world, position);
     }
 
-    private PowerTapHandlerTesla _handler;
+    private final PowerTapHandlerTesla _handler;
 }
