@@ -74,6 +74,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	public static final int FLUID_NONE = -1;
 	public static final int TANK_SIZE = 4000;
 	public static final int MAX_PERMITTED_FLOW = 2000;
+	public static final int BASE_FLUID_PER_BLADE = 25; // mB
 
 	//private FluidTank[] tanks;
 	private FluidTank _inputTank;
@@ -113,7 +114,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	// Suboptimal is defined as "not a christmas-tree shape". At worst, drag is increased 4x.
 	
 	// Game balance constants - some of these are modified by configs at startup
-	public static int inputFluidPerBlade = 25; // mB
+	public static int inputFluidPerBlade = BASE_FLUID_PER_BLADE; // mB
 	private static float inductorBaseDragCoefficient = 0.1f; // RF/t extracted per coil block, multiplied by rotor speed squared.
 	private static final float baseBladeDragCoefficient = 0.00025f; // RF/t base lost to aero drag per blade block. Includes a 50% reduction to factor in constant parts of the drag equation
 	
@@ -207,7 +208,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 		// energy/t extracted per coil block, multiplied by rotor speed squared.
 		MultiblockTurbine.inductorBaseDragCoefficient = 0.1f * BigReactors.CONFIG.turbineCoilDragMultiplier;
-		MultiblockTurbine.inputFluidPerBlade = (int) Math.floor(MultiblockTurbine.inputFluidPerBlade * BigReactors.CONFIG.turbineFluidPerBladeMultiplier);
+		MultiblockTurbine.inputFluidPerBlade = (int) Math.floor(BASE_FLUID_PER_BLADE * BigReactors.CONFIG.turbineFluidPerBladeMultiplier);
 
 		this.recalculateDerivedStatistics();
 	}
