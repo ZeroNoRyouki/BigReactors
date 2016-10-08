@@ -1,41 +1,35 @@
 package erogenousbeef.bigreactors.common;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.event.world.ChunkDataEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BREventHandler {
 
 	@SubscribeEvent
 	public void chunkSave(ChunkDataEvent.Save saveEvent) {
-		if(BigReactors.enableWorldGen) {
+
+		if (BigReactors.CONFIG.enableWorldGen) {
+
 			NBTTagCompound saveData = saveEvent.getData();
 			
-			saveData.setInteger("BigReactorsWorldGen", BRConfig.WORLDGEN_VERSION);
-			saveData.setInteger("BigReactorsUserWorldGen", BigReactors.userWorldGenVersion);
+			saveData.setInteger("BigReactorsWorldGen", BigReactors.WORLDGEN_VERSION);
+			saveData.setInteger("BigReactorsUserWorldGen", BigReactors.CONFIG.userWorldGenVersion);
 		}
 	}
 	
 	@SubscribeEvent
 	public void chunkLoad(ChunkDataEvent.Load loadEvent) {
-		if(!BigReactors.enableWorldRegeneration || !BigReactors.enableWorldGen) {
-			return;
-		}
 
 		NBTTagCompound loadData = loadEvent.getData();
-		if(loadData.getInteger("BigReactorsWorldGen") == BRConfig.WORLDGEN_VERSION &&
-				loadData.getInteger("BigReactorsUserWorldGen") == BigReactors.userWorldGenVersion) {
+		int dimensionId = loadEvent.getWorld().provider.getDimension();
+
+		if (!BigReactors.CONFIG.enableWorldRegeneration || !BigReactors.CONFIG.enableWorldGen ||
+			(loadData.getInteger("BigReactorsWorldGen") == BigReactors.WORLDGEN_VERSION &&
+			 loadData.getInteger("BigReactorsUserWorldGen") == BigReactors.CONFIG.userWorldGenVersion) ||
+			!BigReactors.WHITELIST_WORLDGEN_ORES.shouldGenerateIn(dimensionId))
 			return;
-		}
-		
-		if(!StaticUtils.WorldGen.shouldGenerateInDimension(loadEvent.world.provider.dimensionId)) {
-			return;
-		}
-		
-		ChunkCoordIntPair coordPair = loadEvent.getChunk().getChunkCoordIntPair();
-		BigReactors.tickHandler.addRegenChunk(loadEvent.world.provider.dimensionId, coordPair);
+
+		BigReactors.TICK_HANDLER.addRegenChunk(dimensionId, loadEvent.getChunk().getChunkCoordIntPair());
 	}
-	
 }

@@ -1,18 +1,24 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
+import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
+import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
+import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorBlade;
+import erogenousbeef.bigreactors.common.multiblock.block.BlockTurbineRotorShaft;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
-import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.common.CoordTriplet;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityTurbineRotorBearing extends
-		TileEntityTurbinePartStandard {
+        TileEntityTurbinePart {
 
 	RotorInfo rotorInfo = null;
 	Integer displayList = null;
@@ -34,7 +40,12 @@ public class TileEntityTurbineRotorBearing extends
 	public void setAngle(float newAngle) { angle = newAngle; }
 
 	protected AxisAlignedBB boundingBox;
-	
+
+	@Override
+	public double getMaxRenderDistanceSquared() {
+		return super.getMaxRenderDistanceSquared() * 2;
+	}
+
 	@Override
 	public void onMachineAssembled(MultiblockControllerBase controller) {
 		super.onMachineAssembled(controller);
@@ -44,68 +55,113 @@ public class TileEntityTurbineRotorBearing extends
 	
 	@SideOnly(Side.CLIENT)
 	public RotorInfo getRotorInfo() {
-		return rotorInfo;
+
+		if (null == this.rotorInfo && this.isConnected() && this.getMultiblockController().isAssembled())
+			this.calculateRotorInfo();
+
+		return this.rotorInfo;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void resetRotorInfo() {
+
+		this.clearDisplayList();
+		this.rotorInfo = null;
 	}
 	
 	public AxisAlignedBB getAABB() { return boundingBox; }
 	
 	private void calculateRotorInfo() {
-		// Calculate bounding box
-		MultiblockTurbine turbine = getTurbine();
-		CoordTriplet minCoord = turbine.getMinimumCoord();
-		CoordTriplet maxCoord = turbine.getMaximumCoord();
 
-		boundingBox = AxisAlignedBB.getBoundingBox(minCoord.x, minCoord.y, minCoord.z, maxCoord.x + 1, maxCoord.y + 1, maxCoord.z + 1);
+		final BlockTurbineRotorShaft turbineRotorShaft = BrBlocks.turbineRotorShaft;
+		final BlockTurbineRotorBlade turbineRotorBlade = BrBlocks.turbineRotorBlade;
+
+		// Calculate bounding box
+		final MultiblockTurbine turbine = getTurbine();
+		final BlockPos minCoord = turbine.getMinimumCoord();
+		final BlockPos maxCoord = turbine.getMaximumCoord();
+
+		this.boundingBox = new AxisAlignedBB(minCoord.getX(), minCoord.getY(), minCoord.getZ(),
+										maxCoord.getX() + 1, maxCoord.getY() + 1, maxCoord.getZ() + 1);
 		
-		if(worldObj.isRemote) {
+		if (WorldHelper.calledByLogicalClient(this.worldObj)) {
+
+			EnumFacing direction = this.getOutwardFacing();
+			EnumFacing.Axis shaftAxis = direction.getAxis();
+
 			// Calculate rotor info
-			rotorInfo = new RotorInfo();
-			rotorInfo.rotorDirection = getOutwardsDir().getOpposite();
-			switch(rotorInfo.rotorDirection) {
-				case DOWN:
-				case UP:
-				case UNKNOWN:
-					rotorInfo.rotorLength = maxCoord.y - minCoord.y - 1;
+			RotorInfo info = this.rotorInfo = new RotorInfo();
+
+			info.x = this.getPos().getX();
+			info.y = this.getPos().getY();
+			info.z = this.getPos().getZ();
+
+			info.rotorDirection = direction.getOpposite();
+
+			switch (shaftAxis) {
+
+				case Y:
+					info.rotorLength = maxCoord.getY() - minCoord.getY() - 1;
 					break;
-				case EAST:
-				case WEST:
-					rotorInfo.rotorLength = maxCoord.x - minCoord.x - 1;
+
+				case X:
+					info.rotorLength = maxCoord.getX() - minCoord.getX() - 1;
 					break;
-				case NORTH:
-				case SOUTH:
-					rotorInfo.rotorLength = maxCoord.z - minCoord.z - 1;
+
+				case Z:
+					info.rotorLength = maxCoord.getZ() - minCoord.getZ() - 1;
 					break;
 			}
-			
-			CoordTriplet currentCoord = getWorldLocation();
-			CoordTriplet bladeCoord = new CoordTriplet(0,0,0);
 
-			ForgeDirection[] dirsToCheck = StaticUtils.neighborsBySide[rotorInfo.rotorDirection.ordinal()];
-			rotorInfo.bladeLengths = new int[rotorInfo.rotorLength][4];
-
+			BlockPos currentCoord = this.getWorldPosition().offset(info.rotorDirection);
+			BlockPos bladeCoord;
+			IBlockState state;
+			final EnumFacing[] dirsToCheck = RotorShaftState.getBladesDirections(shaftAxis);
 			int rotorPosition = 0;
-			currentCoord.translate(rotorInfo.rotorDirection);
 
-			while(rotorPosition < rotorInfo.rotorLength) {
+			info.bladeLengths = new int[info.rotorLength][4];
+			info.shaftStates = new RotorShaftState[info.rotorLength];
+			info.bladeStates = new RotorBladeState[info.rotorLength][4];
+
+			while (rotorPosition < info.rotorLength) {
+
+				state = this.worldObj.getBlockState(currentCoord);
+				info.shaftStates[rotorPosition] = turbineRotorShaft.buildActualStateInternal(state, this.worldObj,
+						currentCoord, this, true).getValue(Properties.ROTORSHAFTSTATE);
+
 				// Current block is a rotor
 				// Get list of normals
 				int bladeLength;
-				ForgeDirection bladeDir;
-				for(int bladeIdx = 0; bladeIdx < dirsToCheck.length; bladeIdx++) {
+				RotorBladeState bladeState;
+				EnumFacing bladeDir;
+
+				for (int bladeIdx = 0; bladeIdx < dirsToCheck.length; bladeIdx++) {
+
 					bladeDir = dirsToCheck[bladeIdx];
-					bladeCoord.copy(currentCoord);
-					bladeCoord.translate(bladeDir);
+					bladeCoord = currentCoord.offset(bladeDir);
 					bladeLength = 0;
-					while(worldObj.getBlock(bladeCoord.x, bladeCoord.y, bladeCoord.z) == BigReactors.blockTurbineRotorPart && bladeLength < 32) {
-						bladeLength++;
-						bladeCoord.translate(bladeDir);
+					bladeState = null;
+
+					state = this.worldObj.getBlockState(bladeCoord);
+
+					if (turbineRotorBlade == state.getBlock()) {
+
+						bladeState = turbineRotorBlade.buildActualStateInternal(state, this.worldObj, bladeCoord, this,
+								true).getValue(Properties.ROTORBLADESTATE);
+
+						while (bladeLength < 32 && turbineRotorBlade == this.worldObj.getBlockState(bladeCoord).getBlock()) {
+
+							++bladeLength;
+							bladeCoord = bladeCoord.offset(bladeDir);
+						}
 					}
-					
-					rotorInfo.bladeLengths[rotorPosition][bladeIdx] = bladeLength;
+
+					info.bladeLengths[rotorPosition][bladeIdx] = bladeLength;
+					info.bladeStates[rotorPosition][bladeIdx] = bladeState;
 				}
 				
-				rotorPosition++;
-				currentCoord.translate(rotorInfo.rotorDirection);
+				++rotorPosition;
+				currentCoord = currentCoord.offset(info.rotorDirection);
 			}
 		}
 	}

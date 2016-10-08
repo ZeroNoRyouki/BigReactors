@@ -1,13 +1,13 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity.creative;
 
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartStandard;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePart;
+import erogenousbeef.bigreactors.init.BrFluids;
+import net.minecraftforge.fluids.FluidStack;
 
-public class TileEntityTurbineCreativeSteamGenerator extends TileEntityTurbinePartStandard implements ITickableMultiblockPart {
+public class TileEntityTurbineCreativeSteamGenerator extends TileEntityTurbinePart implements ITickableMultiblockPart {
 
 	public TileEntityTurbineCreativeSteamGenerator() {
 		super();
@@ -15,10 +15,14 @@ public class TileEntityTurbineCreativeSteamGenerator extends TileEntityTurbinePa
 
 	@Override
 	public void onMultiblockServerTick() {
-		if(isConnected() && getTurbine().getActive()) {
-			Fluid steam = FluidRegistry.getFluid("steam");
-			
-			getTurbine().fill(MultiblockTurbine.TANK_INPUT, new FluidStack(steam, getTurbine().getMaxIntakeRate()), true);
+
+		final MultiblockTurbine turbine = this.getTurbine();
+
+		if (null != turbine && turbine.getActive()) {
+
+			FluidStack steam = new FluidStack(BrFluids.fluidSteam, turbine.getMaxIntakeRate());
+
+			turbine.getFluidHandler(IInputOutputPort.Direction.Input).fill(steam, true);
 		}
 	}
 }

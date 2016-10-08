@@ -1,42 +1,47 @@
 package erogenousbeef.bigreactors.net.message;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
-import erogenousbeef.bigreactors.net.message.base.WorldMessageClient;
+import io.netty.buffer.ByteBuf;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class ControlRodUpdateMessage extends WorldMessageClient {
-    private short insertion;
+public class ControlRodUpdateMessage extends ModTileEntityMessage {
 
-    public ControlRodUpdateMessage() { super(); insertion = 0; }
+    public ControlRodUpdateMessage() {
+        this._insertion = 0;
+    }
     
-    public ControlRodUpdateMessage(int x, int y, int z, short controlRodInsertion) {
-    	super(x, y, z);
-        this.insertion = controlRodInsertion;
+    public ControlRodUpdateMessage(BlockPos position, short controlRodInsertion) {
+
+    	super(position);
+        this._insertion = controlRodInsertion;
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-    	super.fromBytes(buf);
-        insertion = buf.readShort();
+    public void fromBytes(ByteBuf buffer) {
+
+    	super.fromBytes(buffer);
+        this._insertion = buffer.readShort();
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-    	super.toBytes(buf);
-        buf.writeShort(insertion);
+    public void toBytes(ByteBuf buffer) {
+    	super.toBytes(buffer);
+        buffer.writeShort(this._insertion);
     }
 
-    public static class Handler extends WorldMessageClient.Handler<ControlRodUpdateMessage>
-    {
+    private short _insertion;
+
+    public static class Handler extends ModTileEntityMessageHandlerClient<ControlRodUpdateMessage> {
+
         @Override
-        protected IMessage handleMessage(ControlRodUpdateMessage message, MessageContext ctx, TileEntity te) {
-            if(te instanceof TileEntityReactorControlRod) {
-                ((TileEntityReactorControlRod)te).onControlRodUpdate(message.insertion);
-            }
-            return null;
+        protected void processTileEntityMessage(ControlRodUpdateMessage message, MessageContext ctx, TileEntity tileEntity) {
+
+            if (tileEntity instanceof TileEntityReactorControlRod)
+                ((TileEntityReactorControlRod)tileEntity).onControlRodUpdate(message._insertion);
         }
     }
 }

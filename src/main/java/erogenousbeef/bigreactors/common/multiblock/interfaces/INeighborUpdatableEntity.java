@@ -1,6 +1,8 @@
 package erogenousbeef.bigreactors.common.multiblock.interfaces;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -14,18 +16,14 @@ public interface INeighborUpdatableEntity {
 	 * @param z Tile Entity's zcoord
 	 * @param neighborBlock Block that changed
 	 */
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock);
+	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock);
 	
 	/**
 	 * Called from a Block class's onNeighborTileChange
 	 * @param world The world containing the TileEntity
-	 * @param x Tile entity's Xcoord
-	 * @param y Tile entity's Ycoord
-	 * @param z Tile entity's Zcoord
-	 * @param neighborX Changed neighbor's Xcoord
-	 * @param neighborY Changed neighbor's Ycoord
-	 * @param neighborZ Changed neighbor's Zcoord
+	 * @param position Tile entity's position in the world
+	 * @param neighbor Changed neighbor's position in the world
 	 */
-	public void onNeighborTileChange(IBlockAccess world, int x, int y, int z, int neighborX, int neighborY, int neighborZ);
+	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor);
 
 }

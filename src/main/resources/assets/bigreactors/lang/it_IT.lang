@@ -1,64 +1,262 @@
-# Big Reactors Language File - Italian
-# @author TheElixZammuto
+# Extreme Reactors Language File - Italian
+# @author Erogenous Beef, ZeroNoRyouki, ABookFreak
+# Translated By ZeroNoRyouki
 
-itemGroup.BigReactors=Big Reactors
+itemGroup.bigreactors=Extreme Reactors
 
 # Blocks
-tile.brOre.0.name=Yellorite Grezzo
-tile.brMetal.0.name=Blocco di Yellorium
-tile.brMetal.1.name=Blocco di Cianite
-tile.brMetal.2.name=Blocco di Grafite
-tile.brMetal.3.name=Blocco di Blutonium
-tile.brMetal.4.name=Blocco di Ludicrite
-tile.yelloriumFuelRod.name=Asta del Nocciolo del Reattore
-tile.brMultiblockGlass.0.name=Vetro per Reattore
-tile.brMultiblockGlass.1.name=Vetro per Turbina
-tile.blockReactorRedstonePort.name=Porta di Pietrarossa per Reattore
-tile.blockReactorPart.0.name=Struttura per Reattore
-tile.blockReactorPart.1.name=Controller per Reattore
-tile.blockReactorPart.2.name=Controller del Nocciolo del Reattore
-tile.blockReactorPart.3.name=Porta di Energia del Reattore
-tile.blockReactorPart.4.name=Porta d'accesso del Reattore
-tile.blockReactorPart.6.name=Porta RedNet del Reattore
-tile.blockReactorPart.7.name=Porta per Computer del Reattore
-tile.blockReactorPart.5.name=Porta per Fluidi del Reattore
-tile.blockRadiothermalGen.0=Generatore Radiotermico
-tile.blockBRDevice.0.name=Processore di Cianite
-tile.blockTurbinePart.0.name=Struttura per Turbina
-tile.blockTurbinePart.1.name=Controller per Turbina
-tile.blockTurbinePart.2.name=Porta di Energia per Turbina
-tile.blockTurbinePart.3.name=Porta per fuidi per Turbina
-tile.blockTurbinePart.4.name=Cuscinetto del Rotore della Turbina
-tile.blockTurbinePart.5.name=Porta per Computer della Turbina
-tile.blockTurbineRotorPart.0.name=Asta del Rotore della Turbina
-tile.blockTurbineRotorPart.1.name=Lame del Rotore della Turbina
-tile.blockMBCreativePart.0.name=Porta per Fluidi del Reattore Creativa
-tile.blockMBCreativePart.1.name=Generatore di Vapore per Turbina Creative
 
-# Items
-item.ingotYellorium.name=Lingotto di Yellorium
-item.ingotCyanite.name=Lingotto di Cianite
-item.ingotGraphite.name=Barra di Grafite
-item.ingotBlutonium.name=Lingotto di Blutonium
-item.ingotLudicrite.name=Lingotto di Ludicrite
-item.dustYellorium.name=Polvere di Yellorio
-item.dustCyanite.name=Polvere di Cianite
-item.dustBlutonium.name=Polvere di Blutonium
-item.dustGraphite.name=Polvere di Grafite
-item.dustLudicrite.name=Polvere di Ludicrite
-item.bucket.cyanite.name=Secchio di Cianite Fluida
-item.bucket.yellorium.name=Secchio di Yellorium Fluida
-item.beefDebugTool.name=Strumento di Diagnostica BeefTronic™ 
+tile.blockRadiothermalGen.0=Radiothermal Generator
+tile.blockBRDevice.0.name=Cyanite Reprocesssor
 
 # Fluids
 fluid.tile.water=Acqua
 fluid.tile.lava=Lava
-fluid.tile.yellorium=Yellorium Fluido
-fluid.tile.cyanite=Cianite Fluido
-fluid.tile.blutonium=Blutonium Fluido
+fluid.tile.yellorium=Yellorium Liquido
+fluid.tile.cyanite=Cianite Liquida
+fluid.tile.blutonium=Blutonium Liquido
 fluid.steam=Vapore
 
 # Placeable Fluids
-tile.fluid.yellorium.still.name=Yellorium Fluido
-tile.fluid.cyanite.still.name=Cianite Fluido
-tile.fluid.blutonium.still.name=Blutonium Fluido
+tile.fluid.yellorium.still.name=Yellorium Liquido
+tile.fluid.cyanite.still.name=Cianite 
+tile.fluid.blutonium.still.name=Blutonium Liquido
+
+# Items - ingots
+item.bigreactors:ingotMetals.yellorium.name=Lingotto di Yellorium
+item.bigreactors:ingotMetals.cyanite.name=Lingotto di Cianite
+item.bigreactors:ingotMetals.blutonium.name=Lingotto di Blutonium
+item.bigreactors:ingotMetals.graphite.name=Lingotto di Grafite
+item.bigreactors:ingotMetals.ludicrite.name=Lingotto di Ludicrite
+item.bigreactors:ingotMetals.steel.name=Lingotto di Acciaio
+
+# Items - dusts
+item.bigreactors:dustMetals.yellorium.name=Polvere di Yellorium
+item.bigreactors:dustMetals.cyanite.name=Polvere di Cianite
+item.bigreactors:dustMetals.blutonium.name=Polvere di Blutonium
+item.bigreactors:dustMetals.graphite.name=Polvere di Grafite
+item.bigreactors:dustMetals.ludicrite.name=Polvere di Ludicrite
+item.bigreactors:dustMetals.steel.name=Polvere di Acciaio
+
+# Items - reactor casing cores
+item.bigreactors:reactorCasingCores.legacy.name=Telaio dell'involucro del Reattore (Originale)
+item.bigreactors:reactorCasingCores.basic.name=Telaio dell'involucro del Reattore (Base)
+item.bigreactors:turbineHousingCores.legacy.name=Telaio dell'involucro della Turbina (Originale)
+item.bigreactors:turbineHousingCores.basic.name=Telaio dell'involucro della Turbina (Base)
+
+# Items - minerals
+item.bigreactors:minerals.anglesite.name=Anglesite (PbSO4)
+item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
+
+# Items - miscellanea
+item.bigreactors:wrench.name=Chiave inglese
+
+# Blocks - metal blocks / ores
+tile.bigreactors:blockMetals.yellorium.name=Blocco di Yellorium
+tile.bigreactors:blockMetals.cyanite.name=Blocco di Cianite
+tile.bigreactors:blockMetals.blutonium.name=Blocco di Blutonium
+tile.bigreactors:blockMetals.graphite.name=Blocco di Grafite
+tile.bigreactors:blockMetals.ludicrite.name=Blocco di Ludicrite
+tile.bigreactors:blockMetals.steel.name=Blocco di Acciaio
+
+# Blocks - ores
+tile.bigreactors:brOre.yellorite.name=Yellorite grezza
+tile.bigreactors:brOre.anglesite.name=Anglesite grezza
+tile.bigreactors:brOre.benitoite.name=Benitoite grezza
+
+# Blocks - reactor parts (Originale)
+tile.bigreactors:reactorGlass.legacy.name=Vetro del Reattore (Originale)
+tile.bigreactors:reactorCasing.legacy.name=Involucro del Reattore (Originale)
+tile.bigreactors:reactorController.legacy.name=Pannello di controllo del Reattore (Originale)
+tile.bigreactors:reactorPowerTapRF.legacy.name=Porta di energia Redstone Flux del Reattore (Originale)
+tile.bigreactors:reactorPowerTapTesla.legacy.name=Porta di energia Tesla del Reattore (Originale)
+tile.bigreactors:reactorAccessPort.legacy.name=Porta di accesso del Reattore (Originale)
+tile.bigreactors:reactorCoolantPort.legacy.name=Porta di accesso Fluidi del Reattore (Originale)
+tile.bigreactors:reactorControlRod.legacy.name=Barre di controllo del reattore (Originale)
+tile.bigreactors:reactorComputerPort.legacy.name=Interfaccia per computer del Reattore (Originale)
+tile.bigreactors:reactorRedstonePort.legacy.name=Interfaccia Redstone del Reattore (Originale)
+tile.bigreactors:reactorFuelRod.legacy.name=Barra di combustibile del Reattore (Originale)
+tile.bigreactors:reactorRedNetPort.legacy.name=Interfaccia RedNet del Reattore (Originale)
+tile.bigreactors:reactorCreativeCoolantPort.legacy.name=Porta di accesso Fluidi del Reattore Modalità Creativa (Originale)
+
+# Blocks - reactor parts (Base)
+tile.bigreactors:reactorGlass.basic.name=Vetro del Reattore (Base)
+tile.bigreactors:reactorCasing.basic.name=Involucro del Reattore (Base)
+tile.bigreactors:reactorController.basic.name=Pannello di controllo del Reattore (Base)
+tile.bigreactors:reactorPowerTapRF.basic.name=Porta di energia Redstone Flux del Reattore (Base)
+tile.bigreactors:reactorPowerTapTesla.basic.name=Porta di energia Tesla del Reattore (Base)
+tile.bigreactors:reactorAccessPort.basic.name=Porta di accesso del Reattore (Base)
+tile.bigreactors:reactorCoolantPort.basic.name=Porta di accesso Fluidi del Reattore (Base)
+tile.bigreactors:reactorControlRod.basic.name=Barre di controllo del reattore (Base)
+tile.bigreactors:reactorComputerPort.basic.name=Interfaccia per computer del Reattore (Base)
+tile.bigreactors:reactorRedstonePort.basic.name=Interfaccia Redstone del Reattore (Base)
+tile.bigreactors:reactorFuelRod.basic.name=Barra di combustibile del Reattore (Base)
+tile.bigreactors:reactorRedNetPort.basic.name=Interfaccia RedNet del Reattore (Base)
+tile.bigreactors:reactorCreativeCoolantPort.basic.name=Porta di accesso Fluidi del Reattore Modalità Creativa (Base)
+
+# Blocks - turbine parts (Originale)
+tile.bigreactors:turbineGlass.legacy.name=Vetro della Turbina (Originale)
+tile.bigreactors:turbineHousing.legacy.name=Involucro della Turbina (Originale)
+tile.bigreactors:turbineController.legacy.name=Pannello di controllo della Turbina (Originale)
+tile.bigreactors:turbinePowerTapRF.legacy.name=Porta di energia Redstone Flux della Turbina (Originale)
+tile.bigreactors:turbinePowerTapTesla.legacy.name=Porta di energia Tesla della Turbina (Originale)
+tile.bigreactors:turbineComputerPort.legacy.name=Interfaccia per computer della Turbina (Originale)
+tile.bigreactors:turbineFluidPort.legacy.name=Porta di accesso Fluidi della Turbina (Originale)
+tile.bigreactors:turbineBearing.legacy.name=Cuscinetto del rotore della Turbina (Originale)
+tile.bigreactors:turbineCreativeSteamGenerator.legacy.name=Generatore di vapore della Turbina Modalità Creativa (Originale)
+tile.bigreactors:turbineRotorShaft.legacy.name=Asta del rotore della Turbina (Originale)
+tile.bigreactors:turbineRotorBlade.legacy.name=Pala del rotore della Turbina (Originale)
+
+# Blocks - turbine parts (Base)
+tile.bigreactors:turbineGlass.basic.name=Vetro della Turbina (Base)
+tile.bigreactors:turbineHousing.basic.name=Involucro della Turbina (Base)
+tile.bigreactors:turbineController.basic.name=Pannello di controllo della Turbina (Base)
+tile.bigreactors:turbinePowerTapRF.basic.name=Porta di energia Redstone Flux della Turbina (Base)
+tile.bigreactors:turbinePowerTapTesla.basic.name=Porta di energia Tesla della Turbina (Base)
+tile.bigreactors:turbineComputerPort.basic.name=Interfaccia per computer della Turbina (Base)
+tile.bigreactors:turbineFluidPort.basic.name=Porta di accesso Fluidi della Turbina (Base)
+tile.bigreactors:turbineBearing.basic.name=Cuscinetto del rotore della Turbina (Base)
+tile.bigreactors:turbineCreativeSteamGenerator.basic.name=Generatore di vapore della Turbina Modalità Creativa (Base)
+tile.bigreactors:turbineRotorShaft.basic.name=Asta del rotore della Turbina (Base)
+tile.bigreactors:turbineRotorBlade.basic.name=Pala del rotore della Turbina (Base)
+
+# Error messages
+multiblock.validation.block_not_connected=Il blocco non è connesso ad un reattore. La causa potrebbe essere lag oppure un bug. Se il problema persiste, prova a rompere il blocco e a rimetterlo
+
+# Multiblock validation errors (reactors)
+multiblock.validation.reactor.invalid_fuelrod_position=%1$d, %2$d, %3$d - Le barre di combustibile possono essere collocate solo all'interno del reattore
+multiblock.validation.reactor.invalid_fuelrod_column=La barra di combustibile a %1$d, %2$d, %3$d deve far parte di una colonna verticale che occupa l'intera altezza del reattore, con una barra di controllo alla fine
+multiblock.validation.reactor.invalid_part_for_interior=%1$d, %2$d, %3$d - Questo componente del reattore non può essere collocato all'interno del reattore
+multiblock.validation.reactor.invalid_fluid_for_interior=%1$d, %2$d, %3$d - Il fluido %4$s non è valido per l'interno del reattore
+multiblock.validation.reactor.invalid_block_for_interior=%1$d, %2$d, %3$d - %4$s non è valido per l'interno del reattore
+multiblock.validation.reactor.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s non è valido per l'esterno del reattore
+multiblock.validation.reactor.null_block_found=%1$d, %2$d, %3$d - Blocco non identificabile trovato: non è valido per l'interno del reattore
+multiblock.validation.reactor.too_few_rods=Barre di controllo in numero insufficiente. I reattori ne richiedono almeno una
+multiblock.validation.reactor.too_few_controllers=Pannelli di controllo in numero insufficiente. I reattori ne richiedono almeno uno
+multiblock.validation.reactor.invalid_control_rods_position=%1$d, %2$d, %3$d - Una barra di controllo deve essere posizionata alla fine di una sequenza di barre di combustibile
+multiblock.validation.reactor.invalid_control_rods_column=%1$d, %2$d, %3$d - Una barra di controllo deve essere posizionata alla fine di una sequenza di barre di combustibile
+multiblock.validation.reactor.invalid_control_side=Le barre di controllo non possono essere posizionate su più lati del reattore
+multiblock.validation.reactor.invalid_glass_position=%1$d, %2$d, %3$d - Il vetro del reattore può essere usato solo sulle facce esterne, non come parte del telaio o all'interno del reattore
+multiblock.validation.reactor.invalid_frame_block=%1$d, %2$d, %3$d - Solo gli involucri del reattore possono essere usati come parte del telaio
+multiblock.validation.reactor.invalid_block_in_fuel_assembly=%1$d, %2$d, %3$d - Solo barre di combustibile possono essere usate qui
+multiblock.validation.reactor.invalid_base_for_fuel_assembly=%1$d, %2$d, %3$d - Solo gli involucri del reattore possono essere usati qui
+multiblock.validation.reactor.invalid_fuel_rods=Tutte le barre del combustibile devono appartenere a una fila di barre di combustibile dietro una barra di controllo
+multiblock.validation.reactor.redstoneport_invalid_on_frame=%1$d, %2$d, %3$d - Le interfacce Redstone del reattore possono essere posizionate solo su una faccia esterna, non nel telaio
+multiblock.validation.reactor.redstoneport_invalid_on_top=%1$d, %2$d, %3$d - Le interfacce Redstone del reattore possono essere posizionate solo su una faccia esterna, non su quella superiore
+multiblock.validation.reactor.redstoneport_invalid_on_bottom=%1$d, %2$d, %3$d -  Le interfacce Redstone del reattore possono essere posizionate solo su una faccia esterna, non su quella inferiore
+multiblock.validation.reactor.redstoneport_invalid_on_interior=%1$d, %2$d, %3$d - Le interfacce Redstone del reattore non possono essere posizionate all'interno del reattore
+multiblock.validation.reactor.mixed_power_systems=Non è possibile utilizzare entrambe le porte di energia nello stesso reattore
+multiblock.validation.reactor.mixed_tiers=Tutti i blocchi del reattore devono essere dello stesso livello
+
+# Multiblock validation errors (turbines)
+multiblock.validation.turbine.incomplete=La turbina non è completa
+multiblock.validation.turbine.invalid_block_for_interior=%1$d, %2$d, %3$d non è valido all'interno della turbina. Only rotor parts, metal blocks and empty space are allowed
+multiblock.validation.turbine.invalid_block_for_exterior=%1$d, %2$d, %3$d - %4$s non è valido per l'esterno della turbina
+multiblock.validation.turbine.invalid_rotor_count=Le turbine richiedono esattamente un cuscinetto del rotore
+multiblock.validation.turbine.block_must_be_rotor=%1$s - Questo blocco deve contenere un rotore. Il rotore deve partire dal cuscinetto e proseguire per tutta la lunghezza della turbina
+multiblock.validation.turbine.blades_too_far=%1$s - Le pale del rotore devono essere collocate più vicine al cuscinetto di qualsiasi altro blocco all'interno della turbina
+multiblock.validation.turbine.metal_too_near=%1$s - I blocchi metallici devono essere collocati più lontani dal cuscinetto di qualsiasi pala del rotore
+multiblock.validation.turbine.shaft_too_short=L'asta del rotore deve coprire l'intera lunghezza dell'interno della turbina
+multiblock.validation.turbine.found_loose_rotor_blocks=Trovate %1$d aste del rotore che non sono collegate al rotore principale. Tutte le aste del rotore devono formare un'unica colonna che si estende per tutta la lunghezza della turbina a partire dal cuscinetto
+multiblock.validation.turbine.found_loose_rotor_blades=Trovate %1$d pale del rotore che non sono collegate al rotore principale. Tutte le pale del rotore devono estendersi dall'asta del rotore
+multiblock.validation.turbine.invalid_metals_shape=Trovati %1$d blocchi metallici che non sono in un anello attorno all'asta del rotore. Tutti i blocchi metalli devono essere posizionati ad anello, anche parziale, attorno all'asta del rotore
+multiblock.validation.turbine.glass_invalid_on_frame=%1$d, %2$d, %3$d - Il vetro dela turbina non può essere usato come parte del telaio
+multiblock.validation.turbine.glass_invalid_on_interior=%1$d, %2$d, %3$d - Il vetro dela turbina può essere usato solo parte dell'esterno della turbina
+multiblock.validation.turbine.invalid_part_for_interior=%1$d, %2$d, %3$d - Questo blocco non è valido all'interno della turbina
+multiblock.validation.turbine.invalid_part_for_frame=%1$d, %2$d, %3$d - Solo gli involucri della turbina possono essere usati come parti del telaio
+multiblock.validation.turbine.invalid_rotor_position=Componenti del rotore possono essere posizionati solo all'interno della turbina
+multiblock.validation.turbine.invalid_rotor_end=Il rotore deve terminare contro un involucro della turbina
+multiblock.validation.turbine.mixed_power_systems=Non è possibile utilizzare entrambe le porte di energia nella stessa turbina
+multiblock.validation.turbine.mixed_tiers=Tutti i blocchi della turbina devono essere dello stesso livello
+
+# Configs
+config.bigreactors.compatibility=Compatibilità
+config.bigreactors.general=Generali
+config.bigreactors.reactor=Reattore
+config.bigreactors.turbine=Turbina
+config.bigreactors.recipes=Ricette
+config.bigreactors.worldgen=Generazione del mondo
+
+config.bigreactors.compatibility.autoAddUranium=Aggiunge l'uranio come reagente per il Reattore
+config.bigreactors.compatibility.enableMetallurgyFantasyMetalsInTurbines=Permetti l'uso dei metalli fantasy di Metallurgy nella Turbina
+
+config.bigreactors.general.enableComedy=Modalità Comica
+config.bigreactors.general.fuelUsageMultiplier=Moltiplicatore dell'utilizzo del carburante
+config.bigreactors.general.powerProductionMultiplier=Moltiplicatore della produzione di energia
+config.bigreactors.general.registerCreativeMultiblockParts=Aggiungi i blocchi per la Modalità Creativa
+config.bigreactors.general.ticksPerRedstoneUpdate=Numero di ticks per aggiornamento della Redstone
+
+config.bigreactors.reactor.maxReactorHeight=Altezza massima (Y)
+config.bigreactors.reactor.maxReactorSize=Larghezza massima (X/Z)
+config.bigreactors.reactor.reactorPowerProductionMultiplier=Moltiplicatore della produzione di energia
+
+config.bigreactors.turbine.maxTurbineHeight=Altezza massima (Y)
+config.bigreactors.turbine.maxTurbineSize=Larghezza massima (X/Z)
+config.bigreactors.turbine.turbineAeroDragMultiplier=Moltiplicatore della resistenza aerodinamica
+config.bigreactors.turbine.turbineCoilDragMultiplier=Moltiplicatore della resistenza della bobina
+config.bigreactors.turbine.turbineFluidPerBladeMultiplier=Moltiplicatore dei fluidi per pala
+config.bigreactors.turbine.turbineMassDragMultiplier=Moltiplicatore della resistenza della massa
+config.bigreactors.turbine.turbinePowerProductionMultiplier=Moltiplicatore della produzione di energia
+
+config.bigreactors.recipes.enableCyaniteFromYelloriumRecipe=Fabbrica la cianite dal yellorium
+config.bigreactors.recipes.enableReactorPowerTapRecipe=Abilita le porte di energia del reattore
+config.bigreactors.recipes.registerCharcoalForSmelting=Ottieni la grafite fondendo la carbonella
+config.bigreactors.recipes.registerCoalForSmelting=Ottieni la grafite fondendo il carbone
+config.bigreactors.recipes.registerGraphiteCharcoalCraftingRecipes=Fabbrica la grafite da carbonella e ghiaia
+config.bigreactors.recipes.registerGraphiteCoalCraftingRecipes=Fabbrica la grafite da carbone e ghiaia
+config.bigreactors.recipes.registerYelloriteSmeltToUranium=Ottieni lingotti di uranio fondendo la yellorite grezza
+config.bigreactors.recipes.registerYelloriumAsUranium=Usa uranium/plutonium al posto di yellorium/blutonium
+config.bigreactors.recipes.requireObsidianGlass=Utilizza il vetro indurito o rinforzato
+config.bigreactors.recipes.requireSteelInsteadOfIron=Usa acciato invece che ferro [NON USATO]
+config.bigreactors.recipes.registerCreativeMultiblockParts=Abilita i blocchi Modalità Creativa
+
+config.bigreactors.worldgen.enableWorldGen=Abilità generazione
+config.bigreactors.worldgen.enableWorldRegeneration=Rigenera nei chunk esistenti
+config.bigreactors.worldgen.userWorldGenVersion=Identificati di generazione definito dall'utente
+config.bigreactors.worldgen.dimensionWhitelist=Genera la yellorite nelle seguenti dimensioni (ID)
+config.bigreactors.worldgen.yelloriteOreEnableWorldGen=Genera la yellorite grezza
+config.bigreactors.worldgen.yelloriteOreMaxClustersPerChunk=Numero massimo di vene di yellorite grezza per chunk
+config.bigreactors.worldgen.yelloriteOrePerCluster=Numero massimo di blocchi di yellorite grezza per vena
+config.bigreactors.worldgen.yelloriteOreMaxY=Livello massimo a cui generalre la yellorite grezza
+config.bigreactors.worldgen.anglesiteOreEnableWorldGen=Genera l'anglesite grezza
+config.bigreactors.worldgen.anglesiteOreMaxClustersPerChunk=Numero massimo di vene di anglesite grezza per chunk
+config.bigreactors.worldgen.anglesiteOrePerCluster=Numero massimo di blocchi di anglesite grezza per vena
+config.bigreactors.worldgen.benitoiteOreEnableWorldGen=Genera la benitoite grezza
+config.bigreactors.worldgen.benitoiteOreMaxClustersPerChunk=Numero massimo di vene di benitoite grezza per chunk
+config.bigreactors.worldgen.benitoiteOrePerCluster=Numero massimo di blocchi di benitoite grezza per vena
+
+# Debug-tools messages
+debug.bigreactors.lastvalidationerror=Last validation error: %1$s
+debug.bigreactors.teclass=Tile Entity class: %1$s
+debug.bigreactors.notattached=Part not attached to a controller
+debug.bigreactors.assembled=Assembled: %1$s
+debug.bigreactors.attached=Attached Blocks: %1$s
+debug.bigreactors.active=Active: %1$s
+debug.bigreactors.storedenergy=Stored Energy: %1$.4f %2$s
+debug.bigreactors.reactor.casingheat=Casing Heat: %1$.4f
+debug.bigreactors.reactor.fuelheat=Fuel Heat: %1$.4f
+debug.bigreactors.reactor.reactanttanksIntro=Reactant Tanks:
+debug.bigreactors.reactor.activelycooled=Actively Cooled: %1$s
+debug.bigreactors.reactor.coolanttanksIntro:=Coolant Tanks:
+debug.bigreactors.reactantcontainer.capacity=Capacity: %1$d mB
+debug.bigreactors.reactantcontainer.tank=[%1$s] %2$s: %3$d
+debug.bigreactors.fluidhelper.capacity=Capacity (per): %1$d mB
+debug.bigreactors.fluidhelper.tank=[%1$s] %2$s: %3$s, %4$d mB
+debug.bigreactors.turbine.rotorenergy=Rotor Energy: %1$.4f
+debug.bigreactors.turbine.rotorspeed=Rotor Speed: %1$.4f RPM
+debug.bigreactors.turbine.inductorengaged=Inductor Engaged: %1$s
+debug.bigreactors.turbine.ventstatus=Vent Status: %1$s
+debug.bigreactors.turbine.maxintakerate=Max Intake Rate: %1$d
+debug.bigreactors.turbine.coilsize=Coil Size: %1$d
+debug.bigreactors.turbine.rotormass=Rotor Mass: %1$d
+debug.bigreactors.turbine.bladearea=Blade Surface Area: %1$d
+debug.bigreactors.turbine.rotorblades=Rotor Blades: %1$d
+debug.bigreactors.turbine.rotorshafts=Rotor Shafts: %1$d
+debug.bigreactors.turbine.rotordragcoeff=Rotor Drag Coefficient: %1$.2f
+debug.bigreactors.turbine.bladedrag=Blade Drag: %1$.2f
+debug.bigreactors.turbine.frictdrag=Frict Drag: %1$.2f
+debug.bigreactors.turbine.fluidtanksInfo=Fluid Tanks:
+debug.bigreactors.turbine.inputempty=- Inlet : empty
+debug.bigreactors.turbine.input=- Inlet : %1$s %2$d mB
+debug.bigreactors.turbine.outputempty=- Outlet : empty
+debug.bigreactors.turbine.output=- Outlet : %1$s %2$d mB

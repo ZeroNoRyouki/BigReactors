@@ -1,29 +1,41 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import net.minecraft.util.math.BlockPos;
 
 public class TileEntityReactorGlass extends TileEntityReactorPartBase {
 
 	@Override
-	public void isGoodForFrame()  throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Reactor glass may only be used on the exterior faces, not as part of a reactor's frame or interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_glass_position", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Reactor glass may only be used on the exterior faces, not as part of a reactor's frame or interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_glass_position", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override

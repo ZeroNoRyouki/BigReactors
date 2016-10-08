@@ -1,0 +1,21 @@
+{  
+    "forge_marker":1,
+    "defaults": {
+		"model":"minecraft:cube_all",
+		"transform": "forge:default-block"
+	},
+    "variants":{ 
+	     "tier":{  
+            "legacy":{  
+                "textures":{
+					"all":"bigreactors:items/reactor/legacy/casingCore"
+                }
+            },
+            "basic":{  
+                "textures":{
+					"all":"bigreactors:items/reactor/basic/casingCore"
+                }
+            }
+        }
+    }
+}

@@ -1,25 +1,26 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedstonePort;
 import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorRedstonePort;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
-		implements ITickableMultiblockPart {
+public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase implements ITickableMultiblockPart {
 
 	protected CircuitType circuitType;
 	protected int outputLevel;
@@ -32,47 +33,61 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	protected boolean isExternallyPowered;
 	
 	public TileEntityReactorRedstonePort() {
+
 		super();
-		
-		circuitType = circuitType.DISABLED;
-		isExternallyPowered = false;
-		ticksSinceLastUpdate = 0;
+		this.circuitType = circuitType.DISABLED;
+		this.isExternallyPowered = false;
+		this.ticksSinceLastUpdate = 0;
+		this._isLit = false;
 	}
-	
+
+	@Override
+	public boolean canOpenGui(World world, BlockPos posistion, IBlockState state) {
+		return true;
+	}
+
 	// Redstone methods
-	public boolean isRedstoneActive() {
+	protected boolean isRedstoneActive() {
 		if(!this.isConnected()) { return false; }
 
-		MultiblockReactor reactor = (MultiblockReactor)getMultiblockController();
+		MultiblockReactor reactor = this.getReactorController();
 
 		switch(circuitType) {
-		case outputFuelTemperature:
-			return checkVariable((int)reactor.getFuelHeat());
-		case outputCasingTemperature:
-			return checkVariable((int)reactor.getReactorHeat());
-		case outputFuelMix:
-			return checkVariable((int)(reactor.getFuelRichness()*100));
-		case outputFuelAmount:
-			return checkVariable(reactor.getFuelAmount());
-		case outputWasteAmount:
-			return checkVariable(reactor.getWasteAmount());
-		case outputEnergyAmount:
-			return checkVariable(reactor.getEnergyStoredPercentage());
-		case DISABLED:
-			return false;
-		default:
-			return this.isExternallyPowered;
+
+			case outputFuelTemperature:
+				return checkVariable((int)reactor.getFuelHeat());
+
+			case outputCasingTemperature:
+				return checkVariable((int)reactor.getReactorHeat());
+
+			case outputFuelMix:
+				return checkVariable((int)(reactor.getFuelRichness()*100));
+
+			case outputFuelAmount:
+				return checkVariable(reactor.getFuelAmount());
+
+			case outputWasteAmount:
+				return checkVariable(reactor.getWasteAmount());
+
+			case outputEnergyAmount:
+				return checkVariable(reactor.getEnergyStoredPercentage());
+
+			case DISABLED:
+				return false;
+
+			default:
+				return this.isExternallyPowered;
 		}
 	}
 	
 	public boolean isInput() {
-		return TileEntityReactorRedNetPort.isInput(this.circuitType);
+		return this.circuitType.isInput();
 	}
 	
 	public boolean isOutput() {
-		return TileEntityReactorRedNetPort.isOutput(this.circuitType);
+		return this.circuitType.isOutput();
 	}
-	
+
 	protected boolean checkVariable(int value) {
 		if(this.greaterThan) {
 			return value > getOutputLevel();
@@ -81,35 +96,23 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			return value < getOutputLevel();
 		}
 	}
-	
-	public void sendRedstoneUpdate() {
-		if(this.worldObj != null && !this.worldObj.isRemote) {
-			int md;
 
-			if(this.isOutput()) {
-				md = isRedstoneActive() ? BlockReactorRedstonePort.META_REDSTONE_LIT : BlockReactorRedstonePort.META_REDSTONE_UNLIT;
-			}
-			else {
-				md = isExternallyPowered ? BlockReactorRedstonePort.META_REDSTONE_LIT : BlockReactorRedstonePort.META_REDSTONE_UNLIT;
-			}
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
 
-			if(md != this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) {
-				this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, md, 3);
-			}
-		}
-	}
-	
-	public void onNeighborBlockChange(int x, int y, int z, Block neighborBlock) {
-		if(!this.isConnected()) { return; }
+		if (!this.isConnected())
+			return;
 
-		if(this.isInput()) {
-			ForgeDirection out = getOutwardsDir();
-			boolean nowPowered = isReceivingRedstonePowerFrom(worldObj, xCoord+out.offsetX, yCoord+out.offsetY, zCoord+out.offsetZ, out, neighborBlock);
+		if (this.isInput()) {
 
-			if(this.isExternallyPowered != nowPowered) {
+			EnumFacing out = this.getOutwardFacing();
+			boolean nowPowered = (null != out) && isReceivingRedstonePowerFrom(worldObj, this.getWorldPosition().offset(out), out);
+
+			if (this.isExternallyPowered != nowPowered) {
+
 				this.isExternallyPowered = nowPowered;
 				this.onRedstoneInputUpdated();
-				this.sendRedstoneUpdate();
+				this.markDirty();
+				this.updateRedstoneStateAndNotify();
 			}
 		}
 		else {
@@ -121,7 +124,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	protected void onRedstoneInputUpdated() {
 		if(!this.isConnected()) { return; }
 
-		MultiblockReactor reactor = (MultiblockReactor)getMultiblockController();
+		MultiblockReactor reactor = this.getReactorController();
 		switch(this.circuitType) {
 		case inputActive:
 			if(this.isInputActiveOnPulse()) {
@@ -185,25 +188,29 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 		return this.activeOnPulse;
 	}
 
-	/**
+	/** Handle settings update made from GUI - always called on the server thread
 	 * @param newType The type of the new circuit.
-	 * @param param1 For input/control rods, the level(s) to change or set. For outputs, the numerical value
+	 * @param outputLevel For input/control rods, the level(s) to change or set. For outputs, the numerical value
 	 * @param greaterThan For outputs, whether to activate when greater than or less than the outputLevel value. For input/control rods, whether to set (true) or change (false) the values.
 	 */
 	public void onReceiveUpdatePacket(int newType, int outputLevel, boolean greaterThan, boolean activeOnPulse) {
+
+		BlockPos position = this.getWorldPosition();
+
 		this.circuitType = CircuitType.values()[newType];
 		this.outputLevel = outputLevel;
 		this.greaterThan = greaterThan;
 		this.activeOnPulse = activeOnPulse;
+		this.updateLitState();
 
 		if(isAlwaysActiveOnPulse(circuitType)) { this.activeOnPulse = true; }
-		else if(TileEntityReactorRedNetPort.isOutput(this.circuitType)) { this.activeOnPulse = false; }
+		else if (this.circuitType.isOutput()) { this.activeOnPulse = false; }
 		
 		// Do updates
 		if(this.isInput()) {
 			// Update inputs so we don't pulse/change automatically
-			ForgeDirection out = getOutwardsDir();
-			this.isExternallyPowered = isReceivingRedstonePowerFrom(worldObj, xCoord+out.offsetX, yCoord+out.offsetY, zCoord+out.offsetZ, out);
+			EnumFacing out = this.getOutwardFacing();
+			this.isExternallyPowered = (null != out) && this.isReceivingRedstonePowerFrom(worldObj, position.offset(out), out);
 			if(!this.isInputActiveOnPulse()) {
 				onRedstoneInputUpdated();
 			}
@@ -212,32 +219,34 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			this.isExternallyPowered = false;
 		}
 
-		// Ensure visuals and metadata reflect our new settings & state
-		this.sendRedstoneUpdate();
+		this.nofityTileEntityUpdate();
 
-		if(!this.worldObj.isRemote) {
-			// Propagate the new settings
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			this.worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-		}
+		EnumFacing outward = this.getOutwardFacing();
+
+		if (null != outward)
+			this.worldObj.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public boolean getGreaterThan() { return this.greaterThan; }
-	
+
 	public CircuitType getCircuitType() { return this.circuitType; }
+
 	private boolean shouldSetControlRodsInsteadOfChange() { return !greaterThan; }
 
+	// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
+	/*
 	public void onRedNetUpdate(int powerLevel) {
 		if(this.isInput()) {
 			boolean wasPowered = this.isExternallyPowered;
 			this.isExternallyPowered = powerLevel > 0;
 			if(wasPowered != this.isExternallyPowered) {
 				this.onRedstoneInputUpdated();
-				this.sendRedstoneUpdate();
+				this.updateRedstoneStateAndNotify();
 			}
 		}
 	}
+	*/
 	
 	/**
 	 * Call with the coordinates of the block to check and the direction
@@ -245,20 +254,27 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	 * If the block towards which this block is emitting power lies north,
 	 * then pass in south.
 	 */
-	private boolean isReceivingRedstonePowerFrom(World world, int x, int y, int z, ForgeDirection dir) {
+	private boolean isReceivingRedstonePowerFrom(World world, BlockPos position, EnumFacing facing) {
+
+		return world.isBlockIndirectlyGettingPowered(position) > 0 ||
+				world.getRedstonePower(position, facing) > 0;
+		/*
 		// This is because of bugs in vanilla redstone wires
 		Block block = world.getBlock(x, y, z);
-		return isReceivingRedstonePowerFrom(world, x, y, z, dir, block);
+		return isReceivingRedstonePowerFrom(world, x, y, z, facing, block);
+		*/
 	}
-	
+
 	/**
 	 * Call with the coordinates of the block to check and the direction
 	 * towards that block from your block.
 	 * If the block towards which this block is emitting power lies north,
 	 * then pass in south.
 	 */
-	private boolean isReceivingRedstonePowerFrom(World world, int x, int y, int z, ForgeDirection dir, Block neighborBlock) {
-		if(neighborBlock == Blocks.redstone_wire) {
+	/*
+	private boolean isReceivingRedstonePowerFrom(World world, BlockPos position, EnumFacing facing, Block neighborBlock) {
+
+		if (neighborBlock == Blocks.redstone_wire) {
 			// Use metadata because of vanilla redstone wire bugs
 			return world.getBlockMetadata(x, y, z) > 0;
 		}
@@ -266,21 +282,24 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 			return world.getIndirectPowerOutput(x, y, z, dir.ordinal()) || world.isBlockProvidingPowerTo(x, y, z, dir.ordinal()) > 0;
 		}
 	}
+	*/
 	
 	// TileEntity overrides
 
 	// Only refresh if we're switching functionality
 	// Warning: dragonz!
+	/*
 	@Override
-    public boolean shouldRefresh(Block oldID, Block newID, int oldMeta, int newMeta, World world, int x, int y, int z)
-    {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		/ *
 		if(oldID != newID) {
 			return true;
 		}
+		* /
 	
 		// All redstone ports are the same, we just use metadata to easily signal changes.
 		return false;
-    }
+    }*/
 
 	// IReactorTickable
 	/**
@@ -288,24 +307,22 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	 * Will only send one update per N ticks, where N is a configurable setting.
 	 */
 	public void onMultiblockServerTick() {
-		if(!this.isConnected()) { return; }
 
-		ticksSinceLastUpdate++;
-		if(ticksSinceLastUpdate < BigReactors.ticksPerRedstoneUpdate) { return; }
+		if (!this.isConnected() || (this.ticksSinceLastUpdate++ < BigReactors.CONFIG.ticksPerRedstoneUpdate))
+			return;
 
-		if(this.isOutput()) {
-			// Will no-op if there's no change.
-			this.sendRedstoneUpdate();
-		}
-		ticksSinceLastUpdate = 0;
+		this.updateRedstoneStateAndNotify();
+		this.ticksSinceLastUpdate = 0;
 	}
-	
+
+	/*
 	// MultiblockTileEntityBase methods
 	private void readData(NBTTagCompound data) {
+
 		if(data.hasKey("circuitType")) {
 			this.circuitType = circuitType.values()[data.getInteger("circuitType")];
 		}
-		
+
 		if(data.hasKey("outputLevel")) {
 			this.outputLevel = data.getInteger("outputLevel");
 		}
@@ -320,6 +337,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	}
 	
 	private void writeData(NBTTagCompound data) {
+
 		data.setInteger("circuitType", this.circuitType.ordinal());
 		data.setInteger("outputLevel", this.outputLevel);
 		data.setBoolean("greaterThan", this.greaterThan);
@@ -330,7 +348,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
 		this.readData(data);
-		this.sendRedstoneUpdate();
+		this.updateRedstoneStateAndNotify();
 	}
 
 	@Override
@@ -343,73 +361,170 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase
 	public void decodeDescriptionPacket(NBTTagCompound data) {
 		super.decodeDescriptionPacket(data);
 		this.readData(data);
+		WorldHelper.notifyBlockUpdate(this.WORLD, this.getWorldPosition(), null, null);
 	}
 
 	@Override
 	public void encodeDescriptionPacket(NBTTagCompound data) {
 		super.encodeDescriptionPacket(data);
 		this.writeData(data);
-	}
-	
+	}*/
+
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may only be placed on a reactor's external side faces, not as part of the frame", xCoord, yCoord, zCoord));
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataFrom(data, syncReason);
+
+		if (data.hasKey("circuitType"))
+			this.circuitType = circuitType.values()[data.getInteger("circuitType")];
+
+		if (data.hasKey("outputLevel"))
+			this.outputLevel = data.getInteger("outputLevel");
+
+		if (data.hasKey("greaterThan"))
+			this.greaterThan = data.getBoolean("greaterThan");
+
+		if (data.hasKey("activeOnPulse"))
+			this.activeOnPulse = data.getBoolean("activeOnPulse");
+
+		if (data.hasKey("lit"))
+			this._isLit = data.getBoolean("lit");
+
+		if (SyncReason.FullSync == syncReason) {
+			this.updateRedstoneStateAndNotify();
+		} else {
+			WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
+		}
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataTo(data, syncReason);
+
+		data.setInteger("circuitType", this.circuitType.ordinal());
+		data.setInteger("outputLevel", this.outputLevel);
+		data.setBoolean("greaterThan", this.greaterThan);
+		data.setBoolean("activeOnPulse", this.activeOnPulse);
+		data.setBoolean("lit", this._isLit);
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may only be placed on a reactor's external side faces, not the top", xCoord, yCoord, zCoord));
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_frame", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may only be placed on a reactor's external side faces, not the bottom", xCoord, yCoord, zCoord));
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+		return true;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - Redstone ports may not be placed in a reactor's interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_top", position.getX(), position.getY(), position.getZ());
+		return false;
+	}
+
+	@Override
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_bottom", position.getX(), position.getY(), position.getZ());
+		return false;
+	}
+
+	@Override
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+
+		BlockPos position = this.getPos();
+
+		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_interior", position.getX(), position.getY(), position.getZ());
+		return false;
 	}
 
 	@Override
 	public void onMachineAssembled(MultiblockControllerBase controller) {
 		super.onMachineAssembled(controller);
-		this.sendRedstoneUpdate();
+		this.updateRedstoneStateAndNotify();
 	}
 
 	@Override
 	public void onMachineBroken() {
 		super.onMachineBroken();
-		this.sendRedstoneUpdate();
+		this.updateRedstoneStateAndNotify();
 	}
 
 	@Override
 	public void onMachineActivated() {
-		this.sendRedstoneUpdate();
+		this.updateRedstoneStateAndNotify();
 	}
 
 	@Override
 	public void onMachineDeactivated() {
-		this.sendRedstoneUpdate();
-	}
-
-	// IBeefGuiEntity
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
-		return new GuiReactorRedstonePort(new ContainerBasic(), this);
+		this.updateRedstoneStateAndNotify();
 	}
 
 	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
+	public Object getServerGuiElement(int guiId, EntityPlayer player) {
 		return new ContainerBasic();
+	}
+
+	@Override
+	public Object getClientGuiElement(int guiId, EntityPlayer player) {
+		return new GuiReactorRedstonePort(new ContainerBasic(), this);
 	}
 
 	public static boolean isAlwaysActiveOnPulse(CircuitType circuitType) {
 		return circuitType == CircuitType.inputEjectWaste;
 	}
+
+	/**
+	 * @return the level of power emitted by this port
+     */
+	public int getWeakPower() {
+		return this.isOutput() && this.isRedstoneActive() ? 15 /* strong power */ : 0 /* no power */;
+	}
+
+	/**
+	 * @return true if the port is receiving or emitting a redstone signal, false otherwise
+     */
+	public boolean isLit() {
+		return this._isLit;
+	}
+
+	/**
+	 * update the "lit" state and return it
+	 * @return the lit state
+     */
+	protected boolean updateLitState() {
+		return this._isLit = (this.isOutput() && this.isRedstoneActive()) || this.isExternallyPowered;
+	}
+
+	private void updateRedstoneStateAndNotify() {
+
+		if ((null != this.worldObj) && WorldHelper.calledByLogicalServer(this.worldObj)) {
+
+			boolean oldLitState = this._isLit;
+
+			if (oldLitState != this.updateLitState()) {
+
+				this.nofityTileEntityUpdate();
+
+				EnumFacing outward = this.getOutwardFacing();
+
+				if (null != outward)
+					this.worldObj.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
+			}
+		}
+	}
+
+	private boolean _isLit;
 }

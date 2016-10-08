@@ -1,42 +1,49 @@
 package erogenousbeef.bigreactors.net.message;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
-import erogenousbeef.bigreactors.net.message.base.WorldMessageServer;
+import io.netty.buffer.ByteBuf;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class ControlRodChangeNameMessage extends WorldMessageServer {
-    private String name;
+public class ControlRodChangeNameMessage extends ModTileEntityMessage {
 
-    public ControlRodChangeNameMessage() { super(); name = null; }
+    public ControlRodChangeNameMessage() {
+        this._name = null;
+    }
     
-    public ControlRodChangeNameMessage(int x, int y, int z, String name) {
-    	super(x, y, z);
-        this.name = name;
+    public ControlRodChangeNameMessage(BlockPos position, String name) {
+
+    	super(position);
+        this._name = name;
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-    	super.fromBytes(buf);
-        name = ByteBufUtils.readUTF8String(buf);
+    public void fromBytes(ByteBuf buffer) {
+
+    	super.fromBytes(buffer);
+        this._name = ByteBufUtils.readUTF8String(buffer);
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-    	super.toBytes(buf);
-        ByteBufUtils.writeUTF8String(buf, name);
+    public void toBytes(ByteBuf buffer) {
+
+    	super.toBytes(buffer);
+        ByteBufUtils.writeUTF8String(buffer, this._name);
     }
 
-    public static class Handler extends WorldMessageServer.Handler<ControlRodChangeNameMessage> {
-    	@Override
-    	protected IMessage handleMessage(ControlRodChangeNameMessage message, MessageContext ctx, TileEntity te) {
-    		if(te instanceof TileEntityReactorControlRod) {
-    			((TileEntityReactorControlRod)te).setName(message.name);
-    		}
-    		return null;
-    	}
+    private String _name;
+
+    public static class Handler extends ModTileEntityMessageHandlerServer<ControlRodChangeNameMessage> {
+
+        @Override
+        protected void processTileEntityMessage(ControlRodChangeNameMessage message, MessageContext ctx, TileEntity tileEntity) {
+
+            if (tileEntity instanceof TileEntityReactorControlRod)
+                ((TileEntityReactorControlRod)tileEntity).setName(message._name);
+        }
     }
 }

@@ -1,16 +1,17 @@
+/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.net.helpers;
 
 import io.netty.buffer.ByteBuf;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
-import erogenousbeef.core.common.CoordTriplet;
+import net.minecraft.util.math.BlockPos;
 
 public class RedNetChange {
 	int channelID;
 	CircuitType circuitType;
 	boolean pulseOrToggle;
-	CoordTriplet coord;
+	BlockPos coord;
 	
-	public RedNetChange(int channelID, CircuitType circuitType, boolean pulseOrToggle, CoordTriplet coord) {
+	public RedNetChange(int channelID, CircuitType circuitType, boolean pulseOrToggle, BlockPos coord) {
 		this.channelID = channelID;
 		this.circuitType = circuitType;
 		this.pulseOrToggle = pulseOrToggle;
@@ -25,12 +26,12 @@ public class RedNetChange {
 		if(CircuitType.canBeToggledBetweenPulseAndNormal(type)) {
 			pulseOrToggle = buf.readBoolean();
 		}
-		
-		CoordTriplet coord = null;
+
+		BlockPos coord = null;
 		if(CircuitType.hasCoordinate(type)) {
 			boolean coordNull = buf.readBoolean();
 			if(!coordNull) {
-				coord = new CoordTriplet(buf.readInt(), buf.readInt(), buf.readInt());
+				coord = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
 			}
 		}
 		
@@ -48,15 +49,16 @@ public class RedNetChange {
 		if(CircuitType.hasCoordinate(circuitType)) {
 			buf.writeBoolean(coord == null);
 			if(coord != null) {
-				buf.writeInt(coord.x);
-				buf.writeInt(coord.y);
-				buf.writeInt(coord.z);
+				buf.writeInt(coord.getX());
+				buf.writeInt(coord.getY());
+				buf.writeInt(coord.getZ());
 			}
 		}
 	}
 
 	public int getChannel() { return channelID; }
 	public CircuitType getType() { return this.circuitType; }
-	public CoordTriplet getCoord() { return coord; }
+	public BlockPos getCoord() { return coord; }
 	public boolean getPulseOrToggle() { return this.pulseOrToggle; }
 }
+*/

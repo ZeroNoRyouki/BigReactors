@@ -1,13 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.IFluidBlock;
-import cofh.lib.util.helpers.ItemHelper;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.IRadiationModerator;
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
@@ -15,10 +7,18 @@ import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
-import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.multiblock.MultiblockValidationException;
-import erogenousbeef.core.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
+import it.zerono.mods.zerocore.util.ItemHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implements IRadiationModerator, IHeatEntity {
 
@@ -35,8 +35,12 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		MultiblockReactor reactor = getReactorController();
 		float heat = reactor.getFuelHeat();
 		
-		int maxY = reactor.getMaximumCoord().y;
-		TileEntity te = worldObj.getTileEntity(xCoord, maxY, zCoord);
+		int maxY = reactor.getMaximumCoord().getY();
+		BlockPos position = this.getPos();
+
+		position = new BlockPos(position.getX(), maxY, position.getZ());
+
+		TileEntity te = worldObj.getTileEntity(position);
 		if(!(te instanceof TileEntityReactorControlRod)) {
 			return;
 		}
@@ -94,45 +98,61 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 	}
 
 	// RectangularMultiblockTileEntityBase
+
+
 	@Override
-	public void isGoodForFrame() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - fuel rods may only be placed in the reactor interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_position", this.getPos());
+		return false;
 	}
 
 	@Override
-	public void isGoodForSides() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - fuel rods may only be placed in the reactor interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForSides(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_position", this.getPos());
+		return false;
 	}
 
 	@Override
-	public void isGoodForTop() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - fuel rods may only be placed in the reactor interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_position", this.getPos());
+		return false;
 	}
 
 	@Override
-	public void isGoodForBottom() throws MultiblockValidationException {
-		throw new MultiblockValidationException(String.format("%d, %d, %d - fuel rods may only be placed in the reactor interior", xCoord, yCoord, zCoord));
+	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_position", this.getPos());
+		return false;
 	}
 
 	@Override
-	public void isGoodForInterior() throws MultiblockValidationException {
+	public boolean isGoodForInterior(IMultiblockValidator validatorCallback) {
+		/*
 		// Check above and below. Above must be fuel rod or control rod.
-		TileEntity entityAbove = this.worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+		BlockPos position = this.getPos();
+
+		TileEntity entityAbove = this.WORLD.getTileEntity(position.up());
 		if(!(entityAbove instanceof TileEntityReactorFuelRod || entityAbove instanceof TileEntityReactorControlRod)) {
-			throw new MultiblockValidationException(String.format("Fuel rod at %d, %d, %d must be part of a vertical column that reaches the entire height of the reactor, with a control rod on top.", xCoord, yCoord, zCoord));
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_column", position);
+			return false;
 		}
 
 		// Below must be fuel rod or the base of the reactor.
-		TileEntity entityBelow = this.worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		TileEntity entityBelow = this.WORLD.getTileEntity(position.down());
 		if(entityBelow instanceof TileEntityReactorFuelRod) {
-			return;
+			return true;
 		}
 		else if(entityBelow instanceof RectangularMultiblockTileEntityBase) {
-			((RectangularMultiblockTileEntityBase)entityBelow).isGoodForBottom();
-			return;
+			return ((RectangularMultiblockTileEntityBase)entityBelow).isGoodForBottom(validatorCallback);
 		}
-		
-		throw new MultiblockValidationException(String.format("Fuel rod at %d, %d, %d must be part of a vertical column that reaches the entire height of the reactor, with a control rod on top.", xCoord, yCoord, zCoord));
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_fuelrod_column", position);
+		return false;
+		*/
+		return true;
 	}
 
 	@Override
@@ -153,10 +173,14 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 	 */
 	public float getHeatTransferRate() {
 		float heatTransferRate = 0f;
-
 		TileEntity te;
-		for(ForgeDirection dir: StaticUtils.CardinalDirections) {
-			te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+		BlockPos position = this.getPos(), targetPosition;
+
+		for(EnumFacing dir: EnumFacing.HORIZONTALS) {
+
+			targetPosition = position.offset(dir);
+
+			te = worldObj.getTileEntity(targetPosition);
 			if(te instanceof TileEntityReactorFuelRod) {
 				// We don't transfer to other fuel rods, due to heat pooling.
 				continue;
@@ -164,37 +188,39 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 			else if(te instanceof IHeatEntity) {
 				heatTransferRate += ((IHeatEntity)te).getThermalConductivity();
 			}
-			else if(worldObj.isAirBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ)) {
+			else if(worldObj.isAirBlock(targetPosition)) {
 				heatTransferRate += IHeatEntity.conductivityAir;
 			}
 			else {
-
-				Block block = worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-				int metadata = worldObj.getBlockMetadata(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-				heatTransferRate += getConductivityFromBlock(block, metadata);
+				heatTransferRate += getConductivityFromBlock(worldObj.getBlockState(targetPosition));
 			}
 		}
 
 		return heatTransferRate;
 	}
 	
-	private float getConductivityFromBlock(Block block, int metadata) {
-		ReactorInteriorData interiorData = null;
-		
-		if(block == Blocks.iron_block) {
+	private float getConductivityFromBlock(IBlockState blockState) {
+
+		ReactorInteriorData interiorData;
+		Block block = blockState.getBlock();
+
+		if(block == Blocks.IRON_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockIron");
 		}
-		else if(block == Blocks.gold_block) {
+		else if(block == Blocks.GOLD_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockGold");
 		}
-		else if(block == Blocks.diamond_block) {
+		else if(block == Blocks.DIAMOND_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockDiamond");
 		}
-		else if(block == Blocks.emerald_block) {
+		else if(block == Blocks.EMERALD_BLOCK) {
 			interiorData = ReactorInterior.getBlockData("blockEmerald");
 		}
+		else if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+			interiorData = RadiationHelper.waterData;
+		}
 		else {
-			interiorData = ReactorInterior.getBlockData(ItemHelper.oreProxy.getOreName(new ItemStack(block, 1, metadata)));
+			interiorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
 
 			if(interiorData == null && block instanceof IFluidBlock) {
 				Fluid fluid = ((IFluidBlock)block).getFluid();
@@ -210,4 +236,14 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		
 		return interiorData.heatConductivity;
 	}
+
+	public void linkToAssembly(final FuelAssembly assembly) {
+		this._assembly = assembly;
+	}
+
+	public FuelAssembly getFuelAssembly() {
+		return this._assembly;
+	}
+
+	private FuelAssembly _assembly;
 }

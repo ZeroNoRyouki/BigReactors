@@ -1,28 +1,30 @@
 package erogenousbeef.bigreactors.utils.intermod;
 
-import java.lang.reflect.Method;
-
+import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.item.ItemBRMetal;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.Optional;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.item.ItemIngot;
+import net.minecraftforge.fml.common.Optional;
+
+import java.lang.reflect.Method;
 
 public class ModHelperMekanism extends ModHelperBase {
 
 	@Optional.Method(modid = "Mekanism")
 	@Override
 	public void register() {
-		ItemIngot ingotGeneric = ((ItemIngot)BigReactors.ingotGeneric);
+		ItemBRMetal ingotGeneric = BrItems.ingotMetals;
 		
-		ItemStack yelloriteOre 	= new ItemStack(BigReactors.blockYelloriteOre, 1);
-		ItemStack ingotYellorium= ingotGeneric.getItemStackForType("ingotYellorium");
-		ItemStack ingotCyanite 	= ingotGeneric.getItemStackForType("ingotCyanite");
-		ItemStack ingotGraphite = ingotGeneric.getItemStackForType("ingotGraphite");
-		ItemStack ingotBlutonium= ingotGeneric.getItemStackForType("ingotBlutonium");
-		ItemStack dustYellorium = ingotGeneric.getItemStackForType("dustYellorium");
-		ItemStack dustCyanite 	= ingotGeneric.getItemStackForType("dustCyanite");
-		ItemStack dustGraphite 	= ingotGeneric.getItemStackForType("dustGraphite");
-		ItemStack dustBlutonium = ingotGeneric.getItemStackForType("dustBlutonium");
+		ItemStack yelloriteOre 	= new ItemStack(BrBlocks.brOre, 1);
+		ItemStack ingotYellorium= BrItems.ingotMetals.createItemStack(MetalType.Yellorium, 1);
+		ItemStack ingotCyanite 	= BrItems.ingotMetals.createItemStack(MetalType.Cyanite, 1);
+		ItemStack ingotGraphite = BrItems.ingotMetals.createItemStack(MetalType.Graphite, 1);
+		ItemStack ingotBlutonium= BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1);
+		ItemStack dustYellorium = BrItems.dustMetals.createItemStack(MetalType.Yellorium, 1);
+		ItemStack dustCyanite 	= BrItems.dustMetals.createItemStack(MetalType.Cyanite, 1);
+		ItemStack dustGraphite 	= BrItems.dustMetals.createItemStack(MetalType.Graphite, 1);
+		ItemStack dustBlutonium = BrItems.dustMetals.createItemStack(MetalType.Blutonium, 1);
 
 		// Some mods make me do this myself. :V
 		ItemStack doubledYelloriumDust = null;

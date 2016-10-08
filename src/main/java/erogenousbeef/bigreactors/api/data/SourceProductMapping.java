@@ -9,8 +9,8 @@ public class SourceProductMapping {
 	
 	/**
 	 * Maps a source item to a product item, with quantities attached.
-	 * @param source The key of the source item, e.g. oredict name, fluidict name or reactant name
-	 * @param product The key of the product item, e.g. oredict name, fluidict name or reactant name
+	 * @param sourceKey The key of the source item, e.g. oredict name, fluidict name or reactant name
+	 * @param productKey The key of the product item, e.g. oredict name, fluidict name or reactant name
 	 * @param sourceAmount The amount of source stuff used
 	 * @param productAmount The amount of product stuff produced
 	 */

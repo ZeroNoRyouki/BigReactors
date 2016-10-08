@@ -1,11 +1,13 @@
 package erogenousbeef.bigreactors.common.tileentity.base;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
-public abstract class TileEntityPoweredInventory extends TileEntityInventory implements IEnergyHandler {
+public abstract class TileEntityPoweredInventory extends TileEntityInventory implements IEnergyHandler, ITickable {
 	public static float energyPerRF = 1f;
 	
 	protected boolean m_ReceivesEnergy = true;
@@ -76,7 +78,39 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		if(cycledTicks < 0) { return 0f; }
 		else { return (float)cycledTicks / (float)getCycleLength(); }
 	}
-	
+
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataFrom(data, syncReason);
+
+		if (SyncReason.FullSync == syncReason) {
+
+			if(data.hasKey("energyStorage")) {
+				this.energyStorage.readFromNBT(data.getCompoundTag("energyStorage"));
+			}
+
+			if(data.hasKey("cycledTicks")) {
+				cycledTicks = data.getInteger("cycledTicks");
+			}
+		}
+	}
+
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataTo(data, syncReason);
+
+		if (SyncReason.FullSync == syncReason) {
+
+			NBTTagCompound energyTag = new NBTTagCompound();
+			this.energyStorage.writeToNBT(energyTag);
+			data.setTag("energyStorage", energyTag);
+			data.setInteger("cycledTicks", cycledTicks);
+		}
+	}
+
+	/*
 	// TileEntity overrides
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -98,12 +132,11 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		this.energyStorage.writeToNBT(energyTag);
 		tag.setTag("energyStorage", energyTag);
 		tag.setInteger("cycledTicks", cycledTicks);
-	}
+	}*/
 	
 	// TileEntity methods	
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
 		
 		if(!worldObj.isRemote) {
 			// Energy consumption is all callback-based now.
@@ -115,12 +148,12 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 				// If we don't have the stuff to begin a cycle, stop now
 				if(!canBeginCycle()) {
 					cycledTicks = -1;
-					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 				}
 				else if(cycledTicks >= getCycleLength()) {
 					onPoweredCycleEnd();
 					cycledTicks = -1;
-					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 				}
 			}
 
@@ -129,7 +162,7 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 				this.energyStorage.extractEnergy(getCycleEnergyCost(), false);
 				cycledTicks = 0;
 				onPoweredCycleBegin();
-				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 			}
 		}
 	}
@@ -152,32 +185,34 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 	}
 	
 	/* IEnergyHandler */
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 		if(!m_ReceivesEnergy) { return 0; }
 		return energyStorage.receiveEnergy(maxReceive, simulate);
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 		if(!m_ProvidesEnergy) { return 0; }
 		return energyStorage.extractEnergy(maxExtract, simulate);
 	}
+	*/
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-
+	public boolean canConnectEnergy(EnumFacing from) {
 		return true;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 
 		return energyStorage.getEnergyStored();
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 
 		return energyStorage.getMaxEnergyStored();
 	}

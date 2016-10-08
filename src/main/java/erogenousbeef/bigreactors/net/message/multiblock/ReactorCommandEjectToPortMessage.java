@@ -1,66 +1,70 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
-import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
 import erogenousbeef.bigreactors.net.message.base.ReactorMessageServer;
-import erogenousbeef.core.common.CoordTriplet;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ReactorCommandEjectToPortMessage extends ReactorMessageServer {
-	protected boolean ejectFuel;
-	protected boolean dumpExcess;
-	int portX, portY, portZ;
-	
-	public ReactorCommandEjectToPortMessage() { 
-		super();
-		ejectFuel = dumpExcess = false;
-		portX = portY = portZ = Integer.MAX_VALUE;
+
+	public ReactorCommandEjectToPortMessage() {
+
+		this._ejectFuel = this._dumpExcess = false;
+		this._portX = this._portY = this._portZ = Integer.MAX_VALUE;
 	}
 	
-	public ReactorCommandEjectToPortMessage(TileEntityReactorAccessPort destination,
-											boolean ejectFuel,
-											boolean dumpExcess) {
+	public ReactorCommandEjectToPortMessage(TileEntityReactorAccessPort destination, boolean ejectFuel, boolean dumpExcess) {
+
 		super(destination.getReactorController());
-		this.portX = destination.xCoord;
-		this.portY = destination.yCoord;
-		this.portZ = destination.zCoord;
-		this.ejectFuel = ejectFuel;
-		this.dumpExcess = dumpExcess;
+
+		BlockPos position = destination.getPos();
+
+		this._portX = position.getX();
+		this._portY = position.getY();
+		this._portZ = position.getZ();
+		this._ejectFuel = ejectFuel;
+		this._dumpExcess = dumpExcess;
 	}
 	
 	@Override
 	public void fromBytes(ByteBuf buf) {
+
 		super.fromBytes(buf);
-		ejectFuel = buf.readBoolean();
-		dumpExcess = buf.readBoolean();
-		portX = buf.readInt();
-		portY = buf.readInt();
-		portZ = buf.readInt();
+		this._ejectFuel = buf.readBoolean();
+		this._dumpExcess = buf.readBoolean();
+		this._portX = buf.readInt();
+		this._portY = buf.readInt();
+		this._portZ = buf.readInt();
 	}
 	
 	@Override
 	public void toBytes(ByteBuf buf) {
+
 		super.toBytes(buf);
-		buf.writeBoolean(ejectFuel);
-		buf.writeBoolean(dumpExcess);
-		buf.writeInt(portX);
-		buf.writeInt(portY);
-		buf.writeInt(portZ);
+		buf.writeBoolean(this._ejectFuel);
+		buf.writeBoolean(this._dumpExcess);
+		buf.writeInt(this._portX);
+		buf.writeInt(this._portY);
+		buf.writeInt(this._portZ);
 	}
-	
+
+	private boolean _ejectFuel;
+	private boolean _dumpExcess;
+	private int _portX, _portY, _portZ;
+
 	public static class Handler extends ReactorMessageServer.Handler<ReactorCommandEjectToPortMessage> {
+
 		@Override
-		public IMessage handleMessage(ReactorCommandEjectToPortMessage message, MessageContext ctx, MultiblockReactor reactor) {
-			CoordTriplet dest = new CoordTriplet(message.portX, message.portY, message.portZ);
-			if(message.ejectFuel) {
-				reactor.ejectFuel(message.dumpExcess, dest);
-			}
-			else {
-				reactor.ejectWaste(message.dumpExcess, dest);
-			}
-			return null;
+		protected void processReactorMessage(ReactorCommandEjectToPortMessage message, MessageContext ctx, MultiblockReactor reactor) {
+
+			BlockPos dest = new BlockPos(message._portX, message._portY, message._portZ);
+
+			if (message._ejectFuel)
+				reactor.ejectFuel(message._dumpExcess, dest);
+			else
+				reactor.ejectWaste(message._dumpExcess, dest);
 		}
 	}
 }

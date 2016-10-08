@@ -1,180 +1,170 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import java.util.List;
-
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.Properties;
+import erogenousbeef.bigreactors.common.multiblock.PartTier;
+import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.lib.PropertyBlockFacings;
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
-import erogenousbeef.bigreactors.utils.StaticUtils;
-import erogenousbeef.core.multiblock.IMultiblockPart;
-import erogenousbeef.core.multiblock.MultiblockControllerBase;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class BlockMultiblockGlass extends BlockContainer {
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
-	public static final int METADATA_REACTOR = 0;
-	public static final int METADATA_TURBINE = 1;
-	
-	private static final String textureBaseName = "multiblockGlass";
-	
-	private static String[] subBlocks = new String[] { "reactor", "turbine" };
-	private IIcon[][] icons = new IIcon[subBlocks.length][16];
-	private IIcon transparentIcon;
-	
-	public BlockMultiblockGlass(Material material) {
-		super(material);
-		
-		setStepSound(soundTypeGlass);
-		setHardness(2.0f);
-		setBlockName("brMultiblockGlass");
-		this.setBlockTextureName(BigReactors.TEXTURE_NAME_PREFIX + textureBaseName);
-		setCreativeTab(BigReactors.TAB);
+public class BlockMultiblockGlass extends BlockTieredPart {
+
+	public BlockMultiblockGlass(PartType type, String blockName) {
+
+		super(type, blockName, Material.GLASS);
+		this.setSoundType(SoundType.GLASS);
+		this._actualFacings = new boolean[EnumFacing.VALUES.length];
 	}
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
-		switch(metadata) {
-		case METADATA_REACTOR:
-			return new TileEntityReactorGlass();
-		case METADATA_TURBINE:
-			return new TileEntityTurbinePartGlass();
-		default:
-			throw new IllegalArgumentException("Unrecognized metadata");
-		}
-	}
-	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.transparentIcon = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + "tile." + textureBaseName + ".transparent");
-		
-		for(int metadata = 0; metadata < subBlocks.length; metadata++) {
-			for(int i = 0; i < 16; ++i) {
-				icons[metadata][i] = par1IconRegister.registerIcon(BigReactors.TEXTURE_NAME_PREFIX + "tile." + textureBaseName + "." + subBlocks[metadata] + "." + Integer.toString(i));
-			}
+	public void onPostClientRegister() {
+
+		Item item = Item.getItemFromBlock(this);
+		ResourceLocation name = this.getRegistryName();
+		String domain = name.getResourceDomain();
+		String path = name.getResourcePath();
+
+		ModelLoader.setCustomStateMapper(this, (new StateMap.Builder()).withName(Properties.TIER).withSuffix("_" + path).build());
+
+		for (PartTier tier: PartTier.RELEASED_TIERS) {
+
+			ResourceLocation location = new ResourceLocation(domain, tier.getName() + "_" + path);
+
+			ModelLoader.setCustomModelResourceLocation(item, tier.toMeta(), new ModelResourceLocation(location, "inventory"));
 		}
 	}
 
 	@Override
-    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-		ForgeDirection[] dirsToCheck = StaticUtils.neighborsBySide[side];
-		ForgeDirection dir;
-		Block myBlock = blockAccess.getBlock(x, y, z);
-		int myBlockMetadata = blockAccess.getBlockMetadata(x, y, z);
-		
-		// First check if we have a block in front of us of the same type - if so, just be completely transparent on this side
-		ForgeDirection out = ForgeDirection.getOrientation(side);
-		if(blockAccess.getBlock(x + out.offsetX, y + out.offsetY, z + out.offsetZ) == myBlock &&
-				blockAccess.getBlockMetadata(x + out.offsetX, y + out.offsetY, z + out.offsetZ) == myBlockMetadata) {
-			return transparentIcon;
+	public void registerRecipes() {
+
+		final EnumSet<PartTier> tiers;
+		final BlockMultiblockCasing casingBlock;
+		final boolean useGlassReinforced = BigReactors.CONFIG.requireObsidianGlass && OreDictionaryHelper.doesOreNameExist("glassReinforced");
+		final boolean useGlassHardened = BigReactors.CONFIG.requireObsidianGlass && OreDictionaryHelper.doesOreNameExist("blockGlassHardened");
+		final List<String> glassTypes = new ArrayList<>();
+
+		if (PartType.ReactorGlass == this._type) {
+
+			tiers = PartTier.REACTOR_TIERS;
+			casingBlock = BrBlocks.reactorCasing;
+
+		} else {
+
+			tiers = PartTier.TURBINE_TIERS;
+			casingBlock = BrBlocks.turbineHousing;
 		}
-		
-		// Calculate icon index based on whether the blocks around this block match it
-		// Icons use a naming pattern so that the bits correspond to:
-		// 1 = Connected on top, 2 = connected on bottom, 4 = connected on left, 8 = connected on right
-		int iconIdx = 0;
-		for(int i = 0; i < dirsToCheck.length; i++) {
-			dir = dirsToCheck[i];
-			// Same blockID and metadata on this side?
-			if(blockAccess.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == myBlock &&
-					blockAccess.getBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == myBlockMetadata) {
-				// Connected!
-				iconIdx |= 1 << i;
-			}
+
+		if (useGlassReinforced)
+			glassTypes.add("glassReinforced");
+
+		if (useGlassHardened)
+			glassTypes.add("blockGlassHardened");
+
+		if (!useGlassReinforced && !useGlassHardened)
+			glassTypes.add("blockGlassColorless");
+
+		for (PartTier tier : tiers) {
+
+			final ItemStack output = this.createItemStack(tier, 1);
+			final ItemStack casing = casingBlock.createItemStack(tier, 1);
+
+			for (String glass : glassTypes)
+				GameRegistry.addRecipe(new ShapedOreRecipe(output, "GCG", 'G', glass, 'C', casing));
 		}
-		
-		return icons[myBlockMetadata][iconIdx];
-	}
-	
-	@Override
-	public IIcon getIcon(int side, int metadata) {
-		return icons[metadata][0];
 	}
 
 	@Override
-	public boolean isOpaqueCube()
-	{
+	public TileEntity createTileEntity(World world, IBlockState state) {
+
+		switch (this._type) {
+
+			case ReactorGlass:
+				return new TileEntityReactorGlass();
+
+			case TurbineGlass:
+				return new TileEntityTurbinePartGlass();
+
+			default:
+				throw new IllegalArgumentException("Unrecognized part");
+		}
+	}
+
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos position) {
+
+		Block thisBlock = state.getBlock();
+		int len = EnumFacing.VALUES.length;
+
+		for (int i = 0; i < len; ++i) {
+
+			IBlockState neighbor = world.getBlockState(position.offset(EnumFacing.VALUES[i]));
+
+			this._actualFacings[i] = thisBlock == neighbor.getBlock();
+		}
+
+		BlockFacings facings = BlockFacings.from(this._actualFacings);
+
+		return state.withProperty(PropertyBlockFacings.FACINGS, facings.toProperty());
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
-	@Override
-	public int damageDropped(int metadata)
-	{
-		return metadata;
-	}
-
-	public ItemStack getItemStack(String name) {
-		int metadata = -1;
-		for(int i = 0; i < subBlocks.length; i++) {
-			if(subBlocks[i].equals(name)) {
-				metadata = i;
-				break;
-			}
-		}
-		
-		if(metadata < 0) {
-			throw new IllegalArgumentException("Unable to find a block with the name " + name);
-		}
-		return new ItemStack(this, 1, metadata);
-	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		for(int i = 0; i < subBlocks.length; i++) {
-			par3List.add(new ItemStack(this, 1, i));
-		}
-	}
-	
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		if(player.isSneaking()) {
-			return false;
-		}
-
-		// If the player's hands are empty and they rightclick on a multiblock, they get a 
-		// multiblock-debugging message if the machine is not assembled.
-		if(!world.isRemote && player.getCurrentEquippedItem() == null) {
-			TileEntity te = world.getTileEntity(x, y, z);
-			if(te instanceof IMultiblockPart) {
-				MultiblockControllerBase controller = ((IMultiblockPart)te).getMultiblockController();
-
-				if(controller == null) {
-					player.addChatMessage(new ChatComponentText(String.format("SERIOUS ERROR - server part @ %d, %d, %d has no controller!", x, y, z))); //TODO Localize
-				}
-				else {
-					Exception e = controller.getLastValidationException();
-					if(e != null) {
-						player.addChatMessage(new ChatComponentText(e.getMessage()));
-						return true;
-					}
-				}
-			}
-		}
-		
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
-    {
-		return false;
-    }
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	protected void buildBlockState(BlockStateContainer.Builder builder) {
+
+		super.buildBlockState(builder);
+		builder.add(PropertyBlockFacings.FACINGS);
+	}
+
+	@Override
+	protected IBlockState buildDefaultState(IBlockState state) {
+
+		return super.buildDefaultState(state).withProperty(PropertyBlockFacings.FACINGS, PropertyBlockFacings.None);
+	}
+
+	private boolean[] _actualFacings;
 }

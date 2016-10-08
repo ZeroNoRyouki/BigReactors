@@ -1,37 +1,56 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyProvider;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
+import erogenousbeef.bigreactors.common.BigReactors;
+import erogenousbeef.bigreactors.common.multiblock.IPowerGenerator;
+import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.util.ResourceLocation;
 
-public class BeefGuiPowerBar extends BeefGuiTextureProgressBar implements
-		IBeefTooltipControl {
+public class BeefGuiPowerBar extends BeefGuiTextureProgressBar implements IBeefTooltipControl {
 
-	IEnergyProvider _entity;
-	
-	public BeefGuiPowerBar(BeefGuiBase container, int x, int y, IEnergyProvider entity) {
+	public BeefGuiPowerBar(BeefGuiBase container, int x, int y, IPowerGenerator provider) {
+
 		super(container, x, y);
-		_entity = entity;
+		this._provider = provider;
 	}
 	
 	@Override
-	protected String getBackgroundTexture() { return "controls/Energy.png"; }
+	protected ResourceLocation getBackgroundTexture() {
+		return BeefGuiPowerBar.s_barsTextures[this._provider.getPowerSystem().ordinal()];
+	}
 	
 	@Override
 	protected float getProgress() {
-		float val = Math.min(1f, Math.max(0f, (float)_entity.getEnergyStored(ForgeDirection.UNKNOWN) / (float)_entity.getMaxEnergyStored(ForgeDirection.UNKNOWN)));
-		return val;
+
+		double progress = Math.min(1d, Math.max(0d, (double)this._provider.getEnergyStored() / (double)this._provider.getEnergyCapacity()));
+
+		return (float)progress;
 	}
 
 	@Override
 	public String[] getTooltip() {
-		int energyStored = _entity.getEnergyStored(ForgeDirection.UNKNOWN);
-		int energyMax = _entity.getMaxEnergyStored(ForgeDirection.UNKNOWN);
+
+		long energyStored = this._provider.getEnergyStored();
+		long energyMax = this._provider.getEnergyCapacity();
+		/*
 		float fullness = (float)energyStored / (float)energyMax * 100f;
+		*/
+		float fullness = this.getProgress() * 100f;
+
 		return new String[] { "Energy Buffer", 
-				String.format("%d / %d RF", energyStored, energyMax),
+				String.format("%d / %d %s", energyStored, energyMax, this._provider.getPowerSystem().unitOfMeasure),
 				String.format("%2.1f%% full", fullness)
 		};
+	}
+
+	private IPowerGenerator _provider;
+
+	private static ResourceLocation[] s_barsTextures;
+
+	static {
+		s_barsTextures = new ResourceLocation[2];
+		s_barsTextures[PowerSystem.RedstoneFlux.ordinal()] = BigReactors.createGuiResourceLocation("controls/energyBarRF.png");
+		s_barsTextures[PowerSystem.Tesla.ordinal()] = BigReactors.createGuiResourceLocation("controls/energyBarTesla.png");
 	}
 }

@@ -1,12 +1,10 @@
 package erogenousbeef.bigreactors.gui.controls.grab;
 
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-
-import org.lwjgl.opengl.GL11;
-
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 
 public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 
@@ -24,8 +22,9 @@ public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 	@Override
 	public void drawForeground(TextureManager renderEngine, int mouseX, int mouseY) {
 		if(grabbable != null) {
-			renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-			GL11.glColor4f(1f, 1f, 1f, 1f);
+
+			renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			GlStateManager.color(1f, 1f, 1f, 1f);
 			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
 		}
 		

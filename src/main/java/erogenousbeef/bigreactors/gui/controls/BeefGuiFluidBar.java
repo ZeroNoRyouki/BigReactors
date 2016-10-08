@@ -1,81 +1,107 @@
 package erogenousbeef.bigreactors.gui.controls;
 
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements
-		IBeefTooltipControl {
+import javax.annotation.Nullable;
 
-	IMultipleFluidHandler _entity;
-	int tankIdx;
-	
-	public BeefGuiFluidBar(BeefGuiBase container, int x, int y,
-			IMultipleFluidHandler entity, int tankIdx) {
+public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements IBeefTooltipControl {
+
+	public BeefGuiFluidBar(BeefGuiBase container, int x, int y, IFluidHandler handlerInfo) {
+
 		super(container, x, y);
-		
-		this._entity = entity;
-		this.tankIdx = tankIdx;
+		this._fluidInfo = handlerInfo;
 	}
 
 	@Override
-	protected IIcon getProgressBarIcon() {
-		FluidTankInfo[] tanks = this._entity.getTankInfo();
-		if(tanks != null && tankIdx < tanks.length) {
-			if(tanks[tankIdx].fluid != null) {
-				return tanks[tankIdx].fluid.getFluid().getIcon();
-			}
-		}
-		return null;
+	protected ResourceLocation getProgressBarIcon() {
+
+		IFluidTankProperties properties = this.getTankProperties();
+		FluidStack stack = null != properties ? properties.getContents() : null;
+		Fluid fluid = null != stack ? stack.getFluid() : null;
+
+		return null != fluid ? fluid.getStill(stack) : null;
 	}
-	
+
+	@Override
+	protected ResourceLocation getBackgroundTexture() {
+
+		if (null == s_bgTexture)
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/FluidTank.png");
+
+		return s_bgTexture;
+	}
+
 	@Override
 	protected float getProgress() {
-		FluidTankInfo[] tanks = this._entity.getTankInfo();
-		if(tanks != null && tankIdx < tanks.length) {
-			FluidStack tankFluid = tanks[tankIdx].fluid;
-			if(tankFluid != null) {
-				return (float)tankFluid.amount / (float)tanks[tankIdx].capacity;
-			}
+
+		IFluidTankProperties properties = this.getTankProperties();
+
+		if (null != properties) {
+
+			FluidStack stack = properties.getContents();
+
+			if (null != stack)
+				return (float)stack.amount / (float)properties.getCapacity();
 		}
+
 		return 0.0f;
 	}
 	
 	@Override
 	public String[] getTooltip() {
-		if(!visible) { return null; }
 
-		FluidTankInfo[] tanks = this._entity.getTankInfo();
-		if(tanks != null && tankIdx < tanks.length) {
-			FluidStack tankFluid = tanks[tankIdx].fluid;
-			if(tankFluid != null) {
-				String fluidName = tankFluid.getFluid().getLocalizedName(tankFluid);
-				if(tankFluid.getFluid().getID() == FluidRegistry.WATER.getID()) {
-					fluidName = "Water";
-				}
-				else if(tankFluid.getFluid().getID() == FluidRegistry.LAVA.getID()) {
-					fluidName = "Lava";
-				}
+		if (!this.visible)
+			return null;
 
-				return new String[] { fluidName, String.format("%d / %d mB", tankFluid.amount, tanks[tankIdx].capacity) };
+		IFluidTankProperties properties = this.getTankProperties();
+
+		if (null != properties) {
+
+			FluidStack stack = properties.getContents();
+			String fluidName;
+			int amount, capacity = properties.getCapacity();
+
+			if (null != stack) {
+
+				fluidName = stack.getFluid().getLocalizedName(stack);
+				amount = stack.amount;
+
+			} else {
+
+				amount = 0;
+				fluidName = "Empty";
 			}
-			else {
-				return new String[] { "Empty", String.format("0 / %d mB", tanks[tankIdx].capacity) };
-			}
+
+			return new String[] { fluidName, String.format("%d / %d mB", amount, capacity) };
 		}
+
 		return null;
 	}
 
 	@Override
 	protected ResourceLocation getResourceLocation() {
-		return net.minecraft.client.renderer.texture.TextureMap.locationBlocksTexture;
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 	
 	@Override
 	protected boolean drawGradationMarks() { return true; }
+
+	@Nullable
+	private IFluidTankProperties getTankProperties() {
+
+		IFluidTankProperties[] properties = this._fluidInfo.getTankProperties();
+
+		return null != properties && properties.length > 0 ? properties[0] : null;
+	}
+
+	private IFluidHandler _fluidInfo;
+	private static ResourceLocation s_bgTexture;
 }

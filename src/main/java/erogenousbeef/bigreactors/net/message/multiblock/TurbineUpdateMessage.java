@@ -1,37 +1,42 @@
 package erogenousbeef.bigreactors.net.message.multiblock;
 
-import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.net.message.base.TurbineMessageClient;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class TurbineUpdateMessage extends TurbineMessageClient {
-	protected ByteBuf data;
-	
-	public TurbineUpdateMessage() { super(); data = null; }
+
+	public TurbineUpdateMessage() {
+		this._data = null;
+	}
+
 	public TurbineUpdateMessage(MultiblockTurbine turbine) {
+
 		super(turbine);
-		data = null;
+		this._data = null;
 	}
 	
 	@Override
 	public void toBytes(ByteBuf buf) {
+
 		super.toBytes(buf);
-		turbine.serialize(buf);
+		this.TURBINE.serialize(buf);
 	}
 	
 	@Override public void fromBytes(ByteBuf buf) {
+
 		super.fromBytes(buf);
-		data = buf.readBytes(buf.readableBytes());
+		this._data = buf.readBytes(buf.readableBytes());
 	}
+
+	protected ByteBuf _data;
 	
 	public static class Handler extends TurbineMessageClient.Handler<TurbineUpdateMessage> {
+
 		@Override
-		protected IMessage handleMessage(TurbineUpdateMessage message,
-				MessageContext ctx, MultiblockTurbine turbine) {
-			turbine.deserialize(message.data);
-			return null;
+		protected void processTurbineMessage(TurbineUpdateMessage message, MessageContext ctx, MultiblockTurbine turbine) {
+			turbine.deserialize(message._data);
 		}
 	}
 }

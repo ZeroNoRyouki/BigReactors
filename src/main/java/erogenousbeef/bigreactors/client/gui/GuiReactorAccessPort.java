@@ -1,9 +1,5 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
@@ -13,6 +9,10 @@ import erogenousbeef.bigreactors.gui.controls.GuiIconButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ReactorAccessPortChangeDirectionMessage;
 import erogenousbeef.bigreactors.net.message.multiblock.ReactorCommandEjectToPortMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiReactorAccessPort extends BeefGuiBase {
 	private TileEntityReactorAccessPort _port;
@@ -24,6 +24,8 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 	
 	protected GuiIconButton btnInlet;
 	protected GuiIconButton btnOutlet;
+
+	private static ResourceLocation s_backGround;
 	
 	public GuiReactorAccessPort(Container container, TileEntityReactorAccessPort accessPort) {
 		super(container);
@@ -35,11 +37,17 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 	public void initGui() {
 		super.initGui();
 
-		ejectFuel = new GuiIconButton(2, guiLeft + xSize - 97, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("fuelEject"), new String[] { EnumChatFormatting.AQUA + "Eject Fuel", "", "Ejects fuel contained in the", "reactor, placing ingots in the", "reactor's access ports.", "", "SHIFT: Dump excess fuel."});
-		ejectWaste = new GuiIconButton(3, guiLeft + xSize - 77, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("wasteEject"), new String[] { EnumChatFormatting.AQUA + "Eject Waste", "", "Ejects waste contained in the", "reactor, placing ingots in the", "reactor's access ports.", "", "SHIFT: Dump excess waste."});
+		ejectFuel = new GuiIconButton(2, guiLeft + xSize - 97, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("fuelEject"),
+				new String[] { TextFormatting.AQUA + "Eject Fuel", "", "Ejects fuel contained in the", "reactor, placing ingots in the", "reactor's access ports.", "", "SHIFT: Dump excess fuel."});
+
+		ejectWaste = new GuiIconButton(3, guiLeft + xSize - 77, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("wasteEject"),
+				new String[] { TextFormatting.AQUA + "Eject Waste", "", "Ejects waste contained in the", "reactor, placing ingots in the", "reactor's access ports.", "", "SHIFT: Dump excess waste."});
 		
-		btnInlet = new GuiIconButton(0, guiLeft + xSize - 47, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("inletOn"), new String[] { EnumChatFormatting.AQUA + "Inlet Mode", "", "Sets the access port to", "inlet mode.", "", "Port WILL accept", "items from pipes/ducts.", "Port WILL NOT eject", "items to pipes/ducts."});
-		btnOutlet = new GuiIconButton(1, guiLeft + xSize - 27, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("outletOn"), new String[] { EnumChatFormatting.AQUA + "Outlet Mode", "", "Sets the access port to", "outlet mode.", "", "Port WILL NOT accept", "items from pipes/ducts.", "Port WILL eject", "ingots to pipes/ducts."});
+		btnInlet = new GuiIconButton(0, guiLeft + xSize - 47, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("inletOn"),
+				new String[] { TextFormatting.AQUA + "Inlet Mode", "", "Sets the access port to", "inlet mode.", "", "Port WILL accept", "items from pipes/ducts.", "Port WILL NOT eject", "items to pipes/ducts."});
+
+		btnOutlet = new GuiIconButton(1, guiLeft + xSize - 27, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("outletOn"),
+				new String[] { TextFormatting.AQUA + "Outlet Mode", "", "Sets the access port to", "outlet mode.", "", "Port WILL NOT accept", "items from pipes/ducts.", "Port WILL eject", "ingots to pipes/ducts."});
 		
 		inventoryLabel = new BeefGuiLabel(this, "Inventory", guiLeft + 8, guiTop + 64);
 		
@@ -54,7 +62,11 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return new ResourceLocation(BigReactors.GUI_DIRECTORY + "ReactorAccessPort.png");
+
+		if (null == GuiReactorAccessPort.s_backGround)
+			GuiReactorAccessPort.s_backGround = BigReactors.createResourceLocation("textures/gui/ReactorAccessPort.png");
+
+		return GuiReactorAccessPort.s_backGround;
 	}
 
 	@Override
@@ -65,7 +77,8 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 	}
 	
 	protected void updateIcons() {
-		if(_port.isInlet()) {
+
+		if(_port.getDirection().isInput()) {
 			btnInlet.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.INLET_ON));
 			btnOutlet.setIcon(ClientProxy.GuiIcons.getIcon(BeefGuiIconManager.OUTLET_OFF));
 		}

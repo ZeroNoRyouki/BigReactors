@@ -1,12 +1,14 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.data.ReactantStack;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IConditionalUpdater;
+import io.netty.buffer.ByteBuf;
+import it.zerono.mods.zerocore.lib.IDebugMessages;
+import it.zerono.mods.zerocore.lib.IDebuggable;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
  * A helper class which allows multiple reactants to sit in one logical
@@ -16,7 +18,7 @@ import erogenousbeef.bigreactors.common.multiblock.interfaces.IConditionalUpdate
  * 
  * @author Erogenous Beef
  */
-public abstract class ReactantContainer implements IConditionalUpdater {
+public abstract class ReactantContainer implements IConditionalUpdater, IDebuggable {
 
 	private ReactantStack[] tanks;
 	private int capacity;
@@ -330,20 +332,15 @@ public abstract class ReactantContainer implements IConditionalUpdater {
 			}
 		}
 	}
-	
-	public String getDebugInfo() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Capacity: ").append(Integer.toString(getCapacity()));
-		for(int i = 0; i < tanks.length; i++) {
-			sb.append("[").append(Integer.toString(i)).append("] ").append(tankNames[i]).append(": ");
-			if(tanks[i] == null) {
-				sb.append("NULL");
-			}
-			else {
-				sb.append(tanks[i].toString());
-			}
-			sb.append("\n");
+
+	@Override
+	public void getDebugMessages(IDebugMessages messages) {
+
+		messages.add("debug.bigreactors.reactantcontainer.capacity", this.getCapacity());
+
+		for (int i = 0; i < this.tanks.length; ++i) {
+			messages.add("debug.bigreactors.reactantcontainer.tank", Integer.toString(i), tankNames[i],
+					null == this.tanks[i] ? "?" : this.tanks[i]);
 		}
-		return sb.toString();
 	}
 }

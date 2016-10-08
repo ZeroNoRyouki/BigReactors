@@ -1,15 +1,10 @@
 package erogenousbeef.bigreactors.common.tileentity.base;
 
+import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
-import erogenousbeef.bigreactors.common.interfaces.IMultipleFluidHandler;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.*;
 
 public abstract class TileEntityPoweredInventoryFluid extends
 		TileEntityPoweredInventory implements IFluidHandler, IMultipleFluidHandler {
@@ -66,7 +61,26 @@ public abstract class TileEntityPoweredInventoryFluid extends
 			tag.setTag("fluids", fluidTagList);
 		}
 	}
-	
+
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataFrom(data, syncReason);
+
+		if (SyncReason.FullSync == syncReason)
+			readFluidsFromNBT(data);
+	}
+
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataTo(data, syncReason);
+
+		if (SyncReason.FullSync == syncReason)
+			writeFluidsToNBT(data);
+	}
+
+	/*
 	// TileEntity overrides
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -79,7 +93,8 @@ public abstract class TileEntityPoweredInventoryFluid extends
 		super.writeToNBT(tag);
 		writeFluidsToNBT(tag);
 	}
-	
+	*/
+
 	// TileEntityBeefBase
 	@Override
 	protected void onSendUpdate(NBTTagCompound updateTag) {
@@ -115,7 +130,7 @@ public abstract class TileEntityPoweredInventoryFluid extends
 	  * @return The index of the exposed tank, or -1 for none.
 	  */
 	 public abstract int getExposedTankFromSide(int side);
-	 
+
 	/**
      * Fills fluid into internal tanks, distribution is left to the ITankContainer.
      * @param from Orientation the fluid is pumped in from.
@@ -123,14 +138,17 @@ public abstract class TileEntityPoweredInventoryFluid extends
      * @param doFill If false filling will only be simulated.
      * @return Amount of resource that was filled into internal tanks.
      */
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     	int tankToFill = FLUIDTANK_NONE;
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
     	if(from != ForgeDirection.UNKNOWN) {
     		tankToFill = getExposedTankFromSide(from.ordinal());
     	}
     	else {
     		tankToFill = getDefaultTankForFluid(resource.getFluid());
     	}
+    	*/
 
     	if(tankToFill <= FLUIDTANK_NONE) {
     		return 0;
@@ -155,7 +173,7 @@ public abstract class TileEntityPoweredInventoryFluid extends
     	return res;
     }
 
-    /** Drains fluid out of internal tanks, distribution is left entirely to the IFluidHandler.
+	/** Drains fluid out of internal tanks, distribution is left entirely to the IFluidHandler.
 	 * 
 	 * This method is not Fluid-sensitive.
      * @param from Orientation the fluid is drained to.
@@ -163,11 +181,15 @@ public abstract class TileEntityPoweredInventoryFluid extends
      * @param doDrain If false draining will only be simulated.
      * @return FluidStack representing the fluid and amount actually drained from the ITankContainer
      */
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     	int tankToDrain = 0;
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
     	if(from != ForgeDirection.UNKNOWN) {
     		tankToDrain = getExposedTankFromSide(from.ordinal());
     	}
+    	*/
 
     	if(tankToDrain <= FLUIDTANK_NONE) {
     		return null;
@@ -199,11 +221,14 @@ public abstract class TileEntityPoweredInventoryFluid extends
      * @return FluidStack representing the Fluid and amount that was (or would have been, if
      *         simulated) drained.
      */
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     	int tankToDrain = 0;
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
     	if(from != ForgeDirection.UNKNOWN) {
     		tankToDrain = getExposedTankFromSide(from.ordinal());
     	}
+    	*/
     	
     	if(tankToDrain == FLUIDTANK_NONE) {
     		return null;
@@ -222,6 +247,8 @@ public abstract class TileEntityPoweredInventoryFluid extends
      * @param direction tank side: UNKNOWN for default tank set
      * @return Array of {@link FluidTank}s contained in this ITankContainer for this direction
      */
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
     public IFluidTank[] getTanks(ForgeDirection direction) {
     	if(direction == ForgeDirection.UNKNOWN) {
     		return tanks;
@@ -235,6 +262,7 @@ public abstract class TileEntityPoweredInventoryFluid extends
     		return tankExposureCache[exposure];
     	}
     }
+    */
 
     /**
      * Return the tank that this tank container desired to be used for the specified fluid type from the specified direction
@@ -243,6 +271,8 @@ public abstract class TileEntityPoweredInventoryFluid extends
      * @param type the fluid type, null is always an acceptable value
      * @return a tank or null for no such tank
      */
+	// TODO Commented temporarily to allow this thing to compile...
+	/*
     public IFluidTank getTank(ForgeDirection direction, FluidStack type) {
     	if(direction == ForgeDirection.UNKNOWN) {
     		return null;
@@ -261,17 +291,21 @@ public abstract class TileEntityPoweredInventoryFluid extends
     		return null;
     	}
     }
+    */
 
-    /**
+	/**
      * Returns true if the given fluid can be inserted into the given direction.
      * 
      * More formally, this should return true if fluid is able to enter from the given direction.
      */
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(EnumFacing from, Fluid fluid) {
     	int tankIdx = 0;
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
     	if(from != ForgeDirection.UNKNOWN) {
     		tankIdx = getExposedTankFromSide(from.ordinal());
     	}
+    	*/
 
     	if(tankIdx == FLUIDTANK_NONE) { return false; }
 
@@ -280,7 +314,7 @@ public abstract class TileEntityPoweredInventoryFluid extends
     		return true;
     	}
     	else {
-    		return tank.getFluid().fluidID == fluid.getID();
+    		return tank.getFluid().getFluid() == fluid;
     	}
     }
 
@@ -289,11 +323,14 @@ public abstract class TileEntityPoweredInventoryFluid extends
      * 
      * More formally, this should return true if fluid is able to leave from the given direction.
      */
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(EnumFacing from, Fluid fluid) {
     	int tankIdx = 0;
+		// TODO Commented temporarily to allow this thing to compile...
+		/*
     	if(from != ForgeDirection.UNKNOWN) {
     		tankIdx = getExposedTankFromSide(from.ordinal());
     	}
+    	*/
 
     	if(tankIdx == FLUIDTANK_NONE) { return false; }
 
@@ -302,7 +339,7 @@ public abstract class TileEntityPoweredInventoryFluid extends
     		return false;
     	}
     	else {
-    		return tank.getFluid().fluidID == fluid.getID();
+    		return tank.getFluid().getFluid() == fluid;
     	}
     }
 
@@ -314,7 +351,7 @@ public abstract class TileEntityPoweredInventoryFluid extends
      *            Orientation determining which tanks should be queried.
      * @return Info for the relevant internal tanks.
      */
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(EnumFacing from) {
     	return getTankInfo();
     }
 

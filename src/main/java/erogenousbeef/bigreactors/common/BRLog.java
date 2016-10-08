@@ -1,8 +1,9 @@
 package erogenousbeef.bigreactors.common;
 
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
-import cpw.mods.fml.common.FMLLog;
+
 
 public class BRLog {
 

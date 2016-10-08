@@ -1,11 +1,11 @@
 package erogenousbeef.bigreactors.common.multiblock.helpers;
 
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.init.BrFluids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
 
 public class CoolantContainer extends FluidHelper {
 
@@ -33,9 +33,8 @@ public class CoolantContainer extends FluidHelper {
 	
 	public boolean isAcceptedCoolant(Fluid fluid) {
 		if(fluid == null) { return false; }
-		
-		// TODO: Lookup
-		return fluid.getID() == FluidRegistry.WATER.getID();
+
+		return fluid == FluidRegistry.WATER;
 	}
 
 	public int addCoolant(FluidStack incoming) {
@@ -176,7 +175,7 @@ public class CoolantContainer extends FluidHelper {
 	private Fluid getVaporizedCoolantFluid(Fluid fluid) {
 		if(fluid == null) { throw new IllegalArgumentException("Cannot pass a null fluid to getVaporizedCoolantFluid"); } // just in case
 
-		return BigReactors.fluidSteam;
+		return BrFluids.fluidSteam;
 	}
 
 	@Override

@@ -1,29 +1,24 @@
 package erogenousbeef.bigreactors.client.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.input.Keyboard;
-
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
+import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.GuiSelectableButton;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
-import erogenousbeef.bigreactors.net.message.ReactorRedstonePortChangeMessage;
+import erogenousbeef.bigreactors.net.message.multiblock.ReactorRedstonePortChangeMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class GuiReactorRedstonePort extends BeefGuiBase {
 
-	private ResourceLocation _guiBackground;
 	private TileEntityReactorRedstonePort port;
 
 	BeefGuiLabel titleString;
@@ -46,7 +41,8 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 	BeefGuiLabel subOutputValueLabel;
 	private GuiTextField subOutputValue;
 	// End Subsetting display
-	
+
+    // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
 	private Map<CircuitType, GuiSelectableButton> btnMap;
 	private int outputLevel;
 	private boolean greaterThan;
@@ -54,14 +50,14 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 	private boolean retract;
 	
 	private static final int MINIMUM_SETTING_SELECTOR_ID = 10;
+	private static ResourceLocation s_backGround;
 	
 	public GuiReactorRedstonePort(Container container, TileEntityReactorRedstonePort tileentity) {
 		super(container);
-		_guiBackground = new ResourceLocation(BigReactors.GUI_DIRECTORY + "RedstonePort.png");
 		port = tileentity;
 		
 		ySize = 204;
-		
+
 		btnMap = new HashMap<CircuitType, GuiSelectableButton>();
 		outputLevel = tileentity.getOutputLevel();
 		greaterThan = tileentity.getGreaterThan();
@@ -78,7 +74,11 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 
 	@Override
 	public ResourceLocation getGuiBackground() {
-		return _guiBackground;
+
+		if (null == GuiReactorRedstonePort.s_backGround)
+			GuiReactorRedstonePort.s_backGround = BigReactors.createResourceLocation("textures/gui/RedstonePort.png");
+
+		return GuiReactorRedstonePort.s_backGround;
 	}
 
 	private void registerCircuitButton(CircuitType ct, GuiSelectableButton btn) {
@@ -100,14 +100,14 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		topY += settingString.getHeight() + 4;
 		
 		// Setting picker
-		BlockReactorPart reactorPartBlock = (BlockReactorPart)BigReactors.blockReactorPart;
 		int buttonOrdinal = MINIMUM_SETTING_SELECTOR_ID;
 		leftX = guiLeft + 16;
+
 		CircuitType currentCircuitType = port.getCircuitType();
 		for(CircuitType ct : CircuitType.values()) {
 			if(ct == CircuitType.DISABLED) { continue; }
-			GuiSelectableButton newBtn = new GuiSelectableButton(buttonOrdinal++, leftX, topY, reactorPartBlock.getRedNetConfigIcon(ct), 0xFF00FF00, this);
-			newBtn.displayString = GuiReactorRedNetPort.grabbableTooltips[ct.ordinal()-1];
+			GuiSelectableButton newBtn = new GuiSelectableButton(buttonOrdinal++, leftX, topY, ct.getIcon(), 0xFF00FF00, this);
+			newBtn.displayString = ct.getTooltip();
 
 			if(ct == currentCircuitType) {
 				newBtn.setSelected(true);
@@ -136,7 +136,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		subInputRodSettingLabel = new BeefGuiLabel(this, "While On", leftX, topY);
 		subInputRodSettingOffLabel = new BeefGuiLabel(this, "While Off", leftX + xSize/2, topY);
 		
-		subOutputValue = new GuiTextField(this.fontRendererObj, leftX, topY, 60, 12);
+		subOutputValue = new GuiTextField(1, this.fontRendererObj, leftX, topY, 60, 12);
 		subOutputValue.setCanLoseFocus(true);
 		subOutputValue.setMaxStringLength(7);
 		subOutputValue.setText("0");
@@ -146,7 +146,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		
 		topY += subInputRodSettingLabel.getHeight() + 2;
 		
-		subInputRodSetting = new GuiTextField(this.fontRendererObj, leftX, topY, 32, 12);
+		subInputRodSetting = new GuiTextField(2, this.fontRendererObj, leftX, topY, 32, 12);
 		subInputRodSetting.setCanLoseFocus(true);
 		subInputRodSetting.setMaxStringLength(3);
 		subInputRodSetting.setText("0");
@@ -154,15 +154,13 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 
 		subInputRodSettingPctLabel = new BeefGuiLabel(this, "%", leftX + 34, topY + 2);
 
-		subInputRodSettingOff = new GuiTextField(this.fontRendererObj, leftX + xSize/2, topY, 32, 12);
+		subInputRodSettingOff = new GuiTextField(3, this.fontRendererObj, leftX + xSize/2, topY, 32, 12);
 		subInputRodSettingOff.setCanLoseFocus(true);
 		subInputRodSettingOff.setMaxStringLength(3);
 		subInputRodSettingOff.setText("0");
 		subInputRodSettingOff.setEnabled(true);
 		subInputRodSettingOffPctLabel = new BeefGuiLabel(this, "%", leftX + xSize/2 + 34, topY + 2);
 
-		topY += 24;
-		
 		// Bottom buttons
 		commitBtn = new GuiButton(0, guiLeft + xSize - 60, guiTop + ySize - 24, 56, 20, "Commit");
 		commitBtn.enabled = false;
@@ -190,12 +188,12 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 			subInputRodSetting.setText(Integer.toString(TileEntityReactorRedstonePort.unpackControlRodLevelOn(this.outputLevel)));
 			subInputRodSettingOff.setText(Integer.toString(TileEntityReactorRedstonePort.unpackControlRodLevelOff(this.outputLevel)));
 		}
-		else if(TileEntityReactorRedNetPort.isOutput(currentCircuitType)) {
+		else if(currentCircuitType.isOutput()) {
 			subOutputValue.setText(Integer.toString(this.outputLevel));
 		}
 		
 		updateSubSettings(currentCircuitType);
-		if(TileEntityReactorRedNetPort.isInput(currentCircuitType)) {
+		if(currentCircuitType.isInput()) {
 			validateInputValues();
 		}
 		else {
@@ -392,7 +390,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		}
 		else if(clickedButton.id == 2) {
 			CircuitType selectedCircuitType = this.getUserSelectedCircuitType();
-			if(TileEntityReactorRedNetPort.isInput(selectedCircuitType))
+			if(selectedCircuitType.isInput())
 				this.activeOnPulse = !this.activeOnPulse;
 			else
 				this.greaterThan = !this.greaterThan;
@@ -452,7 +450,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 			updateSubSettingTextFields(selectedType);
 			
 			// This should reset outputLevel from stored values
-			if(TileEntityReactorRedNetPort.isInput(selectedType)) {
+			if(selectedType.isInput()) {
 				this.validateInputValues();
 			}
 			else {

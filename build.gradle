@@ -1,59 +1,66 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
 
-apply plugin: 'forge'
+ext.configFile = file "project.properties"
 
-sourceSets.main.java.srcDirs += 'BeefCore/src/main/java'
+configFile.withReader {
+    // read config.  it shall from now on be referenced as simply config or as project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
 
-ant.loadproperties(srcFile: "version.properties")
-version = ant.properties['vMajor'] + "." + ant.properties['vMinor'] + "." + ant.properties['vPatch'] + ant.properties['vSuffix']
+version = "${config.mod_version_major}.${config.mod_version_api}.${config.mod_version_minor}.${config.mod_version_patch}"
+group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
-group = "erogenousbeef" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "BigReactors"
+ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
 
 minecraft {
-    version = "1.7.10-10.13.2.1291"
-    runDir = "run"	
+    version = "${config.forge_version}"
 
-    replaceIn "BRConfig.java"
-    replace "@VERSION@", project.version
+
+	if (file("../run-${config.minecraft_version}").exists()) {
+		runDir = "../run-${config.minecraft_version}"
+	} else {
+		runDir = "run"
+	}
+
+    mappings = "${config.minecraft_mappings}"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 repositories {
+
     maven {
-        name = "OpenComputers"
-        url = "http://maven.cil.li/"
+        name "zerocore"
+        url "http://maven.zerono.it/"
     }
+
     maven {
-        name = "codechicken"
-        url = "http://chickenbones.net/maven"
-    }
-    ivy {
-        name "CoFHCore"
-        artifactPattern "http://addons-origin.cursecdn.com/files/2230/211/[module]-[revision].[ext]"
+        name "Tesla"
+        url "http://maven.epoxide.xyz/"
     }
 }
 
 dependencies {
-    //compile 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
-    //compile 'codechicken:NotEnoughItems:1.7.10-1.0.3.67:dev'
-    compile 'com.mod-buildcraft:buildcraft:6.0.18:dev'
-    compile 'li.cil.oc:OpenComputers:MC1.7.10-1.4.0.+:api'
-    compile name: 'CoFHCore', version: '[1.7.10]3.0.0RC7-211-dev', ext: 'jar'
+
+    compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
+    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
 }
 
 processResources
@@ -76,19 +83,13 @@ processResources
     }
 }
 
-// NOTE: When using the addVersion task, it MUST be run in a separate gradle run
-// from build, or else the mod will have a mismatched version number.
-// This is because the minecraft project's replaceIn system runs at
-// configuration time, and you cannot specify which tasks run
-// during configuration time. This blows, but it works for now.
+compileJava.doFirst {
 
-task addVersion {
-    inputs.property "version", project.version
-    outputs.file "version.properties"
-}
+    File file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/common/BigReactors.java')
+    String source = file.getText('UTF-8')
+            .replaceAll('version = "0.0.0.0"', 'version = "' + project.version + '"')
+            .replaceAll('acceptedMinecraftVersions = ""', 'acceptedMinecraftVersions = "' + config.minecraft_version + '"')
+            .replaceAll('dependencies = ".*"', 'dependencies = "' + project.ext.dependencies + '"')
 
-addVersion << {
-    ant.propertyfile(file: "version.properties") {
-        entry( key: "vPatch", type: int, value: 1, operation: "+" )
-    }
+    file.write(source, 'UTF-8')
 }

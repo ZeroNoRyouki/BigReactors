@@ -1,35 +1,26 @@
-# ForgeGradle
-/.gradle
-/build
-/run
-
-# Minecraft runtime files and config files
-/logs
-/config
-options.txt
-/saves
-usernamecache.json
-
-# Eclipse
+# eclipse
+bin
+eclipse
+*.launch
+.settings
+.metadata
 .classpath
 .project
-/.settings
-/bin
-/eclipse
 
-# IntelliJ
-/.idea
-*.iml
+# idea
+out
 *.ipr
 *.iws
-/out
+*.iml
+.idea
 
-# Mac Stuff
-.DS_Store
-*.command
+# gradle
+build
+.gradle
 
-# External APIs
-/lib
+# other
+run
 
-# BeefCore, when it's copied into the source tree
-/src/main/java/erogenousbeef/core
+# sources for assets / textures
+assets-sources
+classes

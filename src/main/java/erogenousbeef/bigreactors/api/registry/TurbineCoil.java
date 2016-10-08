@@ -1,10 +1,10 @@
 package erogenousbeef.bigreactors.api.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import erogenousbeef.bigreactors.api.data.CoilPartData;
 import erogenousbeef.bigreactors.common.BRLog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TurbineCoil {
 	private static Map<String, CoilPartData> _blocks = new HashMap<String, CoilPartData>();

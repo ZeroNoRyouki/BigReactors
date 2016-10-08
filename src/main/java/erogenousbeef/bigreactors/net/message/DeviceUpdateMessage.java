@@ -1,43 +1,50 @@
 package erogenousbeef.bigreactors.net.message;
 
+import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
 import io.netty.buffer.ByteBuf;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessage;
+import it.zerono.mods.zerocore.lib.network.ModTileEntityMessageHandlerClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
-import erogenousbeef.bigreactors.net.message.base.WorldMessageClient;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class DeviceUpdateMessage extends WorldMessageClient {
-    private NBTTagCompound compound;
+public class DeviceUpdateMessage extends ModTileEntityMessage {
 
-    public DeviceUpdateMessage() { super(); compound = null; }
+    public DeviceUpdateMessage() {
+        this._compound = null;
+    }
     
-    public DeviceUpdateMessage(int x, int y, int z, NBTTagCompound compound) {
-    	super(x, y, z);
-        this.compound = compound;
+    public DeviceUpdateMessage(BlockPos position, NBTTagCompound compound) {
+
+    	super(position);
+        this._compound = compound;
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-    	super.fromBytes(buf);
-        compound = ByteBufUtils.readTag(buf);
+    public void fromBytes(ByteBuf buffer) {
+
+    	super.fromBytes(buffer);
+        this._compound = ByteBufUtils.readTag(buffer);
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-    	super.toBytes(buf);
-        ByteBufUtils.writeTag(buf, compound);
+    public void toBytes(ByteBuf buffer) {
+
+    	super.toBytes(buffer);
+        ByteBufUtils.writeTag(buffer, this._compound);
     }
 
-    public static class Handler extends WorldMessageClient.Handler<DeviceUpdateMessage> {
+    private NBTTagCompound _compound;
+
+    public static class Handler extends ModTileEntityMessageHandlerClient<DeviceUpdateMessage> {
+
         @Override
-        public IMessage handleMessage(DeviceUpdateMessage message, MessageContext ctx, TileEntity te) {
-            if(te instanceof TileEntityBeefBase) {
-                ((TileEntityBeefBase)te).onReceiveUpdate(message.compound);
-            }
-            return null;
+        protected void processTileEntityMessage(DeviceUpdateMessage message, MessageContext ctx, TileEntity tileEntity) {
+
+            if (tileEntity instanceof TileEntityBeefBase)
+                ((TileEntityBeefBase)tileEntity).onReceiveUpdate(message._compound);
         }
     }
 }

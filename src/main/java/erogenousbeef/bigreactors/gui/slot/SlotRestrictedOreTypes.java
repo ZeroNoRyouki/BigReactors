@@ -1,13 +1,14 @@
 package erogenousbeef.bigreactors.gui.slot;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import scala.actors.threadpool.Arrays;
-import cofh.core.util.oredict.OreDictionaryArbiter;
+
+import java.util.ArrayList;
+import java.util.List;
+//import cofh.core.util.oredict.OreDictionaryArbiter;
 
 public class SlotRestrictedOreTypes extends Slot {
 
@@ -24,7 +25,8 @@ public class SlotRestrictedOreTypes extends Slot {
 	public boolean isItemValid(ItemStack stack) {
 		if(stack == null) { return false; }
 
-		ArrayList<String> oreNames = OreDictionaryArbiter.getAllOreNames(stack);
+		String[] oreNames = OreDictionaryHelper.getOreNames(stack);
+
 		if(oreNames != null) {
 			for(String oreName : oreNames) {
 				if(acceptedTypes.contains(oreName)) {
