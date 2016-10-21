@@ -339,16 +339,44 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 
 	protected void distributeItems() {
-
+		/*
 		if (worldObj.isRemote || this._adjacentInventory == null || this.getDirection().isInput())
 			return;
 
 		this._wasteInventory.setStackInSlot(0, ItemHandlerHelper.insertItem(this._adjacentInventory,
 				this._wasteInventory.getStackInSlot(0), false));
 		this.markChunkDirty();
+		*/
+
+		EnumFacing facing = this.getOutwardFacing();
+
+		if (worldObj.isRemote || null == facing || this.getDirection().isInput())
+			return;
+
+
+		TileEntity te = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
+		IItemHandler adjacentInventory = null;
+
+		if (null != te && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
+			adjacentInventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
+
+		if (null != adjacentInventory) {
+
+			this._wasteInventory.setStackInSlot(0, ItemHandlerHelper.insertItem(adjacentInventory,
+					this._wasteInventory.getStackInSlot(0), false));
+
+			this.markChunkDirty();
+		}
 	}
 	
 	protected void checkForAdjacentInventories() {
+
+
+		if (true)
+		return;
+
+
+
 
 		EnumFacing facing = this.getOutwardFacing();
 		IItemHandler candidateInventory = null;
@@ -373,23 +401,24 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	// INeighborUpdateableEntity
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
-		checkForAdjacentInventories();
+		//checkForAdjacentInventories();
 	}
 
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
-
+		/*
 		EnumFacing facing = this.getOutwardFacing();
 
 		// is the changed block the one we are facing?
 		if (null != facing && neighbor.equals(position.offset(facing)))
 			this.checkForAdjacentInventories();
+		*/
 	}
 
 	protected TileEntityItemStackHandler _fuelInventory;
 	protected TileEntityItemStackHandler _wasteInventory;
 	protected IItemHandler _fuelInventoryWrapper;
 	protected IItemHandler _wasteInventoryWrapper;
-	protected IItemHandler _adjacentInventory;
+	protected IItemHandler _adjacentInventory = null;
 	protected IInputOutputPort.Direction _direction;
 }
