@@ -16,7 +16,8 @@ public class TileEntityTurbinePowerTapRedstoneFlux extends TileEntityTurbinePowe
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return (null != PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE) || super.hasCapability(capability, facing);
+        return ((null != PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE) && (PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE == capability))
+                || super.hasCapability(capability, facing);
     }
 
     @Override
