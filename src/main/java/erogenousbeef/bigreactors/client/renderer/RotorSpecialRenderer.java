@@ -26,7 +26,7 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 		final MultiblockTurbine turbine = bearing.getTurbine();
 		final RotorInfo rotorInfo = bearing.getRotorInfo();
 
-		if (null == rotorInfo || null == turbine || !turbine.getActive() || !turbine.hasGlass())
+		if (null == rotorInfo || null == turbine || !turbine.getActive() || turbine.isInteriorInvisible())
 			return;
 
 		float angle = RotorSpecialRenderer.getRotorAngle(bearing, turbine);

@@ -131,7 +131,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	private Set<TileEntityTurbineRotorShaft> attachedRotorShafts;
 	private Set<TileEntityTurbineRotorBlade> attachedRotorBlades;
 	
-	private Set<TileEntityTurbinePartGlass> attachedGlass; 
+	private Set<TileEntityTurbinePartGlass> attachedGlass;
+	private boolean _interiorInvisible;
 	
 	// Data caches for validation
 	private Set<BlockPos> foundCoils;
@@ -349,6 +350,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		}
 
 		this.switchPowerSystem(candidatePowerSystem);
+
+		// glass anywhere?
+		this._interiorInvisible = this.attachedGlass.size() == 0;
 	}
 
 	@Override
@@ -1427,7 +1431,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		WorldHelper.notifyBlockUpdate(WORLD, referenceCoord, null, null);
 	}
 
-	public boolean hasGlass() { return attachedGlass.size() > 0; }
+	public boolean isInteriorInvisible() {
+		return this._interiorInvisible;
+	}
 
 	@SideOnly(Side.CLIENT)
 	public void resetCachedRotors() {

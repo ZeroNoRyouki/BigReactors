@@ -24,7 +24,7 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
         final FuelAssembly assembly = rod.getFuelAssembly();
         final MultiblockReactor reactor = rod.getReactorController();
 
-        if (null == reactor || !reactor.isAssembled() || null == assembly)
+        if (null == assembly || null == reactor || !reactor.isAssembled() || reactor.isInteriorInvisible())
             return;
 
         final World world = this.getWorld();

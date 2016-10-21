@@ -114,6 +114,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private Set<TileEntityReactorCoolantPort> attachedCoolantPorts;
 	
 	private Set<TileEntityReactorGlass> attachedGlass;
+	private boolean _interiorInvisible;
 
 	private FuelAssembly[] _fuelAssemblies;
 
@@ -155,6 +156,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		attachedCoolantPorts = new HashSet<TileEntityReactorCoolantPort>();
 		attachedGlass = new HashSet<TileEntityReactorGlass>();
 		this._fuelAssemblies = null;
+		this._interiorInvisible = true;
 		
 		currentFuelRod = null;
 
@@ -1226,6 +1228,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		}
 
 		this.switchPowerSystem(candidatePowerSystem);
+
+		// glass anywhere?
+		this._interiorInvisible = this.attachedGlass.size() == 0 || true;
 	}
 
 	@Override
@@ -1535,6 +1540,10 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		for (int i = 0; i < count; ++i)
 			this._fuelAssemblies[i].updateReactants(this.fuelContainer);
+	}
+
+	public boolean isInteriorInvisible() {
+		return this._interiorInvisible;
 	}
 
 	/*

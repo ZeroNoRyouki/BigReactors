@@ -101,7 +101,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
             final TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
             final MultiblockTurbine turbine = bearing.getTurbine();
 
-            if (turbine != null && turbine.isAssembled() && turbine.getActive()) {
+            if (turbine != null && !turbine.isInteriorInvisible() && turbine.isAssembled() && turbine.getActive()) {
 
                 // Spawn particles!
                 final int numParticles = Math.min(20, Math.max(1, turbine.getFluidConsumedLastTick() / 40));

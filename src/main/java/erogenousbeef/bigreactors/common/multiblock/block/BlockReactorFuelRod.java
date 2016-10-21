@@ -76,7 +76,7 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 			TileEntityReactorFuelRod fuelRod = (TileEntityReactorFuelRod) te;
 			MultiblockReactor reactor = fuelRod.getReactorController();
 
-			if (reactor != null && reactor.getActive() && reactor.getFuelConsumedLastTick() > 0)
+			if (reactor != null && !reactor.isInteriorInvisible() && reactor.getActive() && reactor.getFuelConsumedLastTick() > 0)
 				WorldHelper.spawnVanillaParticles(world, BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CRIT,
 						1, random.nextInt(4) + 1, pos.getX(), pos.getY(), pos.getZ(), 1, 1, 1);
 		}
