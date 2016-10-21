@@ -95,7 +95,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 
 		super.syncDataFrom(data, syncReason);
 
-		if (SyncReason.NetworkUpdate == syncReason) {
+		if (SyncReason.FullSync == syncReason) {
 
 			this.readLocalDataFromNBT(data);
 
