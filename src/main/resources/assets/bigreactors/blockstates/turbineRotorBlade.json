@@ -47,13 +47,15 @@
             "y": -90
           },
           "z_y_pos":{
-            "model":"bigreactors:turbine/rotor_blade_zy"
+            "model":"bigreactors:turbine/rotor_blade_zy",
+            "y":180
           },
           "z_y_neg":{
             "model":"bigreactors:turbine/rotor_blade_zy",
             "x": 180
           },
           "z_x_pos":{
+            "x": 180
           },
           "z_x_neg":{
             "x": 180,
