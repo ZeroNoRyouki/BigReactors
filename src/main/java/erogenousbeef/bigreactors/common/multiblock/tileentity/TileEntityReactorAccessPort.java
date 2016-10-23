@@ -8,14 +8,11 @@ import erogenousbeef.bigreactors.common.ItemHandlerWrapper;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -34,12 +30,11 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.List;
 
 // TODO cleanup
-public class TileEntityReactorAccessPort extends TileEntityReactorPart implements /*INeighborUpdatableEntity,*/ IInputOutputPort {
+public class TileEntityReactorAccessPort extends TileEntityReactorPart implements IInputOutputPort {
 
 	public TileEntityReactorAccessPort() {
 
 		this._direction = Direction.Input;
-		//this._adjacentInventory = null;
 		this._fuelInventoryWrapper = this._wasteInventoryWrapper = null;
 		this._fuelInventory = new TileEntityItemStackHandler(this, 1);
 		this._wasteInventory = new TileEntityItemStackHandler(this, 1);
@@ -236,20 +231,6 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 	
 	// Multiblock overrides
-	@Override
-	public void onMachineAssembled(MultiblockControllerBase controller) {
-
-		super.onMachineAssembled(controller);
-		//this._adjacentInventory = null;
-		this.checkForAdjacentInventories();
-	}
-	
-	@Override
-	public void onMachineBroken() {
-
-		super.onMachineBroken();
-		//this._adjacentInventory = null;
-	}
 
 	@Override
 	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
@@ -339,16 +320,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	}
 
 	protected void distributeItems() {
-		/*
-		if (worldObj.isRemote || this._adjacentInventory == null || this.getDirection().isInput())
-			return;
 
-		this._wasteInventory.setStackInSlot(0, ItemHandlerHelper.insertItem(this._adjacentInventory,
-				this._wasteInventory.getStackInSlot(0), false));
-		this.markChunkDirty();
-		*/
-
-		EnumFacing facing = this.getOutwardFacing();
+		final EnumFacing facing = this.getOutwardFacing();
 
 		if (WorldHelper.calledByLogicalClient(this.worldObj) || null == facing || this.getDirection().isInput())
 			return;
@@ -369,54 +342,10 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
             }
         }
 	}
-	
-	protected void checkForAdjacentInventories() {
-
-        /*
-
-		EnumFacing facing = this.getOutwardFacing();
-		IItemHandler candidateInventory = null;
-
-		if (null != facing) {
-
-			TileEntity te = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
-
-			if (null != te && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite()))
-				candidateInventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
-		}
-
-		if (this._adjacentInventory != candidateInventory) {
-
-			this._adjacentInventory = candidateInventory;
-
-			if (null != this._adjacentInventory)
-				this.distributeItems();
-		}
-		*/
-	}
-
-	// INeighborUpdateableEntity
-    /*
-	@Override
-	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
-		//checkForAdjacentInventories();
-	}
-
-	@Override
-	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
-
-		EnumFacing facing = this.getOutwardFacing();
-
-		// is the changed block the one we are facing?
-		if (null != facing && neighbor.equals(position.offset(facing)))
-			this.checkForAdjacentInventories();
-
-	}*/
 
 	protected TileEntityItemStackHandler _fuelInventory;
 	protected TileEntityItemStackHandler _wasteInventory;
 	protected IItemHandler _fuelInventoryWrapper;
 	protected IItemHandler _wasteInventoryWrapper;
-	//protected IItemHandler _adjacentInventory = null;
 	protected IInputOutputPort.Direction _direction;
 }
