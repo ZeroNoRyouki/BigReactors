@@ -23,10 +23,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import javax.annotation.Nullable;
 
 public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implements IRadiationModerator, IHeatEntity {
-
-	public TileEntityReactorFuelRod() {
-		super();
-	}
 	
 	// IRadiationModerator
 	@Override
@@ -237,6 +233,7 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		this._assembly = assembly;
 	}
 
+	@Nullable
 	public FuelAssembly getFuelAssembly() {
 		return this._assembly;
 	}
