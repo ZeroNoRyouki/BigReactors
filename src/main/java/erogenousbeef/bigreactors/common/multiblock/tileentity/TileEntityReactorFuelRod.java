@@ -20,6 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import javax.annotation.Nullable;
+
 public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implements IRadiationModerator, IHeatEntity {
 
 	public TileEntityReactorFuelRod() {
@@ -34,19 +36,13 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		// Grab control rod insertion and reactor heat
 		MultiblockReactor reactor = getReactorController();
 		float heat = reactor.getFuelHeat();
-		
-		int maxY = reactor.getMaximumCoord().getY();
-		BlockPos position = this.getPos();
+		TileEntityReactorControlRod controlRod = this.getAssemblyControlRod();
 
-		position = new BlockPos(position.getX(), maxY, position.getZ());
-
-		TileEntity te = worldObj.getTileEntity(position);
-		if(!(te instanceof TileEntityReactorControlRod)) {
+		if (null == controlRod)
 			return;
-		}
 
 		// Scale control rod insertion 0..1
-		float controlRodInsertion = Math.min(1f, Math.max(0f, ((float)((TileEntityReactorControlRod)te).getControlRodInsertion())/100f));
+		float controlRodInsertion = Math.min(1f, Math.max(0f, ((float)(controlRod).getControlRodInsertion())/100f));
 		
 		// Fuel absorptiveness is determined by control rod + a heat modifier.
 		// Starts at 1 and decays towards 0.05, reaching 0.6 at 1000 and just under 0.2 at 2000. Inflection point at about 500-600.
@@ -243,6 +239,11 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 
 	public FuelAssembly getFuelAssembly() {
 		return this._assembly;
+	}
+
+	@Nullable
+	public TileEntityReactorControlRod getAssemblyControlRod() {
+		return null != this._assembly ? this._assembly.getControlRod() : null;
 	}
 
 	private FuelAssembly _assembly;

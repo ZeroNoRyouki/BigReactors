@@ -1230,7 +1230,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		this.switchPowerSystem(candidatePowerSystem);
 
 		// glass anywhere?
-		this._interiorInvisible = this.attachedGlass.size() == 0 || true;
+		this._interiorInvisible = this.attachedGlass.size() == 0;
 	}
 
 	@Override
