@@ -15,6 +15,7 @@ fluid.tile.yellorium=液态黄铀
 fluid.tile.cyanite=液态蓝晶
 fluid.tile.blutonium=液态蓝钚
 fluid.steam=蒸汽
+fluid.yellorium=液态黄铀
 
 # Placeable Fluids
 tile.fluid.yellorium.still.name=液态黄铀

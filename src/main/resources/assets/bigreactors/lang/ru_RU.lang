@@ -16,6 +16,7 @@ fluid.tile.yellorium=Жидкий йеллориум
 fluid.tile.cyanite=Жидкий цианит
 fluid.tile.blutonium=Жидкий блутоний
 fluid.steam=Пар
+fluid.yellorium=Жидкий йеллориум
 
 # Placeable Fluids
 tile.fluid.yellorium.still.name=Жидкий йеллориум

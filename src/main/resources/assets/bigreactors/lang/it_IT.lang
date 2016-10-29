@@ -16,6 +16,7 @@ fluid.tile.yellorium=Yellorium Liquido
 fluid.tile.cyanite=Cianite Liquida
 fluid.tile.blutonium=Blutonium Liquido
 fluid.steam=Vapore
+fluid.yellorium=Yellorium Liquido
 
 # Placeable Fluids
 tile.fluid.yellorium.still.name=Yellorium Liquido
