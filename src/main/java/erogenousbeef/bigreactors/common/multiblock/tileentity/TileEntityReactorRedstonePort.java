@@ -425,20 +425,12 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 
 	@Override
 	public boolean isGoodForTop(IMultiblockValidator validatorCallback) {
-
-		BlockPos position = this.getPos();
-
-		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_top", position.getX(), position.getY(), position.getZ());
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isGoodForBottom(IMultiblockValidator validatorCallback) {
-
-		BlockPos position = this.getPos();
-
-		validatorCallback.setLastError("multiblock.validation.reactor.redstoneport_invalid_on_bottom", position.getX(), position.getY(), position.getZ());
-		return false;
+		return true;
 	}
 
 	@Override
