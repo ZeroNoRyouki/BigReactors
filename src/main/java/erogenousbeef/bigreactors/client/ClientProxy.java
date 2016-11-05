@@ -10,6 +10,7 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorF
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import erogenousbeef.bigreactors.init.BrFluids;
+import it.zerono.mods.zerocore.lib.client.VersionChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,6 +57,13 @@ public class ClientProxy extends CommonProxy {
 		super.register(item);
 		item.onPostClientRegister();
 		return item;
+	}
+
+	@Override
+	public void onPreInit(FMLPreInitializationEvent event) {
+
+		super.onPreInit(event);
+		VersionChecker.scheduleCheck("http://ws.zerono.it/check.ashx");
 	}
 
 	@Override
