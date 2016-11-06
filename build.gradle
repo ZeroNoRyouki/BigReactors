@@ -26,6 +26,7 @@ group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming
 archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
 ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
+ext.fullVersion = project.config.minecraft_version + '-' + project.version
 
 minecraft {
     version = "${config.forge_version}"
@@ -66,7 +67,7 @@ dependencies {
 processResources
 {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
+    inputs.property "version", project.ext.fullVersion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -74,7 +75,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.ext.fullVersion, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
@@ -87,7 +88,7 @@ compileJava.doFirst {
 
     File file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/common/BigReactors.java')
     String source = file.getText('UTF-8')
-            .replaceAll('version = "0.0.0.0"', 'version = "' + project.version + '"')
+            .replaceAll('version = "0.0.0.0"', 'version = "' + project.ext.fullVersion + '"')
             .replaceAll('acceptedMinecraftVersions = ""', 'acceptedMinecraftVersions = "' + config.minecraft_version + '"')
             .replaceAll('dependencies = ".*"', 'dependencies = "' + project.ext.dependencies + '"')
 
