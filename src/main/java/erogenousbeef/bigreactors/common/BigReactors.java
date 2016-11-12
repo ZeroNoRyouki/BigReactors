@@ -155,7 +155,7 @@ public class BigReactors implements IModInitializationHandler {
 		TurbineCoil.registerBlock("blockPlatinum", 3.0f, 1f, 2.5f);    // Thermal Foundation, lots of mods
 		TurbineCoil.registerBlock("blockShiny", 3.0f, 1f, 2.5f);	// Thermal Foundation
 
-		TurbineCoil.registerBlock("blockManyullyn", 3.0f, 1f, 2.5f);    // kers' Construct
+		TurbineCoil.registerBlock("blockManyullyn", 3.0f, 1f, 2.5f);    // Tinkers' Construct
 
 		TurbineCoil.registerBlock("blockTitanium", 3.1f, 1f, 2.7f);    // Mariculture
 		TurbineCoil.registerBlock("blockEnderium", 3.0f, 1.02f, 3.0f);    // Thermal Foundation, note tiny energy bonus!	(14% at 1000RF/t output)
@@ -220,6 +220,13 @@ public class BigReactors implements IModInitializationHandler {
 		ReactorInterior.registerFluid("pyrotheum", 0.66f, 0.90f, 1.00f, IHeatEntity.conductivityIron); // Thermal Foundation Blazing Pyrotheum
 		ReactorInterior.registerFluid("lifeessence", 0.70f, 0.55f, 1.75f, IHeatEntity.conductivityGold); // From Blood Magic
 
+		/*
+		ReactorInterior.registerFluid("knightslime", RadiationHelper.waterData.absorption, RadiationHelper.waterData.heatEfficiency, RadiationHelper.waterData.moderation, IHeatEntity.conductivityWater);
+		ReactorInterior.registerFluid("slime", RadiationHelper.waterData.absorption, RadiationHelper.waterData.heatEfficiency, RadiationHelper.waterData.moderation, IHeatEntity.conductivityWater);
+		ReactorInterior.registerFluid("blueslime", RadiationHelper.waterData.absorption, RadiationHelper.waterData.heatEfficiency, RadiationHelper.waterData.moderation, IHeatEntity.conductivityWater);
+		ReactorInterior.registerFluid("magmaslime", RadiationHelper.waterData.absorption, RadiationHelper.waterData.heatEfficiency, RadiationHelper.waterData.moderation, IHeatEntity.conductivityWater);
+		*/
+		
 		if (enableComedy) {
 			ReactorInterior.registerBlock("blockMeat", 0.50f, 0.33f, 1.33f, IHeatEntity.conductivityStone);
 			ReactorInterior.registerBlock("blockMeatRaw", 0.40f, 0.50f, 1.50f, IHeatEntity.conductivityStone);
