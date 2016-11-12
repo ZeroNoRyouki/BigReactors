@@ -22,6 +22,7 @@ configFile.withReader {
 }
 
 version = "${config.mod_version_major}.${config.mod_version_api}.${config.mod_version_minor}.${config.mod_version_patch}"
+ext.api_version = "${config.mod_version_api}.${config.api_version_minor}.${config.api_version_patch}"
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
@@ -30,7 +31,6 @@ ext.fullVersion = project.config.minecraft_version + '-' + project.version
 
 minecraft {
     version = "${config.forge_version}"
-
 
 	if (file("../run-${config.minecraft_version}").exists()) {
 		runDir = "../run-${config.minecraft_version}"
@@ -64,33 +64,46 @@ dependencies {
     deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
 }
 
-processResources
-{
+processResources  {
+
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.ext.fullVersion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
+
         include 'mcmod.info'
-                
-        // replace version and mcversion
         expand 'version':project.ext.fullVersion, 'mcversion':project.minecraft.version
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 }
 
+task apiJar(type: Jar) {
+
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+    include 'erogenousbeef/bigreactors/api/**/*'
+    classifier = 'api'
+}
+
 compileJava.doFirst {
 
-    File file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/common/BigReactors.java')
-    String source = file.getText('UTF-8')
+    File file;
+    String source;
+
+    file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/common/BigReactors.java')
+    source = file.getText('UTF-8')
             .replaceAll('version = "0.0.0.0"', 'version = "' + project.ext.fullVersion + '"')
             .replaceAll('acceptedMinecraftVersions = ""', 'acceptedMinecraftVersions = "' + config.minecraft_version + '"')
             .replaceAll('dependencies = ".*"', 'dependencies = "' + project.ext.dependencies + '"')
+    file.write(source, 'UTF-8')
 
+    file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/api/package-info.java')
+    source = file.getText('UTF-8').replaceAll('apiVersion = "0.0.0"', 'apiVersion = "' + project.ext.api_version + '"')
     file.write(source, 'UTF-8')
 }
