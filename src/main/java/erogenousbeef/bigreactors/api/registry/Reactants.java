@@ -1,13 +1,9 @@
 package erogenousbeef.bigreactors.api.registry;
 
-import erogenousbeef.bigreactors.api.IReactorFuel;
 import erogenousbeef.bigreactors.api.data.FluidToReactantMapping;
 import erogenousbeef.bigreactors.api.data.OreDictToReactantMapping;
 import erogenousbeef.bigreactors.api.data.ReactantData;
 import erogenousbeef.bigreactors.api.data.SourceProductMapping;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.data.ReactorSolidMapping;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -15,8 +11,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Reactants {
 	
@@ -32,12 +30,13 @@ public class Reactants {
 	// 1:many
 	private static Map<String, List<SourceProductMapping>> _reactantToSolid = new HashMap<String, List<SourceProductMapping>>();
 	private static Map<String, List<SourceProductMapping>> _reactantToFluid = new HashMap<String, List<SourceProductMapping>>();
-
+	/*
 	private static Map<String, ItemStack> _reactorFluidToSolid = new HashMap<String, ItemStack>();
 	private static Set<ReactorSolidMapping> _reactorSolidToFuel = new CopyOnWriteArraySet<ReactorSolidMapping>(); // This won't work
 	private static Set<ReactorSolidMapping> _reactorSolidToWaste = new CopyOnWriteArraySet<ReactorSolidMapping>(); // This won't work
 
 	private static Map<String, IReactorFuel> _reactorFluids = new HashMap<String, IReactorFuel>();
+	*/
 	
 	//// REGISTRATION
 	
@@ -47,10 +46,12 @@ public class Reactants {
 	 * @param name Name of the reactant
 	 * @param fuel True if fuel, false if waste.
 	 */
+	@Deprecated // use the full version below and supply your own fuel/waste colors. To be removed shortly
 	public static void registerReactant(String name, boolean fuel) {
 		registerReactant(name,
 						 fuel ? 0 : 1,
-						 fuel ? BigReactors.defaultFluidColorFuel : BigReactors.defaultFluidColorWaste
+						 //fuel ? BigReactors.defaultFluidColorFuel : BigReactors.defaultFluidColorWaste
+							0
 						);
 	}
 	
@@ -66,7 +67,7 @@ public class Reactants {
 		}
 		
 		if(_reactants.containsKey(name)) {
-			BRLog.warning("Overwriting data for reactant %s - someone may be altering BR game data or have duplicate reactant names!", name);
+			FMLLog.warning("Overwriting data for reactant %s - someone may be altering BR game data or have duplicate reactant names!", name);
 		}
 		
 		ReactantData data = new ReactantData(name, ReactantData.TYPES[type], color);
@@ -104,7 +105,7 @@ public class Reactants {
 
 		if (null == oreDictNames) {
 
-			BRLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
+			FMLLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
 			return null;
 		}
 

@@ -1,7 +1,6 @@
 package erogenousbeef.bigreactors.api.registry;
 
 import erogenousbeef.bigreactors.api.data.CoilPartData;
-import erogenousbeef.bigreactors.common.BRLog;
 import net.minecraftforge.fml.common.FMLLog;
 
 import javax.annotation.Nullable;

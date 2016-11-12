@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.api.imc;
 
-import erogenousbeef.bigreactors.common.BRLog;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 import java.lang.reflect.InvocationTargetException;
@@ -23,18 +23,18 @@ public class MessageRouter {
 				try {
 					handler.invoke(message);
 				} catch (IllegalAccessException e) {
-					BRLog.warning("IllegalAccessException while handling message <%s>, ignoring. Error: %s", message.key, e.getMessage());
+					FMLLog.warning("IllegalAccessException while handling message <%s>, ignoring. Error: %s", message.key, e.getMessage());
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
-					BRLog.warning("IllegalArgumentException while handling message <%s>, ignoring. Error: %s", message.key, e.getMessage());
+					FMLLog.warning("IllegalArgumentException while handling message <%s>, ignoring. Error: %s", message.key, e.getMessage());
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					BRLog.warning("InvocationTargetException while handling message <%s>, ignoring. Error: %s", message.key, e.getMessage());
+					FMLLog.warning("InvocationTargetException while handling message <%s>, ignoring. Error: %s", message.key, e.getMessage());
 					e.printStackTrace();
 				}
 			}
 			else {
-				BRLog.warning("Received an InterModComms event with an unrecognized key <%s>", message.key);
+				FMLLog.warning("Received an InterModComms event with an unrecognized key <%s>", message.key);
 			}
 		}
 	}
