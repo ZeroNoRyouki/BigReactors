@@ -131,7 +131,7 @@ public class BigReactors implements IModInitializationHandler {
 		TurbineCoil.registerBlock("blockIron", 1f, 1f, 1f);
 		TurbineCoil.registerBlock("blockGold", 2f, 1f, 1.75f);
 
-		TurbineCoil.registerBlock("blockCopper", 1.2f, 1f, 1.2f);    // TE/Modularity, lots of mods
+		TurbineCoil.registerBlock("blockCopper", 1.2f, 1f, 1.2f);    // Thermal Foundation, lots of mods
 
 		TurbineCoil.registerBlock("blockOsmium", 1.2f, 1f, 1.2f);    // Mekanism
 		TurbineCoil.registerBlock("blockCobalt", 1.2f, 1f, 1.2f);	// Tinkers' Construct
@@ -139,7 +139,7 @@ public class BigReactors implements IModInitializationHandler {
 		TurbineCoil.registerBlock("blockZinc", 1.35f, 1f, 1.3f);
 		TurbineCoil.registerBlock("blockArdite", 1.35f, 1f, 1.3f);	// Tinkers' Construct
 
-		TurbineCoil.registerBlock("blockLead", 1.35f, 1.01f, 1.3f);// TE/Modularity, Mekanism, some others
+		TurbineCoil.registerBlock("blockLead", 1.35f, 1.01f, 1.3f);// Thermal Foundation, Mekanism, some others
 
 		TurbineCoil.registerBlock("blockBrass", 1.4f, 1f, 1.2f);    // Metallurgy
 		TurbineCoil.registerBlock("blockAlubrass", 1.4f, 1f, 1.2f);    // Tinkers' Construct
@@ -147,17 +147,18 @@ public class BigReactors implements IModInitializationHandler {
 		TurbineCoil.registerBlock("blockBronze", 1.4f, 1f, 1.2f);    // Mekanism, many others
 		TurbineCoil.registerBlock("blockAluminum", 1.5f, 1f, 1.3f);    // TiCo, couple others
 		TurbineCoil.registerBlock("blockSteel", 1.5f, 1f, 1.3f);    // Metallurgy, Mek, etc.
-		TurbineCoil.registerBlock("blockInvar", 1.5f, 1f, 1.4f);    // TE/Modularity
-		TurbineCoil.registerBlock("blockSilver", 1.7f, 1f, 1.5f);    // TE/Modularity, lots of mods
-		TurbineCoil.registerBlock("blockElectrum", 2.5f, 1f, 2.0f);    // TE/Modularity, lots of mods
+		TurbineCoil.registerBlock("blockInvar", 1.5f, 1f, 1.4f);    // Thermal Foundation
+		TurbineCoil.registerBlock("blockSilver", 1.7f, 1f, 1.5f);    // Thermal Foundation, lots of mods
+		TurbineCoil.registerBlock("blockElectrum", 2.5f, 1f, 2.0f);    // Thermal Foundation, lots of mods
 		TurbineCoil.registerBlock("blockElectrumFlux", 2.5f, 1.01f, 2.2f);    // Redstone Arsenal, note small energy bonus (7% at 1000RF/t output)
-		TurbineCoil.registerBlock("blockPlatinum", 3.0f, 1f, 2.5f);    // TE/Modularity, lots of mods
 
-		TurbineCoil.registerBlock("blockShiny", 3.0f, 1f, 2.5f);    // TE
+		TurbineCoil.registerBlock("blockPlatinum", 3.0f, 1f, 2.5f);    // Thermal Foundation, lots of mods
+		TurbineCoil.registerBlock("blockShiny", 3.0f, 1f, 2.5f);	// Thermal Foundation
+
 		TurbineCoil.registerBlock("blockManyullyn", 3.0f, 1f, 2.5f);    // kers' Construct
 
 		TurbineCoil.registerBlock("blockTitanium", 3.1f, 1f, 2.7f);    // Mariculture
-		TurbineCoil.registerBlock("blockEnderium", 3.0f, 1.02f, 3.0f);    // TE/Modularity, note tiny energy bonus!	(14% at 1000RF/t output)
+		TurbineCoil.registerBlock("blockEnderium", 3.0f, 1.02f, 3.0f);    // Thermal Foundation, note tiny energy bonus!	(14% at 1000RF/t output)
 
 		TurbineCoil.registerBlock("blockLudicrite", 3.5f, 1.02f, 3.5f);
 
@@ -195,9 +196,9 @@ public class BigReactors implements IModInitializationHandler {
 		ReactorInterior.registerBlock("blockElectrum", 0.53f, 0.82f, 1.47f, 2.2f); // Between gold and emerald
 		ReactorInterior.registerBlock("blockElectrumFlux", 0.54f, 0.83f, 1.48f, 2.4f); // Between gold and emerald
 		ReactorInterior.registerBlock("blockPlatinum", 0.57f, 0.86f, 1.58f, IHeatEntity.conductivityEmerald);
-		ReactorInterior.registerBlock("blockShiny", 0.57f, 0.86f, 1.58f, IHeatEntity.conductivityEmerald);
+		ReactorInterior.registerBlock("blockShiny", 0.57f, 0.86f, 1.58f, IHeatEntity.conductivityEmerald); // Thermal Foundation Shiny block
 		ReactorInterior.registerBlock("blockTitanium", 0.58f, 0.87f, 1.59f, 2.7f); // Mariculture
-		ReactorInterior.registerBlock("blockEnderium", 0.60f, 0.88f, 1.60f, IHeatEntity.conductivityDiamond);
+		ReactorInterior.registerBlock("blockEnderium", 0.60f, 0.88f, 1.60f, IHeatEntity.conductivityDiamond); // Thermal Foundation Enderium block
 
 		if (enableFantasyMetals) {
 			ReactorInterior.registerBlock("blockMithril", 0.53f, 0.81f, 1.45f, IHeatEntity.conductivitySilver);
@@ -211,12 +212,12 @@ public class BigReactors implements IModInitializationHandler {
 
 		//Water: 0.33f, 0.5f, 1.33f
 		ReactorInterior.registerFluid("water", RadiationHelper.waterData.absorption, RadiationHelper.waterData.heatEfficiency, RadiationHelper.waterData.moderation, IHeatEntity.conductivityWater);
-		ReactorInterior.registerFluid("fluidredstone", 0.75f, 0.55f, 1.60f, IHeatEntity.conductivityEmerald);
+		ReactorInterior.registerFluid("redstone", 0.75f, 0.55f, 1.60f, IHeatEntity.conductivityEmerald); // Thermal Foundation Destabilized Redstone
 		ReactorInterior.registerFluid("fluidtesla", 0.75f, 0.55f, 1.60f, IHeatEntity.conductivityEmerald); // Modularity
-		ReactorInterior.registerFluid("fluidglowstone", 0.20f, 0.60f, 1.75f, IHeatEntity.conductivityCopper);
-		ReactorInterior.registerFluid("fluidcryotheum", 0.66f, 0.95f, 6.00f, IHeatEntity.conductivityDiamond); // Cryotheum: an amazing moderator!
-		ReactorInterior.registerFluid("fluidender", 0.90f, 0.75f, 2.00f, IHeatEntity.conductivityGold);
-		ReactorInterior.registerFluid("fluidpyrotheum", 0.66f, 0.90f, 1.00f, IHeatEntity.conductivityIron);
+		ReactorInterior.registerFluid("glowstone", 0.20f, 0.60f, 1.75f, IHeatEntity.conductivityCopper); // Thermal Foundation Energised Glowstone
+		ReactorInterior.registerFluid("cryotheum", 0.66f, 0.95f, 6.00f, IHeatEntity.conductivityDiamond); // Thermal Foundation Gelid Cryotheum: an amazing moderator!
+		ReactorInterior.registerFluid("ender", 0.90f, 0.75f, 2.00f, IHeatEntity.conductivityGold); // Thermal Foundation Resonant Ender
+		ReactorInterior.registerFluid("pyrotheum", 0.66f, 0.90f, 1.00f, IHeatEntity.conductivityIron); // Thermal Foundation Blazing Pyrotheum
 		ReactorInterior.registerFluid("lifeessence", 0.70f, 0.55f, 1.75f, IHeatEntity.conductivityGold); // From Blood Magic
 
 		if (enableComedy) {
