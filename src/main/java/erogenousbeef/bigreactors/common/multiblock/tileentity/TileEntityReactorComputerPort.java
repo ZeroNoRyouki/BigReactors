@@ -55,7 +55,8 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		setAllControlRodLevels,	// Required Arg: integer (insertion)
 		setControlRodName,		// Required Args: fuel rod index, string (name)
 		doEjectWaste,			// No arguments
-		doEjectFuel				// No arguments
+		doEjectFuel,			// No arguments
+		getEnergyCapacity, 		// No arguments
 	}
 
 	public static final int numMethods = ComputerMethod.values().length;
@@ -88,8 +89,8 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		if(!this.isConnected()) {
 			throw new Exception("Unable to access reactor - port is not connected");
 		}
-		MultiblockReactor reactor = this.getReactorController();
 
+		MultiblockReactor reactor = this.getReactorController();
 		ComputerMethod computerMethod = ComputerMethod.values()[method];
 		int newLevel;
 		boolean newState;
@@ -269,6 +270,9 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		case doEjectFuel:
 			reactor.ejectFuel(false, null);
 			return null;
+
+		case getEnergyCapacity:
+				return new Object[] { reactor.getEnergyCapacity() };
 
 		default: throw new Exception("Method unimplemented - yell at Beef");
 		}

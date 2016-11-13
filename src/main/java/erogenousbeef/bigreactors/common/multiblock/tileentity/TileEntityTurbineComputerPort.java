@@ -56,6 +56,7 @@ public class TileEntityTurbineComputerPort extends
 		setVentOverflow,		// No arguments
 		setVentAll,				// No arguments
 		setInductorEngaged,		// Required Arg: integer (active)
+		getEnergyCapacity, 		// No arguments
 	}
 
 	public static final int numMethods = ComputerMethod.values().length;
@@ -177,7 +178,12 @@ public class TileEntityTurbineComputerPort extends
 			}
 			turbine.setInductorEngaged((Boolean)arguments[0], true);
 			break;
-		default:
+
+		case getEnergyCapacity:
+			return new Object[] { turbine.getEnergyCapacity() };
+
+
+			default:
 			throw new Exception("Method unimplemented - yell at Beef");
 		}
 		
