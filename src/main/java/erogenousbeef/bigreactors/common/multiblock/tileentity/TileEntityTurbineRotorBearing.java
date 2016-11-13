@@ -70,7 +70,12 @@ public class TileEntityTurbineRotorBearing extends
 	}
 	
 	public AxisAlignedBB getAABB() { return boundingBox; }
-	
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return this.boundingBox;
+	}
+
 	private void calculateRotorInfo() {
 
 		final BlockTurbineRotorShaft turbineRotorShaft = BrBlocks.turbineRotorShaft;
