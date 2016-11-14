@@ -11,6 +11,7 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
 
 ext.configFile = file "project.properties"
 
@@ -44,6 +45,10 @@ minecraft {
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+
+configurations {
+    deployerJars
+}
 
 repositories {
 
@@ -83,14 +88,6 @@ processResources  {
     }
 }
 
-task apiJar(type: Jar) {
-
-    from sourceSets.main.allSource
-    from sourceSets.main.output
-    include 'erogenousbeef/bigreactors/api/**/*'
-    classifier = 'api'
-}
-
 compileJava.doFirst {
 
     File file;
@@ -106,4 +103,31 @@ compileJava.doFirst {
     file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/api/package-info.java')
     source = file.getText('UTF-8').replaceAll('apiVersion = "0.0.0"', 'apiVersion = "' + project.ext.api_version + '"')
     file.write(source, 'UTF-8')
+}
+
+task apiJar(type: Jar) {
+
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+    include 'erogenousbeef/bigreactors/api/**/*'
+    classifier = 'api'
+}
+
+artifacts {
+
+    archives apiJar
+}
+
+uploadArchives {
+
+    repositories {
+
+        mavenDeployer {
+            repository(url: "file://C:\\MC\\ForgeDEV\\Mod Workspace\\BigReactorsReborn\\maven")
+            pom.version = project.ext.fullVersion
+            //jar.archiveName = 'ExtremeReactorsABC.jar'
+            pom.artifactId = "${config.mod_id}"
+
+        }
+    }
 }
