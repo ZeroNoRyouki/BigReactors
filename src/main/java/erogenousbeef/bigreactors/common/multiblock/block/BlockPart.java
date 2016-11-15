@@ -141,6 +141,7 @@ public class BlockPart extends BlockBR {
     @Override
     public void breakBlock(World world, BlockPos position, IBlockState state) {
 
+        /*
         TileEntity te = world.getTileEntity(position);
 
         if (null == te)
@@ -161,7 +162,7 @@ public class BlockPart extends BlockBR {
                     WorldHelper.spawnItemStack(stack, world, x, y, z, false);
             }
         }
-
+        */
         // remove the TE from the world
         world.removeTileEntity(position);
     }

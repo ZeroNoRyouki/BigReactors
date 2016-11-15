@@ -151,6 +151,22 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
     }
 
     @Override
+    public void breakBlock(World world, BlockPos position, IBlockState state) {
+
+        TileEntity te = world.getTileEntity(position);
+
+        if (te instanceof TileEntityReactorAccessPort) {
+
+            TileEntityReactorAccessPort port = (TileEntityReactorAccessPort)te;
+
+            StaticUtils.Inventory.dropItems(port.getItemStackHandler(true), world, position);
+            StaticUtils.Inventory.dropItems(port.getItemStackHandler(false), world, position);
+        }
+
+        super.breakBlock(world, position, state);
+    }
+
+    @Override
     protected void buildBlockState(BlockStateContainer.Builder builder) {
 
         super.buildBlockState(builder);

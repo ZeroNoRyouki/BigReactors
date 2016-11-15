@@ -9,10 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityTurbineCreativeSteamGenerator extends TileEntityTurbinePart implements ITickableMultiblockPart {
 
-	public TileEntityTurbineCreativeSteamGenerator() {
-		super();
-	}
-
 	@Override
 	public void onMultiblockServerTick() {
 

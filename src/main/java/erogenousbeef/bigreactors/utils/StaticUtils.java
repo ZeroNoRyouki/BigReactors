@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.utils;
 import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,12 +18,35 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 //import buildcraft.api.tools.IToolWrench;
 
 public class StaticUtils {
 
 	public static class Inventory {
+
+		public static void dropItems(ItemStackHandler handler, World world, BlockPos position) {
+
+			if (null == handler)
+				return;
+
+			final double x = position.getX(), y = position.getY(), z = position.getZ();
+			final int slotsCount = handler.getSlots();
+
+			for (int slot = 0; slot < slotsCount; ++slot) {
+
+				final ItemStack stack = handler.getStackInSlot(slot);
+
+				if (null != stack) {
+
+					handler.setStackInSlot(slot, null);
+					WorldHelper.spawnItemStack(stack, world, x, y, z, false);
+				}
+			}
+		}
+
+
 		/**
 		 * Consume a single item from a stack of items
 		 * @param stack The stack from which to consume

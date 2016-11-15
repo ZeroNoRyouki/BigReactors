@@ -9,10 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityReactorCreativeCoolantPort extends TileEntityReactorCoolantPort implements ITickableMultiblockPart {
 
-	public TileEntityReactorCreativeCoolantPort() {
-		super();
-	}
-
 	@Override
 	public void onMultiblockServerTick() {
 		if(!isConnected()) { return; }
