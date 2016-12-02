@@ -4,7 +4,6 @@ import erogenousbeef.bigreactors.api.data.FluidToReactantMapping;
 import erogenousbeef.bigreactors.api.data.OreDictToReactantMapping;
 import erogenousbeef.bigreactors.api.data.ReactantData;
 import erogenousbeef.bigreactors.api.data.SourceProductMapping;
-import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -100,7 +99,7 @@ public class Reactants {
 			throw new IllegalArgumentException("Unknown reactantName " + reactantName);
 		}
 
-		String[] oreDictNames = OreDictionaryHelper.getOreNames(itemStack);
+		String[] oreDictNames = Reactants.zcGetOreNames(itemStack);
 		SourceProductMapping firstMapping = null;
 
 		if (null == oreDictNames) {
@@ -337,5 +336,26 @@ public class Reactants {
 		}
 		
 		list.add(mapping);
-	}	
+	}
+
+	// copied from ZeroCore OreDictionaryHelper
+	private static String[] zcGetOreNames(ItemStack stack) {
+
+		if (null == stack)
+			return null;
+
+		String[] names;
+		int[] oreIDs = OreDictionary.getOreIDs(stack);
+		int count;
+
+		if (oreIDs == null || (count = oreIDs.length) < 1)
+			return null;
+
+		names = new String[count];
+
+		for (int i = 0; i < count; ++i)
+			names[i] = OreDictionary.getOreName(oreIDs[i]);
+
+		return names;
+	}
 }
