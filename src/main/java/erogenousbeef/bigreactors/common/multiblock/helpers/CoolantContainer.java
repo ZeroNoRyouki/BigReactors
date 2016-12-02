@@ -184,7 +184,7 @@ public class CoolantContainer extends FluidHelper {
 		case COLD:
 			return isAcceptedCoolant(fluid);
 		case HOT:
-			return true;
+			return null != fluid && BrFluids.fluidSteam == fluid;
 		default:
 			return false;
 		}
