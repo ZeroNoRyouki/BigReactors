@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
@@ -59,6 +60,7 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 		GlStateManager.rotate(angle, dX, dY, dZ);
 		GlStateManager.translate(-rotationOffsetX, -rotationOffsetY, -rotationOffsetZ);
 
+		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.callList(displayList);
 
 		GlStateManager.translate(-x, -y, -z);
