@@ -45,7 +45,7 @@ public class TileEntityTurbinePowerTapRedstoneFlux extends TileEntityTurbinePowe
         if (this._rfHandler.isProviderConnected())
             return this._rfHandler.onProvidePower(units);
 
-        return 0;
+        return units;
     }
 
     // TileEntityReactorPowerTap
