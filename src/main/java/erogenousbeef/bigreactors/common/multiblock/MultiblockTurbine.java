@@ -183,6 +183,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 		this._inputTank = new FluidTank(TANK_SIZE) {
 
+			/*
 			@Override
 			public int fill(FluidStack resource, boolean doFill) {
 
@@ -191,7 +192,32 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				if (null == resource || BrFluids.fluidSteam != resource.getFluid())
 					return 0;
 
+
 				return super.fill(resource, doFill);
+			}*/
+
+			@Override
+			public boolean canFillFluidType(FluidStack fluidStack) {
+
+				boolean allowed = null != fluidStack && super.canFillFluidType(fluidStack);
+
+				if (allowed) {
+
+					//FluidStack currentStack = this.getFluid();
+
+					allowed = BrFluids.isFluidUsableAsSteam(this.getFluid(), fluidStack);
+					/*
+					Fluid steam = null != currentStack ? currentStack.getFluid() : null;
+					Fluid otherFluid = fluidStack.getFluid();
+
+					if (null == steam)
+						steam = BrFluids.fluidSteam;
+
+					allowed = null != otherFluid && 0 == steam.getName().compareToIgnoreCase(otherFluid.getName());
+					*/
+				}
+
+				return allowed;
 			}
 		};
 

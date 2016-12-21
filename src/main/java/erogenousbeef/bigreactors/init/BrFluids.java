@@ -5,6 +5,7 @@ import it.zerono.mods.zerocore.lib.fluid.ModFluid;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BrFluids {
 
@@ -15,6 +16,26 @@ public class BrFluids {
     public static final Fluid fluidFuelColumn;
 
     public static void initialize() {
+    }
+
+    public static boolean isSameFluid(final Fluid fluid1, final Fluid fluid2) {
+        return null != fluid1 && null != fluid2 && (fluid1 == fluid2 || 0 == fluid1.getName().compareToIgnoreCase(fluid2.getName()));
+    }
+
+    public static boolean isSameFluid(final FluidStack fluidStack1, final FluidStack fluidStack2) {
+        return null != fluidStack1 && null != fluidStack2 && isSameFluid(fluidStack1.getFluid(), fluidStack2.getFluid());
+    }
+
+    public static boolean isFluidUsableAsSteam(final Fluid currentlyUsedSteam, final Fluid otherFluid) {
+        return isSameFluid(null != currentlyUsedSteam ? currentlyUsedSteam : fluidSteam, otherFluid);
+    }
+
+    public static boolean isFluidUsableAsSteam(final FluidStack currentlyUsedSteamStack, final FluidStack otherFluidStack) {
+
+        Fluid currentFluid = null != currentlyUsedSteamStack ? currentlyUsedSteamStack.getFluid() : null;
+        Fluid otherFluid = null != otherFluidStack ? otherFluidStack.getFluid() : null;
+
+        return isSameFluid(null != currentFluid ? currentFluid : fluidSteam, otherFluid);
     }
 
     static {

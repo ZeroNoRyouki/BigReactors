@@ -32,9 +32,7 @@ public class CoolantContainer extends FluidHelper {
 	}
 	
 	public boolean isAcceptedCoolant(Fluid fluid) {
-		if(fluid == null) { return false; }
-
-		return fluid == FluidRegistry.WATER;
+		return null != fluid && fluid == FluidRegistry.WATER;
 	}
 
 	public int addCoolant(FluidStack incoming) {
@@ -184,7 +182,8 @@ public class CoolantContainer extends FluidHelper {
 		case COLD:
 			return isAcceptedCoolant(fluid);
 		case HOT:
-			return null != fluid && BrFluids.fluidSteam == fluid;
+			return BrFluids.isFluidUsableAsSteam(this.getFluidType(HOT), fluid);
+			//return null != fluid && BrFluids.fluidSteam == fluid;
 		default:
 			return false;
 		}
