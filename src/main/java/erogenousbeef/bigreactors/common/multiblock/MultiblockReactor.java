@@ -655,12 +655,43 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean isBlockGoodForInterior(World world, int x, int y, int z, IMultiblockValidator validatorCallback) {
 
-		BlockPos position = new BlockPos(x, y, z);
+		final BlockPos position = new BlockPos(x, y, z);
 
-		if(world.isAirBlock(position)) { return true; } // Air is OK
+		if (world.isAirBlock(position))
+			return true; // Air is OK
 
-		IBlockState blockState = this.WORLD.getBlockState(position);
-		Block block = blockState.getBlock();
+		final IBlockState blockState = this.WORLD.getBlockState(position);
+
+		// Check against registered moderator blocks
+
+		final ItemStack stack = ItemHelper.createItemStack(blockState, 1);
+
+		if (null != stack && null != ReactorInterior.getBlockData(stack))
+			return true;
+
+		// Check against registered moderator fluids
+
+		final Block block = blockState.getBlock();
+
+		if (block == Blocks.WATER || block == Blocks.FLOWING_WATER)
+			return true;
+
+		if (block instanceof IFluidBlock) {
+
+			final String fluidName = ((IFluidBlock)block).getFluid().getName();
+
+			if (ReactorInterior.getFluidData(fluidName) != null)
+				return true;
+
+			validatorCallback.setLastError("multiblock.validation.reactor.invalid_fluid_for_interior", x, y, z, fluidName);
+			return false;
+		}
+
+		validatorCallback.setLastError("multiblock.validation.reactor.invalid_block_for_interior", x, y, z, block.getLocalizedName());
+		return false;
+
+
+/*
 
 		Material material = block.getMaterial(blockState);
 		if(material == MaterialLiquid.WATER ||
@@ -705,6 +736,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			validatorCallback.setLastError("multiblock.validation.reactor.null_block_found", x, y, z);
 			return false;
 		}
+
+		*/
 	}
 
 	@Override
