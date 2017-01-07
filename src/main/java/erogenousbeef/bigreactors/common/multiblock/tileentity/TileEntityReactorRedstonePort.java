@@ -443,14 +443,16 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase controller) {
-		super.onMachineAssembled(controller);
+	public void onPostMachineAssembled(MultiblockControllerBase controller) {
+
+		super.onPostMachineAssembled(controller);
 		this.updateRedstoneStateAndNotify();
 	}
 
 	@Override
-	public void onMachineBroken() {
-		super.onMachineBroken();
+	public void onPostMachineBroken() {
+
+		super.onPostMachineBroken();
 		this.updateRedstoneStateAndNotify();
 	}
 

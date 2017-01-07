@@ -47,10 +47,11 @@ public class TileEntityTurbineRotorBearing extends
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase controller) {
-		super.onMachineAssembled(controller);
-		displayList = null;
-		calculateRotorInfo();
+	public void onPostMachineAssembled(MultiblockControllerBase controller) {
+
+		super.onPostMachineAssembled(controller);
+		this.displayList = null;
+		this.calculateRotorInfo();
 	}
 	
 	@SideOnly(Side.CLIENT)

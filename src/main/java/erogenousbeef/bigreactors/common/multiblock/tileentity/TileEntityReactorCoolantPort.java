@@ -41,11 +41,13 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			return;
 
 		this._direction = direction;
-		WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
 
 		if (WorldHelper.calledByLogicalServer(this.worldObj)) {
 
-			if (!direction.isInput())
+			WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
+			this.notifyOutwardNeighborsOfStateChange();
+
+			if (direction.isOutput())
 				this.checkForAdjacentTank();
 
 			if (markForUpdate)
@@ -53,8 +55,10 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			else
 				this.notifyNeighborsOfTileChange();
 
-		} else
+		} else {
+			this.worldObj.markBlockRangeForRenderUpdate(this.getWorldPosition(), this.getWorldPosition());
 			this.notifyNeighborsOfTileChange();
+		}
 	}
 
 	@Override
@@ -63,19 +67,19 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+	public void onPostMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
 
-		super.onMachineAssembled(multiblockControllerBase);
-		checkForAdjacentTank();
-
-		this.notifyNeighborsOfTileChange();
+		super.onPostMachineAssembled(multiblockControllerBase);
+		this.notifyOutwardNeighborsOfStateChange();
+		this.checkForAdjacentTank();
 	}
 	
 	@Override
-	public void onMachineBroken() {
+	public void onPostMachineBroken() {
 
-		super.onMachineBroken();
-		_pumpDestination = null;
+		super.onPostMachineBroken();
+		this.notifyOutwardNeighborsOfStateChange();
+		this._pumpDestination = null;
 	}
 
 	@Override
@@ -101,7 +105,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isConnected()) ||
+		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isMachineAssembled()) ||
 				super.hasCapability(capability, facing);
 	}
 
@@ -110,7 +114,8 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		MultiblockReactor reactor;
 
-		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && null != (reactor = this.getReactorController()))
+		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability &&
+				null != (reactor = this.getReactorController()) && reactor.isAssembled())
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(reactor.getFluidHandler(this._direction));
 
 		return super.getCapability(capability, facing);
@@ -142,13 +147,14 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		if (WorldHelper.calledByLogicalServer(world))
 			checkForAdjacentTank();
 	}
-	
+	/**/
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 
 		if(!worldObj.isRemote)
 			checkForAdjacentTank();
-	}
+
+	}/**/
 
 	private void checkForAdjacentTank() {
 
@@ -156,7 +162,8 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		this._pumpDestination = null;
 
-		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) || this._direction.isInput())
+		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) ||
+				!this.isMachineAssembled() || this._direction.isInput())
 			return;
 
 		TileEntity neighbor = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));

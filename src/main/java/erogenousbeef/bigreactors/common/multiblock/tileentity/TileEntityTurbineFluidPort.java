@@ -40,17 +40,24 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 			return;
 
 		this._direction = direction;
-		WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
 
 		if (WorldHelper.calledByLogicalServer(this.worldObj)) {
+
+			WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
+			this.notifyOutwardNeighborsOfStateChange();
+
+			if (direction.isOutput())
+				this.checkForAdjacentTank();
 
 			if (markForUpdate)
 				this.markDirty();
 			else
 				this.notifyNeighborsOfTileChange();
 
-		} else
+		} else {
+			this.worldObj.markBlockRangeForRenderUpdate(this.getWorldPosition(), this.getWorldPosition());
 			this.notifyNeighborsOfTileChange();
+		}
 	}
 
 	@Override
@@ -59,19 +66,32 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	}
 
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+	public void onPostMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
 
-		super.onMachineAssembled(multiblockControllerBase);
+		super.onPostMachineAssembled(multiblockControllerBase);
+		this.notifyOutwardNeighborsOfStateChange();
+		this.checkForAdjacentTank();
+/*
+		// TEST!
+		IBlockState bs = worldObj.getBlockState(pos);
+		worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+		worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
+		//worldObj.notifyBlockOfStateChange(this.pos.offset())
+		//markDirty();
+
+
 		checkForAdjacentTank();
 		
 		this.notifyNeighborsOfTileChange();
+		*/
 	}
 
 	@Override
-	public void onMachineBroken()
-	{
-		super.onMachineBroken();
-		_pumpDestination = null;
+	public void onPostMachineBroken() {
+
+		super.onPostMachineBroken();
+		this.notifyOutwardNeighborsOfStateChange();
+		this._pumpDestination = null;
 	}
 
 	@Override
@@ -97,7 +117,14 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isConnected()) ||
+		/*
+		MultiblockTurbine turbine;
+
+		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability &&
+				null != (turbine = this.getTurbine()) && turbine.isAssembled()) ||
+				super.hasCapability(capability, facing);
+		*/
+		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isMachineAssembled()) ||
 				super.hasCapability(capability, facing);
 	}
 
@@ -106,7 +133,8 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		MultiblockTurbine turbine;
 
-		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && null != (turbine = this.getTurbine()))
+		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability &&
+				null != (turbine = this.getTurbine()) && turbine.isAssembled())
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(turbine.getFluidHandler(this._direction));
 
 		return super.getCapability(capability, facing);
@@ -151,15 +179,19 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		this._pumpDestination = null;
 
-		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) || this._direction.isInput())
+		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) ||
+				!this.isMachineAssembled() || this._direction.isInput())
 			return;
 
 		TileEntity neighbor = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
 
-		facing = facing.getOpposite();
+		if (null != neighbor) {
 
-		if (null != neighbor && neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
-			this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+			facing = facing.getOpposite();
+
+			if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
+				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+		}
 	}
 
 	private Direction _direction;

@@ -40,8 +40,9 @@ public abstract class TileEntityTurbinePowerTap extends TileEntityTurbinePart im
 	}
 	
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
-		super.onMachineAssembled(multiblockControllerBase);
+	public void onPostMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+
+		super.onPostMachineAssembled(multiblockControllerBase);
 
 		BlockPos position = this.getPos();
 		checkForConnections(this.worldObj, position);

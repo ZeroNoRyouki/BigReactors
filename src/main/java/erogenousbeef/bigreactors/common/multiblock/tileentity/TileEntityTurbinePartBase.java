@@ -14,8 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTileEntityBase implements IActivateable,
-		IDebuggable {
+public abstract class TileEntityTurbinePartBase extends TileEntityMachinePart implements IDebuggable {
 
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
@@ -26,10 +25,11 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	public Class<? extends MultiblockControllerBase> getMultiblockControllerType() {
 		return MultiblockTurbine.class;
 	}
-
+/*
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase controller) {
-		super.onMachineAssembled(controller);
+	public void onPostMachineAssembled(MultiblockControllerBase controller) {
+
+		super.onPostMachineAssembled(controller);
 		
 		// Re-render this block on the client
 		if(worldObj.isRemote) {
@@ -38,8 +38,9 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 	}
 
 	@Override
-	public void onMachineBroken() {
-		super.onMachineBroken();
+	public void onPostMachineBroken() {
+
+		super.onPostMachineBroken();
 		
 		// Re-render this block on the client
 		if(worldObj.isRemote) {
@@ -53,7 +54,7 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 
 	@Override
 	public void onMachineDeactivated() {
-	}
+	}*/
 
 	public MultiblockTurbine getTurbine() {
 		return (MultiblockTurbine)getMultiblockController();
@@ -91,13 +92,14 @@ public abstract class TileEntityTurbinePartBase extends RectangularMultiblockTil
 		}
 	}
 
+	/*
 	public PartTier getPartTier() {
 
 		IBlockState state = this.worldObj.getBlockState(this.getWorldPosition());
 		Block block = state.getBlock();
 
 		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
-	}
+	}*/
 
 	// IDebuggable
 

@@ -19,11 +19,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntityReactorPartBase extends RectangularMultiblockTileEntityBase implements IHeatEntity,
-														IRadiationModerator, IActivateable, IDebuggable {
-
-	public TileEntityReactorPartBase() {
-	}
+public abstract class TileEntityReactorPartBase extends TileEntityMachinePart implements IHeatEntity,
+														IRadiationModerator, IDebuggable {
 
 	public MultiblockReactor getReactorController() { return (MultiblockReactor)this.getMultiblockController(); }
 
@@ -34,7 +31,7 @@ public abstract class TileEntityReactorPartBase extends RectangularMultiblockTil
 	
 	@Override
 	public Class<? extends MultiblockControllerBase> getMultiblockControllerType() { return MultiblockReactor.class; }
-	
+	/*
 	@Override
 	public void onMachineAssembled(MultiblockControllerBase controller) {
 		super.onMachineAssembled(controller);
@@ -43,8 +40,25 @@ public abstract class TileEntityReactorPartBase extends RectangularMultiblockTil
 		if(worldObj.isRemote) {
 			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
+	}*/
+/*
+	@Deprecated
+	@Override
+	public void onMachineAssembled(MultiblockControllerBase controller) {
 	}
+	@Override
+	public void onPreMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+	}
+	@Override
+	public void onPostMachineAssembled(MultiblockControllerBase controller) {
+		super.onPostMachineAssembled(controller);
 
+		// Re-render this block on the client
+		if(worldObj.isRemote) {
+			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
+		}
+	}*/
+	/*
 	@Override
 	public void onMachineBroken() {
 		super.onMachineBroken();
@@ -53,8 +67,28 @@ public abstract class TileEntityReactorPartBase extends RectangularMultiblockTil
 		if(worldObj.isRemote) {
 			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
 		}
+	}*/
+/*
+	@Deprecated
+	@Override
+	public void onMachineBroken() {
 	}
-	
+
+	@Override
+	public void onPreMachineBroken() {
+		super.onPreMachineBroken();
+	}
+
+	@Override
+	public void onPostMachineBroken() {
+		super.onPostMachineBroken();
+
+		// Re-render this block on the client
+		if(worldObj.isRemote) {
+			WorldHelper.notifyBlockUpdate(worldObj, this.getPos(), null, null);
+		}
+	}*/
+
 	// IHeatEntity
 	@Override
 	public float getHeat() {
@@ -107,13 +141,14 @@ public abstract class TileEntityReactorPartBase extends RectangularMultiblockTil
 		}
 	}
 
+	/*
 	public PartTier getPartTier() {
 
 		IBlockState state = this.worldObj.getBlockState(this.getWorldPosition());
 		Block block = state.getBlock();
 
 		return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;
-	}
+	}*/
 
 	@Override
 	public boolean isGoodForFrame(IMultiblockValidator validatorCallback) {
@@ -140,13 +175,14 @@ public abstract class TileEntityReactorPartBase extends RectangularMultiblockTil
 		return false;
 	}
 
+	/*
 	@Override
 	public void onMachineActivated() {
 	}
 
 	@Override
 	public void onMachineDeactivated() {
-	}
+	}*/
 
 	// IDebuggable
 

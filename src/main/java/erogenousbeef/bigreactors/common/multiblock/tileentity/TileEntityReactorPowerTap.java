@@ -33,9 +33,9 @@ public abstract class TileEntityReactorPowerTap extends TileEntityReactorPart im
 	}
 	
 	@Override
-	public void onMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
+	public void onPostMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
 
-		super.onMachineAssembled(multiblockControllerBase);
+		super.onPostMachineAssembled(multiblockControllerBase);
 		checkForConnections(this.worldObj, this.getWorldPosition());
 		
 		// Force a connection to the power taps

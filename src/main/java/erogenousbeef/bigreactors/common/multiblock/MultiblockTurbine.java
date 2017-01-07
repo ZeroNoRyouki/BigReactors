@@ -379,6 +379,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 		// glass anywhere?
 		this._interiorInvisible = this.attachedGlass.size() == 0;
+
+		this.markMultiblockForRenderUpdate();
 	}
 
 	@Override
@@ -388,6 +390,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected void onMachinePaused() {
+		this.markMultiblockForRenderUpdate();
 	}
 
 	@Override
@@ -398,6 +401,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		
 		rotorEnergy = 0f; // Kill energy when machines get broken by players/explosions
 		rpmUpdateTracker.setValue(0f);
+
+		this.markMultiblockForRenderUpdate();
 	}
 
 	// Validation code

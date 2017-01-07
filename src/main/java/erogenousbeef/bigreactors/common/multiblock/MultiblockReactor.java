@@ -1264,6 +1264,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		// glass anywhere?
 		this._interiorInvisible = this.attachedGlass.size() == 0;
+
+		this.markMultiblockForRenderUpdate();
 	}
 
 	@Override
@@ -1273,11 +1275,14 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected void onMachinePaused() {
+		this.markMultiblockForRenderUpdate();
 	}
 
 	@Override
 	protected void onMachineDisassembled() {
+
 		this.active = false;
+		this.markMultiblockForRenderUpdate();
 	}
 
 	private void recalculateDerivedValues() {

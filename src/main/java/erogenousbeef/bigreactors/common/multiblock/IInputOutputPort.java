@@ -14,6 +14,10 @@ public interface IInputOutputPort {
             return Input == this;
         }
 
+        public boolean isOutput() {
+            return Output == this;
+        }
+
         public static Direction from(boolean isInput) {
             return isInput ? Input : Output;
         }
