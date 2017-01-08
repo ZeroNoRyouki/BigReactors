@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -117,14 +118,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		/*
-		MultiblockTurbine turbine;
-
-		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability &&
-				null != (turbine = this.getTurbine()) && turbine.isAssembled()) ||
-				super.hasCapability(capability, facing);
-		*/
-		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isMachineAssembled()) ||
+		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability && this.isMachineAssembled()) ||
 				super.hasCapability(capability, facing);
 	}
 
@@ -133,9 +127,9 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		MultiblockTurbine turbine;
 
-		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability &&
+		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability &&
 				null != (turbine = this.getTurbine()) && turbine.isAssembled())
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(turbine.getFluidHandler(this._direction));
+			return CAPAB_FLUID_HANDLER.cast(turbine.getFluidHandler(this._direction));
 
 		return super.getCapability(capability, facing);
 	}
@@ -162,15 +156,15 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
 
-		if (WorldHelper.calledByLogicalServer(world))
-			checkForAdjacentTank();
+		if (WorldHelper.calledByLogicalServer(this.worldObj))
+			this.checkForAdjacentTank();
 	}
 	
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 
-		if(!worldObj.isRemote)
-			checkForAdjacentTank();
+		if (WorldHelper.calledByLogicalServer(this.worldObj))
+			this.checkForAdjacentTank();
 	}
 
 	private void checkForAdjacentTank() {
@@ -193,6 +187,9 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
 		}
 	}
+
+	@CapabilityInject(IFluidHandler.class)
+	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
 	private IFluidHandler _pumpDestination;

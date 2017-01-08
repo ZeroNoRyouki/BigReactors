@@ -14,6 +14,7 @@ import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.util.WorldHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -145,9 +146,23 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
         TileEntity te = world.getTileEntity(position);
 
         // Signal power taps and other ports when their neighbors change, etc.
-        if (te instanceof INeighborUpdatableEntity) {
+        if (te instanceof INeighborUpdatableEntity)
             ((INeighborUpdatableEntity)te).onNeighborTileChange(world, position, neighbor);
-        }
+    }
+
+    /**
+     * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
+     * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
+     * block, etc.
+     */
+    @Override
+    public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor) {
+
+        TileEntity te = world.getTileEntity(position);
+
+        // Signal power taps when their neighbors change, etc.
+        if (te instanceof INeighborUpdatableEntity)
+            ((INeighborUpdatableEntity)te).onNeighborBlockChange(world, position, stateAtPosition, neighbor);
     }
 
     @Override

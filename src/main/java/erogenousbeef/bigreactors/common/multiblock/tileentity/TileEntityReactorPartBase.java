@@ -6,17 +6,10 @@ import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockTieredPart;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
-import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.lib.IDebugMessages;
 import it.zerono.mods.zerocore.lib.IDebuggable;
-import it.zerono.mods.zerocore.util.WorldHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
 public abstract class TileEntityReactorPartBase extends TileEntityMachinePart implements IHeatEntity,

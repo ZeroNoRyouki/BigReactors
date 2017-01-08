@@ -3,7 +3,6 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
@@ -16,7 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -127,17 +125,6 @@ public class BlockPart extends BlockBR {
         return super.onBlockActivated(world, posistion, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
-    @Override
-    public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor) {
-
-        TileEntity te = world.getTileEntity(position);
-
-        // Signal power taps when their neighbors change, etc.
-        if (te instanceof INeighborUpdatableEntity) {
-            ((INeighborUpdatableEntity)te).onNeighborBlockChange(world, position, stateAtPosition, neighbor);
-        }
-    }
-    
     @Override
     public void breakBlock(World world, BlockPos position, IBlockState state) {
 

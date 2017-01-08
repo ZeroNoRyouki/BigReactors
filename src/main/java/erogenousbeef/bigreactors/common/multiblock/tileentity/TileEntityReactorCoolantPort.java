@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -105,7 +106,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability && this.isMachineAssembled()) ||
+		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability && this.isMachineAssembled()) ||
 				super.hasCapability(capability, facing);
 	}
 
@@ -114,9 +115,9 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		MultiblockReactor reactor;
 
-		if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability &&
+		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability &&
 				null != (reactor = this.getReactorController()) && reactor.isAssembled())
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(reactor.getFluidHandler(this._direction));
+			return CAPAB_FLUID_HANDLER.cast(reactor.getFluidHandler(this._direction));
 
 		return super.getCapability(capability, facing);
 	}
@@ -144,17 +145,16 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
 
-		if (WorldHelper.calledByLogicalServer(world))
-			checkForAdjacentTank();
+		if (WorldHelper.calledByLogicalServer(this.worldObj))
+			this.checkForAdjacentTank();
 	}
-	/**/
+
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 
-		if(!worldObj.isRemote)
-			checkForAdjacentTank();
-
-	}/**/
+		if (WorldHelper.calledByLogicalServer(this.worldObj))
+			this.checkForAdjacentTank();
+	}
 
 	private void checkForAdjacentTank() {
 
@@ -176,6 +176,9 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
 		}
 	}
+
+	@CapabilityInject(IFluidHandler.class)
+	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
 	private IFluidHandler _pumpDestination;
