@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements INeighborUpdatableEntity,
@@ -172,8 +171,8 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 			facing = facing.getOpposite();
 
-			if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
-				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+			if (neighbor.hasCapability(CAPAB_FLUID_HANDLER, facing))
+				this._pumpDestination = neighbor.getCapability(CAPAB_FLUID_HANDLER, facing);
 		}
 	}
 
