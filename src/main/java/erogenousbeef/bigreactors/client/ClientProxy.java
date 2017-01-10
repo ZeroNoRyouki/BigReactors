@@ -63,7 +63,7 @@ public class ClientProxy extends CommonProxy {
 	public void onPreInit(FMLPreInitializationEvent event) {
 
 		super.onPreInit(event);
-		VersionChecker.scheduleCheck("http://ws.zerono.it/check.ashx");
+		//VersionChecker.scheduleCheck("http://ws.zerono.it/check.ashx");
 	}
 
 	@Override
