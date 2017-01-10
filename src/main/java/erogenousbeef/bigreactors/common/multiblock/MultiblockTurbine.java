@@ -395,6 +395,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected void onMachineDisassembled() {
+
+		this.active = false;
 		rotorMass = 0;
 		bladeSurfaceArea = 0;
 		coilSize = 0;
