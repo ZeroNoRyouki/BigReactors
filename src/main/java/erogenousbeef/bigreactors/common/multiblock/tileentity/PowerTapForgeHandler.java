@@ -16,9 +16,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class PowerTapForgeHandler extends PowerTapHandler implements IEnergyStorage {
 
-    @CapabilityInject(IEnergyStorage.class)
-    public static Capability<IEnergyStorage> CAPABILITY_FORGE_ENERGYSTORAGE = null;
-
     public PowerTapForgeHandler(RectangularMultiblockTileEntityBase part) {
 
         super(part);
@@ -128,7 +125,7 @@ public class PowerTapForgeHandler extends PowerTapHandler implements IEnergyStor
     public void checkForConnections(IBlockAccess world, BlockPos position) {
 
         boolean wasConnected = this._consumer != null;
-        final EnumFacing approachDirection = this._part.getOutwardFacing();
+        EnumFacing approachDirection = this._part.getOutwardFacing();
 
         if (null == approachDirection) {
 
@@ -140,13 +137,14 @@ public class PowerTapForgeHandler extends PowerTapHandler implements IEnergyStor
             // See if our adjacent non-turbine coordinate has a TE
             this._consumer = null;
 
-            BlockPos targetPosition = position.offset(approachDirection);
-            TileEntity te = world.getTileEntity(targetPosition);
+            final TileEntity te = world.getTileEntity(position.offset(approachDirection));
 
-            if ((null != te) && !(te instanceof IPowerProvider) && (null != CAPABILITY_FORGE_ENERGYSTORAGE) &&
-                    te.hasCapability(CAPABILITY_FORGE_ENERGYSTORAGE, approachDirection))
+            approachDirection = approachDirection.getOpposite();
+
+            if ((null != te) && !(te instanceof IPowerProvider) && (null != CAPAP_FORGE_ENERGYSTORAGE) &&
+                    te.hasCapability(CAPAP_FORGE_ENERGYSTORAGE, approachDirection))
                 // Skip power taps, as they implement these APIs and we don't want to shit energy back and forth
-                this._consumer = te.getCapability(CAPABILITY_FORGE_ENERGYSTORAGE, approachDirection.getOpposite());
+                this._consumer = te.getCapability(CAPAP_FORGE_ENERGYSTORAGE, approachDirection);
         }
 
         final boolean isConnected = this._consumer != null;
@@ -155,6 +153,9 @@ public class PowerTapForgeHandler extends PowerTapHandler implements IEnergyStor
         if (wasConnected != isConnected && WorldHelper.calledByLogicalClient(partWorld))
             WorldHelper.notifyBlockUpdate(partWorld, this._part.getWorldPosition(), null, null);
     }
+
+    @CapabilityInject(IEnergyStorage.class)
+    private static Capability<IEnergyStorage> CAPAP_FORGE_ENERGYSTORAGE = null;
 
     private IEnergyStorage _consumer;
 }

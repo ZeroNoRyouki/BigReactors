@@ -5,6 +5,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowerTap implements IEnergyProvider {
 
@@ -16,15 +18,15 @@ public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowe
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return ((null != PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE) && (PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE == capability))
+        return ((null != CAPAP_FORGE_ENERGYSTORAGE) && (CAPAP_FORGE_ENERGYSTORAGE == capability))
                 || super.hasCapability(capability, facing);
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
-        if ((null != PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE) && (PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE == capability))
-            return PowerTapForgeHandler.CAPABILITY_FORGE_ENERGYSTORAGE.cast(this._forgeHandler);
+        if ((null != CAPAP_FORGE_ENERGYSTORAGE) && (CAPAP_FORGE_ENERGYSTORAGE == capability))
+            return CAPAP_FORGE_ENERGYSTORAGE.cast(this._forgeHandler);
 
         return super.getCapability(capability, facing);
     }
@@ -84,6 +86,9 @@ public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowe
     public int getMaxEnergyStored(EnumFacing from) {
         return this._rfHandler.getMaxEnergyStored(from);
     }
+
+    @CapabilityInject(IEnergyStorage.class)
+    private static Capability<IEnergyStorage> CAPAP_FORGE_ENERGYSTORAGE = null;
 
     private final PowerTapRedstoneFluxHandler _rfHandler;
     private final PowerTapForgeHandler _forgeHandler;

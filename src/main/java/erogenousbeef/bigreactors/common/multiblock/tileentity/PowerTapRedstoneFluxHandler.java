@@ -37,7 +37,7 @@ class PowerTapRedstoneFluxHandler extends PowerTapHandler implements IEnergyProv
         if (null == this._consumer || null == approachDirection)
             return units;
 
-        int consumed = this._consumer.receiveEnergy(approachDirection, maxUnits, false);
+        int consumed = this._consumer.receiveEnergy(approachDirection.getOpposite(), maxUnits, false);
 
         return maxUnits - consumed;
     }
