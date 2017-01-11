@@ -1468,6 +1468,10 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		return this._interiorInvisible;
 	}
 
+	public boolean isAssembledAndActive() {
+		return this.assemblyState == AssemblyState.Assembled && this.active;
+	}
+
 	@SideOnly(Side.CLIENT)
 	public void resetCachedRotors() {
 		for(TileEntityTurbineRotorBearing bearing: attachedRotorBearings) {

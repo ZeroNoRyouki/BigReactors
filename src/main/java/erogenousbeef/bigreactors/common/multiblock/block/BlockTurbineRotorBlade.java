@@ -108,7 +108,7 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
 
         final MultiblockTurbine turbine = part.isConnected() ? (MultiblockTurbine)part.getMultiblockController() : null;
 
-        if (!buildingClientRotor && null != turbine && turbine.getActive())
+        if (!buildingClientRotor && null != turbine && turbine.isAssembledAndActive())
             return super.buildActualState(state, world, position, part).withProperty(Properties.ROTORBLADESTATE, RotorBladeState.HIDDEN);
 
         RotorBladeState candidateState = null;
