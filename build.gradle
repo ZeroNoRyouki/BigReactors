@@ -33,8 +33,8 @@ ext.fullVersion = project.config.minecraft_version + '-' + project.version
 minecraft {
     version = "${config.forge_version}"
 
-	if (file("../run-${config.minecraft_version}").exists()) {
-		runDir = "../run-${config.minecraft_version}"
+	if (file("../../run-${config.minecraft_version}").exists()) {
+		runDir = "../../run-${config.minecraft_version}"
 	} else {
 		runDir = "run"
 	}

@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.common.item;
 
 import cofh.api.item.IToolHammer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -51,6 +52,22 @@ public class ItemWrench extends ItemBase implements IToolHammer {
     }
 
     /**
+     * Called to ensure that the tool can be used on an entity.
+     *
+     * @param item
+     *            The ItemStack for the tool. Not required to match equipped item (e.g., multi-tools that contain other tools).
+     * @param user
+     *            The entity using the tool.
+     * @param entity
+     *            The entity the tool is being used on.
+     * @return True if this tool can be used.
+     */
+    @Override
+    public boolean isUsable(ItemStack item, EntityLivingBase user, Entity entity) {
+        return false;
+    }
+
+    /**
      * Callback for when the tool has been used reactively.
      *
      * @param item
@@ -62,5 +79,19 @@ public class ItemWrench extends ItemBase implements IToolHammer {
      */
     @Override
     public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
+    }
+
+    /**
+     * Callback for when the tool has been used reactively.
+     *
+     * @param item
+     *            The ItemStack for the tool. Not required to match equipped item (e.g., multi-tools that contain other tools).
+     * @param user
+     *            The entity using the tool.
+     * @param entity
+     *            The entity the tool is being used on.
+     */
+    @Override
+    public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
     }
 }
