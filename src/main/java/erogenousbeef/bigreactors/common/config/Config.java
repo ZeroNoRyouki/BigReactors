@@ -52,6 +52,7 @@ public class Config extends ConfigHandler {
     public boolean enableWorldGen;
     public boolean enableWorldRegeneration;
     public int[] dimensionWhitelist;
+    public boolean useBlacklist;
     public int userWorldGenVersion;
     public boolean yelloriteOreEnableWorldGen;
     public int yelloriteOreMaxClustersPerChunk;
@@ -134,6 +135,7 @@ public class Config extends ConfigHandler {
         this.enableWorldRegeneration = this.getValue("enableWorldRegeneration", this.WORLDGEN, false, "Run BR World Generation in chunks that have already been generated, but have not been modified by Extreme Reactors before. This is largely useful for worlds that existed before BigReactors was released");
         this.userWorldGenVersion = this.getValue("userWorldGenVersion", this.WORLDGEN, 0, "User-set world generation version. Increase this by 1 if you want Extreme Reactors to re-run world generation in your world");
         this.dimensionWhitelist = this.getValue("dimensionWhitelist", this.WORLDGEN, new int[] {0}, "World gen will be performed only in the dimensions listed here");
+        this.useBlacklist = this.getValue("useBlacklist", this.WORLDGEN, false, "If true, dimensionWhitelist will be used as a black list. (Default: false)");
         this.yelloriteOreEnableWorldGen = this.getValue("yelloriteOreEnableWorldGen", this.WORLDGEN, true, "Enable generation of yellorite ore");
         this.yelloriteOreMaxClustersPerChunk = this.getValue("yelloriteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of yellorite clusters per chunk");
         this.yelloriteOrePerCluster = this.getValue("yelloriteOrePerCluster", this.WORLDGEN, 5, "Maximum number of yellorite ore to generate in each cluster");
@@ -166,6 +168,7 @@ public class Config extends ConfigHandler {
 
                 BigReactors.WHITELIST_WORLDGEN_ORES.clearWhiteList();
                 BigReactors.WHITELIST_WORLDGEN_ORES.whiteListDimensions(this.dimensionWhitelist);
+                BigReactors.WORLDGEN_ORES.setBehavior(this.useBlacklist);
             }
 
             if (this.benitoiteOreEnableWorldGen) {
