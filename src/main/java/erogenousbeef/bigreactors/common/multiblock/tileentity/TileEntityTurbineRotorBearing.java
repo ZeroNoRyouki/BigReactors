@@ -15,6 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -43,8 +44,12 @@ public class TileEntityTurbineRotorBearing extends
 	protected AxisAlignedBB boundingBox;
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {
-		return super.getMaxRenderDistanceSquared() * 2;
+
+		final long distance = 16 * FMLClientHandler.instance().getClient().gameSettings.renderDistanceChunks;
+
+		return distance * distance;
 	}
 
 	@Override

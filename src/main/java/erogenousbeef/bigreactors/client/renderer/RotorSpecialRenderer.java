@@ -67,6 +67,11 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 		GlStateManager.popMatrix();
 	}
 
+	@Override
+	public boolean isGlobalRenderer(TileEntityTurbineRotorBearing te) {
+		return true;
+	}
+
 	private static float getRotorAngle(final TileEntityTurbineRotorBearing bearing, final MultiblockTurbine turbine) {
 
 		final long elapsedTime = Minecraft.getSystemTime() - ClientProxy.lastRenderTime;
