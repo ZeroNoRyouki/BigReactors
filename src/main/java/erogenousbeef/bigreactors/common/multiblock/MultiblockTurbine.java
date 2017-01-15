@@ -739,6 +739,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 
 	@Override
 	protected boolean updateServer() {
+
+		this.WORLD.theProfiler.startSection("Extreme Reactors|Turbine");
+
 		energyGeneratedLastTick = 0f;
 		fluidConsumedLastTick = 0;
 		rotorEfficiencyLastTick = 1f;
@@ -762,7 +765,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			float rotorSpeed = getRotorSpeed();
 
 			// RFs lost to aerodynamic drag.
-			float aerodynamicDragTorque = (float)rotorSpeed * bladeDrag;
+			float aerodynamicDragTorque = rotorSpeed * bladeDrag;
 
 			float liftTorque = 0f;
 			if(steamIn > 0) {
@@ -824,8 +827,12 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		int energyAvailable = (int)getEnergyStored();
 		int energyRemaining = energyAvailable;
 		if(energyStored > 0 && attachedPowerTaps.size() > 0) {
+
+			this.WORLD.theProfiler.startSection("Extreme Reactors|Turbine|SendPower");
+
 			// First, try to distribute fairly
 			int splitEnergy = energyRemaining / attachedPowerTaps.size();
+
 			for(TileEntityTurbinePowerTap powerTap : attachedPowerTaps) {
 				if(energyRemaining <= 0) { break; }
 				if(powerTap == null || !powerTap.isConnected()) { continue; }
@@ -842,15 +849,21 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 					energyRemaining = (int)powerTap.onProvidePower(energyRemaining);
 				}
 			}
+
+			this.WORLD.theProfiler.endSection();
 		}
 		
 		if(energyAvailable != energyRemaining) {
 			reduceStoredEnergy((energyAvailable - energyRemaining));
 		}
-		
+
+		this.WORLD.theProfiler.startSection("Extreme Reactors|Turbine|Tickables");
+
 		for(ITickableMultiblockPart part : attachedTickables) {
 			part.onMultiblockServerTick();
 		}
+
+		this.WORLD.theProfiler.endStartSection("Extreme Reactors|Turbine|Updates");
 		
 		ticksSinceLastUpdate++;
 		if(ticksSinceLastUpdate >= ticksBetweenUpdates) {
@@ -861,6 +874,9 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		if(rpmUpdateTracker.shouldUpdate(getRotorSpeed())) {
 			markReferenceCoordDirty();
 		}
+
+		this.WORLD.theProfiler.endSection();
+		this.WORLD.theProfiler.endSection(); // main section
 
 		return energyGeneratedLastTick > 0 || fluidConsumedLastTick > 0;
 	}
