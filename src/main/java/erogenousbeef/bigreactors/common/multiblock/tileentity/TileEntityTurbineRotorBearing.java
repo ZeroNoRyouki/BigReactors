@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -86,11 +87,12 @@ public class TileEntityTurbineRotorBearing extends
 		final MultiblockTurbine turbine = getTurbine();
 		final BlockPos minCoord = turbine.getMinimumCoord();
 		final BlockPos maxCoord = turbine.getMaximumCoord();
+		final World world = this.getWorld();
 
 		this.boundingBox = new AxisAlignedBB(minCoord.getX(), minCoord.getY(), minCoord.getZ(),
 										maxCoord.getX() + 1, maxCoord.getY() + 1, maxCoord.getZ() + 1);
 		
-		if (WorldHelper.calledByLogicalClient(this.worldObj)) {
+		if (WorldHelper.calledByLogicalClient(world)) {
 
 			EnumFacing direction = this.getOutwardFacing();
 			EnumFacing.Axis shaftAxis = direction.getAxis();
@@ -131,8 +133,8 @@ public class TileEntityTurbineRotorBearing extends
 
 			while (rotorPosition < info.rotorLength) {
 
-				state = this.worldObj.getBlockState(currentCoord);
-				info.shaftStates[rotorPosition] = turbineRotorShaft.buildActualStateInternal(state, this.worldObj,
+				state = world.getBlockState(currentCoord);
+				info.shaftStates[rotorPosition] = turbineRotorShaft.buildActualStateInternal(state, world,
 						currentCoord, this, true).getValue(Properties.ROTORSHAFTSTATE);
 
 				// Current block is a rotor
@@ -148,14 +150,14 @@ public class TileEntityTurbineRotorBearing extends
 					bladeLength = 0;
 					bladeState = null;
 
-					state = this.worldObj.getBlockState(bladeCoord);
+					state = world.getBlockState(bladeCoord);
 
 					if (turbineRotorBlade == state.getBlock()) {
 
-						bladeState = turbineRotorBlade.buildActualStateInternal(state, this.worldObj, bladeCoord, this,
+						bladeState = turbineRotorBlade.buildActualStateInternal(state, world, bladeCoord, this,
 								true).getValue(Properties.ROTORBLADESTATE);
 
-						while (bladeLength < 32 && turbineRotorBlade == this.worldObj.getBlockState(bladeCoord).getBlock()) {
+						while (bladeLength < 32 && turbineRotorBlade == world.getBlockState(bladeCoord).getBlock()) {
 
 							++bladeLength;
 							bladeCoord = bladeCoord.offset(bladeDir);

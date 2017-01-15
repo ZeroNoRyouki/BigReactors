@@ -41,7 +41,7 @@ public abstract class TileEntityMachinePart extends RectangularMultiblockTileEnt
 
     public PartTier getPartTier() {
 
-        IBlockState state = this.worldObj.getBlockState(this.getWorldPosition());
+        IBlockState state = this.getWorld().getBlockState(this.getWorldPosition());
         Block block = state.getBlock();
 
         return block instanceof BlockTieredPart ? ((BlockTieredPart)block).getTierFromState(state) : null;

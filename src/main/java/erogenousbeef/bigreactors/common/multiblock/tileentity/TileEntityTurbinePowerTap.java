@@ -34,7 +34,7 @@ public abstract class TileEntityTurbinePowerTap extends TileEntityTurbinePart im
 		super.onAttached(newController);
 
 		BlockPos position = this.getPos();
-		checkForConnections(this.worldObj, position);
+		checkForConnections(this.getWorld(), position);
 		
 		this.notifyNeighborsOfTileChange();
 	}
@@ -45,7 +45,7 @@ public abstract class TileEntityTurbinePowerTap extends TileEntityTurbinePart im
 		super.onPostMachineAssembled(multiblockControllerBase);
 
 		BlockPos position = this.getPos();
-		checkForConnections(this.worldObj, position);
+		checkForConnections(this.getWorld(), position);
 		
 		this.notifyNeighborsOfTileChange();
 	}

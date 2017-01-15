@@ -19,7 +19,7 @@ public abstract class TileEntityReactorPartBase extends TileEntityMachinePart im
 
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
-		return new MultiblockReactor(this.worldObj);
+		return new MultiblockReactor(this.getWorld());
 	}
 	
 	@Override

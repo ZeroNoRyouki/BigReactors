@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import zero.temp.BlockHelper;
 
@@ -57,12 +58,14 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		if(!allowYAxisFacing() && (newFacing == EnumFacing.UP || newFacing == EnumFacing.DOWN)) {
 			return false;
 		}
+
+		final World world = this.getWorld();
 		
 		facing = newFacing;
-		if(!worldObj.isRemote) {
+		if(!world.isRemote) {
 			BlockPos position = this.getPos();
             CommonPacketHandler.INSTANCE.sendToAllAround(new DeviceUpdateRotationMessage(this.getPos(), facing),
-					new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(),
+					new NetworkRegistry.TargetPoint(world.provider.getDimension(),
 							position.getX(), position.getY(), position.getZ(), 50));
             this.markChunkDirty();
 		}
@@ -122,7 +125,7 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	@Override
 	public void update() {
 		
-		if(!this.worldObj.isRemote && this.updatePlayers.size() > 0) {
+		if(!this.getWorld().isRemote && this.updatePlayers.size() > 0) {
 			ticksSinceLastUpdate++;
 			if(ticksSinceLastUpdate >= ticksBetweenUpdates) {
 				sendUpdatePacket();
@@ -156,14 +159,14 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	*/
 
 	private void sendUpdatePacketToClient(EntityPlayer recipient) {
-		if(this.worldObj.isRemote) { return; }
+		if(this.getWorld().isRemote) { return; }
 		/* TODO commented out to make this compile
         CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)recipient);
 		*/
 	}
 	
 	private void sendUpdatePacket() {
-		if(this.worldObj.isRemote) { return; }
+		if(this.getWorld().isRemote) { return; }
 		if(this.updatePlayers.size() <= 0) { return; }
 		/* TODO commented out to make this compile
 		for(EntityPlayer player : updatePlayers) {
@@ -245,17 +248,20 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 	}
 	
 	private void sendExposureUpdate() {
-		if(!this.worldObj.isRemote) {
+
+		final World world = this.getWorld();
+
+		if(!world.isRemote) {
 			// Send unrotated, as the rotation will be re-applied on the client
 			BlockPos position = this.getPos();
             CommonPacketHandler.INSTANCE.sendToAllAround(new DeviceUpdateExposureMessage(this.getPos(), exposures),
-					new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(),
+					new NetworkRegistry.TargetPoint(world.provider.getDimension(),
 							position.getX(), position.getY(), position.getZ(), 50));
             this.markChunkDirty();
 		}
 		else {
 			// Re-render block on client
-			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+			WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
 		}
 
 		this.callNeighborTileChange();

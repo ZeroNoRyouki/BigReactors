@@ -11,7 +11,7 @@ public abstract class TileEntityTurbinePartBase extends TileEntityMachinePart im
 
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
-		return new MultiblockTurbine(worldObj);
+		return new MultiblockTurbine(this.getWorld());
 	}
 	
 	@Override

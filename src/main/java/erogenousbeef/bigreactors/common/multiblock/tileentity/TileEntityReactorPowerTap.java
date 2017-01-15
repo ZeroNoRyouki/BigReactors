@@ -29,14 +29,14 @@ public abstract class TileEntityReactorPowerTap extends TileEntityReactorPart im
 	public void onAttached(MultiblockControllerBase newController) {
 
 		super.onAttached(newController);
-		checkForConnections(this.worldObj, this.getWorldPosition());
+		checkForConnections(this.getWorld(), this.getWorldPosition());
 	}
 	
 	@Override
 	public void onPostMachineAssembled(MultiblockControllerBase multiblockControllerBase) {
 
 		super.onPostMachineAssembled(multiblockControllerBase);
-		checkForConnections(this.worldObj, this.getWorldPosition());
+		checkForConnections(this.getWorld(), this.getWorldPosition());
 		
 		// Force a connection to the power taps
 		this.notifyNeighborsOfTileChange();

@@ -216,7 +216,7 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		BlockPos position = this.getPos();
-		if(worldObj.getTileEntity(position) != this)
+		if(this.getWorld().getTileEntity(position) != this)
 		{
 			return false;
 		}

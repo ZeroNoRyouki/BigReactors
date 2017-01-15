@@ -32,15 +32,21 @@ public class TileEntityTurbineController extends TileEntityTurbinePart {
 
     @Override
     public void onMachineActivated() {
+
+        final World world = this.getWorld();
+
         // Re-render controller as active state has changed
-        if (WorldHelper.calledByLogicalClient(this.worldObj))
-            WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+        if (WorldHelper.calledByLogicalClient(world))
+            WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
     }
 
     @Override
     public void onMachineDeactivated() {
+
+        final World world = this.getWorld();
+
         // Re-render controller as active state has changed
-        if (WorldHelper.calledByLogicalClient(this.worldObj))
-            WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+        if (WorldHelper.calledByLogicalClient(world))
+            WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
     }
 }

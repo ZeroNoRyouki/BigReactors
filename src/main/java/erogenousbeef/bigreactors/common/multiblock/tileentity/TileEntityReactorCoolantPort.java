@@ -42,9 +42,11 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		this._direction = direction;
 
-		if (WorldHelper.calledByLogicalServer(this.worldObj)) {
+		final World world = this.getWorld();
 
-			WorldHelper.notifyBlockUpdate(worldObj, this.getWorldPosition(), null, null);
+		if (WorldHelper.calledByLogicalServer(world)) {
+
+			WorldHelper.notifyBlockUpdate(world, this.getWorldPosition(), null, null);
 			this.notifyOutwardNeighborsOfStateChange();
 
 			if (direction.isOutput())
@@ -56,7 +58,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 				this.notifyNeighborsOfTileChange();
 
 		} else {
-			this.worldObj.markBlockRangeForRenderUpdate(this.getWorldPosition(), this.getWorldPosition());
+			world.markBlockRangeForRenderUpdate(this.getWorldPosition(), this.getWorldPosition());
 			this.notifyNeighborsOfTileChange();
 		}
 	}
@@ -144,28 +146,29 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
 
-		if (WorldHelper.calledByLogicalServer(this.worldObj))
+		if (WorldHelper.calledByLogicalServer(this.getWorld()))
 			this.checkForAdjacentTank();
 	}
 
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
 
-		if (WorldHelper.calledByLogicalServer(this.worldObj))
+		if (WorldHelper.calledByLogicalServer(this.getWorld()))
 			this.checkForAdjacentTank();
 	}
 
 	private void checkForAdjacentTank() {
 
+		final World world = this.getWorld();
 		EnumFacing facing = this.getOutwardFacing();
 
 		this._pumpDestination = null;
 
-		if (null == facing || WorldHelper.calledByLogicalClient(this.worldObj) ||
+		if (null == facing || WorldHelper.calledByLogicalClient(world) ||
 				!this.isMachineAssembled() || this._direction.isInput())
 			return;
 
-		TileEntity neighbor = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
+		TileEntity neighbor = world.getTileEntity(this.getWorldPosition().offset(facing));
 
 		if (null != neighbor) {
 

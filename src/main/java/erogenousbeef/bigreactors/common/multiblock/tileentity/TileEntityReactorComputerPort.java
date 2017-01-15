@@ -295,7 +295,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 	private TileEntityReactorControlRod getControlRodFromArguments(MultiblockReactor reactor, Object[] arguments, int index) throws Exception {
 		BlockPos coord = getControlRodCoordFromArguments(reactor, arguments, index);
 
-		TileEntity te = worldObj.getTileEntity(coord);
+		TileEntity te = this.getWorld().getTileEntity(coord);
 		if(!(te instanceof TileEntityReactorControlRod)) {
 			throw new Exception("Encountered an invalid tile entity when seeking a control rod. That's weird.");
 		}

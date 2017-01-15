@@ -301,11 +301,13 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		if (direction == this._direction)
 			return;
 
+		final World world = this.getWorld();
+
 		this._direction = direction;
 
-		WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
+		WorldHelper.notifyBlockUpdate(world, this.getWorldPosition(), null, null);
 
-		if (!this.worldObj.isRemote) {
+		if (!world.isRemote) {
 
 			this.distributeItems();
 			this.markDirty();
@@ -321,12 +323,13 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 	protected void distributeItems() {
 
+		final World world = this.getWorld();
 		final EnumFacing facing = this.getOutwardFacing();
 
-		if (WorldHelper.calledByLogicalClient(this.worldObj) || null == facing || this.getDirection().isInput())
+		if (WorldHelper.calledByLogicalClient(world) || null == facing || this.getDirection().isInput())
 			return;
 
-		final TileEntity te = this.worldObj.getTileEntity(this.getWorldPosition().offset(facing));
+		final TileEntity te = world.getTileEntity(this.getWorldPosition().offset(facing));
         final EnumFacing targetFacing = facing.getOpposite();
 
 		if (null != te && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, targetFacing)) {

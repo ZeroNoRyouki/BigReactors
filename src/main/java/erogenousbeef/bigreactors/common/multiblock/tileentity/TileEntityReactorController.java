@@ -16,16 +16,22 @@ public class TileEntityReactorController extends TileEntityReactorPart {
 
     @Override
     public void onMachineActivated() {
+
+        final World world = this.getWorld();
+
         // Re-render controllers on client
-        if (WorldHelper.calledByLogicalClient(this.worldObj))
-            WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+        if (WorldHelper.calledByLogicalClient(world))
+            WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
     }
 
     @Override
     public void onMachineDeactivated() {
+
+        final World world = this.getWorld();
+
         // Re-render controllers on client
-        if (WorldHelper.calledByLogicalClient(this.worldObj))
-            WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+        if (WorldHelper.calledByLogicalClient(world))
+            WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
     }
 
     @Override

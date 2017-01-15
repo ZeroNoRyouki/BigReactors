@@ -56,11 +56,15 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	}
 	
 	public void setName(String newName) {
+
+
 		if(this.name.equals(newName)) { return; }
+
+		final World world = this.getWorld();
 		
 		this.name = newName;
-		if(!this.worldObj.isRemote) {
-			WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+		if(!world.isRemote) {
+			WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
 		}
 	}
 	
@@ -74,12 +78,16 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	}
 
 	protected void sendControlRodUpdate() {
-		if(this.worldObj == null || this.worldObj.isRemote) { return; }
+
+		final World world = this.getWorld();
+
+		if (world == null || world.isRemote)
+			return;
 
 		BlockPos position = this.getPos();
 
         CommonPacketHandler.INSTANCE.sendToAllAround(new ControlRodUpdateMessage(position, controlRodInsertion),
-				new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(),
+				new NetworkRegistry.TargetPoint(world.provider.getDimension(),
 						position.getX(), position.getY(), position.getZ(), 50));
 	}
 	
@@ -102,11 +110,14 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		} else {
 
 			if(data.hasKey("reactorControlRod")) {
+
+				final World world = this.getWorld();
 				NBTTagCompound localData = data.getCompoundTag("reactorControlRod");
+
 				this.readLocalDataFromNBT(localData);
 
-				if(worldObj != null && worldObj.isRemote) {
-					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+				if (world != null && world.isRemote) {
+					WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
 				}
 			}
 		}
@@ -206,7 +217,7 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 	}
 
 	private boolean checkForFuelRod(EnumFacing fuelDirection) {
-		return null != fuelDirection && this.worldObj.getTileEntity(this.getWorldPosition().offset(fuelDirection)) instanceof TileEntityReactorFuelRod;
+		return null != fuelDirection && this.getWorld().getTileEntity(this.getWorldPosition().offset(fuelDirection)) instanceof TileEntityReactorFuelRod;
 	}
 
 	// Save/Load Helpers

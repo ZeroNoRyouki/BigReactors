@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -164,6 +165,8 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 	 * @return Heat transfer rate from fuel rod to reactor environment, in Centigrade per tick.
 	 */
 	public float getHeatTransferRate() {
+
+		final World world = this.getWorld();
 		float heatTransferRate = 0f;
 		TileEntity te;
 		BlockPos position = this.getPos(), targetPosition;
@@ -172,7 +175,7 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 
 			targetPosition = position.offset(dir);
 
-			te = worldObj.getTileEntity(targetPosition);
+			te = world.getTileEntity(targetPosition);
 			if(te instanceof TileEntityReactorFuelRod) {
 				// We don't transfer to other fuel rods, due to heat pooling.
 				continue;
@@ -180,11 +183,11 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 			else if(te instanceof IHeatEntity) {
 				heatTransferRate += ((IHeatEntity)te).getThermalConductivity();
 			}
-			else if(worldObj.isAirBlock(targetPosition)) {
+			else if(world.isAirBlock(targetPosition)) {
 				heatTransferRate += IHeatEntity.conductivityAir;
 			}
 			else {
-				heatTransferRate += getConductivityFromBlock(worldObj.getBlockState(targetPosition));
+				heatTransferRate += getConductivityFromBlock(world.getBlockState(targetPosition));
 			}
 		}
 

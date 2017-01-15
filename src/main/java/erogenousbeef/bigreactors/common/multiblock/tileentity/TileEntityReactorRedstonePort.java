@@ -105,7 +105,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		if (this.isInput()) {
 
 			EnumFacing out = this.getOutwardFacing();
-			boolean nowPowered = (null != out) && isReceivingRedstonePowerFrom(worldObj, this.getWorldPosition().offset(out), out);
+			boolean nowPowered = (null != out) && isReceivingRedstonePowerFrom(this.getWorld(), this.getWorldPosition().offset(out), out);
 
 			if (this.isExternallyPowered != nowPowered) {
 
@@ -195,6 +195,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 	 */
 	public void onReceiveUpdatePacket(int newType, int outputLevel, boolean greaterThan, boolean activeOnPulse) {
 
+		final World world = this.getWorld();
 		BlockPos position = this.getWorldPosition();
 
 		this.circuitType = CircuitType.values()[newType];
@@ -210,7 +211,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		if(this.isInput()) {
 			// Update inputs so we don't pulse/change automatically
 			EnumFacing out = this.getOutwardFacing();
-			this.isExternallyPowered = (null != out) && this.isReceivingRedstonePowerFrom(worldObj, position.offset(out), out);
+			this.isExternallyPowered = (null != out) && this.isReceivingRedstonePowerFrom(world, position.offset(out), out);
 			if(!this.isInputActiveOnPulse()) {
 				onRedstoneInputUpdated();
 			}
@@ -224,7 +225,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		EnumFacing outward = this.getOutwardFacing();
 
 		if (null != outward)
-			this.worldObj.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
+			world.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -393,7 +394,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 		if (SyncReason.FullSync == syncReason) {
 			this.updateRedstoneStateAndNotify();
 		} else {
-			WorldHelper.notifyBlockUpdate(this.worldObj, this.getWorldPosition(), null, null);
+			WorldHelper.notifyBlockUpdate(this.getWorld(), this.getWorldPosition(), null, null);
 		}
 	}
 
@@ -504,7 +505,9 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 
 	private void updateRedstoneStateAndNotify() {
 
-		if ((null != this.worldObj) && WorldHelper.calledByLogicalServer(this.worldObj)) {
+		final World world = this.getWorld();
+
+		if ((null != world) && WorldHelper.calledByLogicalServer(world)) {
 
 			boolean oldLitState = this._isLit;
 
@@ -515,7 +518,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 				EnumFacing outward = this.getOutwardFacing();
 
 				if (null != outward)
-					this.worldObj.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
+					world.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
 			}
 		}
 	}

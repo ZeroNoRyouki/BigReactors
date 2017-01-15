@@ -6,6 +6,7 @@ import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 
 public abstract class TileEntityPoweredInventory extends TileEntityInventory implements IEnergyHandler, ITickable {
 	public static float energyPerRF = 1f;
@@ -137,8 +138,10 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 	// TileEntity methods	
 	@Override
 	public void update() {
+
+		final World world = this.getWorld();
 		
-		if(!worldObj.isRemote) {
+		if(!world.isRemote) {
 			// Energy consumption is all callback-based now.
 			
 			// If we're running, continue the cycle until we're done.
@@ -148,12 +151,12 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 				// If we don't have the stuff to begin a cycle, stop now
 				if(!canBeginCycle()) {
 					cycledTicks = -1;
-					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+					WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
 				}
 				else if(cycledTicks >= getCycleLength()) {
 					onPoweredCycleEnd();
 					cycledTicks = -1;
-					WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+					WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
 				}
 			}
 
@@ -162,7 +165,7 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 				this.energyStorage.extractEnergy(getCycleEnergyCost(), false);
 				cycledTicks = 0;
 				onPoweredCycleBegin();
-				WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+				WorldHelper.notifyBlockUpdate(world, this.getPos(), null, null);
 			}
 		}
 	}
