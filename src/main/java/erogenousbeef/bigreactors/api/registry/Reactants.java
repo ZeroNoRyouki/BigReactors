@@ -38,22 +38,7 @@ public class Reactants {
 	*/
 	
 	//// REGISTRATION
-	
-	/**
-	 * Simple wrapper for quickly registering standard reactants.
-	 * Sets default colors for fuel/waste.
-	 * @param name Name of the reactant
-	 * @param fuel True if fuel, false if waste.
-	 */
-	@Deprecated // use the full version below and supply your own fuel/waste colors. To be removed shortly
-	public static void registerReactant(String name, boolean fuel) {
-		registerReactant(name,
-						 fuel ? 0 : 1,
-						 //fuel ? BigReactors.defaultFluidColorFuel : BigReactors.defaultFluidColorWaste
-							0
-						);
-	}
-	
+
 	/**
 	 * Register a new type of reactant.
 	 * @param name The name of the reactant.

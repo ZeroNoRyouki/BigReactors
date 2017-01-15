@@ -1,6 +1,6 @@
-package erogenousbeef.bigreactors.common.data;
+package erogenousbeef.bigreactors.api.data;
 
-import erogenousbeef.bigreactors.utils.StaticUtils;
+import erogenousbeef.bigreactors.api.EnergyConversion;
 
 public class RadiationData {
 
@@ -17,11 +17,10 @@ public class RadiationData {
 	}
 	
 	public float getEnvironmentHeatChange(int environmentVolume) {
-		return StaticUtils.Energy.getTempFromVolumeAndRF(environmentVolume, environmentRfChange);
+		return EnergyConversion.getTempFromVolumeAndRF(environmentVolume, environmentRfChange);
 	}
 
 	public float getFuelHeatChange(int fuelVolume) {
-		return StaticUtils.Energy.getTempFromVolumeAndRF(fuelVolume, fuelRfChange);
-		
+		return EnergyConversion.getTempFromVolumeAndRF(fuelVolume, fuelRfChange);
 	}
 }

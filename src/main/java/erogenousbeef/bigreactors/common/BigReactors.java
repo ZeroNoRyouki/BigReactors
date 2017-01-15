@@ -48,9 +48,6 @@ public class BigReactors implements IModInitializationHandler {
 	public static final BigReactorsTickHandler TICK_HANDLER;
 	public static final boolean VALENTINES_DAY; // Easter Egg :)
 
-	public static final int defaultFluidColorFuel = 0xbcba50;
-	public static final int defaultFluidColorWaste = 0x4d92b5;
-
 	public static BigReactors getInstance() {
 		return BigReactors.s_instance;
 	}

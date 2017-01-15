@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.utils;
 
 import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -19,8 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
-
-//import buildcraft.api.tools.IToolWrench;
 
 public class StaticUtils {
 
@@ -259,19 +256,7 @@ public class StaticUtils {
 			return xsize * ysize * zsize;
 		}
 	}
-	
-	public static class Energy {
-		public static float RFPerCentigradePerUnitVolume = 10f;
 
-		public static float getRFFromVolumeAndTemp(int volume, float temperature) {
-			return temperature * (float)volume * RFPerCentigradePerUnitVolume;
-		}
-		
-		public static float getTempFromVolumeAndRF(int volume, float rf) {
-			return rf / ((float)volume * RFPerCentigradePerUnitVolume);
-		}
-	}
-	
 	public static class Strings {
 		public static String[] sizePrefixes = {"", "Ki", "Me", "Gi", "Te", "Pe", "Ex", "Ze", "Yo", "Ho"};
 		// Ho = Hojillion

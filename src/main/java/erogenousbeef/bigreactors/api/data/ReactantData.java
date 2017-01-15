@@ -1,7 +1,5 @@
 package erogenousbeef.bigreactors.api.data;
 
-import erogenousbeef.bigreactors.common.BigReactors;
-
 public class ReactantData {
 
 	public enum ReactantType {
@@ -10,7 +8,9 @@ public class ReactantData {
 	}
 
 	public static final ReactantType[] TYPES = ReactantType.values();
-	
+	public static final int DEFAULT_FLUID_COLOR_FUEL = 0xbcba50;
+	public static final int DEFAULT_FLUID_COLOR_WASTE = 0x4d92b5;
+
 	private String name;
 	private ReactantType type;
 	private int color;
@@ -28,7 +28,7 @@ public class ReactantData {
 	public ReactantData(String name, ReactantType type) {
 		this.name = name;
 		this.type = type;
-		this.color = type == ReactantType.Fuel ? BigReactors.defaultFluidColorFuel : BigReactors.defaultFluidColorWaste;
+		this.color = type == ReactantType.Fuel ? DEFAULT_FLUID_COLOR_FUEL : DEFAULT_FLUID_COLOR_WASTE;
 	}
 	
 	/**

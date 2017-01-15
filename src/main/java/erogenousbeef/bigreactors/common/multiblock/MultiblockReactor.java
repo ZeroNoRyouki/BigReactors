@@ -1,11 +1,12 @@
 package erogenousbeef.bigreactors.common.multiblock;
 
+import erogenousbeef.bigreactors.api.EnergyConversion;
 import erogenousbeef.bigreactors.api.IHeatEntity;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.data.RadiationData;
+import erogenousbeef.bigreactors.api.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
@@ -454,22 +455,22 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		float tempDiff = fuelHeat - reactorHeat;
 		if(tempDiff > 0.01f) {
 			float rfTransferred = tempDiff * fuelToReactorHeatTransferCoefficient;
-			float fuelRf = StaticUtils.Energy.getRFFromVolumeAndTemp(attachedFuelRods.size(), fuelHeat);
+			float fuelRf = EnergyConversion.getRFFromVolumeAndTemp(attachedFuelRods.size(), fuelHeat);
 			
 			fuelRf -= rfTransferred;
-			setFuelHeat(StaticUtils.Energy.getTempFromVolumeAndRF(attachedFuelRods.size(), fuelRf));
+			setFuelHeat(EnergyConversion.getTempFromVolumeAndRF(attachedFuelRods.size(), fuelRf));
 
 			// Now see how much the reactor's temp has increased
-			float reactorRf = StaticUtils.Energy.getRFFromVolumeAndTemp(getReactorVolume(), getReactorHeat());
+			float reactorRf = EnergyConversion.getRFFromVolumeAndTemp(getReactorVolume(), getReactorHeat());
 			reactorRf += rfTransferred;
-			setReactorHeat(StaticUtils.Energy.getTempFromVolumeAndRF(getReactorVolume(), reactorRf));
+			setReactorHeat(EnergyConversion.getTempFromVolumeAndRF(getReactorVolume(), reactorRf));
 		}
 
 		// If we have a temperature differential between environment and coolant system, move heat between them.
 		tempDiff = getReactorHeat() - getCoolantTemperature();
 		if(tempDiff > 0.01f) {
 			float rfTransferred = tempDiff * reactorToCoolantSystemHeatTransferCoefficient;
-			float reactorRf = StaticUtils.Energy.getRFFromVolumeAndTemp(getReactorVolume(), getReactorHeat());
+			float reactorRf = EnergyConversion.getRFFromVolumeAndTemp(getReactorVolume(), getReactorHeat());
 
 			if(isPassivelyCooled()) {
 				rfTransferred *= passiveCoolingTransferEfficiency;
@@ -481,15 +482,15 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			}
 
 			reactorRf -= rfTransferred;
-			setReactorHeat(StaticUtils.Energy.getTempFromVolumeAndRF(getReactorVolume(), reactorRf));
+			setReactorHeat(EnergyConversion.getTempFromVolumeAndRF(getReactorVolume(), reactorRf));
 		}
 
 		// Do passive heat loss - this is always versus external environment
 		tempDiff = getReactorHeat() - getPassiveCoolantTemperature();
 		if(tempDiff > 0.000001f) {
 			float rfLost = Math.max(1f, tempDiff * reactorHeatLossCoefficient); // Lose at least 1RF/t
-			float reactorNewRf = Math.max(0f, StaticUtils.Energy.getRFFromVolumeAndTemp(getReactorVolume(), getReactorHeat()) - rfLost);
-			setReactorHeat(StaticUtils.Energy.getTempFromVolumeAndRF(getReactorVolume(), reactorNewRf));
+			float reactorNewRf = Math.max(0f, EnergyConversion.getRFFromVolumeAndTemp(getReactorVolume(), getReactorHeat()) - rfLost);
+			setReactorHeat(EnergyConversion.getTempFromVolumeAndRF(getReactorVolume(), reactorNewRf));
 		}
 		
 		// Prevent cryogenics

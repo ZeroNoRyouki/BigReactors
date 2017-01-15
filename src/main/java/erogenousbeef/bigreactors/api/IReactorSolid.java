@@ -16,29 +16,29 @@ public interface IReactorSolid {
 	/**
 	 * Get the solid itemstack to which this solid fuel maps.
 	 */
-	public ItemStack getReferenceItem();
+	ItemStack getReferenceItem();
 
 	/**
 	 * Get the fluid to which this solid fuel maps.
 	 */
-	public FluidStack getReferenceFluid();
+	FluidStack getReferenceFluid();
 
 	// In this case, both the reference item and reference fluid must match!
 	/**
 	 * @param otherFuel The IReactorSolid to compare.
 	 * @return True if the other fuel's reference item and reference fluid both match
 	 */
-	public boolean isEqual(IReactorSolid otherFuel);
+	boolean isEqual(IReactorSolid otherFuel);
 
 	/**
 	 * @param otherItem An ItemStack to check for equality.
 	 * @return True if the fuel's reference item is the same as the argument.
 	 */
-	public boolean isItemEqual(ItemStack otherItem);
+	boolean isItemEqual(ItemStack otherItem);
 
 	/**
 	 * @param otherFluid A Fluid to check for equality.
 	 * @return True if the fuel's reference fluid is the same as the argument.
 	 */
-	public boolean isFluidEqual(Fluid otherFluid);
+	boolean isFluidEqual(Fluid otherFluid);
 }

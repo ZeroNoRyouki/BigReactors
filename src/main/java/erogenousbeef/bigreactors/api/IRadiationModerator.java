@@ -1,8 +1,8 @@
 package erogenousbeef.bigreactors.api;
 
-import erogenousbeef.bigreactors.common.data.RadiationData;
-import erogenousbeef.bigreactors.common.data.RadiationPacket;
+import erogenousbeef.bigreactors.api.data.RadiationData;
+import erogenousbeef.bigreactors.api.data.RadiationPacket;
 
 public interface IRadiationModerator {
-	public void moderateRadiation(RadiationData returnData, RadiationPacket radiation);
+	void moderateRadiation(RadiationData returnData, RadiationPacket radiation);
 }

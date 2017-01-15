@@ -82,10 +82,10 @@ public class FuelAssembly {
         int color;
 
         color = this.getReactantColor(data.getFuelType());
-        this._fuelColor = -1 == color ? BigReactors.defaultFluidColorFuel : color | 0xFF000000;
+        this._fuelColor = -1 == color ? ReactantData.DEFAULT_FLUID_COLOR_FUEL : color | 0xFF000000;
 
         color = this.getReactantColor(data.getWasteType());
-        this._wasteColor = -1 == color ? BigReactors.defaultFluidColorWaste : color | 0xFF000000;
+        this._wasteColor = -1 == color ? ReactantData.DEFAULT_FLUID_COLOR_WASTE : color | 0xFF000000;
     }
 
     private int getReactantColor(String reactantName) {
