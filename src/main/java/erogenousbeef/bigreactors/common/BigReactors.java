@@ -103,7 +103,8 @@ public class BigReactors implements IModInitializationHandler {
 	}
 
 	// This must be done in init or later
-	protected void registerGameBalanceData() {
+	private void registerGameBalanceData() {
+
 		// Register ingot & block => reactant mappings
 		StandardReactants.yelloriumMapping = Reactants.registerSolid("ingotYellorium", StandardReactants.yellorium);
 		StandardReactants.cyaniteMapping = Reactants.registerSolid("ingotCyanite", StandardReactants.cyanite);
