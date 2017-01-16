@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
+import erogenousbeef.bigreactors.client.particle.SteamParticle;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
@@ -101,7 +102,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
             final TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
             final MultiblockTurbine turbine = bearing.getTurbine();
 
-            if (turbine != null && !turbine.isInteriorInvisible() && turbine.isAssembled() && turbine.getActive()) {
+            if (turbine != null && !turbine.isInteriorInvisible() && turbine.isAssembledAndActive()) {
 
                 // Spawn particles!
                 final int numParticles = Math.min(20, Math.max(1, turbine.getFluidConsumedLastTick() / 40));
@@ -111,6 +112,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
                 final int offsetX = inwardsDir.getFrontOffsetX();
                 final int offsetY = inwardsDir.getFrontOffsetY();
                 final int offsetZ = inwardsDir.getFrontOffsetZ();
+                final EnumParticleTypes particle = BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CLOUD;
 
                 int minX = minCoord.getX();
                 int minY = minCoord.getY();
@@ -136,11 +138,48 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
                     particleY = minY + (int)(rand.nextFloat() * (maxY - minY + 1));
                     particleZ = minZ + (int)(rand.nextFloat() * (maxZ - minZ + 1));
 
-                    WorldHelper.spawnVanillaParticles(bearing.getWorld(),
-                            BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CLOUD, 1, numParticles,
+                    WorldHelper.spawnVanillaParticles(bearing.getWorld(), particle, 1, numParticles,
                             particleX, particleY, particleZ, 0, 0, 0);
                 }
             }
         }
     }
+
+
+
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     */
+    /*
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+
+        TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof TileEntityTurbineRotorBearing) {
+
+            // Rotor bearing found!
+            final TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
+            final MultiblockTurbine turbine = bearing.getTurbine();
+            final EnumFacing direction = bearing.getOutwardFacing();
+
+            if (null != direction && turbine != null && !turbine.isInteriorInvisible() && turbine.isAssembledAndActive()) {
+
+                final BlockPos minCoord = turbine.getMinimumCoord().add(1, 1, 1);
+                final BlockPos maxCoord = turbine.getMaximumCoord().add(-1, -1, -1);
+                final int radiusX = maxCoord.getX() - minCoord.getX() - 1;
+                final int radiusY = maxCoord.getY() - minCoord.getY() - 1;
+                final int radiusZ = maxCoord.getZ() - minCoord.getZ() - 1;
+
+                pos = pos.offset(direction);
+                pos = pos.add(0, 20, 0);
+
+                for (int i = 0; i < 54; ++i)
+                SteamParticle.spawn(world, pos, direction, radiusX, radiusY, radiusZ);
+
+            }
+        }
+    }
+    */
 }
