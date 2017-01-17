@@ -8,17 +8,23 @@ import erogenousbeef.bigreactors.common.item.ItemBase;
 import it.zerono.mods.zerocore.lib.IGameObject;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class InitHandler implements IModInitializationHandler {
 
@@ -60,36 +66,111 @@ public final class InitHandler implements IModInitializationHandler {
         this._proxy = null;
     }
 
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+
+        for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
+
+            switch (mapping.type) {
+
+                case ITEM:
+                    this._remapItems.remap(mapping);
+                    break;
+
+                case BLOCK:
+                    this._remapBlocks.remap(mapping);
+                    break;
+            }
+        }
+    }
+
     private InitHandler() {
 
         this._objects = new ArrayList<>();
+        this._remapBlocks = new LowerCaseRemapper<>();
+        this._remapItems = new LowerCaseRemapper<>();
         this._proxy = BigReactors.getProxy();
     }
 
     protected ItemBase register(ItemBase item) {
 
         this._objects.add(item);
-        return this._proxy.register(item);
+
+        final ItemBase result = this._proxy.register(item);
+
+        this.addRemapEntry(result);
+        return result;
     }
 
     protected BlockBR register(BlockBR block) {
 
         this._objects.add(block);
-        return this._proxy.register(block);
+
+        final BlockBR result =  this._proxy.register(block);
+
+        this.addRemapEntry(result);
+        return result;
     }
 
     protected BlockBRGenericFluid register(BlockBRGenericFluid block) {
 
         this._objects.add(block);
-        return this._proxy.register(block);
+
+        final BlockBRGenericFluid result =  this._proxy.register(block);
+
+        this.addRemapEntry(result);
+        return result;
     }
 
     protected void register(Class<? extends TileEntity> tileEntityClass) {
-
         GameRegistry.registerTileEntity(tileEntityClass, BigReactors.MODID + tileEntityClass.getSimpleName());
     }
 
+    private void addRemapEntry(final Block block) {
+
+        this._remapBlocks.add(block);
+
+        final Item itemBlock = Item.REGISTRY.getObject(block.getRegistryName());
+
+        if (null != itemBlock)
+            this.addRemapEntry(itemBlock);
+    }
+
+    private void addRemapEntry(final Item item) {
+        this._remapItems.add(item);
+    }
+
+    private static class LowerCaseRemapper<T extends IForgeRegistryEntry<T>> {
+
+        LowerCaseRemapper() {
+            this._map = new HashMap<>();
+        }
+
+        public void add(final T entry) {
+            this._map.put(entry.getRegistryName().getResourcePath(), entry);
+        }
+
+        void remap(final FMLMissingMappingsEvent.MissingMapping mapping) {
+
+            String candidateName = mapping.resourceLocation.getResourcePath().toLowerCase();
+
+            if (this._map.containsKey(candidateName)) {
+
+                T replacement = this._map.get(candidateName);
+
+                if (GameRegistry.Type.BLOCK == mapping.type && replacement instanceof Block)
+                    mapping.remap((Block)replacement);
+
+                else if (GameRegistry.Type.ITEM == mapping.type && replacement instanceof Item)
+                    mapping.remap((Item) replacement);
+            }
+        }
+
+        private Map<String, T> _map;
+    }
+
     private List<IGameObject> _objects;
+    private final LowerCaseRemapper<Block> _remapBlocks;
+    private final LowerCaseRemapper<Item> _remapItems;
     private CommonProxy _proxy;
 
     static {
