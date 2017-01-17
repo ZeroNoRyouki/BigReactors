@@ -50,7 +50,7 @@ public class BeefGuiPowerBar extends BeefGuiTextureProgressBar implements IBeefT
 
 	static {
 		s_barsTextures = new ResourceLocation[2];
-		s_barsTextures[PowerSystem.RedstoneFlux.ordinal()] = BigReactors.createGuiResourceLocation("controls/energyBarRF.png");
-		s_barsTextures[PowerSystem.Tesla.ordinal()] = BigReactors.createGuiResourceLocation("controls/energyBarTesla.png");
+		s_barsTextures[PowerSystem.RedstoneFlux.ordinal()] = BigReactors.createGuiResourceLocation("controls/energybarrf.png");
+		s_barsTextures[PowerSystem.Tesla.ordinal()] = BigReactors.createGuiResourceLocation("controls/energybartesla.png");
 	}
 }

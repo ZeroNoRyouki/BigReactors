@@ -41,7 +41,7 @@ public class BeefGuiHeatBar extends BeefGuiTextureProgressBar implements
 	protected ResourceLocation getBackgroundTexture() {
 
 		if (null == s_bgTexture)
-			s_bgTexture = BigReactors.createGuiResourceLocation("controls/HeatBar.png");
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/heatbar.png");
 
 		return s_bgTexture;
 	}

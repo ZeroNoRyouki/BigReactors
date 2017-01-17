@@ -65,7 +65,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		xSize = 255;
 		ySize = 214;
 		
-		_guiBackground = new ResourceLocation(BigReactors.GUI_DIRECTORY + "RedNetPort.png");
+		_guiBackground = new ResourceLocation(BigReactors.GUI_DIRECTORY + "rednetport.png");
 	}
 
 	@Override

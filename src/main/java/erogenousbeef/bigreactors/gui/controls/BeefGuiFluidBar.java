@@ -34,7 +34,7 @@ public class BeefGuiFluidBar extends BeefGuiIconProgressBar implements IBeefTool
 	protected ResourceLocation getBackgroundTexture() {
 
 		if (null == s_bgTexture)
-			s_bgTexture = BigReactors.createGuiResourceLocation("controls/FluidTank.png");
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/fluidtank.png");
 
 		return s_bgTexture;
 	}

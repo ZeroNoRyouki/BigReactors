@@ -64,7 +64,7 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 	public ResourceLocation getGuiBackground() {
 
 		if (null == GuiReactorAccessPort.s_backGround)
-			GuiReactorAccessPort.s_backGround = BigReactors.createResourceLocation("textures/gui/ReactorAccessPort.png");
+			GuiReactorAccessPort.s_backGround = BigReactors.createResourceLocation("textures/gui/reactoraccessport.png");
 
 		return GuiReactorAccessPort.s_backGround;
 	}

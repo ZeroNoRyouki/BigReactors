@@ -48,8 +48,8 @@ public class BrFluids {
         if (null == (fluid = FluidRegistry.getFluid("yellorium"))) {
 
             FluidRegistry.registerFluid(fluid = new ModFluid("yellorium",
-                    BigReactors.createBlockResourceLocation("yelloriumStill"),
-                    BigReactors.createBlockResourceLocation("yelloriumFlowing")) {
+                    BigReactors.createBlockResourceLocation("yelloriumstill"),
+                    BigReactors.createBlockResourceLocation("yelloriumflowing")) {
 
                 @Override
                 protected void initialize() {
@@ -70,8 +70,8 @@ public class BrFluids {
         if (null == (fluid = FluidRegistry.getFluid("cyanite"))) {
 
             FluidRegistry.registerFluid(fluid = new ModFluid("cyanite",
-                    BigReactors.createBlockResourceLocation("cyaniteStill"),
-                    BigReactors.createBlockResourceLocation("cyaniteFlowing")) {
+                    BigReactors.createBlockResourceLocation("cyanitestill"),
+                    BigReactors.createBlockResourceLocation("cyaniteflowing")) {
 
                 @Override
                 protected void initialize() {
@@ -92,8 +92,8 @@ public class BrFluids {
         if (null == (fluid = FluidRegistry.getFluid("steam"))) {
 
             FluidRegistry.registerFluid(fluid = new ModFluid("steam",
-                    BigReactors.createBlockResourceLocation("steamStill"),
-                    BigReactors.createBlockResourceLocation("steamFlowing")) {
+                    BigReactors.createBlockResourceLocation("steamstill"),
+                    BigReactors.createBlockResourceLocation("steamflowing")) {
 
                 @Override
                 protected void initialize() {
@@ -113,8 +113,8 @@ public class BrFluids {
         if (null == (fluid = FluidRegistry.getFluid("fuelcolumn"))) {
 
             FluidRegistry.registerFluid(fluid = new ModFluid("fuelcolumn",
-                    BigReactors.createBlockResourceLocation("fuelColumnStill"),
-                    BigReactors.createBlockResourceLocation("fuelColumnFlowing")) {
+                    BigReactors.createBlockResourceLocation("fuelcolumnstill"),
+                    BigReactors.createBlockResourceLocation("fuelcolumnflowing")) {
 
                 @Override
                 protected void initialize() {

@@ -76,7 +76,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 	public ResourceLocation getGuiBackground() {
 
 		if (null == GuiReactorRedstonePort.s_backGround)
-			GuiReactorRedstonePort.s_backGround = BigReactors.createResourceLocation("textures/gui/RedstonePort.png");
+			GuiReactorRedstonePort.s_backGround = BigReactors.createResourceLocation("textures/gui/redstoneport.png");
 
 		return GuiReactorRedstonePort.s_backGround;
 	}

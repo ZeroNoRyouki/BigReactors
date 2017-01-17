@@ -152,7 +152,7 @@ public class GuiReactorStatus extends BeefGuiBase {
 	public ResourceLocation getGuiBackground() {
 
 		if (null == GuiReactorStatus.s_backGround)
-			GuiReactorStatus.s_backGround = BigReactors.createResourceLocation("textures/gui/ReactorController.png");
+			GuiReactorStatus.s_backGround = BigReactors.createResourceLocation("textures/gui/reactorcontroller.png");
 
 		return GuiReactorStatus.s_backGround;
 	}

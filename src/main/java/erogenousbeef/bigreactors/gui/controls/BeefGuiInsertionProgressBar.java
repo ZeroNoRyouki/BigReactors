@@ -46,7 +46,7 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 	protected ResourceLocation getBackgroundTexture() {
 
 		if (null == BeefGuiInsertionProgressBar.s_texture)
-			BeefGuiInsertionProgressBar.s_texture = BigReactors.createGuiResourceLocation("controls/ControlRod.png");
+			BeefGuiInsertionProgressBar.s_texture = BigReactors.createGuiResourceLocation("controls/controlrod.png");
 
 		return BeefGuiInsertionProgressBar.s_texture;
 	}

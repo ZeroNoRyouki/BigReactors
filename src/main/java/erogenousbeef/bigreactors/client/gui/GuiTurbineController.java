@@ -76,7 +76,7 @@ public class GuiTurbineController extends BeefGuiBase {
 	public ResourceLocation getGuiBackground() {
 
 		if (null == GuiTurbineController.s_backGround)
-			GuiTurbineController.s_backGround = BigReactors.createResourceLocation("textures/gui/TurbineController.png");
+			GuiTurbineController.s_backGround = BigReactors.createResourceLocation("textures/gui/turbinecontroller.png");
 
 		return GuiTurbineController.s_backGround;
 	}

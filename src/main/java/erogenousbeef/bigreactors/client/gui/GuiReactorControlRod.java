@@ -46,7 +46,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 	public ResourceLocation getGuiBackground() {
 
 		if (null == GuiReactorControlRod.s_backGround)
-			GuiReactorControlRod.s_backGround = BigReactors.createResourceLocation("textures/gui/BasicBackground.png");
+			GuiReactorControlRod.s_backGround = BigReactors.createResourceLocation("textures/gui/basicbackground.png");
 
 		return GuiReactorControlRod.s_backGround;
 	}

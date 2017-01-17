@@ -36,7 +36,7 @@ public class BeefGuiRpmBar extends BeefGuiTextureProgressBar implements
 	protected ResourceLocation getBackgroundTexture() {
 
 		if (null == s_bgTexture)
-			s_bgTexture = BigReactors.createGuiResourceLocation("controls/RpmBar.png");
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/rpmbar.png");
 
 		return s_bgTexture;
 	}

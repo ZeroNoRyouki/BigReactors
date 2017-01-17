@@ -56,7 +56,7 @@ public class GuiCyaniteReprocessor extends BeefGuiDeviceBase {
 	public ResourceLocation getGuiBackground() {
 
 		if (null == GuiCyaniteReprocessor.s_guiTexture)
-			GuiCyaniteReprocessor.s_guiTexture = BigReactors.createGuiResourceLocation("CyaniteReprocessor.png");
+			GuiCyaniteReprocessor.s_guiTexture = BigReactors.createGuiResourceLocation("cyanitereprocessor.png");
 
 		return GuiCyaniteReprocessor.s_guiTexture;
 	}

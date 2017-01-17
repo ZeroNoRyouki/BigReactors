@@ -36,7 +36,7 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 	protected ResourceLocation getBackgroundTexture() {
 
 		if (null == s_bgTexture)
-			s_bgTexture = BigReactors.createGuiResourceLocation("controls/FuelMixBar.png");
+			s_bgTexture = BigReactors.createGuiResourceLocation("controls/fuelmixbar.png");
 
 		return s_bgTexture;
 	}
