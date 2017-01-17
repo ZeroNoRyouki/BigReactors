@@ -33,7 +33,7 @@ public final class BrItems {
     // Miscellanea
     public static final ItemWrench wrench;
 
-    public static void initialize() {
+    static void initialize() {
     }
 
     static {
@@ -43,7 +43,7 @@ public final class BrItems {
         // register items
 
         // - Ingots & dusts
-        ingotMetals = (ItemBRMetal)init.register(new ItemBRMetal("ingotMetals", MetalSize.Ingot) {
+        ingotMetals = (ItemBRMetal)init.register(new ItemBRMetal("ingotmetals", MetalSize.Ingot) {
 
              @Override
              public void registerRecipes() {
@@ -84,7 +84,7 @@ public final class BrItems {
              }
         });
 
-        dustMetals = (ItemBRMetal)init.register(new ItemBRMetal("dustMetals", MetalSize.Dust) {
+        dustMetals = (ItemBRMetal)init.register(new ItemBRMetal("dustmetals", MetalSize.Dust) {
 
             @Override
             public void registerRecipes() {
@@ -101,7 +101,7 @@ public final class BrItems {
         minerals = (ItemMineral)init.register(new ItemMineral("minerals"));
 
         // Reactor components
-        reactorCasingCores = (ItemTieredComponent)init.register(new ItemTieredComponent("reactorCasingCores") {
+        reactorCasingCores = (ItemTieredComponent)init.register(new ItemTieredComponent("reactorcasingcores") {
 
             @Override
             public void registerRecipes() {
@@ -119,7 +119,7 @@ public final class BrItems {
         });
 
         // Turbine components
-        turbineHousingCores = (ItemTieredComponent)init.register(new ItemTieredComponent("turbineHousingCores") {
+        turbineHousingCores = (ItemTieredComponent)init.register(new ItemTieredComponent("turbinehousingcores") {
 
             @Override
             public void registerRecipes() {

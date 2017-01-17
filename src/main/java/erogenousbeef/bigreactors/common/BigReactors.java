@@ -10,8 +10,10 @@ import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrFluids;
+import erogenousbeef.bigreactors.init.BrItems;
 import erogenousbeef.bigreactors.init.InitHandler;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
+import it.zerono.mods.zerocore.internal.common.init.ZeroItems;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
 import it.zerono.mods.zerocore.lib.world.IWorldGenWhiteList;
@@ -25,6 +27,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -97,6 +100,11 @@ public class BigReactors implements IModInitializationHandler {
 		CONFIG.onPostInit(event);
 		InitHandler.INSTANCE.onPostInit(event);
 		BigReactors.s_proxy.onPostInit(event);
+	}
+
+	@Mod.EventHandler
+	public void onMissingMapping(FMLMissingMappingsEvent event) {
+		InitHandler.INSTANCE.onMissingMapping(event);
 	}
 
 	// This must be done in init or later
