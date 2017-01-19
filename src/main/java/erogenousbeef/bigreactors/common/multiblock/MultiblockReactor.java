@@ -683,7 +683,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		// Check against registered moderator blocks
 
-		final ItemStack stack = ItemHelper.createItemStack(blockState, 1);
+		final ItemStack stack = ItemHelper.stackFrom(blockState, 1);
 
 		if (null != stack && null != ReactorInterior.getBlockData(stack))
 			return true;

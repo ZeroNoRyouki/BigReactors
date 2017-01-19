@@ -215,7 +215,7 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 			interiorData = RadiationHelper.waterData;
 		}
 		else {
-			interiorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
+			interiorData = ReactorInterior.getBlockData(ItemHelper.stackFrom(blockState, 1));
 
 			if(interiorData == null && block instanceof IFluidBlock) {
 				Fluid fluid = ((IFluidBlock)block).getFluid();
