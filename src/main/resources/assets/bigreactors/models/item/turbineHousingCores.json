@@ -1,7 +1,7 @@
 {
     "textures": {
-        "side": "bigreactors:items/turbine/legacy/housingCoreSide",
-        "top": "bigreactors:items/turbine/legacy/housingCoreTop"
+        "side": "bigreactors:items/turbine/legacy/housingcoreside",
+        "top": "bigreactors:items/turbine/legacy/housingcoretop"
     },
     "elements": [
         {

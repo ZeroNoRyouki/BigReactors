@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
-            "machineA":"bigreactors:blocks/reactor/legacy/redstonePort.unlit",
+            "machineA":"bigreactors:blocks/reactor/legacy/redstoneport.unlit",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -21,15 +21,15 @@
 				"transform":"forge:default-block",
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machineA":"bigreactors:blocks/reactor/legacy/redstonePort.unlit",
-                    "machineB":"bigreactors:blocks/reactor/legacy/redstonePort.lit"
+                    "machineA":"bigreactors:blocks/reactor/legacy/redstoneport.unlit",
+                    "machineB":"bigreactors:blocks/reactor/legacy/redstoneport.lit"
                 }
             },
             "basic":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/basic/plate",
-                    "machineA":"bigreactors:blocks/reactor/basic/redstonePort.unlit",
-                    "machineB":"bigreactors:blocks/reactor/basic/redstonePort.lit"
+                    "machineA":"bigreactors:blocks/reactor/basic/redstoneport.unlit",
+                    "machineB":"bigreactors:blocks/reactor/basic/redstoneport.lit"
                 }
             }
         },

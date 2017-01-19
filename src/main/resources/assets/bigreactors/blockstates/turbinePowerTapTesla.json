@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "housing.face":"bigreactors:blocks/turbine/legacy/housing.face",
-            "machineA":"bigreactors:blocks/turbine/legacy/powerTapTesla.disconnected",
+            "machineA":"bigreactors:blocks/turbine/legacy/powertaptesla.disconnected",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -21,15 +21,15 @@
 				"transform":"forge:default-block",
                 "textures":{  
                     "housing.face":"bigreactors:blocks/turbine/legacy/housing.face",
-                    "machineA":"bigreactors:blocks/turbine/legacy/powerTapTesla.disconnected",
-                    "machineB":"bigreactors:blocks/turbine/legacy/powerTapTesla.connected"
+                    "machineA":"bigreactors:blocks/turbine/legacy/powertaptesla.disconnected",
+                    "machineB":"bigreactors:blocks/turbine/legacy/powertaptesla.connected"
                 }
             },
             "basic":{  
                 "textures":{  
                     "housing.face":"bigreactors:blocks/turbine/basic/housing.face",
-                    "machineA":"bigreactors:blocks/turbine/basic/powerTapTesla.disconnected",
-                    "machineB":"bigreactors:blocks/turbine/basic/powerTapTesla.connected"
+                    "machineA":"bigreactors:blocks/turbine/basic/powertaptesla.disconnected",
+                    "machineB":"bigreactors:blocks/turbine/basic/powertaptesla.connected"
                 }
             }
         },

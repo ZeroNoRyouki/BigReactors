@@ -2,9 +2,9 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "side":"bigreactors:blocks/reactor/legacy/fuelRod.side.vertical",
-			"side_h":"bigreactors:blocks/reactor/legacy/fuelRod.side.horizontal",
-            "end":"bigreactors:blocks/reactor/legacy/fuelRod.end",
+            "side":"bigreactors:blocks/reactor/legacy/fuelrod.side.vertical",
+			"side_h":"bigreactors:blocks/reactor/legacy/fuelrod.side.horizontal",
+            "end":"bigreactors:blocks/reactor/legacy/fuelrod.end",
             "particle":"#side",
             "down":"#end",
             "up":"#end",
@@ -20,16 +20,16 @@
             "legacy":{  
 				"transform":"forge:default-block",
                 "textures":{  
-                    "side":"bigreactors:blocks/reactor/legacy/fuelRod.side.vertical",
-					"side_h":"bigreactors:blocks/reactor/legacy/fuelRod.side.horizontal",
-                    "end":"bigreactors:blocks/reactor/legacy/fuelRod.end"
+                    "side":"bigreactors:blocks/reactor/legacy/fuelrod.side.vertical",
+					"side_h":"bigreactors:blocks/reactor/legacy/fuelrod.side.horizontal",
+                    "end":"bigreactors:blocks/reactor/legacy/fuelrod.end"
                 }
             },
             "basic":{  
                 "textures":{  
-                    "side":"bigreactors:blocks/reactor/basic/fuelRod.side.vertical",
-					"side_h":"bigreactors:blocks/reactor/basic/fuelRod.side.horizontal",
-                    "end":"bigreactors:blocks/reactor/basic/fuelRod.end"
+                    "side":"bigreactors:blocks/reactor/basic/fuelrod.side.vertical",
+					"side_h":"bigreactors:blocks/reactor/basic/fuelrod.side.horizontal",
+                    "end":"bigreactors:blocks/reactor/basic/fuelrod.end"
                 }
             }
         },
