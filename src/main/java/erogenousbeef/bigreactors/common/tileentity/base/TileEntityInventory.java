@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.tileentity.base;
 
 import erogenousbeef.bigreactors.utils.AdjacentInventoryHelper;
@@ -31,18 +32,18 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		}
 
 		// TODO Commented temporarily to allow this thing to compile...
-		/*
+		/ *
 		adjacentInvs = new AdjacentInventoryHelper[ForgeDirection.VALID_DIRECTIONS.length];
 		for(ForgeDirection dir: ForgeDirection.VALID_DIRECTIONS) {
 			adjacentInvs[dir.ordinal()] = new AdjacentInventoryHelper(dir);
 		}
 
 		resetAdjacentInventories();
-		*/
+		* /
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	@Override
 	public void onNeighborBlockChange() {
 		super.onNeighborBlockChange();
@@ -56,7 +57,7 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		int side = BlockHelper.determineAdjacentSide(this, x, y, z);
 		checkAdjacentInventory(ForgeDirection.getOrientation(side));
 	}
-	*/
+	* /
 
 	@Override
 	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
@@ -106,7 +107,7 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		}
 	}
 
-	/*
+	/ *
 	// TileEntity overrides
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -146,7 +147,7 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		if(tagList.tagCount() > 0) {
 			tag.setTag("Items", tagList);
 		}
-	}*/
+	}* /
 	
 	// IInventory
 	@Override
@@ -181,12 +182,12 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		return null;
 	}
-	*/
+	* /
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemstack) {
@@ -198,10 +199,10 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	@Override
 	public abstract String getInventoryName();
-	*/
+	* /
 
 	@Override
 	public boolean hasCustomName() {
@@ -235,16 +236,16 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 	public abstract boolean isItemValidForSlot(int slot, ItemStack itemstack);
 
 	// ISidedInventory
-	/**
+	/ **
 	 * Get the exposed inventory slot from a given world side.
 	 * Remember to translate this into a reference side!
 	 * @param side The side being queried for exposure.
 	 * @return The index of the exposed slot, -1 (SLOT_UNEXPOSED) if none.
-	 */
+	 * /
 	protected abstract int getExposedInventorySlotFromSide(int side);
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 		int exposedSlot = getExposedInventorySlotFromSide(side);
@@ -255,7 +256,7 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 			return kEmptyIntArray;
 		}
 	}
-	*/
+	* /
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
@@ -274,23 +275,23 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		return false;
 	}
 
-	/**
+	/ **
 	 * This method distributes items from all exposed slots to linked inventories
 	 * on their respective sides.
-	 */
+	 * /
 	protected void distributeItems()
 	{
 		// TODO Commented temporarily to allow this thing to compile...
-		/*
+		/ *
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			distributeSide(dir);
 		}
-		*/
+		* /
 	}
 	
 	protected void distributeItemsFromSlot(int slot) {
 		// TODO Commented temporarily to allow this thing to compile...
-		/*
+		/ *
 		if(slot == SLOT_NONE) { return; }
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			int sideSlot = getExposedInventorySlotFromSide(dir.ordinal());
@@ -300,16 +301,16 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 			
 			if(_inventories[slot] == null) { break; }
 		}
-		*/
+		* /
 	}
 
-	/**
+	/ **
 	 * Distributes items from whichever slot is currently exposed on a given
 	 * side to any adjacent pipes/ducts/inventories.
 	 * @param dir The side whose exposed items you wish to distribute.
-	 */
+	 * /
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	protected void distributeSide(ForgeDirection dir) {
 		int slot = getExposedInventorySlotFromSide(dir.ordinal());
 		if(slot == SLOT_NONE) { return; }
@@ -317,25 +318,25 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 		
 		_inventories[slot] = distributeItemToSide(dir, _inventories[slot]);
 	}
-	*/
+	* /
 
-	/**
+	/ **
 	 * Distributes a given item stack to a given side.
 	 * Note that this method does not check for exposures.
 	 * @param dir Direction/side to which you wish to distribute items.
 	 * @param itemstack An item stack to distribute.
 	 * @return An itemstack containing the undistributed items, or null if all items were distributed.
-	 */
+	 * /
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	protected ItemStack distributeItemToSide(ForgeDirection dir, ItemStack itemstack) {
 		return adjacentInvs[dir.ordinal()].distribute(itemstack);
 	}
-	*/
+	* /
 
 	// Adjacent Inventory Detection
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	private void checkAdjacentInventories() {
 		boolean changed = false;
 		for(ForgeDirection dir: ForgeDirection.VALID_DIRECTIONS) {
@@ -355,5 +356,6 @@ public abstract class TileEntityInventory extends TileEntityBeefBase implements 
 			adjacentInvs[i].set(null);
 		}
 	}
-	*/
+	* /
 }
+*/

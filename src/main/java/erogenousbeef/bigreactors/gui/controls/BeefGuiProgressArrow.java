@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.gui.controls;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
@@ -32,3 +33,4 @@ public class BeefGuiProgressArrow extends BeefGuiControlBase {
 	}
 
 }
+*/

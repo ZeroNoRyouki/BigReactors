@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.client.gui;
 
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
@@ -22,10 +23,10 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 		_entity = tileEntity;
 	}
 
-	/**
+	/ **
 	 * Used to set the icon for the front face of the machine on the exposure button panel. No other uses.
 	 * @return The metadata of the machine whose icon should show up in the center of the exposure buttons.
-	 */
+	 * /
 	protected abstract int getBlockMetadata();
 	
 	private void createInventoryExposureButton(int side, int x, int y) {
@@ -36,11 +37,11 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 		exposureButtons[side] = newBtn;
 	}
 	
-	/**
+	/ **
 	 * Create GUI inventory exposure button grid
 	 * @param minLeft The leftmost coordinate for the buttons, including guiLeft
 	 * @param minTop The topmost coordinate for the buttons, including guiTop
-	 */
+	 * /
 	protected void createInventoryExposureButtons(int minLeft, int minTop) {
 		// Do this here to make the GUI resize-proof
 		exposureButtons = new GuiIconButton[6];
@@ -86,3 +87,4 @@ public abstract class BeefGuiDeviceBase extends BeefGuiBase {
 		}
 	}
 }
+*/

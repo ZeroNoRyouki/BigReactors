@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.tileentity.base;
 
 import cofh.api.energy.EnergyStorage;
@@ -27,43 +28,43 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 	}
 	
 	// Internal energy methods
-	/**
+	/ **
 	 * The amount of energy stored in this type of TileEntity
 	 * @return The amount of energy stored. 0 or more. Only called at construction time.
-	 */
+	 * /
 	protected abstract int getMaxEnergyStored();
 	
-	/**
+	/ **
 	 * Returns the energy cost to run a cycle. Consumed instantly when a cycle begins.
 	 * @return Amount of RF needed to start a cycle.
-	 */
+	 * /
 	public abstract int getCycleEnergyCost();
 	
-	/**
+	/ **
 	 * @return The length of a powered processing cycle, in ticks.
-	 */
+	 * /
 	public abstract int getCycleLength();
 	
-	/**
+	/ **
 	 * Check material/non-energy requirements for starting a cycle.
 	 * These requirements should NOT be consumed at the start of a cycle.
 	 * @return True if a cycle can start/continue, false otherwise.
-	 */
+	 * /
 	public abstract boolean canBeginCycle();
 	
-	/**
+	/ **
 	 * Perform any necessary operations at the start of a cycle.
 	 * Do NOT consume resources here. Powered cycles should only consume
 	 * resources at the end of a cycle.
 	 * canBeginCycle() will be called each tick to ensure that the necessary
 	 * conditions remain met throughout the cycle.
-	 */
+	 * /
 	public abstract void onPoweredCycleBegin();
 	
-	/**
+	/ **
 	 * Perform any necessary operations at the end of a cycle.
 	 * Consume and produce resources here.
-	 */
+	 * /
 	public abstract void onPoweredCycleEnd();
 	
 	public int getCurrentCycleTicks() {
@@ -111,7 +112,7 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		}
 	}
 
-	/*
+	/ *
 	// TileEntity overrides
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -133,7 +134,7 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		this.energyStorage.writeToNBT(energyTag);
 		tag.setTag("energyStorage", energyTag);
 		tag.setInteger("cycledTicks", cycledTicks);
-	}*/
+	} * /
 	
 	// TileEntity methods	
 	@Override
@@ -187,9 +188,9 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		this.cycledTicks = updateTag.getInteger("cycledTicks");
 	}
 	
-	/* IEnergyHandler */
+	/ * IEnergyHandler * /
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	@Override
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 		if(!m_ReceivesEnergy) { return 0; }
@@ -201,7 +202,7 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		if(!m_ProvidesEnergy) { return 0; }
 		return energyStorage.extractEnergy(maxExtract, simulate);
 	}
-	*/
+	* /
 
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
@@ -220,3 +221,4 @@ public abstract class TileEntityPoweredInventory extends TileEntityInventory imp
 		return energyStorage.getMaxEnergyStored();
 	}
 }
+*/
