@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.net.message;
 
 import cofh.api.tileentity.IReconfigurableFacing;
@@ -51,3 +52,4 @@ public class DeviceUpdateRotationMessage extends ModTileEntityMessage {
         }
     }
 }
+*/
