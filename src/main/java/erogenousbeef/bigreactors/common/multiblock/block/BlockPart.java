@@ -8,6 +8,7 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
@@ -118,7 +119,7 @@ public class BlockPart extends BlockBR {
 
                 if (null != message) {
 
-                    player.addChatMessage(message);
+                    CodeHelper.sendChatMessage(player, message);
                     return true;
                 }
             }

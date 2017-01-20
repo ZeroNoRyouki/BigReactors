@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -77,7 +78,7 @@ public class BlockBRMetal extends BlockBR {
 			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
 
 			GameRegistry.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
-			ingot.stackSize = 9;
+			ItemHelper.stackSetSize(ingot, 9);
 			GameRegistry.addShapelessRecipe(ingot, block);
 		}
 
