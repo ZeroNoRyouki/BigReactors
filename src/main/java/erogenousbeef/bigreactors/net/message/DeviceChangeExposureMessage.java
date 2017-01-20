@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.net.message;
 
 import erogenousbeef.bigreactors.common.BRLog;
@@ -10,12 +11,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-/**
+/ **
  * A message signifying that a user would like to change
  * the inventory/fluid exposure status of the side of a block.
  * @author Erogenous Beef
  *
- */
+ * /
 public class DeviceChangeExposureMessage extends ModTileEntityMessage {
 
 	public DeviceChangeExposureMessage() {
@@ -72,3 +73,4 @@ public class DeviceChangeExposureMessage extends ModTileEntityMessage {
 		}
 	}
 }
+*/

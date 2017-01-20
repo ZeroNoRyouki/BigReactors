@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.tileentity;
 
 import erogenousbeef.bigreactors.api.registry.Reactants;
@@ -47,12 +48,12 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	}
 
 	// TODO Commented temporarily to allow this thing to compile...
-	/*
+	/ *
 	@Override
 	public String getInventoryName() {
 		return "Cyanite Reprocessor";
 	}
-	*/
+	* /
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
@@ -177,7 +178,7 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 	
 	// IReconfigurableSides & IBeefReconfigurableSides
 	//TODO textures
-	/*
+	/ *
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconForSide(int side) {
 		if(side == facing) {
@@ -198,7 +199,7 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 			return ClientProxy.CommonBlockIcons.getIcon(ClientProxy.CommonBlockIcons.DEFAULT);
 		}
 	}
-	*/
+	* /
 	
 	@Override
 	public int getNumConfig(EnumFacing side) {
@@ -281,3 +282,4 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 
 	// fake imp (end)
 }
+*/

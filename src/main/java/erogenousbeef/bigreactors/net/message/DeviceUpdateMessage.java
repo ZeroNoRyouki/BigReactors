@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.net.message;
 
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityBeefBase;
@@ -48,3 +49,4 @@ public class DeviceUpdateMessage extends ModTileEntityMessage {
         }
     }
 }
+*/

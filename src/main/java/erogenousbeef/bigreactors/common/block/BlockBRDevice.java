@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.block;
 
 import cofh.api.block.IDismantleable;
@@ -69,9 +70,9 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
 	}
 
-	/**
+	/ **
 	 * Convert the given metadata into a BlockState for this Block
-	 */
+	 * /
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
@@ -83,9 +84,9 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 		return this.getDefaultState().withProperty(Orientation.HFACING, enumfacing);
 	}
 
-	/**
+	/ **
 	 * Convert the BlockState into the correct metadata value
-	 */
+	 * /
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return (state.getValue(Orientation.HFACING)).getIndex();
@@ -102,10 +103,10 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 		return state;
 	}
 
-	/**
+	/ **
 	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
 	 * IBlockstate
-	 */
+	 * /
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
 									 int meta, EntityLivingBase placer) {
 
@@ -246,3 +247,4 @@ public class BlockBRDevice extends BlockBR implements IDismantleable {
 
 	private DeviceType _type;
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.tileentity.base;
 
 import cofh.api.tileentity.IReconfigurableFacing;
@@ -149,30 +150,30 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		updatePlayers.remove(player);
 	}
 
-	/* TODO commented out to make this compile
+	/ * TODO commented out to make this compile
 	protected IMessage getUpdatePacket() {
 		NBTTagCompound childData = new NBTTagCompound();
 		onSendUpdate(childData);
 		
 		return new DeviceUpdateMessage(this.getPos(), childData);
 	}
-	*/
+	* /
 
 	private void sendUpdatePacketToClient(EntityPlayer recipient) {
 		if(this.getWorld().isRemote) { return; }
-		/* TODO commented out to make this compile
+		/ * TODO commented out to make this compile
         CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)recipient);
-		*/
+		* /
 	}
 	
 	private void sendUpdatePacket() {
 		if(this.getWorld().isRemote) { return; }
 		if(this.updatePlayers.size() <= 0) { return; }
-		/* TODO commented out to make this compile
+		/ * TODO commented out to make this compile
 		for(EntityPlayer player : updatePlayers) {
             CommonPacketHandler.INSTANCE.sendTo(getUpdatePacket(), (EntityPlayerMP)player);
 		}
-		*/
+		* /
 	}
 	
 	// Side Exposure Helpers
@@ -188,19 +189,19 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		return true;
 	}
 	
-	/**
+	/ **
 	 * Autocorrecting getter for checking exposures without having to do the rotation yerself.
 	 * @param worldSide The world side whose exposure you wish to get.
 	 * @return The current exposure setting for the world side.
-	 */
+	 * /
 	protected int getExposure(EnumFacing worldSide) {
 		return exposures[getRotatedSide(worldSide)];
 	}
 	
-	/**
+	/ **
 	 * Used when sending updates from server to client; batch-updates all exposures.
 	 * @param newExposures The new set of inventory exposures.
-	 */
+	 * /
 	public void setSides(int[] newExposures) {
 		assert(newExposures.length == exposures.length);
 		System.arraycopy(newExposures, 0, exposures, 0, newExposures.length);
@@ -268,16 +269,16 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		this.callNeighborBlockChange();
 	}
 
-	/**
+	/ **
 	 * Fill this NBT Tag Compound with your custom entity data.
 	 * @param updateTag The tag to which your data should be written
-	 */
+	 * /
 	protected void onSendUpdate(NBTTagCompound updateTag) {}
 	
-	/**
+	/ **
 	 * Read your custom update data from this NBT Tag Compound.
 	 * @param updateTag The tag which should contain your data.
-	 */
+	 * /
 	public void onReceiveUpdate(NBTTagCompound updateTag) {}
 
 	// Weird shit from TileCoFHBase
@@ -289,3 +290,4 @@ public abstract class TileEntityBeefBase extends ModTileEntity implements IBeefG
 		return getBlockMetadata();
 	}
 }
+*/
