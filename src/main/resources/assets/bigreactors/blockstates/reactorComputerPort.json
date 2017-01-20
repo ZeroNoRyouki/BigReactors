@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
-            "machine":"bigreactors:blocks/reactor/legacy/computerPort.png",
+            "machine":"bigreactors:blocks/reactor/legacy/computerport.png",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -19,13 +19,13 @@
             "legacy":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machine":"bigreactors:blocks/reactor/legacy/computerPort"
+                    "machine":"bigreactors:blocks/reactor/legacy/computerport"
                 }
             },
             "basic":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/basic/plate",
-					"machine":"bigreactors:blocks/reactor/basic/computerPort"
+					"machine":"bigreactors:blocks/reactor/basic/computerport"
                 }
             }
         },

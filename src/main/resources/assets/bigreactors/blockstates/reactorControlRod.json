@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
-            "machine":"bigreactors:blocks/reactor/legacy/controlRod",
+            "machine":"bigreactors:blocks/reactor/legacy/controlrod",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -20,13 +20,13 @@
 				"transform":"forge:default-block",
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machine":"bigreactors:blocks/reactor/legacy/controlRod"
+                    "machine":"bigreactors:blocks/reactor/legacy/controlrod"
                 }
             },
             "basic":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/basic/plate",
-					"machine":"bigreactors:blocks/reactor/basic/controlRod"
+					"machine":"bigreactors:blocks/reactor/basic/controlrod"
                 }
             }
         },

@@ -683,9 +683,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		// Check against registered moderator blocks
 
-		final ItemStack stack = ItemHelper.createItemStack(blockState, 1);
+		final ItemStack stack = ItemHelper.stackFrom(blockState, 1);
 
-		if (null != stack && null != ReactorInterior.getBlockData(stack))
+		if (ItemHelper.stackIsValid(stack) && null != ReactorInterior.getBlockData(stack))
 			return true;
 
 		// Check against registered moderator fluids
@@ -956,7 +956,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	 */
 	private int tryDistributeItems(TileEntityReactorAccessPort port, ItemStack itemsToDistribute, boolean distributeToInputs) {
 
-        int initialWasteAmount = itemsToDistribute.stackSize;
+        int initialWasteAmount = ItemHelper.stackGetSize(itemsToDistribute);
 
         // Dump waste preferentially to outlets, unless we only have one access port
         if (!port.getDirection().isInput() || (distributeToInputs || this.attachedAccessPorts.size() < 2)) {
@@ -965,7 +965,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
             port.onItemsReceived();
         }
 
-        return null != itemsToDistribute ? initialWasteAmount - itemsToDistribute.stackSize : initialWasteAmount;
+        return ItemHelper.stackIsValid(itemsToDistribute) ? initialWasteAmount - ItemHelper.stackGetSize(itemsToDistribute)
+				: initialWasteAmount;
 
         /*
 		ItemStack existingStack = port.getStackInSlot(TileEntityReactorAccessPort.SLOT_OUTLET);

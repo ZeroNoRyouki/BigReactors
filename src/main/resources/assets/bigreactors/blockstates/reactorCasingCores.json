@@ -8,12 +8,12 @@
 	     "tier":{  
             "legacy":{  
                 "textures":{
-					"all":"bigreactors:items/reactor/legacy/casingCore"
+					"all":"bigreactors:items/reactor/legacy/casingcore"
                 }
             },
             "basic":{  
                 "textures":{
-					"all":"bigreactors:items/reactor/basic/casingCore"
+					"all":"bigreactors:items/reactor/basic/casingcore"
                 }
             }
         }

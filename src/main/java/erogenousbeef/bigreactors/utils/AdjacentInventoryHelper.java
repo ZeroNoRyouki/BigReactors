@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.utils;
 
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -49,10 +50,10 @@ public class AdjacentInventoryHelper {
 	 * @return An itemstack containing the remaining items, or null if all items were distributed.
 	 */
 	public ItemStack distribute(ItemStack itemToDistribute) {
-		if(entity == null || itemToDistribute == null) {
+
+		if (null == entity || ItemHelper.stackIsEmpty(itemToDistribute))
 			return itemToDistribute;
-		}
-		
+
 		if(!hasConnection()) {
 			return itemToDistribute;
 		}

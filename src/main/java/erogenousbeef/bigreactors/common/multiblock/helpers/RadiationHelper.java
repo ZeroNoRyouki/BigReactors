@@ -187,7 +187,7 @@ public class RadiationHelper {
 		}
 		else {
 			// Check the ore dictionary.
-			moderatorData = ReactorInterior.getBlockData(ItemHelper.createItemStack(blockState, 1));
+			moderatorData = ReactorInterior.getBlockData(ItemHelper.stackFrom(blockState, 1));
 		}
 		
 		if(moderatorData == null) {

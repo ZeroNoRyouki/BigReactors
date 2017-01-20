@@ -8,12 +8,12 @@
         "mineral":{  
             "anglesite":{  
                 "textures":{
-					"layer0":"bigreactors:items/mineralAnglesite"
+					"layer0":"bigreactors:items/mineralanglesite"
                 }
             },
 			"benitoite":{  
                 "textures":{
-					"layer0":"bigreactors:items/mineralBenitoite"
+					"layer0":"bigreactors:items/mineralbenitoite"
                 }
             }			
         }

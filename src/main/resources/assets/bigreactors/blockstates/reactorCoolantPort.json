@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
-            "machineA":"bigreactors:blocks/reactor/legacy/coolantPort.inlet",
+            "machineA":"bigreactors:blocks/reactor/legacy/coolantport.inlet",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -21,15 +21,15 @@
 				"transform":"forge:default-block",
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machineA":"bigreactors:blocks/reactor/legacy/coolantPort.inlet",
-                    "machineB":"bigreactors:blocks/reactor/legacy/coolantPort.outlet"
+                    "machineA":"bigreactors:blocks/reactor/legacy/coolantport.inlet",
+                    "machineB":"bigreactors:blocks/reactor/legacy/coolantport.outlet"
                 }
             },
             "basic":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/reactor/basic/plate",
-                    "machineA":"bigreactors:blocks/reactor/basic/coolantPort.inlet",
-                    "machineB":"bigreactors:blocks/reactor/basic/coolantPort.outlet"
+                    "machineA":"bigreactors:blocks/reactor/basic/coolantport.inlet",
+                    "machineB":"bigreactors:blocks/reactor/basic/coolantport.outlet"
                 }
             }
         },

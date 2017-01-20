@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-            "machineA":"bigreactors:blocks/turbine/legacy/powerTapRF.disconnected",
+            "machineA":"bigreactors:blocks/turbine/legacy/powertaprf.disconnected",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -21,15 +21,15 @@
 				"transform":"forge:default-block",
                 "textures":{  
                     "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-                    "machineA":"bigreactors:blocks/turbine/legacy/powerTapRF.disconnected",
-                    "machineB":"bigreactors:blocks/turbine/legacy/powerTapRF.connected"
+                    "machineA":"bigreactors:blocks/turbine/legacy/powertaprf.disconnected",
+                    "machineB":"bigreactors:blocks/turbine/legacy/powertaprf.connected"
                 }
             },
             "basic":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/turbine/basic/housing.plate",
-                    "machineA":"bigreactors:blocks/turbine/basic/powerTapRF.disconnected",
-                    "machineB":"bigreactors:blocks/turbine/basic/powerTapRF.connected"
+                    "machineA":"bigreactors:blocks/turbine/basic/powertaprf.disconnected",
+                    "machineB":"bigreactors:blocks/turbine/basic/powertaprf.connected"
                 }
             }
         },

@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.gui.slot;
 
+import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -23,7 +24,9 @@ public class SlotRestrictedOreTypes extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if(stack == null) { return false; }
+
+		if (ItemHelper.stackIsEmpty(stack))
+			return false;
 
 		String[] oreNames = OreDictionaryHelper.getOreNames(stack);
 

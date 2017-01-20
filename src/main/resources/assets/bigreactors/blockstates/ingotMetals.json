@@ -8,32 +8,32 @@
         "metal":{  
             "yellorium":{  
                 "textures":{
-					"layer0":"bigreactors:items/ingotYellorium"
+					"layer0":"bigreactors:items/ingotyellorium"
                 }
             },
 			"cyanite":{  
                 "textures":{
-					"layer0":"bigreactors:items/ingotCyanite"
+					"layer0":"bigreactors:items/ingotcyanite"
                 }
             },
 			"graphite":{  
                 "textures":{
-					"layer0":"bigreactors:items/ingotGraphite"
+					"layer0":"bigreactors:items/ingotgraphite"
                 }
             },
 			"blutonium":{  
                 "textures":{
-					"layer0":"bigreactors:items/ingotBlutonium"
+					"layer0":"bigreactors:items/ingotblutonium"
                 }
             },
 			"ludicrite":{  
                 "textures":{
-					"layer0":"bigreactors:items/ingotLudicrite"
+					"layer0":"bigreactors:items/ingotludicrite"
                 }
             },
 			"steel":{  
                 "textures":{
-					"layer0":"bigreactors:items/ingotSteel"
+					"layer0":"bigreactors:items/ingotsteel"
                 }
             }			
         }

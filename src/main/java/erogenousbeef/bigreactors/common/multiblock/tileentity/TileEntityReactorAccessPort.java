@@ -11,6 +11,7 @@ import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
@@ -61,7 +62,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 					this._fuelInventoryWrapper = new ItemHandlerWrapper(this._fuelInventory) {
 						@Override
 						public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-							return null != stack && Reactants.isFuel(stack) ? this._handler.insertItem(slot, stack, simulate) : stack;
+							return ItemHelper.stackIsValid(stack) && Reactants.isFuel(stack) ?
+									this._handler.insertItem(slot, stack, simulate) : stack;
 						}
 					};
 
@@ -95,7 +97,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public String getInputReactantType() {
 
 		ItemStack inputItem = this._fuelInventory.getStackInSlot(0);
-		SourceProductMapping mapping = null != inputItem ? Reactants.getSolidToReactant(inputItem) : null;
+		SourceProductMapping mapping = ItemHelper.stackIsValid(inputItem) ? Reactants.getSolidToReactant(inputItem) : null;
 
 		return null != mapping ? mapping.getProduct() : null;
 	}
@@ -106,9 +108,9 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	public int getInputReactantAmount() {
 
 		ItemStack inputItem = this._fuelInventory.getStackInSlot(0);
-		SourceProductMapping mapping = null != inputItem ? Reactants.getSolidToReactant(inputItem) : null;
+		SourceProductMapping mapping = ItemHelper.stackIsValid(inputItem) ? Reactants.getSolidToReactant(inputItem) : null;
 
-		return null != mapping ? mapping.getProductAmount(inputItem.stackSize) : 0;
+		return null != mapping ? mapping.getProductAmount(ItemHelper.stackGetSize(inputItem)) : 0;
 	}
 
 	/**
@@ -122,8 +124,9 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		// TODO consume partial amount of source fuel (say, a block) and put left over back in the inventory (say, ingots)
 
 		ItemStack inputItem = this._fuelInventory.getStackInSlot(0);
-		SourceProductMapping mapping = null != inputItem ? Reactants.getSolidToReactant(inputItem) : null;
-		int sourceItemsToConsume = null != mapping ? Math.min(inputItem.stackSize, mapping.getSourceAmount(reactantDesired)) : 0;
+		SourceProductMapping mapping = ItemHelper.stackIsValid(inputItem) ? Reactants.getSolidToReactant(inputItem) : null;
+		int sourceItemsToConsume = null != mapping ? Math.min(ItemHelper.stackGetSize(inputItem),
+				mapping.getSourceAmount(reactantDesired)) : 0;
 		
 		if (sourceItemsToConsume <= 0)
 			return 0;
@@ -142,18 +145,20 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 	 * @return
 	 */
 	public int emitReactant(String reactantType, int amount) {
+
 		if(reactantType == null || amount <= 0) { return 0; }
 		
-		ItemStack outputItem = this._wasteInventory.getStackInSlot(0);
-		int outputItemMaxSize = null != outputItem ? outputItem.getMaxStackSize() : 64;
+		final ItemStack outputItem = this._wasteInventory.getStackInSlot(0);
+		final boolean outputItemValid = ItemHelper.stackIsValid(outputItem);
+		int outputItemMaxSize = outputItemValid ? outputItem.getMaxStackSize() : 64;
 
-		if (outputItem != null && outputItem.stackSize >= /*getInventoryStackLimit()*/outputItemMaxSize) {
+		if (outputItemValid && ItemHelper.stackGetSize(outputItem) >= /*getInventoryStackLimit()*/outputItemMaxSize) {
 			// Already full?
 			return 0;
 		}
 		
 		// If we have an output item, try to produce more of it, given its mapping
-		if(outputItem != null) {
+		if (outputItemValid) {
 			// Find matching mapping
 			SourceProductMapping mapping = Reactants.getSolidToReactant(outputItem);
 			if(mapping == null || !reactantType.equals(mapping.getProduct())) {
@@ -164,14 +169,14 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 			// We're using the original source item >> reactant mapping here
 			// This means that source == item, and product == reactant
 			int amtToProduce = mapping.getSourceAmount(amount);
-			amtToProduce = Math.min(amtToProduce, outputItemMaxSize - outputItem.stackSize);
+			amtToProduce = Math.min(amtToProduce, outputItemMaxSize - ItemHelper.stackGetSize(outputItem));
 			if(amtToProduce <= 0) {	return 0; }
 			
 			// Do we actually produce any reactant at this reduced amount?
 			int reactantToConsume = mapping.getProductAmount(amtToProduce);
 			if(reactantToConsume <= 0) { return 0; }
-			
-			outputItem.stackSize += amtToProduce;
+
+			ItemHelper.stackAdd(outputItem, amtToProduce);
 			onItemsReceived();
 			
 			return reactantToConsume;
@@ -215,15 +220,16 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		itemsToProduce = bestMapping.getProductAmount(reactantConsumed);
 
 		ItemStack newItem = OreDictionaryHelper.getOre(bestMapping.getProduct());
-		if(newItem == null) {
+
+		if (ItemHelper.stackIsEmpty(newItem)) {
 			BRLog.warning("Could not find item for oredict entry %s, using cyanite instead.", bestMapping.getSource());
 			newItem = BrItems.ingotMetals.createItemStack(MetalType.Cyanite, 1);
 		}
 		else {
-			newItem = newItem.copy(); // Don't stomp the oredict
+			newItem = ItemHelper.stackFrom(newItem); // Don't stomp the oredict
 		}
-		
-		newItem.stackSize = itemsToProduce;
+
+		ItemHelper.stackSetSize(newItem, itemsToProduce);
 		this._wasteInventory.setStackInSlot(0, newItem);
 		onItemsReceived();
 		

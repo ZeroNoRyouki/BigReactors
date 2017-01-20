@@ -4,6 +4,8 @@ import erogenousbeef.bigreactors.api.data.FluidToReactantMapping;
 import erogenousbeef.bigreactors.api.data.OreDictToReactantMapping;
 import erogenousbeef.bigreactors.api.data.ReactantData;
 import erogenousbeef.bigreactors.api.data.SourceProductMapping;
+import it.zerono.mods.zerocore.util.ItemHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -245,9 +247,7 @@ public class Reactants {
 	
 	/// CONVENIENCE METHODS
 	public static boolean isFuel(ItemStack stack) {
-		if(stack == null) { return false; }
-		
-		return isFuel(getReactantName(stack));
+		return ItemHelper.stackIsValid(stack) && isFuel(getReactantName(stack));
 	}
 
 	/**
@@ -275,9 +275,7 @@ public class Reactants {
 	}
 	
 	public static boolean isWaste(ItemStack stack) {
-		if(stack == null) { return false; }
-		
-		return isWaste(getReactantName(stack));
+		return ItemHelper.stackIsValid(stack) && isWaste(getReactantName(stack));
 	}
 	
 	public static boolean isWaste(String name) {
@@ -326,7 +324,7 @@ public class Reactants {
 	// copied from ZeroCore OreDictionaryHelper
 	private static String[] zcGetOreNames(ItemStack stack) {
 
-		if (null == stack)
+		if (ItemHelper.stackIsEmpty(stack))
 			return null;
 
 		String[] names;

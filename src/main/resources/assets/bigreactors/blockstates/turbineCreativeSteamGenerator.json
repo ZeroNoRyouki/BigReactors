@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-            "machine":"bigreactors:blocks/turbine/legacy/creativeSteamGenerator",
+            "machine":"bigreactors:blocks/turbine/legacy/creativesteamgenerator",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -19,13 +19,13 @@
             "legacy":{  
 				"textures":{  
                     "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-                    "machine":"bigreactors:blocks/turbine/legacy/creativeSteamGenerator"
+                    "machine":"bigreactors:blocks/turbine/legacy/creativesteamgenerator"
                 }
             },
             "basic":{  
                 "textures":{  
                     "plate":"bigreactors:blocks/turbine/basic/housing.plate",
-                    "machine":"bigreactors:blocks/turbine/basic/creativeSteamGenerator"
+                    "machine":"bigreactors:blocks/turbine/basic/creativesteamgenerator"
                 }
             }
         },

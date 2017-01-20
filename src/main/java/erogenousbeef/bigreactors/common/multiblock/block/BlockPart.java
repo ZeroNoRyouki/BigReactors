@@ -8,6 +8,7 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -96,7 +97,8 @@ public class BlockPart extends BlockBR {
             // If the player's hands are empty and they rightclick on a multiblock, they get a
             // multiblock-debugging message if the machine is not assembled.
 
-            if ((te instanceof IMultiblockPart) && WorldHelper.calledByLogicalServer(world) && (null == heldItem) && (hand == EnumHand.OFF_HAND)) {
+            if ((te instanceof IMultiblockPart) && WorldHelper.calledByLogicalServer(world) &&
+                    (ItemHelper.stackIsEmpty(heldItem)) && (hand == EnumHand.OFF_HAND)) {
 
                 IMultiblockPart part = (IMultiblockPart) te;
                 MultiblockControllerBase controller = part.getMultiblockController();

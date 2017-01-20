@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{  
         "textures":{  
-            "all":"bigreactors:blocks/oreYellorite"
+            "all":"bigreactors:blocks/oreyellorite"
         },
         "model":"cube_all"
     },
@@ -10,17 +10,17 @@
         "ore":{  
             "yellorite":{  
                 "textures":{
-					"all":"bigreactors:blocks/oreYellorite"
+					"all":"bigreactors:blocks/oreyellorite"
                 }
             },
 			 "anglesite":{  
                 "textures":{
-					"all":"bigreactors:blocks/oreAnglesite"
+					"all":"bigreactors:blocks/oreanglesite"
                 }
             },
 			 "benitoite":{  
                 "textures":{
-					"all":"bigreactors:blocks/oreBenitoite"
+					"all":"bigreactors:blocks/orebenitoite"
                 }
             }
         },

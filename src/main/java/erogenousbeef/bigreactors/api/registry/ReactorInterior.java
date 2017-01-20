@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.api.registry;
 
 import erogenousbeef.bigreactors.api.data.ReactorInteriorData;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
@@ -80,7 +81,7 @@ public class ReactorInterior {
 	 */	@Nullable
 	public static ReactorInteriorData getBlockData(ItemStack stack) {
 
-		final int[] ids = null != stack ? OreDictionary.getOreIDs(stack) : null;
+		final int[] ids = ItemHelper.stackIsValid(stack) ? OreDictionary.getOreIDs(stack) : null;
 		int len;
 
 		if (null == ids || 0 == (len = ids.length))
