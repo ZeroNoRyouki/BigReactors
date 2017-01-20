@@ -27,7 +27,7 @@ ext.api_version = "${config.mod_version_api}.${config.api_version_minor}.${confi
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
-ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
+ext.dependencies = "required-after:forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
 ext.fullVersion = project.config.minecraft_version + '-' + project.version
 
 minecraft {
@@ -43,8 +43,10 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = targetCompatibility = "1.7"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.7"
+}
 
 configurations {
     deployerJars
