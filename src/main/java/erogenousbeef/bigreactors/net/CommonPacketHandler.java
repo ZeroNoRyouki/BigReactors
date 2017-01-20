@@ -31,9 +31,11 @@ public class CommonPacketHandler {
     // Be careful not to reference any client code in your message handlers, such as WorldClient!
     public static void init() {
     	// Server >> Client Messages
+        /*
         INSTANCE.registerMessage(DeviceUpdateMessage.Handler.class, DeviceUpdateMessage.class, 1, Side.CLIENT);
         INSTANCE.registerMessage(DeviceUpdateRotationMessage.Handler.class, DeviceUpdateRotationMessage.class, 3, Side.CLIENT);
         INSTANCE.registerMessage(DeviceUpdateExposureMessage.Handler.class, DeviceUpdateExposureMessage.class, 5, Side.CLIENT);
+        */
         INSTANCE.registerMessage(ControlRodUpdateMessage.Handler.class, ControlRodUpdateMessage.class, 9, Side.CLIENT);
         INSTANCE.registerMessage(ReactorUpdateMessage.Handler.class, ReactorUpdateMessage.class, 11, Side.CLIENT);
         INSTANCE.registerMessage(ReactorUpdateWasteEjectionMessage.Handler.class, ReactorUpdateWasteEjectionMessage.class, 13, Side.CLIENT);
@@ -41,7 +43,9 @@ public class CommonPacketHandler {
 
         // Client >> Server Messages
     	INSTANCE.registerMessage(MachineCommandActivateMessage.Handler.class, MachineCommandActivateMessage.class, 0, Side.SERVER);
-        INSTANCE.registerMessage(DeviceChangeExposureMessage.Handler.class, DeviceChangeExposureMessage.class, 2, Side.SERVER);
+        /*
+    	INSTANCE.registerMessage(DeviceChangeExposureMessage.Handler.class, DeviceChangeExposureMessage.class, 2, Side.SERVER);
+        */
         INSTANCE.registerMessage(ControlRodChangeNameMessage.Handler.class, ControlRodChangeNameMessage.class, 4, Side.SERVER);
         INSTANCE.registerMessage(ControlRodChangeInsertionMessage.Handler.class, ControlRodChangeInsertionMessage.class, 6, Side.SERVER);
         // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
