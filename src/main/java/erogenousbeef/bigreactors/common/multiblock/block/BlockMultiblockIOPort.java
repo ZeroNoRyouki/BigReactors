@@ -13,6 +13,7 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntit
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
@@ -113,7 +114,7 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
                 TileEntityReactorCreativeCoolantPort cp = (TileEntityReactorCreativeCoolantPort) te;
 
-                if (heldItem == null || hasWrench)
+                if (hasWrench || ItemHelper.stackIsEmpty(heldItem))
                     // Use wrench to change inlet/outlet state
                     cp.toggleDirection(true);
                 else

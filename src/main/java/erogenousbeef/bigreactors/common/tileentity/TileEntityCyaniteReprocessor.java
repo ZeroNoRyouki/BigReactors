@@ -5,6 +5,7 @@ import erogenousbeef.bigreactors.client.gui.GuiCyaniteReprocessor;
 import erogenousbeef.bigreactors.common.tileentity.base.TileEntityPoweredInventoryFluid;
 import erogenousbeef.bigreactors.gui.container.ContainerCyaniteReprocessor;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -55,7 +56,9 @@ public class TileEntityCyaniteReprocessor extends TileEntityPoweredInventoryFlui
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		if(itemstack == null) { return true; }
+
+		if (ItemHelper.stackIsEmpty(itemstack))
+			return true;
 		
 		if(slot == SLOT_OUTLET) {
 			return Reactants.isFuel(itemstack);

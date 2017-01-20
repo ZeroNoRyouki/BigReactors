@@ -4,6 +4,7 @@ import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
@@ -27,34 +28,28 @@ public class ModHelperMekanism extends ModHelperBase {
 		ItemStack dustBlutonium = BrItems.dustMetals.createItemStack(MetalType.Blutonium, 1);
 
 		// Some mods make me do this myself. :V
-		ItemStack doubledYelloriumDust = null;
-		if(dustYellorium != null) {
-			doubledYelloriumDust = dustYellorium.copy();
-			doubledYelloriumDust.stackSize = 2;
-		}
+		ItemStack doubledYelloriumDust = ItemHelper.stackEmpty();
 
-		if(yelloriteOre != null && doubledYelloriumDust != null) {
-			addMekanismEnrichmentChamberRecipe(yelloriteOre.copy(), doubledYelloriumDust.copy());
-			ItemStack octupledYelloriumDust = dustYellorium.copy();
-			octupledYelloriumDust.stackSize = 8;
-			addMekanismCombinerRecipe(octupledYelloriumDust, yelloriteOre.copy());
+		if (ItemHelper.stackIsValid(dustYellorium))
+			doubledYelloriumDust = ItemHelper.stackFrom(dustYellorium, 2);
+
+		if (ItemHelper.stackIsValid(yelloriteOre) && ItemHelper.stackIsValid(doubledYelloriumDust)) {
+
+			addMekanismEnrichmentChamberRecipe(yelloriteOre.copy(), ItemHelper.stackFrom(doubledYelloriumDust));
+			addMekanismCombinerRecipe(ItemHelper.stackFrom(dustYellorium, 8), yelloriteOre.copy());
 		}
 	
-		if(ingotYellorium != null && dustYellorium != null) {
-			addMekanismCrusherRecipe(ingotYellorium.copy(), dustYellorium.copy());
-		}
+		if (ItemHelper.stackIsValid(ingotYellorium) && ItemHelper.stackIsValid(dustYellorium))
+			addMekanismCrusherRecipe(ItemHelper.stackFrom(ingotYellorium), ItemHelper.stackFrom(dustYellorium));
 
-		if(ingotCyanite != null && dustCyanite != null) {
-			addMekanismCrusherRecipe(ingotCyanite.copy(), dustCyanite.copy());
-		}
+		if (ItemHelper.stackIsValid(ingotCyanite) && ItemHelper.stackIsValid(dustCyanite))
+			addMekanismCrusherRecipe(ItemHelper.stackFrom(ingotCyanite), ItemHelper.stackFrom(dustCyanite));
 
-		if(ingotGraphite != null && dustGraphite != null) {
-			addMekanismCrusherRecipe(ingotGraphite.copy(), dustGraphite.copy());
-		}
+		if (ItemHelper.stackIsValid(ingotGraphite) && ItemHelper.stackIsValid(dustGraphite))
+			addMekanismCrusherRecipe(ItemHelper.stackFrom(ingotGraphite), ItemHelper.stackFrom(dustGraphite));
 
-		if(ingotBlutonium != null && dustBlutonium != null) {
-			addMekanismCrusherRecipe(ingotBlutonium.copy(), dustBlutonium.copy());
-		}
+		if (ItemHelper.stackIsValid(ingotBlutonium) && ItemHelper.stackIsValid(dustBlutonium))
+			addMekanismCrusherRecipe(ItemHelper.stackFrom(ingotBlutonium), ItemHelper.stackFrom(dustBlutonium));
 	}
 	
 	/// Mekanism Compat - taken from Mekanism's API. Extracted to allow compat with last known green build.

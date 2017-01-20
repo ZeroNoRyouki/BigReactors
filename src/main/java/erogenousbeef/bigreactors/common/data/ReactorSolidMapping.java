@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common.data;
 
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,12 +10,12 @@ public class ReactorSolidMapping {
 	protected FluidStack referenceFluid;
 	
 	public ReactorSolidMapping(ItemStack item, FluidStack fluid) {
-		referenceItem = item.copy();
+		referenceItem = ItemHelper.stackFrom(item);
 		referenceFluid = fluid;
 	}
 
 	public ItemStack getReferenceItem() {
-		return referenceItem.copy();
+		return ItemHelper.stackFrom(referenceItem);
 	}
 
 	public boolean isEqual(ReactorSolidMapping otherFuel) {

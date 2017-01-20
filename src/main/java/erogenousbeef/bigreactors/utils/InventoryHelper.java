@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.utils;
 
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -12,8 +13,7 @@ public class InventoryHelper {
 	}
 
 	protected boolean canAdd(ItemStack stack, int slot) {
-		if(inventory == null) { return false; }
-		return inventory.isItemValidForSlot(slot, stack);
+		return ItemHelper.stackIsValid(stack) && inventory.isItemValidForSlot(slot, stack);
 	}
 
 	protected boolean canRemove(ItemStack stack, int slot) {
@@ -28,12 +28,12 @@ public class InventoryHelper {
 	 * @return Stack representing the remaining items
 	 */
 	public ItemStack addItem(ItemStack stack) {
-		if (stack == null) {
-			return null;
-		}
 
-		int quantitytoadd = stack.stackSize;
-		ItemStack remaining = stack.copy();
+		if (ItemHelper.stackIsEmpty(stack))
+			return ItemHelper.stackEmpty();
+
+		int quantitytoadd = ItemHelper.stackGetSize(stack);
+		ItemStack remaining = ItemHelper.stackFrom(stack);
 		int[] candidates = getSlots();
 		
 		if(candidates.length == 0) {
@@ -41,26 +41,29 @@ public class InventoryHelper {
 		}
 
 		for (int candidateSlot : candidates) {
-			int maxStackSize = Math.min(inventory.getInventoryStackLimit(),
-					stack.getMaxStackSize());
+
+			int maxStackSize = Math.min(inventory.getInventoryStackLimit(), stack.getMaxStackSize());
 			ItemStack s = inventory.getStackInSlot(candidateSlot);
-			if (s == null) {
-				ItemStack add = stack.copy();
-				add.stackSize = Math.min(quantitytoadd, maxStackSize);
+
+			if (ItemHelper.stackIsEmpty(s)) {
+
+				ItemStack add = ItemHelper.stackFrom(stack, Math.min(quantitytoadd, maxStackSize));
 
 				if (canAdd(add, candidateSlot)) {
-					quantitytoadd -= add.stackSize;
+
+					quantitytoadd -= ItemHelper.stackGetSize(add);
 					inventory.setInventorySlotContents(candidateSlot, add);
 					inventory.markDirty();
 				}
 			} else if (StaticUtils.Inventory.areStacksEqual(s, stack)) {
-				ItemStack add = stack.copy();
-				add.stackSize = Math.min(quantitytoadd, maxStackSize
-						- s.stackSize);
 
-				if (add.stackSize > 0 && canAdd(add, candidateSlot)) {
-					s.stackSize += add.stackSize;
-					quantitytoadd -= add.stackSize;
+				ItemStack add = ItemHelper.stackFrom(stack, Math.min(quantitytoadd, maxStackSize - ItemHelper.stackGetSize(s)));
+				final int addSize = ItemHelper.stackGetSize(add);
+
+				if (addSize > 0 && canAdd(add, candidateSlot)) {
+
+					ItemHelper.stackAdd(s, addSize);
+					quantitytoadd -= addSize;
 					inventory.setInventorySlotContents(candidateSlot, s);
 					inventory.markDirty();
 				}
@@ -70,12 +73,9 @@ public class InventoryHelper {
 			}
 		}
 
-		remaining.stackSize = quantitytoadd;
-		if (remaining.stackSize == 0) {
-			return null;
-		} else {
-			return remaining;
-		}
+		ItemHelper.stackSetSize(remaining, quantitytoadd);
+
+		return ItemHelper.stackGetSize(remaining) == 0 ? ItemHelper.stackEmpty() : remaining;
 	}
 
 	private final static int[] noSlots = new int[0];

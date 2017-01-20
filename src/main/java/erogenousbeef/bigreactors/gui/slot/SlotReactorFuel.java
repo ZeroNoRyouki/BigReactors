@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.gui.slot;
 
 import erogenousbeef.bigreactors.api.registry.Reactants;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -17,13 +18,10 @@ public class SlotReactorFuel extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if(stack == null) { return false; }
-		
-		if(fuel) {
-			return Reactants.isFuel(stack);
-		}
-		else {
-			return Reactants.isWaste(stack);
-		}
+
+		if (ItemHelper.stackIsEmpty(stack))
+			return false;
+
+		return fuel ? Reactants.isFuel(stack) : Reactants.isWaste(stack);
 	}
 }

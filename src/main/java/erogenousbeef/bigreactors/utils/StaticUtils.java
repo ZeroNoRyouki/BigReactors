@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.utils;
 
 import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -35,9 +36,9 @@ public class StaticUtils {
 
 				final ItemStack stack = handler.getStackInSlot(slot);
 
-				if (null != stack) {
+				if (ItemHelper.stackIsValid(stack)) {
 
-					handler.setStackInSlot(slot, null);
+					handler.setStackInSlot(slot, ItemHelper.stackEmpty());
 					WorldHelper.spawnItemStack(stack, world, x, y, z, false);
 				}
 			}
@@ -63,9 +64,10 @@ public class StaticUtils {
 		 */
 		public static ItemStack consumeItem(ItemStack stack, int amount)
 		{
-			if(stack == null) { return null; }
+			if (ItemHelper.stackIsEmpty(stack))
+				return ItemHelper.stackEmpty();
 
-			if(stack.stackSize <= amount)
+			if (ItemHelper.stackGetSize(stack) <= amount)
 			{
 				if(stack.getItem().hasContainerItem(stack))
 				{
@@ -89,7 +91,7 @@ public class StaticUtils {
 		 */
 		public static boolean isPlayerHoldingWrench(ItemStack heldItemStack) {
 
-			if (null == heldItemStack)
+			if (ItemHelper.stackIsEmpty(heldItemStack))
 				return false;
 
 			Item heldItem = heldItemStack.getItem();
@@ -123,7 +125,9 @@ public class StaticUtils {
          */
         public static boolean areStacksEqual(ItemStack s1, ItemStack s2, boolean nbtSensitive)
         {
-                if(s1 == null || s2 == null) return false;
+                if (ItemHelper.stackIsEmpty(s1) || ItemHelper.stackIsEmpty(s2))
+                	return false;
+
                 if(!s1.isItemEqual(s2)) return false;
                 
                 if(nbtSensitive)

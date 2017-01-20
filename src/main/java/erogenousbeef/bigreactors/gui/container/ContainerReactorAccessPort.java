@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.gui.container;
 
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -44,7 +45,7 @@ public class ContainerReactorAccessPort extends Container {
 
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return null != stack && Reactants.isFuel(stack);
+				return ItemHelper.stackIsValid(stack) && Reactants.isFuel(stack);
 			}
 		});
 
@@ -52,7 +53,7 @@ public class ContainerReactorAccessPort extends Container {
 
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return null != stack && Reactants.isWaste(stack);
+				return ItemHelper.stackIsValid(stack) && Reactants.isWaste(stack);
 			}
 		});
 	}
@@ -89,14 +90,14 @@ public class ContainerReactorAccessPort extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot)
 	{
-		ItemStack stack = null;
+		ItemStack stack = ItemHelper.stackEmpty();
 		Slot slotObject = inventorySlots.get(slot);
 		int numSlots = 2;
 
 		if(slotObject != null && slotObject.getHasStack())
 		{
 			ItemStack stackInSlot = slotObject.getStack();
-			stack = stackInSlot.copy();
+			stack = ItemHelper.stackFrom(stackInSlot);
 
 			if(slot < numSlots)
 			{
@@ -110,7 +111,7 @@ public class ContainerReactorAccessPort extends Container {
 				return null;
 			}
 
-			if(stackInSlot.stackSize == 0)
+			if(ItemHelper.stackGetSize(stackInSlot) == 0)
 			{
 				slotObject.putStack(null);
 			}
@@ -119,7 +120,7 @@ public class ContainerReactorAccessPort extends Container {
 				slotObject.onSlotChanged();
 			}
 
-			if(stackInSlot.stackSize == stack.stackSize)
+			if(ItemHelper.stackGetSize(stackInSlot) == ItemHelper.stackGetSize(stack))
 			{
 				return null;
 			}
@@ -155,26 +156,29 @@ public class ContainerReactorAccessPort extends Container {
 
 		if(stack.isStackable())
 		{
-			while(stack.stackSize > 0 && (!reverse && slotIndex < slotRange || reverse && slotIndex >= slotStart))
+			while(ItemHelper.stackGetSize(stack) > 0 && (!reverse && slotIndex < slotRange || reverse && slotIndex >= slotStart))
 			{
 				slot = this.inventorySlots.get(slotIndex);
 				existingStack = slot.getStack();
 
-				if(slot.isItemValid(stack) && existingStack != null && existingStack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == existingStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, existingStack))
+				if(slot.isItemValid(stack) && ItemHelper.stackIsValid(existingStack) && existingStack.getItem() == stack.getItem() &&
+						(!stack.getHasSubtypes() || stack.getItemDamage() == existingStack.getItemDamage()) &&
+						ItemStack.areItemStackTagsEqual(stack, existingStack))
 				{
-					int existingSize = existingStack.stackSize + stack.stackSize;
+					int existingSize = ItemHelper.stackGetSize(existingStack) + ItemHelper.stackGetSize(stack);
 
 					if(existingSize <= maxStack)
 					{
-						stack.stackSize = 0;
-						existingStack.stackSize = existingSize;
+						ItemHelper.stackEmpty(stack);
+						ItemHelper.stackSetSize(existingStack, existingSize);
 						slot.onSlotChanged();
 						successful = true;
 					}
-					else if (existingStack.stackSize < maxStack)
+					else if (ItemHelper.stackGetSize(existingStack) < maxStack)
 					{
-						stack.stackSize -= maxStack - existingStack.stackSize;
-						existingStack.stackSize = maxStack;
+
+						ItemHelper.stackAdd(stack, -(maxStack - ItemHelper.stackGetSize(existingStack)));
+						ItemHelper.stackSetSize(existingStack, maxStack);
 						slot.onSlotChanged();
 						successful = true;
 					}
@@ -191,7 +195,7 @@ public class ContainerReactorAccessPort extends Container {
 			}
 		}
 
-		if(stack.stackSize > 0)
+		if(ItemHelper.stackGetSize(stack) > 0)
 		{
 			if(reverse)
 			{
@@ -207,11 +211,11 @@ public class ContainerReactorAccessPort extends Container {
 				slot = (Slot)this.inventorySlots.get(slotIndex);
 				existingStack = slot.getStack();
 
-				if(slot.isItemValid(stack) && existingStack == null)
+				if(slot.isItemValid(stack) && ItemHelper.stackIsEmpty(existingStack))
 				{
-					slot.putStack(stack.copy());
+					slot.putStack(ItemHelper.stackFrom(stack));
 					slot.onSlotChanged();
-					stack.stackSize = 0;
+					ItemHelper.stackEmpty(stack);
 					successful = true;
 					break;
 				}

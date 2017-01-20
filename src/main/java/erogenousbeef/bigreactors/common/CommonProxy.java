@@ -12,6 +12,7 @@ import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -144,7 +145,7 @@ public class CommonProxy implements IModInitializationHandler {
 		} // END: IsModLoaded - MineFactoryReloaded
 		
 		if(Loader.isModLoaded("appliedenergistics2")) {
-			if(doubledYelloriumDust != null) {
+			if(ItemHelper.stackIsValid(doubledYelloriumDust)) {
 				IMCHelper.AE2.addGrinderRecipe(yelloriteOre, doubledYelloriumDust, 4);
 			}
 		
