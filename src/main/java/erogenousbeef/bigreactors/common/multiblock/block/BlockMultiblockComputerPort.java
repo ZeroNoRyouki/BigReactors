@@ -1,7 +1,8 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
-
+/*
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
+*/
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
@@ -21,7 +22,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 @Optional.InterfaceList({
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft")
 })
-public class BlockMultiblockComputerPort extends BlockMultiblockDevice implements IPeripheralProvider {
+public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*implements IPeripheralProvider*/ {
 
     public BlockMultiblockComputerPort(PartType type, String blockName) {
         super(type, blockName);
@@ -75,6 +76,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
         }
     }
 
+    /*
     @Optional.Method(modid ="ComputerCraft")
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
@@ -83,4 +85,5 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
 
         return tileEntity instanceof IPeripheral ? (IPeripheral)tileEntity : null;
     }
+    */
 }
