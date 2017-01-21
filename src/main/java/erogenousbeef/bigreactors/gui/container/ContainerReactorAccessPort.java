@@ -103,17 +103,17 @@ public class ContainerReactorAccessPort extends Container {
 			{
 				if(!mergeItemStack(stackInSlot, numSlots, inventorySlots.size(), true))
 				{
-					return null;
+					return ItemHelper.stackEmpty();
 				}
 			}
 			else if(!mergeItemStack(stackInSlot, 0, numSlots, false))
 			{
-				return null;
+				return ItemHelper.stackEmpty();
 			}
 
 			if(ItemHelper.stackGetSize(stackInSlot) == 0)
 			{
-				slotObject.putStack(null);
+				slotObject.putStack(ItemHelper.stackEmpty());
 			}
 			else
 			{
@@ -122,7 +122,7 @@ public class ContainerReactorAccessPort extends Container {
 
 			if(ItemHelper.stackGetSize(stackInSlot) == ItemHelper.stackGetSize(stack))
 			{
-				return null;
+				return ItemHelper.stackEmpty();
 			}
 
 			slotObject.onPickupFromSlot(player, stackInSlot);
