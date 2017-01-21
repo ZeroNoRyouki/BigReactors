@@ -6,8 +6,8 @@ itemGroup.bigreactors=Extreme Reactors
 
 # Blocks
 
-tile.blockRadiothermalGen.0=Радиотепловой генератор
-tile.blockBRDevice.0.name=Переработчик цианита
+tile.blockradiothermalgen.0=Радиотепловой генератор
+tile.blockbrdevice.0.name=Переработчик цианита
 
 # Fluids
 fluid.tile.water=Вода
@@ -24,26 +24,26 @@ tile.fluid.cyanite.still.name=Жидкий цианит
 tile.fluid.blutonium.still.name=Жидкий блутоний
 
 # Items - ingots
-item.bigreactors:ingotMetals.yellorium.name=Йеллориумовый слиток
-item.bigreactors:ingotMetals.cyanite.name=Цианитовый слиток
-item.bigreactors:ingotMetals.blutonium.name=Блутониевый слиток
-item.bigreactors:ingotMetals.graphite.name=Графитовый слиток
-item.bigreactors:ingotMetals.ludicrite.name=Лудикритовый слиток
-item.bigreactors:ingotMetals.steel.name=Стальной слиток
+item.bigreactors:ingotmetals.yellorium.name=Йеллориумовый слиток
+item.bigreactors:ingotmetals.cyanite.name=Цианитовый слиток
+item.bigreactors:ingotmetals.blutonium.name=Блутониевый слиток
+item.bigreactors:ingotmetals.graphite.name=Графитовый слиток
+item.bigreactors:ingotmetals.ludicrite.name=Лудикритовый слиток
+item.bigreactors:ingotmetals.steel.name=Стальной слиток
 
 # Items - dusts
-item.bigreactors:dustMetals.yellorium.name=Йеллориумовая пыль
-item.bigreactors:dustMetals.cyanite.name=Цианитовая пыль
-item.bigreactors:dustMetals.blutonium.name=Блутониевая пыль
-item.bigreactors:dustMetals.graphite.name=Графитовая пыль
-item.bigreactors:dustMetals.ludicrite.name=Лудикритовая пыль
-item.bigreactors:dustMetals.steel.name=Стальная пыль
+item.bigreactors:dustmetals.yellorium.name=Йеллориумовая пыль
+item.bigreactors:dustmetals.cyanite.name=Цианитовая пыль
+item.bigreactors:dustmetals.blutonium.name=Блутониевая пыль
+item.bigreactors:dustmetals.graphite.name=Графитовая пыль
+item.bigreactors:dustmetals.ludicrite.name=Лудикритовая пыль
+item.bigreactors:dustmetals.steel.name=Стальная пыль
 
 # Items - reactor casing cores
-item.bigreactors:reactorCasingCores.legacy.name=Ядро реакторного корпуса (Старое)
-item.bigreactors:reactorCasingCores.basic.name=Ядро реакторного корпуса (Основное)
-item.bigreactors:turbineHousingCores.legacy.name=Ядро турбинного корпуса (Старое)
-item.bigreactors:turbineHousingCores.basic.name=Ядро турбинного корпуса (Основное)
+item.bigreactors:reactorcasingcores.legacy.name=Ядро реакторного корпуса (Старое)
+item.bigreactors:reactorcasingcores.basic.name=Ядро реакторного корпуса (Основное)
+item.bigreactors:turbinehousingcores.legacy.name=Ядро турбинного корпуса (Старое)
+item.bigreactors:turbinehousingcores.basic.name=Ядро турбинного корпуса (Основное)
 
 # Items - minerals
 item.bigreactors:minerals.anglesite.name=Англезит (PbSO4)
@@ -53,73 +53,73 @@ item.bigreactors:minerals.benitoite.name=Бенитоит (BaTiSi3O9)
 item.bigreactors:wrench.name=Гаечный ключ
 
 # Blocks - metal blocks / ores
-tile.bigreactors:blockMetals.yellorium.name=Йеллориумовый блок
-tile.bigreactors:blockMetals.cyanite.name=Цианитовый блок
-tile.bigreactors:blockMetals.blutonium.name=Блутониевый блок
-tile.bigreactors:blockMetals.graphite.name=Графитовый блок
-tile.bigreactors:blockMetals.ludicrite.name=Лудикритовый блок
-tile.bigreactors:blockMetals.steel.name=Стальной блок
+tile.bigreactors:blockmetals.yellorium.name=Йеллориумовый блок
+tile.bigreactors:blockmetals.cyanite.name=Цианитовый блок
+tile.bigreactors:blockmetals.blutonium.name=Блутониевый блок
+tile.bigreactors:blockmetals.graphite.name=Графитовый блок
+tile.bigreactors:blockmetals.ludicrite.name=Лудикритовый блок
+tile.bigreactors:blockmetals.steel.name=Стальной блок
 
 # Blocks - ores
-tile.bigreactors:brOre.yellorite.name=Йелоритовая руда
-tile.bigreactors:brOre.anglesite.name=Англезитовая руда
-tile.bigreactors:brOre.benitoite.name=Бенитоитовая руда
+tile.bigreactors:brore.yellorite.name=Йелоритовая руда
+tile.bigreactors:brore.anglesite.name=Англезитовая руда
+tile.bigreactors:brore.benitoite.name=Бенитоитовая руда
 
 # Blocks - reactor parts (legacy)
-tile.bigreactors:reactorGlass.legacy.name=Реакторное стекло (Старое)
-tile.bigreactors:reactorCasing.legacy.name=Реакторный корпус (Старый)
-tile.bigreactors:reactorController.legacy.name=Реакторный контроллер (Старый)
-tile.bigreactors:reactorPowerTapRF.legacy.name=Реакторная "Redstone Flux" розетка (Старая)
-tile.bigreactors:reactorPowerTapTesla.legacy.name=Реакторная "Tesla" розетка (Старая)
-tile.bigreactors:reactorAccessPort.legacy.name=Реакторный порт доступа (Старый)
-tile.bigreactors:reactorCoolantPort.legacy.name=Реакторный порт охлаждения (Старый)
-tile.bigreactors:reactorControlRod.legacy.name=Реакторный контролирующий стержень (Старый)
-tile.bigreactors:reactorComputerPort.legacy.name=Компьютерный порт реактора (Старый)
-tile.bigreactors:reactorRedstonePort.legacy.name=Редстоуновый порт реактора (Старый)
-tile.bigreactors:reactorFuelRod.legacy.name=Реакторный топливный стержень (Старый)
-tile.bigreactors:reactorRedNetPort.legacy.name=Реакторный RedNet порт (Старый)
-tile.bigreactors:reactorCreativeCoolantPort.legacy.name=Реакторный творческий порт охлаждения (Старый)
+tile.bigreactors:reactorglass.legacy.name=Реакторное стекло (Старое)
+tile.bigreactors:reactorcasing.legacy.name=Реакторный корпус (Старый)
+tile.bigreactors:reactorcontroller.legacy.name=Реакторный контроллер (Старый)
+tile.bigreactors:reactorpowertaprf.legacy.name=Реакторная "Redstone Flux" розетка (Старая)
+tile.bigreactors:reactorpowertaptesla.legacy.name=Реакторная "Tesla" розетка (Старая)
+tile.bigreactors:reactoraccessport.legacy.name=Реакторный порт доступа (Старый)
+tile.bigreactors:reactorcoolantport.legacy.name=Реакторный порт охлаждения (Старый)
+tile.bigreactors:reactorcontrolrod.legacy.name=Реакторный контролирующий стержень (Старый)
+tile.bigreactors:reactorcomputerport.legacy.name=Компьютерный порт реактора (Старый)
+tile.bigreactors:reactorredstoneport.legacy.name=Редстоуновый порт реактора (Старый)
+tile.bigreactors:reactorfuelrod.legacy.name=Реакторный топливный стержень (Старый)
+tile.bigreactors:reactorrednetport.legacy.name=Реакторный RedNet порт (Старый)
+tile.bigreactors:reactorcreativecoolantport.legacy.name=Реакторный творческий порт охлаждения (Старый)
 
 # Blocks - reactor parts (basic)
-tile.bigreactors:reactorGlass.basic.name=Реакторное стекло (Основное)
-tile.bigreactors:reactorCasing.basic.name=Реакторный корпус (Основной)
-tile.bigreactors:reactorController.basic.name=Реакторный контроллер (Основной)
-tile.bigreactors:reactorPowerTapRF.basic.name=Реакторная "Redstone Flux" розетка (Основная)
-tile.bigreactors:reactorPowerTapTesla.basic.name=Реакторная "Tesla" розетка (Основная)
-tile.bigreactors:reactorAccessPort.basic.name=Реакторный порт доступа (Основной)
-tile.bigreactors:reactorCoolantPort.basic.name=Реакторный порт охлаждения (Основной)
-tile.bigreactors:reactorControlRod.basic.name=Реакторный контролирующий стержень (Основной)
-tile.bigreactors:reactorComputerPort.basic.name=Компьютерный порт реактора (Основной)
-tile.bigreactors:reactorRedstonePort.basic.name=Редстоуновый порт реактора (Основной)
-tile.bigreactors:reactorFuelRod.basic.name=Реакторный топливный стержень (Основной)
-tile.bigreactors:reactorRedNetPort.basic.name=Реакторный RedNet порт (Основной)
-tile.bigreactors:reactorCreativeCoolantPort.basic.name=Реакторный творческий порт охлаждения (Основной)
+tile.bigreactors:reactorglass.basic.name=Реакторное стекло (Основное)
+tile.bigreactors:reactorcasing.basic.name=Реакторный корпус (Основной)
+tile.bigreactors:reactorcontroller.basic.name=Реакторный контроллер (Основной)
+tile.bigreactors:reactorpowertaprf.basic.name=Реакторная "Redstone Flux" розетка (Основная)
+tile.bigreactors:reactorpowertaptesla.basic.name=Реакторная "Tesla" розетка (Основная)
+tile.bigreactors:reactoraccessport.basic.name=Реакторный порт доступа (Основной)
+tile.bigreactors:reactorcoolantport.basic.name=Реакторный порт охлаждения (Основной)
+tile.bigreactors:reactorcontrolrod.basic.name=Реакторный контролирующий стержень (Основной)
+tile.bigreactors:reactorcomputerport.basic.name=Компьютерный порт реактора (Основной)
+tile.bigreactors:reactorredstoneport.basic.name=Редстоуновый порт реактора (Основной)
+tile.bigreactors:reactorfuelrod.basic.name=Реакторный топливный стержень (Основной)
+tile.bigreactors:reactorrednetport.basic.name=Реакторный RedNet порт (Основной)
+tile.bigreactors:reactorcreativecoolantport.basic.name=Реакторный творческий порт охлаждения (Основной)
 
 # Blocks - turbine parts (legacy)
-tile.bigreactors:turbineGlass.legacy.name=Турбинное стекло (Старое)
-tile.bigreactors:turbineHousing.legacy.name=Турбинный корпус (Старый)
-tile.bigreactors:turbineController.legacy.name=Турбинный контроллер (Старый)
-tile.bigreactors:turbinePowerTapRF.legacy.name=Турбинная "Redstone Flux" розетка (Старая)
-tile.bigreactors:turbinePowerTapTesla.legacy.name=Турбинная "Tesla" розетка (Старая)
-tile.bigreactors:turbineComputerPort.legacy.name=Компьютерный порт турбины (Старый)
-tile.bigreactors:turbineFluidPort.legacy.name=Турбинный порт жидкостей (Старый)
-tile.bigreactors:turbineBearing.legacy.name=Подшипник ротора турбины (Старый)
-tile.bigreactors:turbineCreativeSteamGenerator.legacy.name=Турбинный творческий генератор пара (Старый)
-tile.bigreactors:turbineRotorShaft.legacy.name=Вал ротора турбины (Старый)
-tile.bigreactors:turbineRotorBlade.legacy.name=Лезвие ротора турбины (Старое)
+tile.bigreactors:turbineglass.legacy.name=Турбинное стекло (Старое)
+tile.bigreactors:turbinehousing.legacy.name=Турбинный корпус (Старый)
+tile.bigreactors:turbinecontroller.legacy.name=Турбинный контроллер (Старый)
+tile.bigreactors:turbinepowertaprf.legacy.name=Турбинная "Redstone Flux" розетка (Старая)
+tile.bigreactors:turbinepowertaptesla.legacy.name=Турбинная "Tesla" розетка (Старая)
+tile.bigreactors:turbinecomputerport.legacy.name=Компьютерный порт турбины (Старый)
+tile.bigreactors:turbinefluidport.legacy.name=Турбинный порт жидкостей (Старый)
+tile.bigreactors:turbinebearing.legacy.name=Подшипник ротора турбины (Старый)
+tile.bigreactors:turbinecreativesteamgenerator.legacy.name=Турбинный творческий генератор пара (Старый)
+tile.bigreactors:turbinerotorshaft.legacy.name=Вал ротора турбины (Старый)
+tile.bigreactors:turbinerotorblade.legacy.name=Лезвие ротора турбины (Старое)
 
 # Blocks - turbine parts (basic)
-tile.bigreactors:turbineGlass.basic.name=Турбинное стекло (Основное)
-tile.bigreactors:turbineHousing.basic.name=Турбинный корпус (Основной)
-tile.bigreactors:turbineController.basic.name=Турбинный контроллер (Основной)
-tile.bigreactors:turbinePowerTapRF.basic.name=Турбинная "Redstone Flux" розетка (Основная)
-tile.bigreactors:turbinePowerTapTesla.basic.name=Турбинная "Tesla" розетка (Основная)
-tile.bigreactors:turbineComputerPort.basic.name=Компьютерный порт турбины (Основной)
-tile.bigreactors:turbineFluidPort.basic.name=Турбинный порт жидкостей (Основной)
-tile.bigreactors:turbineBearing.basic.name=Подшипник ротора турбины (Основной)
-tile.bigreactors:turbineCreativeSteamGenerator.basic.name=Турбинный творческий генератор пара (Основной)
-tile.bigreactors:turbineRotorShaft.basic.name=Вал ротора турбины (Основной)
-tile.bigreactors:turbineRotorBlade.basic.name=Лезвие ротора турбины (Основное)
+tile.bigreactors:turbineglass.basic.name=Турбинное стекло (Основное)
+tile.bigreactors:turbinehousing.basic.name=Турбинный корпус (Основной)
+tile.bigreactors:turbinecontroller.basic.name=Турбинный контроллер (Основной)
+tile.bigreactors:turbinepowertaprf.basic.name=Турбинная "Redstone Flux" розетка (Основная)
+tile.bigreactors:turbinepowertaptesla.basic.name=Турбинная "Tesla" розетка (Основная)
+tile.bigreactors:turbinecomputerport.basic.name=Компьютерный порт турбины (Основной)
+tile.bigreactors:turbinefluidport.basic.name=Турбинный порт жидкостей (Основной)
+tile.bigreactors:turbinebearing.basic.name=Подшипник ротора турбины (Основной)
+tile.bigreactors:turbinecreativesteamgenerator.basic.name=Турбинный творческий генератор пара (Основной)
+tile.bigreactors:turbinerotorshaft.basic.name=Вал ротора турбины (Основной)
+tile.bigreactors:turbinerotorblade.basic.name=Лезвие ротора турбины (Основное)
 
 # Error messages
 multiblock.validation.block_not_connected=Block is not connected to a reactor. This could be due to lag, or a bug. If the problem persists, try breaking and re-placing the block
