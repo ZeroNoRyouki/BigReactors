@@ -25,5 +25,10 @@ public abstract class ItemHandlerWrapper implements IItemHandler {
         return this._handler.extractItem(slot, amount, simulate);
     }
 
+    @Override
+    public int getSlotLimit(int slot) {
+        return 64;
+    }
+
     protected TileEntityItemStackHandler _handler;
 }
