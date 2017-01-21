@@ -5,8 +5,6 @@ import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -14,10 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class StaticUtils {
@@ -169,13 +164,14 @@ public class StaticUtils {
 			return te;
 		}
 	}
-	
+
+	/*
 	public static class Fluids {
-		/* Below stolen from COFHLib because COFHLib itself still relies on cofh.core */
+		/ * Below stolen from COFHLib because COFHLib itself still relies on cofh.core * /
 		public static boolean fillTankWithContainer(World world, IFluidHandler handler, EntityPlayer player) {
 
 			// TODO Commented temporarily to allow this thing to compile...
-			/*
+			/ *
 	        ItemStack container = player.getCurrentEquippedItem();
 	        FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(container);
 
@@ -192,13 +188,13 @@ public class StaticUtils {
 	                        return true;
 	                }
 	        }
-	        */
+	        * /
 	        return false;
 		}
 
 		public static boolean fillContainerFromTank(World world, IFluidHandler handler, EntityPlayer player, FluidStack tankFluid) {
 			// TODO Commented temporarily to allow this thing to compile...
-			/*
+			/ *
 			ItemStack container = player.getCurrentEquippedItem();
 			
 			if (FluidContainerRegistry.isEmptyContainer(container)) {
@@ -226,10 +222,11 @@ public class StaticUtils {
 			        }
 			        return true;
 			}
-			*/
+			* /
 			return false;
 		}
 	}
+	*/
 	
 	public static class ExtraMath {
 		/**
@@ -323,15 +320,16 @@ public class StaticUtils {
 			}
 		}
 	}
-	
+
+	/*
 	// Mob = Mobile = Entity
 	public static class Mob {
-		/**
+		/ **
 		 * @param entity The entity whose facing you wish to query.
 		 * @return The ForgeDirection which entity is facing (north/south/east/west)
-		 */
+		 * /
 		protected EnumFacing getFacingDirection(Entity entity) {
-			int facingAngle = (MathHelper.floor_double((entity.rotationYaw * 4F) / 360F + 0.5D) & 3);
+			int facingAngle = (MathHelper.floor((entity.rotationYaw * 4F) / 360F + 0.5D) & 3);
 			switch(facingAngle) {
 			case 1:
 				return EnumFacing.EAST;
@@ -344,4 +342,5 @@ public class StaticUtils {
 			}
 		}
 	}
+	*/
 }
