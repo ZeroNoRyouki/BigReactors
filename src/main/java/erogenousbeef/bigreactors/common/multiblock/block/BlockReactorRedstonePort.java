@@ -70,7 +70,7 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
     }
 
     @Override
-	public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor) {
+	public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor, BlockPos neighborPos) {
 
     	TileEntity te = world.getTileEntity(position);
     	if(te instanceof TileEntityReactorRedstonePort) {

@@ -103,8 +103,9 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-                                    ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+                                    EnumFacing side, float hitX, float hitY, float hitZ) {
 
+        final ItemStack heldItem = player.getHeldItem(hand);
         TileEntity te = world.getTileEntity(pos);
         boolean hasWrench = StaticUtils.Inventory.isPlayerHoldingWrench(heldItem);
 
@@ -132,7 +133,7 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
             return true;
         }
 
-        return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
     }
 
     /**
@@ -157,7 +158,7 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
      * block, etc.
      */
     @Override
-    public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor) {
+    public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor, BlockPos neighborPos) {
 
         TileEntity te = world.getTileEntity(position);
 

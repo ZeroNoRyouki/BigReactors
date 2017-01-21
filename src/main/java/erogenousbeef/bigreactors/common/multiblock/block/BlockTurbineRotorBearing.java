@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -61,7 +62,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     }
 
     @Override
-    public boolean isVisuallyOpaque() {
+    public boolean causesSuffocation(IBlockState state) {
         return true;
     }
 
@@ -70,9 +71,9 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
         return false;
     }
 
-    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 
         final TileEntity te = world.getTileEntity(pos);
 

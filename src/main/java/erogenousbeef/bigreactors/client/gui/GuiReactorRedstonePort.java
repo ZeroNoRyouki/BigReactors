@@ -495,7 +495,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		
         if (keyCode == Keyboard.KEY_ESCAPE ||
         		(!isAnyTextboxFocused && keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())) {
-            this.mc.thePlayer.closeScreen();
+            this.mc.player.closeScreen();
         }
 
         // Allow arrow keys, 0-9, and delete

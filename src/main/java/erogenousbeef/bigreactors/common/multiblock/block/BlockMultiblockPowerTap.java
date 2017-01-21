@@ -131,7 +131,7 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
      * block, etc.
      */
     @Override
-    public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor) {
+    public void neighborChanged(IBlockState stateAtPosition, World world, BlockPos position, Block neighbor, BlockPos neighborPos) {
 
         TileEntity te = world.getTileEntity(position);
 

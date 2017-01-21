@@ -224,8 +224,12 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 
 		EnumFacing outward = this.getOutwardFacing();
 
-		if (null != outward)
-			world.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
+		if (null != outward) {
+
+			final BlockPos myPos = this.getWorldPosition();
+
+			world.neighborChanged(myPos.offset(outward), BrBlocks.reactorRedstonePort, myPos);
+		}
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -517,8 +521,12 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 
 				EnumFacing outward = this.getOutwardFacing();
 
-				if (null != outward)
-					world.notifyBlockOfStateChange(this.getWorldPosition().offset(outward), BrBlocks.reactorRedstonePort);
+				if (null != outward) {
+
+					final BlockPos myPos = this.getWorldPosition();
+
+					world.neighborChanged(myPos.offset(outward), BrBlocks.reactorRedstonePort, myPos);
+				}
 			}
 		}
 	}

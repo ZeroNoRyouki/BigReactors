@@ -42,7 +42,7 @@ public class BeefGuiLabel extends BeefGuiControlBase implements IBeefTooltipCont
 	private void recalculateSize() {
 		FontRenderer fontRenderer = guiContainer.getFontRenderer();
 		if(xMax > 0) {
-			this.width = fontRenderer.splitStringWidth(labelText, xMax);
+			this.width = fontRenderer.getWordWrappedHeight(labelText, xMax);
 			int totalWidth = fontRenderer.getStringWidth(labelText);
 			this.height = fontRenderer.FONT_HEIGHT * Math.max(1, (totalWidth / width));		
 		}

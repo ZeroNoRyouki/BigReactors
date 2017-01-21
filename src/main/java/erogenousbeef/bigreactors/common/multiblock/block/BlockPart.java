@@ -74,7 +74,7 @@ public class BlockPart extends BlockBR {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos posistion, IBlockState state, EntityPlayer player, EnumHand hand,
-                                    ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+                                    EnumFacing side, float hitX, float hitY, float hitZ) {
 
         if (this.hasTileEntity(state) && !player.isSneaking()) {
 
@@ -97,6 +97,8 @@ public class BlockPart extends BlockBR {
 
             // If the player's hands are empty and they rightclick on a multiblock, they get a
             // multiblock-debugging message if the machine is not assembled.
+
+            final ItemStack heldItem = player.getHeldItem(hand);
 
             if ((te instanceof IMultiblockPart) && WorldHelper.calledByLogicalServer(world) &&
                     (ItemHelper.stackIsEmpty(heldItem)) && (hand == EnumHand.OFF_HAND)) {
@@ -125,7 +127,7 @@ public class BlockPart extends BlockBR {
             }
         }
 
-        return super.onBlockActivated(world, posistion, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, posistion, state, player, hand, side, hitX, hitY, hitZ);
     }
 
     @Override

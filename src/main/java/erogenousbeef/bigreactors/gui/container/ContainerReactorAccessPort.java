@@ -125,7 +125,7 @@ public class ContainerReactorAccessPort extends Container {
 				return null;
 			}
 
-			slotObject.onPickupFromSlot(player, stackInSlot);
+			slotObject.onTake(player, stackInSlot);
 		}
 
 		return stack;

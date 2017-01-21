@@ -158,7 +158,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 	protected void keyTyped(char inputChar, int keyCode) {
         if (keyCode == Keyboard.KEY_ESCAPE ||
         		(!this.rodName.isFocused() && keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())) {
-            this.mc.thePlayer.closeScreen();
+            this.mc.player.closeScreen();
         }
 
 		this.rodName.textboxKeyTyped(inputChar, keyCode);

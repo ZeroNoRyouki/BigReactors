@@ -30,6 +30,6 @@ public class BREventHandler {
 			!BigReactors.WHITELIST_WORLDGEN_ORES.shouldGenerateIn(dimensionId))
 			return;
 
-		BigReactors.TICK_HANDLER.addRegenChunk(dimensionId, loadEvent.getChunk().getChunkCoordIntPair());
+		BigReactors.TICK_HANDLER.addRegenChunk(dimensionId, loadEvent.getChunk().getPos());
 	}
 }

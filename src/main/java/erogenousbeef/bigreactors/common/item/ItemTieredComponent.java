@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +48,7 @@ public class ItemTieredComponent extends ItemBase {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
 
         if (null == this._subItems) {
 

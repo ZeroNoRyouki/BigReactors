@@ -60,7 +60,7 @@ public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineR
 	}
 
 	@Override
-	public boolean isVisuallyOpaque() {
+	public boolean causesSuffocation(IBlockState state) {
 		return true;
 	}
 
