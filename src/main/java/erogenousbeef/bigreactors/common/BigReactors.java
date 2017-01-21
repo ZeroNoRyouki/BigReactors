@@ -35,7 +35,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.Calendar;
 
 @Mod(modid = BigReactors.MODID, name = BigReactors.NAME, version = "0.0.0.0",
-		acceptedMinecraftVersions = "", dependencies = "required-after:Forge;required-after:zerocore",
+		acceptedMinecraftVersions = "", dependencies = "required-after:forge;required-after:zerocore",
 		guiFactory = "erogenousbeef.bigreactors.client.config.ConfigFactory")
 public class BigReactors implements IModInitializationHandler {
 
