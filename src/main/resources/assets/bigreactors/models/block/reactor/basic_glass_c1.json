@@ -1,0 +1,13 @@
+{
+    "__comment": "Model file for a single connected side (rotated per state, default connected on the 'up' facing)",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "bigreactors:blocks/reactor/basic/glass.0",
+        "down": "bigreactors:blocks/reactor/basic/glass.0",
+		"up": "bigreactors:blocks/reactor/basic/glass.15",
+		"north": "bigreactors:blocks/reactor/basic/glass.1",
+		"south": "bigreactors:blocks/reactor/basic/glass.1",
+		"west": "bigreactors:blocks/reactor/basic/glass.1",
+		"east": "bigreactors:blocks/reactor/basic/glass.1"		
+    }
+}
