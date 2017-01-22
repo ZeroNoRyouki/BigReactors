@@ -38,7 +38,7 @@ public abstract class BeefIconManager {
 
 		for(int i = 0; i < iconNames.length; i++) {
 
-			location = BigReactors.createResourceLocation(path + iconNames[i]);
+			location = BigReactors.createResourceLocation(path + iconNames[i].toLowerCase());
 
 			nameToIdMap.put(iconNames[i], i);
 			//idToIconMap.put(i, textureMap.registerSprite(location));
