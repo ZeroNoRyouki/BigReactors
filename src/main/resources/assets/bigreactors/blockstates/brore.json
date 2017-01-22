@@ -1,0 +1,31 @@
+{  
+    "forge_marker":1,
+    "defaults":{  
+        "textures":{  
+            "all":"bigreactors:blocks/oreyellorite"
+        },
+        "model":"cube_all"
+    },
+    "variants":{  
+        "ore":{  
+            "yellorite":{  
+                "textures":{
+					"all":"bigreactors:blocks/oreyellorite"
+                }
+            },
+			 "anglesite":{  
+                "textures":{
+					"all":"bigreactors:blocks/oreanglesite"
+                }
+            },
+			 "benitoite":{  
+                "textures":{
+					"all":"bigreactors:blocks/orebenitoite"
+                }
+            }
+        },
+        "inventory":{  
+            "transform":"forge:default-block"
+        }
+    }
+}

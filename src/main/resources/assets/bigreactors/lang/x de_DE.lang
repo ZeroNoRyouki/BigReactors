@@ -1,0 +1,61 @@
+# Big Reactors Language File - German
+# @author Erogenous Beef and Vexatos
+
+itemGroup.BigReactors=Big Reactors Reborn
+
+# Blocks
+tile.bigreactors:brOre.yellorite.name=Yelloriterz
+tile.bigreactors:brMetalBlock.yellorium.name=Yelloriumblock
+tile.bigreactors:brMetalBlock.cyanite.name=Cyanitblock
+tile.bigreactors:brMetalBlock.graphite.name=Graphitblock
+tile.bigreactors:brMetalBlock.blutonium.name=Blutoniumblock
+tile.bigreactors:brMetalBlock.ludicrite.name=Ludicritblock
+tile.yelloriumFuelRod.name=Yelloriumbrennstab
+tile.brMultiblockGlass.0.name=Reaktorglas
+tile.brMultiblockGlass.1.name=Turbinenglas
+tile.blockReactorRedstonePort.name=Reaktor-Redstoneanschluss
+tile.blockReactorPart.0.name=Reaktorgehäuse
+tile.blockReactorPart.1.name=Reaktorsteuerung
+tile.blockReactorPart.2.name=Reaktorsteuerstab
+tile.blockReactorPart.3.name=Reaktorstromanschluss
+tile.blockReactorPart.4.name=Reaktorzugang
+tile.blockReactorPart.6.name=Reaktor-RedNet-Anschluss
+tile.blockReactorPart.7.name=Reaktor-Computeranschluss
+tile.blockReactorPart.5.name=Reaktor-Kühlanschluss
+tile.blockRadiothermalGen.0=Radiothermalgenerator
+tile.blockBRDevice.0.name=Cyanit-Wiederaufarbeiter
+tile.blockTurbinePart.0.name=Turbinengehäuse
+tile.blockTurbinePart.1.name=Turbinensteuerung
+tile.blockTurbinePart.2.name=Turbinenstromanschluss
+tile.blockTurbinePart.3.name=Turbinen-Flüssigkeitsanschluss
+tile.blockTurbinePart.4.name=Turbinenrotorlager
+tile.blockTurbinePart.5.name=Turbinen-Computeranschluss
+tile.blockTurbineRotorPart.0.name=Turbinenrotorschaft
+tile.blockTurbineRotorPart.1.name=Turbinenrotorblatt
+tile.blockMBCreativePart.0.name=Kreativ-Reaktorkühlport
+tile.blockMBCreativePart.1.name=Kreativ-Turbinendampfgenerator
+
+# Items
+item.ingotYellorium.name=Yelloriumbarren
+item.ingotCyanite.name=Cyanitbarren
+item.ingotGraphite.name=Graphitbarren
+item.ingotBlutonium.name=Blutoniumbarren
+item.ingotLudicrite.name=Ludicritbarren
+item.dustYellorium.name=Yelloriumstaub
+item.dustCyanite.name=Cyanitstaub
+item.dustBlutonium.name=Blutoniumstaub
+item.dustGraphite.name=Graphitstaub
+item.dustLudicrite.name=Ludicritstaub
+item.bucket.cyanite.name=Eimer mit flüssigem Cyanit
+item.bucket.yellorium.name=Eimer mit flüssigem Yellorium
+
+# Fluids
+fluid.tile.water=Wasser
+fluid.tile.lava=Lava
+fluid.tile.yellorium=Flüssiges Yellorium
+tile.fluid.yellorium.still.name=Flüssiges Yellorium
+fluid.tile.cyanite=Flüssiges Cyanit
+tile.fluid.cyanite.still.name=Flüssiges Cyanit
+fluid.tile.blutonium=Flüssiges Blutonium
+tile.fluid.blutonium.still.name=Flüssiges Blutonium
+fluid.steam=Dampf
