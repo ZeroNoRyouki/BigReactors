@@ -107,6 +107,6 @@ public class BeefGuiIconManager extends BeefIconManager {
 	}
 	
 	@Override
-	protected String getPath() { return "guiIcons/"; }
+	protected String getPath() { return "guiicons/"; }
 	
 }
