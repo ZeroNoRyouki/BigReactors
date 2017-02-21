@@ -51,6 +51,8 @@ item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
 
 # Items - miscellanea
 item.bigreactors:wrench.name=Chiave inglese
+item.bigreactors:wrench.machine.coords=La struttura inizia a %1$d, %2$d, %3$d e finisce a %4$d, %5$d, %6$d
+item.bigreactors:wrench.machine.update=Richiesta sincronizzazione client/server della struttura
 
 # Blocks - metal blocks / ores
 tile.bigreactors:blockmetals.yellorium.name=Blocco di Yellorium
