@@ -78,17 +78,7 @@ public class GuiIconButton extends GuiButton implements IBeefTooltipControl {
 	
 	@Override
 	public String[] getTooltip() {
-
-
-
-		return null;
-		/*
-		if(this.visible) {
-			return tooltip;
-		}
-		else {
-			return null;
-		}*/
+		return this.visible ? this.tooltip : null;
 	}
 
 	@Override
