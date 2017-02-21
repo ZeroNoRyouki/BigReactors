@@ -37,10 +37,12 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 	@Override
 	public void registerRecipes() {
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",
+		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
+			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",
 				'I', "ingotIron", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "ICI", "IUI", "ICI",
+		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
+			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "ICI", "IUI", "ICI",
 				'I', "ingotSteel", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
 	}
 
