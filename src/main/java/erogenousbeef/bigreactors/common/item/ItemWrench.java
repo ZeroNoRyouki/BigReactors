@@ -1,6 +1,9 @@
 package erogenousbeef.bigreactors.common.item;
 
 import cofh.api.item.IToolHammer;
+import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.util.CodeHelper;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,7 +12,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,6 +30,39 @@ public class ItemWrench extends ItemBase implements IToolHammer {
 
         super(itemName);
         this.setMaxStackSize(1);
+    }
+
+    @Override
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side,
+                                           float hitX, float hitY, float hitZ, EnumHand hand) {
+
+        if (EnumHand.OFF_HAND == hand && WorldHelper.calledByLogicalServer(world)) {
+
+            final TileEntity te = world.getTileEntity(pos);
+
+            if (te instanceof IMultiblockPart) {
+
+                final IMultiblockPart part = (IMultiblockPart) te;
+                final BlockPos minCoord = part.getMultiblockController().getMinimumCoord();
+                final BlockPos maxCoord = part.getMultiblockController().getMaximumCoord();
+
+                if (player.isSneaking()) {
+
+                    CodeHelper.sendChatMessage(player, new TextComponentTranslation("item.bigreactors:wrench.machine.update"));
+                    part.getMultiblockController().forceStructureUpdate(world);
+
+                } else {
+
+                    CodeHelper.sendChatMessage(player, new TextComponentTranslation("item.bigreactors:wrench.machine.coords",
+                            minCoord.getX(), minCoord.getY(), minCoord.getZ(),
+                            maxCoord.getX(), maxCoord.getY(), maxCoord.getZ()));
+                }
+
+                return EnumActionResult.SUCCESS;
+            }
+        }
+
+        return EnumActionResult.PASS;
     }
 
     @Override
@@ -94,4 +136,6 @@ public class ItemWrench extends ItemBase implements IToolHammer {
     @Override
     public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
     }
+
+
 }
