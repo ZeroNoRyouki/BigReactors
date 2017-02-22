@@ -33,8 +33,8 @@ public class ItemWrench extends ItemBase implements IToolHammer {
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side,
-                                           float hitX, float hitY, float hitZ, EnumHand hand) {
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos,
+                                           EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 
         if (EnumHand.OFF_HAND == hand && WorldHelper.calledByLogicalServer(world)) {
 
