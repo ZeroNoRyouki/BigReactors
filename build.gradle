@@ -72,7 +72,7 @@ dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
     deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
-    compile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
+    deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
 }
 
 processResources  {
