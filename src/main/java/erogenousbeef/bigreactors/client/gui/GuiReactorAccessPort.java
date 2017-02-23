@@ -38,16 +38,16 @@ public class GuiReactorAccessPort extends BeefGuiBase {
 		super.initGui();
 
 		ejectFuel = new GuiIconButton(2, guiLeft + xSize - 97, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("fuelEject"),
-				new String[] { TextFormatting.AQUA + "Eject Fuel", "", "Ejects fuel contained in the", "reactor, placing ingots in the", "reactor's access ports.", "", "SHIFT: Dump excess fuel."});
+				new String[] { TextFormatting.AQUA + "Eject Fuel", "", "Ejects fuel contained in the", "reactor, placing ingots in the", "reactor's access ports."/*, "", "SHIFT: Dump excess fuel."*/});
 
 		ejectWaste = new GuiIconButton(3, guiLeft + xSize - 77, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("wasteEject"),
-				new String[] { TextFormatting.AQUA + "Eject Waste", "", "Ejects waste contained in the", "reactor, placing ingots in the", "reactor's access ports.", "", "SHIFT: Dump excess waste."});
+				new String[] { TextFormatting.AQUA + "Eject Waste", "", "Ejects waste contained in the", "reactor, placing ingots in the", "reactor's access ports."/*, "", "SHIFT: Dump excess waste."*/});
 		
 		btnInlet = new GuiIconButton(0, guiLeft + xSize - 47, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("inletOn"),
-				new String[] { TextFormatting.AQUA + "Inlet Mode", "", "Sets the access port to", "inlet mode.", "", "Port WILL accept", "items from pipes/ducts.", "Port WILL NOT eject", "items to pipes/ducts."});
+				new String[] { TextFormatting.AQUA + "Inlet Mode", "", "Sets the access port to", "inlet mode." /*, "", "Port WILL accept", "items from pipes/ducts.", "Port WILL NOT eject", "items to pipes/ducts."*/});
 
 		btnOutlet = new GuiIconButton(1, guiLeft + xSize - 27, guiTop + 53, 18, 18, ClientProxy.GuiIcons.getIcon("outletOn"),
-				new String[] { TextFormatting.AQUA + "Outlet Mode", "", "Sets the access port to", "outlet mode.", "", "Port WILL NOT accept", "items from pipes/ducts.", "Port WILL eject", "ingots to pipes/ducts."});
+				new String[] { TextFormatting.AQUA + "Outlet Mode", "", "Sets the access port to", "outlet mode."/*, "", "Port WILL NOT accept", "items from pipes/ducts.", "Port WILL eject", "ingots to pipes/ducts."*/});
 		
 		inventoryLabel = new BeefGuiLabel(this, "Inventory", guiLeft + 8, guiTop + 64);
 		
