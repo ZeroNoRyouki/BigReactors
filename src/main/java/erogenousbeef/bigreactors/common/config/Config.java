@@ -65,6 +65,10 @@ public class Config extends ConfigHandler {
     public int benitoiteOreMaxClustersPerChunk;
     public int benitoiteOrePerCluster;
 
+    // CLIENT
+    public boolean disableReactorFuelRodRender;
+    public boolean disableTurbineRotorRender;
+
     // not persisted
     public String recipeYelloriumIngotName;
     public String recipeBlutoniumIngotName;
@@ -82,6 +86,7 @@ public class Config extends ConfigHandler {
         this.COMPATIBILITY = this.getCategory("compatibility", "Define how Big Reactor interact with other mods");
         this.RECIPES = this.getCategory("recipes", "Recipes options");
         this.WORLDGEN = this.getCategory("worldgen", "Define how ores generates in the world");
+        this.CLIENT = this.getCategory("client", "Client-only options");
     }
 
     @Override
@@ -147,6 +152,11 @@ public class Config extends ConfigHandler {
         this.benitoiteOreMaxClustersPerChunk = this.getValue("benitoiteOreMaxClustersPerChunk", this.WORLDGEN, 2, "Maximum number of Benitoite clusters per chunk");
         this.benitoiteOrePerCluster = this.getValue("benitoiteOrePerCluster", this.WORLDGEN, 5, "Maximum number of Benitoite ore to generate in each cluster");
 
+        // CLIENT
+
+        this.disableReactorFuelRodRender = this.getValue("disableReactorFuelRodRender", this.CLIENT, false, "If true, disables the rendering of fuel inside the fuel rods of a Reactor and the associated animation. Restart needed (Default: false)");
+        this.disableTurbineRotorRender = this.getValue("disableTurbineRotorRender", this.CLIENT, false, "If true, disables the rendering of the rotor animation of an active Turbine. Restart needed (Default: false)");
+
         // not persisted...
 
         this.recipeYelloriumIngotName = this.registerYelloriumAsUranium ? "ingotUranium" : "ingotYellorium";
@@ -196,4 +206,5 @@ public class Config extends ConfigHandler {
     protected ConfigCategory TURBINE;
     protected ConfigCategory RECIPES;
     protected ConfigCategory WORLDGEN;
+    protected ConfigCategory CLIENT;
 }
