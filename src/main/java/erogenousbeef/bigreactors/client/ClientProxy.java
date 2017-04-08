@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.client;
 
 import erogenousbeef.bigreactors.client.renderer.RendererReactorFuelRod;
 import erogenousbeef.bigreactors.client.renderer.RotorSpecialRenderer;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
@@ -108,10 +109,12 @@ public class ClientProxy extends CommonProxy {
 	private void registerTESRs() {
 
 		// reactor fuel rods
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
+		if (!BigReactors.CONFIG.disableReactorFuelRodRender)
+			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorFuelRod.class, new RendererReactorFuelRod());
 
 		// turbine rotor
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
+		if (!BigReactors.CONFIG.disableTurbineRotorRender)
+			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbineRotorBearing.class, new RotorSpecialRenderer());
 	}
 
 	private void registerFluidTextures(final TextureMap map, final Fluid fluid) {
