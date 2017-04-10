@@ -1,5 +1,6 @@
 package erogenousbeef.bigreactors.common;
 
+import cofh.api.util.ThermalExpansionHelper;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
@@ -13,6 +14,7 @@ import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
 import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import it.zerono.mods.zerocore.util.ItemHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -85,7 +87,7 @@ public class CommonProxy implements IModInitializationHandler {
 
 	private void sendInterModAPIMessages() {
 
-		ItemStack yelloriteOre = new ItemStack(BrBlocks.brOre, 1);
+		final ItemStack yelloriteOre = new ItemStack(BrBlocks.brOre, 1);
 
 		MetalType[] metals = MetalType.values();
 		int length = metals.length;
@@ -100,42 +102,33 @@ public class CommonProxy implements IModInitializationHandler {
 
 		ItemStack doubledYelloriumDust = BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2);
 
-		// TODO disabled as there is no ThermalExpansion for 1.9.x
-		/*
-		if(Loader.isModLoaded("ThermalExpansion")) {
+		if (Loader.isModLoaded("thermalexpansion")) {
 
-			ItemStack sandStack = new ItemStack(Blocks.sand, 1);
+			ItemStack sandStack = new ItemStack(Blocks.SAND, 1);
 			ItemStack doubleYelloriumIngots = BrItems.ingotMetals.createItemStack(MetalType.Yellorium, 2);
 
-			// TODO: Remove ThermalExpansionHelper once addSmelterRecipe and addPulverizerRecipe aren't broken
-			if(ingots[YELLORIUM] != null) {
+			ThermalExpansionHelper.addFurnaceRecipe(400, yelloriteOre, ingots[MetalType.Yellorium.ordinal()]);
+			ThermalExpansionHelper.addSmelterRecipe(1600, yelloriteOre, sandStack, doubleYelloriumIngots);
 
-				ThermalExpansionHelper.addFurnaceRecipe(400, yelloriteOre, ingots[yelloriumIndex]);
-				ThermalExpansionHelper.addSmelterRecipe(1600, yelloriteOre, sandStack, doubleYelloriumIngots);
-			}
-
-			if(doubledYelloriumDust != null) {
-
-				ThermalExpansionHelper.addPulverizerRecipe(4000, yelloriteOre, doubledYelloriumDust);
-				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYelloriumIngots);
-			}
+			ThermalExpansionHelper.addPulverizerRecipe(4000, yelloriteOre, doubledYelloriumDust);
+			ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYelloriumIngots);
 
 			for(int i = 0; i < ingots.length; i++) {
 				if(ingots[i] == null || dusts[i] == null) { continue; }
 
 				ThermalExpansionHelper.addPulverizerRecipe(2400, ingots[i], dusts[i]);
-				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYellorium);
+				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYelloriumIngots);
 
-				ItemStack doubleDust = dusts[i].copy();
-				doubleDust.stackSize = 2;
-				ItemStack doubleIngot = ingots[i].copy();
-				doubleIngot.stackSize = 2;
+				ItemStack doubleDust = ItemHelper.stackFrom(dusts[i]);
+				ItemStack doubleIngot = ItemHelper.stackFrom(ingots[i]);
+
+				ItemHelper.stackSetSize(doubleDust, 2);
+				ItemHelper.stackSetSize(doubleIngot, 2);
 
 				ThermalExpansionHelper.addSmelterRecipe(200, doubleDust, sandStack, doubleIngot);
 			}
 		} // END: IsModLoaded - ThermalExpansion
-		*/
-		
+
 		if(Loader.isModLoaded("MineFactoryReloaded")) {
 			// Add yellorite to yellow focus list.
 			IMCHelper.MFR.addOreToMiningLaserFocus(yelloriteOre, 2);
