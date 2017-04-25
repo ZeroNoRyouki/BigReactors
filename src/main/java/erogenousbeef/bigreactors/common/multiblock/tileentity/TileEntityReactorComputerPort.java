@@ -5,6 +5,7 @@ import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 */
+import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 /*
 import li.cil.oc.api.machine.Arguments;
@@ -21,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Optional.InterfaceList({
-		@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers"),
-		@Optional.Interface(iface = "li.cil.oc.api.network.ManagedPeripheral", modid = "OpenComputers"),
-		@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft")
+		@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = IdReference.MODID_OPENCOMPUTERS),
+		@Optional.Interface(iface = "li.cil.oc.api.network.ManagedPeripheral", modid = IdReference.MODID_OPENCOMPUTERS),
+		@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = IdReference.MODID_COMPUTERCRAFT)
 })
 public class TileEntityReactorComputerPort extends TileEntityReactorPart /*implements IPeripheral, SimpleComponent, ManagedPeripheral*/ {
 
@@ -309,19 +310,19 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 	// ComputerCraft
 	/*
 	@Override
-	@Optional.Method(modid = "ComputerCraft")
+	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
 	public String getType() {
 		return "BigReactors-Reactor";
 	}
 	
 	@Override
-	@Optional.Method(modid = "ComputerCraft")
+	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
 	public String[] getMethodNames() {
 		return methodNames;
 	}
 	
 	@Override
-	@Optional.Method(modid = "ComputerCraft")
+	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
 	public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws LuaException {
         try {
             return callMethod(method, arguments);
@@ -332,12 +333,12 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
     }
 	
 	@Override
-	@Optional.Method(modid = "ComputerCraft")
+	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
 	public void attach(IComputerAccess computer) {
 	}
 
 	@Override
-	@Optional.Method(modid = "ComputerCraft")
+	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
 	public void detach(IComputerAccess computer) {
 	}
 	*/
@@ -345,7 +346,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 	// OpenComputers
 	/*
 	@Override
-	@Optional.Method(modid = "OpenComputers")
+	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
 	public String getComponentName() {
 		// Convention for OC names is a) lower case, b) valid variable names,
 		// so this can be used as `component.br_reactor.setActive(true)` e.g.
@@ -353,13 +354,13 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 	}
 
 	@Override
-	@Optional.Method(modid = "OpenComputers")
+	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
 	public String[] methods() {
 		return methodNames;
 	}
 	
 	@Override
-	@Optional.Method(modid = "OpenComputers")
+	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
 	public Object[] invoke(final String method, final Context context,
 						   final Arguments args) throws Exception {
 		final Object[] arguments = new Object[args.count()];
@@ -374,7 +375,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 	}
 
 	@Override
-	@Optional.Method(modid = "ComputerCraft")
+	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
 	public boolean equals(IPeripheral other) {
 		return hashCode() == other.hashCode();
 	}

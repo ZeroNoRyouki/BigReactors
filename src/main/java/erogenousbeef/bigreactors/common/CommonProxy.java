@@ -1,24 +1,14 @@
 package erogenousbeef.bigreactors.common;
 
-import cofh.api.util.ThermalExpansionHelper;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
+import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.item.ItemBase;
-import erogenousbeef.bigreactors.init.BrBlocks;
-import erogenousbeef.bigreactors.init.BrItems;
-import erogenousbeef.bigreactors.utils.intermod.IMCHelper;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperBase;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperComputerCraft;
-import erogenousbeef.bigreactors.utils.intermod.ModHelperMekanism;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
-import it.zerono.mods.zerocore.util.ItemHelper;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -60,20 +50,12 @@ public class CommonProxy implements IModInitializationHandler {
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {
-
+		CompatManager.INSTANCE.onPreInit(event);
 	}
 
 	@Override
 	public void onInit(FMLInitializationEvent event) {
-
-		// Mods interaction
-
-		sendInterModAPIMessages();
-
-		/*
-		if(Loader.isModLoaded("VersionChecker")) {
-			FMLInterModComms.sendRuntimeMessage(BRLoader.MOD_ID, "VersionChecker", "addVersionCheck", "http://big-reactors.com/version.json");
-		}*/
+		CompatManager.INSTANCE.onInit(event);
 	}
 
 	@Override
@@ -82,75 +64,9 @@ public class CommonProxy implements IModInitializationHandler {
 		if (BigReactors.CONFIG.autoAddUranium)
 			Reactants.registerSolid("ingotUranium", StandardReactants.yellorium);
 
-		this.registerWithOtherMods();
+		CompatManager.INSTANCE.onPostInit(event);
 	}
 
-	private void sendInterModAPIMessages() {
-
-		final ItemStack yelloriteOre = new ItemStack(BrBlocks.brOre, 1);
-
-		MetalType[] metals = MetalType.values();
-		int length = metals.length;
-		ItemStack[] ingots = new ItemStack[length];
-		ItemStack[] dusts = new ItemStack[length];
-		
-		for(int i = 0; i < length; ++i) {
-
-			ingots[i] = BrItems.ingotMetals.createItemStack(metals[i], 1);
-			dusts[i] = BrItems.dustMetals.createItemStack(metals[i], 1);
-		}
-
-		ItemStack doubledYelloriumDust = BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2);
-
-		if (Loader.isModLoaded("thermalexpansion")) {
-
-			ItemStack sandStack = new ItemStack(Blocks.SAND, 1);
-			ItemStack doubleYelloriumIngots = BrItems.ingotMetals.createItemStack(MetalType.Yellorium, 2);
-
-			ThermalExpansionHelper.addFurnaceRecipe(400, yelloriteOre, ingots[MetalType.Yellorium.ordinal()]);
-			ThermalExpansionHelper.addSmelterRecipe(1600, yelloriteOre, sandStack, doubleYelloriumIngots);
-
-			ThermalExpansionHelper.addPulverizerRecipe(4000, yelloriteOre, doubledYelloriumDust);
-			ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYelloriumIngots);
-
-			for(int i = 0; i < ingots.length; i++) {
-				if(ingots[i] == null || dusts[i] == null) { continue; }
-
-				ThermalExpansionHelper.addPulverizerRecipe(2400, ingots[i], dusts[i]);
-				ThermalExpansionHelper.addSmelterRecipe(200, doubledYelloriumDust, sandStack, doubleYelloriumIngots);
-
-				ItemStack doubleDust = ItemHelper.stackFrom(dusts[i]);
-				ItemStack doubleIngot = ItemHelper.stackFrom(ingots[i]);
-
-				ItemHelper.stackSetSize(doubleDust, 2);
-				ItemHelper.stackSetSize(doubleIngot, 2);
-
-				ThermalExpansionHelper.addSmelterRecipe(200, doubleDust, sandStack, doubleIngot);
-			}
-		} // END: IsModLoaded - ThermalExpansion
-
-		if(Loader.isModLoaded("MineFactoryReloaded")) {
-			// Add yellorite to yellow focus list.
-			IMCHelper.MFR.addOreToMiningLaserFocus(yelloriteOre, 2);
-            
-            // Make Yellorite the 'preferred' ore for lime focus
-            IMCHelper.MFR.setMiningLaserFocusPreferredOre(yelloriteOre, 9);
-		} // END: IsModLoaded - MineFactoryReloaded
-		
-		if(Loader.isModLoaded("appliedenergistics2")) {
-			if(ItemHelper.stackIsValid(doubledYelloriumDust)) {
-				IMCHelper.AE2.addGrinderRecipe(yelloriteOre, doubledYelloriumDust, 4);
-			}
-		
-			for(int i = 0; i < ingots.length; i++) {
-				if(ingots[i] == null || dusts[i] == null) { continue; }
-				IMCHelper.AE2.addGrinderRecipe(ingots[i], dusts[i], 2);
-			}
-		} // END: IsModLoaded - AE2
-	}
-
-
-	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
@@ -159,18 +75,5 @@ public class CommonProxy implements IModInitializationHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void setIcons(TextureStitchEvent.Post event) {
-	}
-	
-	/// Mod Interoperability ///
-	void registerWithOtherMods() {
-		ModHelperBase modHelper;
-		
-		ModHelperBase.detectMods();
-
-		modHelper = new ModHelperComputerCraft();
-		modHelper.register();
-		
-		modHelper = new ModHelperMekanism();
-		modHelper.register();
 	}
 }

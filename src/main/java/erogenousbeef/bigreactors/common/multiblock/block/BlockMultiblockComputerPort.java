@@ -3,6 +3,8 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
 */
+import erogenousbeef.bigreactors.common.compat.CompatManager;
+import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
@@ -20,7 +22,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft")
+        @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = IdReference.MODID_COMPUTERCRAFT)
 })
 public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*implements IPeripheralProvider*/ {
 
@@ -47,7 +49,8 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*impleme
     @Override
     public void registerRecipes() {
 
-        if (!Loader.isModLoaded("ComputerCraft") && !Loader.isModLoaded("OpenComputers"))
+        if (!CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) &&
+                !CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS))
             return;
 
         if (PartType.ReactorComputerPort == this._type) {
@@ -77,7 +80,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*impleme
     }
 
     /*
-    @Optional.Method(modid ="ComputerCraft")
+    @Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
 
