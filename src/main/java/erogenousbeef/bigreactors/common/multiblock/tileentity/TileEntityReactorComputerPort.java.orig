@@ -4,7 +4,11 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+<<<<<<< HEAD
+=======
+*/
 import erogenousbeef.bigreactors.common.compat.IdReference;
+>>>>>>> 3633853... New mod-compatibility system
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
