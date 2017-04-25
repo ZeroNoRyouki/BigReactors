@@ -105,6 +105,17 @@ compileJava.doFirst {
     file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/api/package-info.java')
     source = file.getText('UTF-8').replaceAll('apiVersion = "0.0.0"', 'apiVersion = "' + project.ext.api_version + '"')
     file.write(source, 'UTF-8')
+
+    // mod compat
+    file = new File(projectDir, 'build/sources/main/java/erogenousbeef/bigreactors/common/compat/CompatManager.java')
+    source = file.getText('UTF-8')
+            .replaceAll('"ComputerCraft"', '"' + config.compat_mod_computercraft_id + '"')
+            .replaceAll('"OpenComputers"', '"' + config.compat_mod_opencomputers_id + '"')
+            .replaceAll('"Mekanism"', '"' + config.compat_mod_mekanism_id + '"')
+            .replaceAll('"thermalexpansion"', '"' + config.compat_mod_thermalexpansion_id + '"')
+            .replaceAll('"MineFactoryReloaded"', '"' + config.compat_mod_minefactoryreloaded_id + '"')
+            .replaceAll('"appliedenergistics2"', '"' + config.compat_mod_appliedenergistics2_id + '"')
+    file.write(source, 'UTF-8')
 }
 
 task apiJar(type: Jar) {
