@@ -78,7 +78,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
         }
     }
 
-    @Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+    @Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
 

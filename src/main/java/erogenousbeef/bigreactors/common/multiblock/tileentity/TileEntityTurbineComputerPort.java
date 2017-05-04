@@ -221,19 +221,19 @@ public class TileEntityTurbineComputerPort extends
 	// ComputerCraft
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public String getType() {
 		return "BigReactors-Turbine";
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public String[] getMethodNames() {
 		return methodNames;
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) {
         try {
             return callMethod(method, arguments);
@@ -245,19 +245,19 @@ public class TileEntityTurbineComputerPort extends
     }
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public void attach(IComputerAccess computer) {
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public void detach(IComputerAccess computer) {
 	}
 	
 	// OpenComputers
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
+	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public String getComponentName() {
 		// Convention for OC names is a) lower case, b) valid variable names,
 		// so this can be used as `component.br_turbine.setActive(true)` e.g.
@@ -265,13 +265,13 @@ public class TileEntityTurbineComputerPort extends
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
+	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public String[] methods() {
 		return methodNames;
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
+	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public Object[] invoke(final String method, final Context context,
 						   final Arguments args) throws Exception {
 		final Object[] arguments = new Object[args.count()];
@@ -286,7 +286,7 @@ public class TileEntityTurbineComputerPort extends
 	}
 
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public boolean equals(IPeripheral other) {
 		return hashCode() == other.hashCode();
 	}
