@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.common.compat;
 import com.sun.istack.internal.NotNull;
 import erogenousbeef.bigreactors.common.BRLog;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -102,7 +103,7 @@ public final class CompatManager implements IModInitializationHandler {
 
         } catch (InvocationTargetException e3) {
 
-            BRLog.error("Can't invocate default constructor of mod-compat helper class %s", className);
+            BRLog.error("Can't invoke default constructor of mod-compat helper class %s", className);
 
         } catch (InstantiationException e4) {
 
