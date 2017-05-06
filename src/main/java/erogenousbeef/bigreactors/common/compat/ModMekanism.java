@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.compat;
 
-import com.sun.istack.internal.NotNull;
 import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
@@ -9,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+
+import javax.annotation.Nonnull;
 
 public class ModMekanism extends ModCompact {
 
@@ -33,15 +34,15 @@ public class ModMekanism extends ModCompact {
         this.addCrusherRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1), BrItems.dustMetals.createItemStack(MetalType.Blutonium, 1));
     }
 
-    private void addEnrichmentChamberRecipe(@NotNull ItemStack input, @NotNull ItemStack output) {
+    private void addEnrichmentChamberRecipe(@Nonnull ItemStack input, @Nonnull ItemStack output) {
         this.addRecipe("EnrichmentChamberRecipe", input, output);
     }
 
-    private void addCrusherRecipe(@NotNull ItemStack input, @NotNull ItemStack output) {
+    private void addCrusherRecipe(@Nonnull ItemStack input, @Nonnull ItemStack output) {
         this.addRecipe("CrusherRecipe", input, output);
     }
 
-    private void addRecipe(@NotNull String type, @NotNull ItemStack input, @NotNull ItemStack output) {
+    private void addRecipe(@Nonnull String type, @Nonnull ItemStack input, @Nonnull ItemStack output) {
 
         NBTTagCompound recipe = new NBTTagCompound();
 
