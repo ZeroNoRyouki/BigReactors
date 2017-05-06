@@ -1,15 +1,14 @@
 package erogenousbeef.bigreactors.common.compat;
 
-import com.sun.istack.internal.NotNull;
 import erogenousbeef.bigreactors.common.BRLog;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,11 +21,11 @@ public final class CompatManager implements IModInitializationHandler {
 
     public static final CompatManager INSTANCE = new CompatManager();
 
-    public static boolean isModLoaded(@NotNull String modId) {
+    public static boolean isModLoaded(@Nonnull String modId) {
         return Loader.isModLoaded(modId);
     }
 
-    public static boolean isApiLoaded(@NotNull String api) {
+    public static boolean isApiLoaded(@Nonnull String api) {
         return ModAPIManager.INSTANCE.hasAPI(api);
     }
 
@@ -84,7 +83,7 @@ public final class CompatManager implements IModInitializationHandler {
     }
 
     @Nullable
-    private static ModCompact createHelper(final String className) {
+    private static ModCompact createHelper(@Nonnull final String className) {
 
         try {
 
