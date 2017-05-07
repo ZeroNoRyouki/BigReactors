@@ -9,18 +9,18 @@ import net.minecraft.util.text.TextComponentString;
 public class DebugCommand extends CommandBase {
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "erdebug";
     }
 
     @Override
-    public String getUsage(ICommandSender sender) {
+    public String getCommandUsage(ICommandSender sender) {
         return "erdebug";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         // TODO put your stupid-test-code here
-        sender.sendMessage(new TextComponentString("THIS IS A TEST"));
+        sender.addChatMessage(new TextComponentString("THIS IS A TEST"));
     }
 }
