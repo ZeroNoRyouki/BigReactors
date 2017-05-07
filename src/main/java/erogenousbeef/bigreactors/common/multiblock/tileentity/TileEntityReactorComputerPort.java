@@ -1,4 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
+
 /*
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
@@ -7,12 +8,10 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 */
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-/*
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedPeripheral;
 import li.cil.oc.api.network.SimpleComponent;
-*/
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
@@ -26,7 +25,7 @@ import java.util.Map;
 		@Optional.Interface(iface = "li.cil.oc.api.network.ManagedPeripheral", modid = IdReference.MODID_OPENCOMPUTERS),
 		@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = IdReference.MODID_COMPUTERCRAFT)
 })
-public class TileEntityReactorComputerPort extends TileEntityReactorPart /*implements IPeripheral, SimpleComponent, ManagedPeripheral*/ {
+public class TileEntityReactorComputerPort extends TileEntityReactorPart implements SimpleComponent, ManagedPeripheral /*IPeripheral*/ {
 
 	public enum ComputerMethod {
 		getConnected,			// No arguments
@@ -306,23 +305,24 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 		
 		return (TileEntityReactorControlRod)te;
 	}
-	
+
+	// TODO re-enable when ComputerCraft is out for 1.11
 	// ComputerCraft
 	/*
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public String getType() {
 		return "BigReactors-Reactor";
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public String[] getMethodNames() {
 		return methodNames;
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws LuaException {
         try {
             return callMethod(method, arguments);
@@ -333,20 +333,26 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
     }
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public void attach(IComputerAccess computer) {
 	}
 
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public void detach(IComputerAccess computer) {
+	}
+
+	@Override
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
+	public boolean equals(IPeripheral other) {
+		return hashCode() == other.hashCode();
 	}
 	*/
 	
 	// OpenComputers
-	/*
+
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
+	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public String getComponentName() {
 		// Convention for OC names is a) lower case, b) valid variable names,
 		// so this can be used as `component.br_reactor.setActive(true)` e.g.
@@ -354,13 +360,13 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 	}
 
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
+	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public String[] methods() {
 		return methodNames;
 	}
 	
 	@Override
-	@Optional.Method(modid = CompatManager.MODID_OPENCOMPUTERS)
+	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public Object[] invoke(final String method, final Context context,
 						   final Arguments args) throws Exception {
 		final Object[] arguments = new Object[args.count()];
@@ -373,11 +379,4 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart /*imple
 		}
 		return callMethod(methodId, arguments);
 	}
-
-	@Override
-	@Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
-	public boolean equals(IPeripheral other) {
-		return hashCode() == other.hashCode();
-	}
-	*/
 }

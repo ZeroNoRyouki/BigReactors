@@ -78,9 +78,8 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*impleme
                     'G', "ingotGold", 'P', Items.REPEATER));
         }
     }
-
     /*
-    @Optional.Method(modid = CompatManager.MODID_COMPUTERCRAFT)
+    @Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
 
