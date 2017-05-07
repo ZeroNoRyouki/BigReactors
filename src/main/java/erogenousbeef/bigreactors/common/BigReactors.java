@@ -19,6 +19,7 @@ import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
 import it.zerono.mods.zerocore.lib.world.IWorldGenWhiteList;
 import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
 import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,10 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Calendar;
@@ -105,6 +103,13 @@ public class BigReactors implements IModInitializationHandler {
 	@Mod.EventHandler
 	public void onMissingMapping(FMLMissingMappingsEvent event) {
 		InitHandler.INSTANCE.onMissingMapping(event);
+	}
+
+	@Mod.EventHandler
+	public void onServerStarting(FMLServerStartingEvent event) {
+
+		if (CodeHelper.runningInDevEnv())
+			event.registerServerCommand(new DebugCommand());
 	}
 
 	// This must be done in init or later
