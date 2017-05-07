@@ -4,7 +4,6 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
@@ -253,6 +252,12 @@ public class TileEntityTurbineComputerPort extends
 	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public void detach(IComputerAccess computer) {
 	}
+
+	@Override
+	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
+	public boolean equals(IPeripheral other) {
+		return hashCode() == other.hashCode();
+	}
 	
 	// OpenComputers
 	
@@ -283,11 +288,5 @@ public class TileEntityTurbineComputerPort extends
 			throw new NoSuchMethodError();
 		}
 		return callMethod(methodId, arguments);
-	}
-
-	@Override
-	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
-	public boolean equals(IPeripheral other) {
-		return hashCode() == other.hashCode();
 	}
 }
