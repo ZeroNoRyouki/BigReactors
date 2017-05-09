@@ -2,8 +2,10 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
+import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
+import erogenousbeef.bigreactors.utils.FluidHelper;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
@@ -20,13 +22,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements INeighborUpdatableEntity,
+public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements /*INeighborUpdatableEntity,*/
 		ITickableMultiblockPart, IInputOutputPort {
 
 	public TileEntityTurbineFluidPort() {
 
 		this._direction = Direction.Input;
-		_pumpDestination = null;
+		//_pumpDestination = null;
 	}
 
 	@Override
@@ -48,10 +50,10 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 			WorldHelper.notifyBlockUpdate(world, this.getWorldPosition(), null, null);
 			this.notifyOutwardNeighborsOfStateChange();
-
+			/*
 			if (direction.isOutput())
 				this.checkForAdjacentTank();
-
+			*/
 			if (markForUpdate)
 				this.markDirty();
 			else
@@ -73,20 +75,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		super.onPostMachineAssembled(multiblockControllerBase);
 		this.notifyOutwardNeighborsOfStateChange();
-		this.checkForAdjacentTank();
-/*
-		// TEST!
-		IBlockState bs = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-		worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
-		//worldObj.notifyBlockOfStateChange(this.pos.offset())
-		//markDirty();
-
-
-		checkForAdjacentTank();
-		
-		this.notifyNeighborsOfTileChange();
-		*/
+		//this.checkForAdjacentTank();
 	}
 
 	@Override
@@ -94,7 +83,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		super.onPostMachineBroken();
 		this.notifyOutwardNeighborsOfStateChange();
-		this._pumpDestination = null;
+		//this._pumpDestination = null;
 	}
 
 	@Override
@@ -141,6 +130,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	public void onMultiblockServerTick() {
 
 		// Try to pump steam out, if an outlet
+		/*
 		if (null == this._pumpDestination || this._direction.isInput())
 			return;
 
@@ -152,8 +142,22 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 			fluidToDrain.amount = this._pumpDestination.fill(fluidToDrain, true);
 			fluidHandler.drain(fluidToDrain, true);
 		}
+		*/
+
+		if (this._direction.isInput())
+			return;
+
+		final IFluidHandler fluidHandler = this.getTurbine().getFluidHandler(Direction.Output);
+		final FluidStack fluidToDrain = fluidHandler.drain(MultiblockTurbine.TANK_SIZE, false);
+		EnumFacing targetFacing = this.getOutwardFacing();
+
+		if (fluidToDrain != null && fluidToDrain.amount > 0 && null != targetFacing) {
+
+			fluidToDrain.amount = FluidHelper.fillAdjacentHandler(this, targetFacing, fluidToDrain, true);
+			fluidHandler.drain(fluidToDrain, true);
+		}
 	}
-	
+	/*
 	// INeighborUpdatableEntity
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
@@ -190,10 +194,11 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
 		}
 	}
+	*/
 
 	@CapabilityInject(IFluidHandler.class)
 	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
-	private IFluidHandler _pumpDestination;
+	//private IFluidHandler _pumpDestination;
 }

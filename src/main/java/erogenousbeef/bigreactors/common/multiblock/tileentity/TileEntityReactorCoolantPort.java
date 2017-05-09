@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
+import erogenousbeef.bigreactors.utils.FluidHelper;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
@@ -20,13 +21,13 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements INeighborUpdatableEntity,
+public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements /* INeighborUpdatableEntity,*/
 		ITickableMultiblockPart, IInputOutputPort {
 
 	public TileEntityReactorCoolantPort() {
 
 		this._direction = Direction.Input;
-		this._pumpDestination = null;
+		//this._pumpDestination = null;
 	}
 
 	@Override
@@ -48,10 +49,10 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 			WorldHelper.notifyBlockUpdate(world, this.getWorldPosition(), null, null);
 			this.notifyOutwardNeighborsOfStateChange();
-
+			/*
 			if (direction.isOutput())
 				this.checkForAdjacentTank();
-
+			*/
 			if (markForUpdate)
 				this.markDirty();
 			else
@@ -73,7 +74,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		super.onPostMachineAssembled(multiblockControllerBase);
 		this.notifyOutwardNeighborsOfStateChange();
-		this.checkForAdjacentTank();
+		//this.checkForAdjacentTank();
 	}
 	
 	@Override
@@ -81,7 +82,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		super.onPostMachineBroken();
 		this.notifyOutwardNeighborsOfStateChange();
-		this._pumpDestination = null;
+		//this._pumpDestination = null;
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	// ITickableMultiblockPart
 	@Override
 	public void onMultiblockServerTick() {
-
+		/*
 		// Try to pump steam out, if an outlet
 		if(_pumpDestination == null || this._direction.isInput())
 			return;
@@ -140,8 +141,26 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			fluidToDrain.amount = _pumpDestination.fill(fluidToDrain, true);
 			cc.drain(CoolantContainer.HOT, fluidToDrain, true);
 		}
+		///
+		*/
+
+		if (this._direction.isInput())
+			return;
+
+		CoolantContainer cc = this.getReactorController().getCoolantContainer();
+		FluidStack fluidToDrain = cc.drain(CoolantContainer.HOT, cc.getCapacity(), false);
+		EnumFacing targetFacing = this.getOutwardFacing();
+
+		if (fluidToDrain != null && fluidToDrain.amount > 0 && null != targetFacing) {
+
+			fluidToDrain.amount = FluidHelper.fillAdjacentHandler(this, targetFacing, fluidToDrain, true);
+			cc.drain(CoolantContainer.HOT, fluidToDrain, true);
+		}
+
+
 	}
 
+	/*
 	// INeighborUpdatableEntity
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
@@ -156,6 +175,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 		if (WorldHelper.calledByLogicalServer(this.getWorld()))
 			this.checkForAdjacentTank();
 	}
+
 
 	private void checkForAdjacentTank() {
 
@@ -178,10 +198,11 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 				this._pumpDestination = neighbor.getCapability(CAPAB_FLUID_HANDLER, facing);
 		}
 	}
+	*/
 
 	@CapabilityInject(IFluidHandler.class)
 	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
-	private IFluidHandler _pumpDestination;
+	//private IFluidHandler _pumpDestination;
 }
