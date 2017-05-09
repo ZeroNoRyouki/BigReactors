@@ -25,9 +25,18 @@ public final class FluidHelper {
         final TileEntity target = getTile(origin, facing);
 
         facing = facing.getOpposite();
-
+        /*
         return (null != CAPABILITY && null != target && target.hasCapability(CAPABILITY, facing)) ?
                 target.getCapability(CAPABILITY, facing).fill(fluid, doFill) : 0;
+        */
+        if (null != CAPABILITY && null != target && target.hasCapability(CAPABILITY, facing)) {
+
+            IFluidHandler hander = CAPABILITY.cast(target.getCapability(CAPABILITY, facing));
+
+            return hander.fill(fluid, doFill);
+        }
+        return 0;
+
     }
 
     @CapabilityInject(IFluidHandler.class)
