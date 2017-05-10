@@ -61,7 +61,7 @@ public final class CompatManager implements IModInitializationHandler {
         this._modList.put(IdReference.MODID_MEKANISM, "ModMekanism");
         this._modList.put(IdReference.MODID_THERMALEXPANSION, "ModThermalExpansion");
         this._modList.put(IdReference.MODID_MINEFACTORYRELOADED, "ModMineFactoryReloaded");
-        this._modList.put(IdReference.MODID_APPLIEDENERGISTICS2, "ModAppliedEnergistics2");
+        //this._modList.put(IdReference.MODID_APPLIEDENERGISTICS2, "ModAppliedEnergistics2");
     }
 
     private void loadHelpers() {
