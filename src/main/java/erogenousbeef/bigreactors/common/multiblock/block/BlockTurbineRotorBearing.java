@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.client.particle.SteamParticle;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
