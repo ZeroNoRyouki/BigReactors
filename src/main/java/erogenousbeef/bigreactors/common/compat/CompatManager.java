@@ -74,8 +74,11 @@ public final class CompatManager implements IModInitializationHandler {
 
                 final ModCompact helper = createHelper(entry.getValue());
 
-                if (null != helper)
+                if (null != helper) {
+
                     loadedHelpers.add(helper);
+                    BRLog.info("Loaded support for %s", entry.getKey());
+                }
             }
         }
 
