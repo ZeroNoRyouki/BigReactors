@@ -1,11 +1,9 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-/*
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
-*/
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import li.cil.oc.api.machine.Arguments;
@@ -25,7 +23,7 @@ import java.util.Map;
 		@Optional.Interface(iface = "li.cil.oc.api.network.ManagedPeripheral", modid = IdReference.MODID_OPENCOMPUTERS),
 		@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = IdReference.MODID_COMPUTERCRAFT)
 })
-public class TileEntityReactorComputerPort extends TileEntityReactorPart implements SimpleComponent, ManagedPeripheral /*IPeripheral*/ {
+public class TileEntityReactorComputerPort extends TileEntityReactorPart implements SimpleComponent, ManagedPeripheral, IPeripheral {
 
 	public enum ComputerMethod {
 		getConnected,			// No arguments
@@ -306,9 +304,8 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		return (TileEntityReactorControlRod)te;
 	}
 
-	// TODO re-enable when ComputerCraft is out for 1.11
 	// ComputerCraft
-	/*
+
 	@Override
 	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public String getType() {
@@ -347,8 +344,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 	public boolean equals(IPeripheral other) {
 		return hashCode() == other.hashCode();
 	}
-	*/
-	
+
 	// OpenComputers
 
 	@Override

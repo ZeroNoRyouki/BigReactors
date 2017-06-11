@@ -1,8 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
-/*
+
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
-*/
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
@@ -16,7 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -24,7 +22,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 @Optional.InterfaceList({
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = IdReference.MODID_COMPUTERCRAFT)
 })
-public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*implements IPeripheralProvider*/ {
+public class BlockMultiblockComputerPort extends BlockMultiblockDevice implements IPeripheralProvider {
 
     public BlockMultiblockComputerPort(PartType type, String blockName) {
         super(type, blockName);
@@ -78,7 +76,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*impleme
                     'G', "ingotGold", 'P', Items.REPEATER));
         }
     }
-    /*
+
     @Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
@@ -87,5 +85,4 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice /*impleme
 
         return tileEntity instanceof IPeripheral ? (IPeripheral)tileEntity : null;
     }
-    */
 }
