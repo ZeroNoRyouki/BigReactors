@@ -68,6 +68,11 @@ repositories {
         name = "OpenComputers"
         url = "http://maven.cil.li/"
     }
+
+    maven {
+        name = "ComputerCraft"
+        url "http://maven.zerono.it/"
+    }
 }
 
 dependencies {
@@ -75,6 +80,7 @@ dependencies {
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
     deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
     deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
+    compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
 }
 
 processResources  {
