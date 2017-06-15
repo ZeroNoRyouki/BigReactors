@@ -95,6 +95,9 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 
+        if (BigReactors.CONFIG.disableTurbineParticles)
+            return;
+
         TileEntity te = world.getTileEntity(pos);
 
         if (te instanceof TileEntityTurbineRotorBearing) {

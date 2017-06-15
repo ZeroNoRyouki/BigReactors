@@ -71,6 +71,9 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 
+		if (BigReactors.CONFIG.disableReactorParticles)
+			return;
+
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof TileEntityReactorFuelRod) {
