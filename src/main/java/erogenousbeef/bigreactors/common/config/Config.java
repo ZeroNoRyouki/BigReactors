@@ -68,6 +68,8 @@ public class Config extends ConfigHandler {
     // CLIENT
     public boolean disableReactorFuelRodRender;
     public boolean disableTurbineRotorRender;
+    public boolean disableReactorParticles;
+    public boolean disableTurbineParticles;
 
     // not persisted
     public String recipeYelloriumIngotName;
@@ -156,6 +158,8 @@ public class Config extends ConfigHandler {
 
         this.disableReactorFuelRodRender = this.getValue("disableReactorFuelRodRender", this.CLIENT, false, "If true, disables the rendering of fuel inside the fuel rods of a Reactor and the associated animation. Restart needed (Default: false)");
         this.disableTurbineRotorRender = this.getValue("disableTurbineRotorRender", this.CLIENT, false, "If true, disables the rendering of the rotor animation of an active Turbine. Restart needed (Default: false)");
+        this.disableReactorParticles = this.getValue("disableReactorParticles", this.CLIENT, false, "If true, disables the fuel rods particle effect. Restart needed (Default: false)");
+        this.disableTurbineParticles = this.getValue("disableTurbineParticles", this.CLIENT, false, "If true, disables the Turbine particle effect. Restart needed (Default: false)");
 
         // not persisted...
 
