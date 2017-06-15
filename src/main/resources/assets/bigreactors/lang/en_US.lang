@@ -16,6 +16,7 @@ fluid.tile.cyanite=Fluid Cyanite
 fluid.tile.blutonium=Fluid Blutonium
 fluid.steam=Steam
 fluid.yellorium=Fluid Yellorium
+fluid.cyanite=Fluid Cyanite
 
 # Placeable Fluids
 tile.fluid.yellorium.still.name=Fluid Yellorium
