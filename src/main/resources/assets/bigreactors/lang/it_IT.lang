@@ -180,6 +180,7 @@ config.bigreactors.reactor=Reattore
 config.bigreactors.turbine=Turbina
 config.bigreactors.recipes=Ricette
 config.bigreactors.worldgen=Generazione del mondo
+config.bigreactors.client=Configurazioni del Client
 
 config.bigreactors.compatibility.autoAddUranium=Aggiunge l'uranio come reagente per il Reattore
 config.bigreactors.compatibility.enableMetallurgyFantasyMetalsInTurbines=Permetti l'uso dei metalli fantasy di Metallurgy nella Turbina
@@ -228,6 +229,11 @@ config.bigreactors.worldgen.anglesiteOrePerCluster=Numero massimo di blocchi di 
 config.bigreactors.worldgen.benitoiteOreEnableWorldGen=Genera la benitoite grezza
 config.bigreactors.worldgen.benitoiteOreMaxClustersPerChunk=Numero massimo di vene di benitoite grezza per chunk
 config.bigreactors.worldgen.benitoiteOrePerCluster=Numero massimo di blocchi di benitoite grezza per vena
+
+config.bigreactors.client.disableReactorFuelRodRender=Disabilita l'animazione delle Barre di combustibile del Reattore
+config.bigreactors.client.disableTurbineRotorRender=Disabilita l'animazione del rotore della Turbina
+config.bigreactors.client.disableReactorParticles=Disabilita tutte le particles del Reattore
+config.bigreactors.client.disableTurbineParticles=Disabilita tutte le particles della Turbina
 
 # Debug-tools messages
 debug.bigreactors.lastvalidationerror=Last validation error: %1$s
