@@ -13,7 +13,10 @@ import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import erogenousbeef.bigreactors.init.BrFluids;
 import it.zerono.mods.zerocore.lib.client.VersionChecker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -23,6 +26,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -122,4 +127,12 @@ public class ClientProxy extends CommonProxy {
 		map.registerSprite(fluid.getStill());
 		map.registerSprite(fluid.getFlowing());
 	}
+
+	@Override
+	public void temp_sendPlayerStatusMessage(@Nonnull final EntityPlayer player, @Nonnull final ITextComponent message) {
+
+		//if (player instanceof EntityPlayerSP)
+			Minecraft.getMinecraft().ingameGUI.setOverlayMessage(message, false);
+	}
+
 }

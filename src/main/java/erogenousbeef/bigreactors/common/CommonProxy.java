@@ -7,7 +7,11 @@ import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -16,6 +20,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class CommonProxy implements IModInitializationHandler {
 
@@ -76,4 +82,11 @@ public class CommonProxy implements IModInitializationHandler {
 	@SubscribeEvent
 	public void setIcons(TextureStitchEvent.Post event) {
 	}
+
+	public void temp_sendPlayerStatusMessage(@Nonnull final EntityPlayer player, @Nonnull final ITextComponent message) {
+
+		if (player instanceof EntityPlayerMP)
+			((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(message, (byte)2));
+	}
+
 }

@@ -21,8 +21,10 @@ import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
 import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +32,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nonnull;
 import java.util.Calendar;
 
 @Mod(modid = BigReactors.MODID, name = BigReactors.NAME, version = "0.0.0.0",
@@ -302,4 +305,9 @@ public class BigReactors implements IModInitializationHandler {
 		Calendar calendar = Calendar.getInstance();
 		VALENTINES_DAY = (calendar.get(Calendar.MONTH) == 1 && calendar.get(Calendar.DAY_OF_MONTH) == 14);
 	}
+
+	public static void temp_sendStatusMessage(@Nonnull final EntityPlayer player, @Nonnull final ITextComponent message) {
+		getProxy().temp_sendPlayerStatusMessage(player, message);
+	}
+
 }
