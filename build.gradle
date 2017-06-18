@@ -63,11 +63,11 @@ repositories {
         name "Tesla"
         url "http://maven.epoxide.xyz/"
     }
-
+    /*
     maven {
         name = "OpenComputers"
         url = "http://maven.cil.li/"
-    }
+    }*/
 
     maven {
         name = "ComputerCraft"
@@ -79,7 +79,7 @@ dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
     deobfCompile group: "net.darkhax.tesla", name: "Tesla-1.12", version: "${config.tesla_version}"
-    deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
+    //deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
 }
 

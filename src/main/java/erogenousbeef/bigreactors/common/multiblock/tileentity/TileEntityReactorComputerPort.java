@@ -6,10 +6,12 @@ import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+/*
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedPeripheral;
 import li.cil.oc.api.network.SimpleComponent;
+*/
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
@@ -23,7 +25,7 @@ import java.util.Map;
 		@Optional.Interface(iface = "li.cil.oc.api.network.ManagedPeripheral", modid = IdReference.MODID_OPENCOMPUTERS),
 		@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = IdReference.MODID_COMPUTERCRAFT)
 })
-public class TileEntityReactorComputerPort extends TileEntityReactorPart implements SimpleComponent, ManagedPeripheral, IPeripheral {
+public class TileEntityReactorComputerPort extends TileEntityReactorPart implements /*SimpleComponent, ManagedPeripheral,*/ IPeripheral {
 
 	public enum ComputerMethod {
 		getConnected,			// No arguments
@@ -346,7 +348,7 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 	}
 
 	// OpenComputers
-
+	/* TODO Removed OpenComputers compatibility until OpenComputers is released for 1.12
 	@Override
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public String getComponentName() {
@@ -375,4 +377,5 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 		}
 		return callMethod(methodId, arguments);
 	}
+	*/
 }

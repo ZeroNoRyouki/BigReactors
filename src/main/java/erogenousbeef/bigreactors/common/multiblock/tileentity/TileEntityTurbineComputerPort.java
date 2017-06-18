@@ -8,10 +8,12 @@ import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine.VentStatus;
+/*
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedPeripheral;
 import li.cil.oc.api.network.SimpleComponent;
+*/
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,7 +31,7 @@ import java.util.Map;
 	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = IdReference.MODID_COMPUTERCRAFT)
 })
 public class TileEntityTurbineComputerPort extends
-		TileEntityTurbinePart implements SimpleComponent, ManagedPeripheral, IPeripheral {
+		TileEntityTurbinePart implements /*SimpleComponent, ManagedPeripheral,*/ IPeripheral {
 
 	public enum ComputerMethod {
 		getConnected,			// No arguments
@@ -259,7 +261,7 @@ public class TileEntityTurbineComputerPort extends
 	}
 
 	// OpenComputers
-
+	/* TODO Removed OpenComputers compatibility until OpenComputers is released for 1.12
 	@Override
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public String getComponentName() {
@@ -288,4 +290,5 @@ public class TileEntityTurbineComputerPort extends
 		}
 		return callMethod(methodId, arguments);
 	}
+	*/
 }
