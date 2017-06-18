@@ -73,8 +73,11 @@ public class ItemWrench extends ItemBase implements IToolHammer {
 
     @Override
     public void registerRecipes() {
+        // TODO: waiting for Forge new recipies system
+        /*
         GameRegistry.addRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
                 'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.YELLOW.getMetadata()));
+                */
     }
 
     /**

@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.client.particle;
 
 import it.zerono.mods.zerocore.lib.client.particle.SpiralParticle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +40,7 @@ public class SteamParticle extends SpiralParticle {
     /**
      * Renders the particle
      */
-    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ,
+    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ,
                                float rotationYZ, float rotationXY, float rotationXZ)  {
 
         float f = ((float)this.particleAge + partialTicks) / (float)this.particleMaxAge * 32.0F;

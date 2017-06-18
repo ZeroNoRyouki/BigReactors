@@ -97,7 +97,7 @@ public class BlockBROre extends BlockBR {
 	 */
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
 
 		if (null == this._subBlocks) {
 
@@ -107,7 +107,7 @@ public class BlockBROre extends BlockBR {
 			this._subBlocks = new ArrayList<>(length);
 
 			for (int i = 0; i < length; ++i)
-				this._subBlocks.add(new ItemStack(item, 1, types[i].toMeta()));
+				this._subBlocks.add(new ItemStack(this, 1, types[i].toMeta()));
 		}
 
 		list.addAll(this._subBlocks);

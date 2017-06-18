@@ -40,7 +40,8 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 
 	@Override
 	public void registerRecipes() {
-
+		// TODO: waiting for Forge new recipies system
+        /*
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
 			GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
 				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
@@ -48,6 +49,7 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
 			GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
 				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
+				*/
 	}
 
 	/**

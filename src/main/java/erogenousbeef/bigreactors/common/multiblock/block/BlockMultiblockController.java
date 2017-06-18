@@ -46,6 +46,8 @@ public class BlockMultiblockController extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
+        // TODO: waiting for Forge new recipies system
+        /*
 
         if (PartType.ReactorController == this._type) {
 
@@ -71,6 +73,7 @@ public class BlockMultiblockController extends BlockMultiblockDevice {
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND, 'B',
                         BigReactors.CONFIG.recipeBlutoniumIngotName));
         }
+        */
     }
 
     @Override

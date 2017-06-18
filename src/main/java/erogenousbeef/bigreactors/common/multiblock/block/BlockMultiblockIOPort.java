@@ -64,7 +64,8 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-
+        // TODO: waiting for Forge new recipies system
+        /*
         if (PartType.ReactorAccessPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
@@ -99,6 +100,7 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'I', "ingotSteel",
                         'V', Items.BUCKET, 'P', Blocks.PISTON));
         }
+        */
     }
 
     @Override

@@ -98,8 +98,11 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 			final ItemStack output = this.createItemStack(tier, 1);
 			final ItemStack casing = casingBlock.createItemStack(tier, 1);
 
+			// TODO: waiting for Forge new recipies system
+        	/*
 			for (String glass : glassTypes)
 				GameRegistry.addRecipe(new ShapedOreRecipe(output, "GCG", 'G', glass, 'C', casing));
+			*/
 		}
 	}
 

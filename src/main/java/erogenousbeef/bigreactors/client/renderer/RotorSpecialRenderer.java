@@ -20,6 +20,8 @@ import org.lwjgl.opengl.GL11;
 
 public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTurbineRotorBearing> {
 
+
+
 	@Override
 	public void renderTileEntityAt(final TileEntityTurbineRotorBearing bearing, double x, double y, double z,
 								   float partialTicks, int destroyStage) {

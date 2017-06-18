@@ -47,7 +47,8 @@ public final class BrItems {
 
              @Override
              public void registerRecipes() {
-
+                 // TODO: waiting for Forge new recipies system
+                /*
                  final Config configs = BigReactors.CONFIG;
                  final ItemStack ingotGraphite = OreDictionaryHelper.getOre("ingotGraphite");
                  final ItemStack ingotCyanite = OreDictionaryHelper.getOre("ingotCyanite");
@@ -81,6 +82,7 @@ public final class BrItems {
 
                  GameRegistry.addRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1), "CCC", "C C", "CCC",
                          'C', ingotCyanite);
+                */
              }
         });
 
@@ -105,6 +107,8 @@ public final class BrItems {
 
             @Override
             public void registerRecipes() {
+                // TODO: waiting for Forge new recipies system
+                /*
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
                     GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "ARA", "IGI",
@@ -115,6 +119,7 @@ public final class BrItems {
                     GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "ARA", "IGI",
                             'I', "ingotSteel", 'G', "ingotGraphite",
                             'A', "ingotGold", 'R', Items.REDSTONE));
+                            */
             }
         });
 
@@ -123,6 +128,8 @@ public final class BrItems {
 
             @Override
             public void registerRecipes() {
+                // TODO: waiting for Forge new recipies system
+                /*
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
                     GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "ARA", "IGI",
@@ -133,6 +140,7 @@ public final class BrItems {
                     GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "ARA", "IGI",
                             'I', "ingotSteel", 'G', "ingotGraphite",
                             'A', "ingotGold", 'R', Items.COMPARATOR));
+                            */
             }
         });
 

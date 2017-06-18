@@ -26,7 +26,8 @@ public class BlockReactorControlRod extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-
+        // TODO: waiting for Forge new recipies system
+        /*
         if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CGC", "GRG", "CUC",
                 'G', "ingotGraphite", 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1),
@@ -36,5 +37,6 @@ public class BlockReactorControlRod extends BlockMultiblockDevice {
             GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CGC", "GRG", "CUC",
                 'G', "ingotGraphite", 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1),
                 'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+        */
     }
 }

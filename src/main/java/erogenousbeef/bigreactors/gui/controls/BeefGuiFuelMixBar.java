@@ -5,7 +5,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -49,7 +49,7 @@ public class BeefGuiFuelMixBar extends BeefGuiVerticalProgressBar implements
 			TextureManager renderEngine, int barMinX, int barMaxX, int barMinY,
 			int barMaxY, int zLevel) {
 
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 		int barMaxHeight = this.height - 1;
 		int barHeight = Math.max(1, Math.round(getProgress() * barMaxHeight));
 

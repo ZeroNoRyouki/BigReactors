@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -86,7 +87,7 @@ public class CommonProxy implements IModInitializationHandler {
 	public void temp_sendPlayerStatusMessage(@Nonnull final EntityPlayer player, @Nonnull final ITextComponent message) {
 
 		if (player instanceof EntityPlayerMP)
-			((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(message, (byte)2));
+			((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(message, ChatType.GAME_INFO));
 	}
 
 }

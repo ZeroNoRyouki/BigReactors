@@ -3,7 +3,7 @@ package erogenousbeef.bigreactors.gui;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import org.lwjgl.opengl.GL11;
 
 public abstract class BeefGuiControlBase implements IBeefGuiControl {
@@ -77,7 +77,7 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
 		}
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 
 		GlStateManager.enableBlend();
 		GlStateManager.disableTexture2D();

@@ -38,7 +38,8 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-
+        // TODO: waiting for Forge new recipies system
+        /*
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
             GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND,
@@ -48,6 +49,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
             GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND,
                     'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Basic, 1));
+        */
     }
 
     @Override

@@ -43,7 +43,8 @@ public class BlockMultiblockCasing extends BlockTieredPart {
 
     @Override
     public void registerRecipes() {
-
+        // TODO: waiting for Forge new recipies system
+        /*
         if (PartType.ReactorCasing == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
@@ -64,6 +65,7 @@ public class BlockMultiblockCasing extends BlockTieredPart {
                 GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
                         'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Basic, 1)));
         }
+        */
     }
 
     @Override

@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +27,7 @@ public abstract class BeefGuiIconProgressBar extends BeefGuiVerticalProgressBar 
 		if (progressBarIcon == null)
 			return;
 
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 		TextureAtlasSprite sprite = this.guiContainer.mc.getTextureMapBlocks().getAtlasSprite(progressBarIcon.toString());
 		double minU = sprite.getMinU();
 		double minV = sprite.getMinV();

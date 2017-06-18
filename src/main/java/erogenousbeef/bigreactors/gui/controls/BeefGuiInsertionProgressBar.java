@@ -6,7 +6,7 @@ import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -58,7 +58,7 @@ public class BeefGuiInsertionProgressBar extends BeefGuiControlBase implements I
 		// Draw the background
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 

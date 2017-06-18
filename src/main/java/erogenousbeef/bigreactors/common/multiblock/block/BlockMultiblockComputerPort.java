@@ -46,7 +46,8 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
 
     @Override
     public void registerRecipes() {
-
+        // TODO: waiting for Forge new recipies system
+        /*
         if (!CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) &&
                 !CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS))
             return;
@@ -75,6 +76,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
                     'G', "ingotGold", 'P', Items.REPEATER));
         }
+        */
     }
 
     @Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)

@@ -33,7 +33,8 @@ public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineR
 
 	@Override
 	public void registerRecipes() {
-
+		// TODO: waiting for Forge new recipies system
+        /*
 		if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
 			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI",
 				'C', "ingotCyanite", 'I', "ingotIron"));
@@ -41,6 +42,7 @@ public class BlockTurbineRotorShaft extends BlockTieredPart implements ITurbineR
 		if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
 			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "ICI",
 				'C', "ingotCyanite", 'I', "ingotIron"));
+		*/
 	}
 
 	@Override

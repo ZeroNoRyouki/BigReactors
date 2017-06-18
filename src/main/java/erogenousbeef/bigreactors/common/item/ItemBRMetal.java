@@ -72,7 +72,7 @@ public class ItemBRMetal extends ItemBase {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
+	public void getSubItems(CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
 
 		if (null == this._subItems) {
 
@@ -82,7 +82,7 @@ public class ItemBRMetal extends ItemBase {
 			this._subItems = new ArrayList<>(length);
 
 			for (int i = 0; i < length; ++i)
-				this._subItems.add(new ItemStack(item, 1, types[i].toMeta()));
+				this._subItems.add(new ItemStack(this, 1, types[i].toMeta()));
 		}
 
 		list.addAll(this._subItems);

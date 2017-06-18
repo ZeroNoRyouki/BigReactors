@@ -2,7 +2,7 @@ package erogenousbeef.bigreactors.gui.controls;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -43,7 +43,7 @@ public abstract class BeefGuiTextureProgressBar extends BeefGuiVerticalProgressB
 
 		double barMaxV = 1;
 		double barMinV = 1 - Math.min(1, Math.max(0, barHeight / this.height));
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 
 		renderEngine.bindTexture(getBarTexture());
 		vertexBuffer.begin(GL11.GL_QUADS, vertexBuffer.getVertexFormat());

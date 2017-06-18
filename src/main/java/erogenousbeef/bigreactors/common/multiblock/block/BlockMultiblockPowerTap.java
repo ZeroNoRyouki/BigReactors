@@ -53,7 +53,8 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-
+        // TODO: waiting for Forge new recipies system
+        /*
         if (PartType.ReactorPowerTap == this._type) {
 
             if (!BigReactors.CONFIG.enableReactorPowerTapRecipe)
@@ -107,6 +108,7 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', lapis);
             }
         }
+        */
     }
 
     /**

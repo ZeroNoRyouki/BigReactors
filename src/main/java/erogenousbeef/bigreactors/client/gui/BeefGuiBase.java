@@ -11,7 +11,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.inventory.Container;
@@ -122,7 +122,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 	public void drawTexturedModelRectFromIcon(int x, int y, ResourceLocation texture, int width, int height) {
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 
 		this.mc.renderEngine.bindTexture(this.mc.getTextureMapBlocks().LOCATION_BLOCKS_TEXTURE);
 
