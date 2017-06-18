@@ -43,9 +43,9 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
-sourceCompatibility = targetCompatibility = "1.7"
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.7"
+    sourceCompatibility = targetCompatibility = "1.8"
 }
 
 configurations {
@@ -78,7 +78,7 @@ repositories {
 dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
-    deobfCompile group: "net.darkhax.tesla", name: "Tesla", version: "${config.tesla_version}"
+    deobfCompile group: "net.darkhax.tesla", name: "Tesla-1.12", version: "${config.tesla_version}"
     deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
 }
