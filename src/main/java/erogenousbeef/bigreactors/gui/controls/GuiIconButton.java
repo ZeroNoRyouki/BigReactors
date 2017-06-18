@@ -38,7 +38,8 @@ public class GuiIconButton extends GuiButton implements IBeefTooltipControl {
      * Draws this button to the screen.
      */
 	@Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+    //public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_) {
 
         if (this.visible)  {
 

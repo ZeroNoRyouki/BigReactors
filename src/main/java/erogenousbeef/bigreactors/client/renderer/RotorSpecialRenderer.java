@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
 import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RotorInfo;
+import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -23,8 +24,8 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 
 
 	@Override
-	public void renderTileEntityAt(final TileEntityTurbineRotorBearing bearing, double x, double y, double z,
-								   float partialTicks, int destroyStage) {
+	//public void renderTileEntityAt(final TileEntityTurbineRotorBearing bearing, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void func_192841_a(final TileEntityTurbineRotorBearing bearing, double x, double y, double z, float partialTicks, int destroyStage, float p_192841_10_) {
 
 		final MultiblockTurbine turbine = bearing.getTurbine();
 		final RotorInfo rotorInfo = bearing.getRotorInfo();

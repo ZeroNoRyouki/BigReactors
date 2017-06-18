@@ -19,7 +19,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntityReactorFuelRod> {
 
     @Override
-    public void renderTileEntityAt(TileEntityReactorFuelRod rod, double x, double y, double z, float partialTicks, int destroyStage) {
+    //public void renderTileEntityAt(TileEntityReactorFuelRod rod, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void func_192841_a(TileEntityReactorFuelRod rod, double x, double y, double z, float partialTicks, int destroyStage, float p_192841_10_) {
 
         final FuelAssembly assembly = rod.getFuelAssembly();
         final MultiblockReactor reactor = rod.getReactorController();
