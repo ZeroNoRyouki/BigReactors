@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.common.item;
 
 import cofh.api.item.IToolHammer;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -73,11 +74,8 @@ public class ItemWrench extends ItemBase implements IToolHammer {
 
     @Override
     public void registerRecipes() {
-        // TODO: waiting for Forge new recipies system
-        /*
-        GameRegistry.addRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
+        RecipeHelper.addShapedRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
                 'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.YELLOW.getMetadata()));
-                */
     }
 
     /**

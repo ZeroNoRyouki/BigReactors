@@ -8,6 +8,7 @@ import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBlade;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -32,17 +33,14 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
 
     @Override
     public void registerRecipes() {
-        // TODO: waiting for Forge new recipies system
-        /*
 
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CII",
-                    'C', "ingotCyanite", 'I', "ingotIron"));
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CII",
+                    'C', "ingotCyanite", 'I', "ingotIron");
 
         if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CII",
-                    'C', "ingotCyanite", 'I', "ingotIron"));
-                    */
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CII",
+                    'C', "ingotCyanite", 'I', "ingotIron");
     }
 
     @Override

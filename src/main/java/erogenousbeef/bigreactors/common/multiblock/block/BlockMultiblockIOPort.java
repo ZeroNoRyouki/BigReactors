@@ -13,6 +13,7 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntit
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
@@ -64,43 +65,41 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-        // TODO: waiting for Forge new recipies system
-        /*
+
         if (PartType.ReactorAccessPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", " V ", "CPC",
+                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", " V ", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'V', Blocks.CHEST, 'P', Blocks.PISTON);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "C C", " V ", "CPC",
+                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "C C", " V ", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'V', Blocks.CHEST, 'P', Blocks.PISTON);
 
         } else if (PartType.ReactorCoolantPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "IVI", "CPC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "IVI", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'V', Items.BUCKET, 'P', Blocks.PISTON,
-                        'I', "ingotIron"));
+                        'I', "ingotIron");
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "IVI", "CPC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "IVI", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'V', Items.BUCKET, 'P', Blocks.PISTON,
-                        'I', "ingotSteel"));
+                        'I', "ingotSteel");
 
         } else if (PartType.TurbineFluidPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'I', "ingotIron",
-                        'V', Items.BUCKET, 'P', Blocks.PISTON));
+                        'V', Items.BUCKET, 'P', Blocks.PISTON);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'I', "ingotSteel",
-                        'V', Items.BUCKET, 'P', Blocks.PISTON));
+                        'V', Items.BUCKET, 'P', Blocks.PISTON);
         }
-        */
     }
 
     @Override

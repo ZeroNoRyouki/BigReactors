@@ -9,13 +9,12 @@ import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
 import erogenousbeef.bigreactors.common.item.ItemWrench;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public final class BrItems {
 
@@ -47,8 +46,7 @@ public final class BrItems {
 
              @Override
              public void registerRecipes() {
-                 // TODO: waiting for Forge new recipies system
-                /*
+
                  final Config configs = BigReactors.CONFIG;
                  final ItemStack ingotGraphite = OreDictionaryHelper.getOre("ingotGraphite");
                  final ItemStack ingotCyanite = OreDictionaryHelper.getOre("ingotCyanite");
@@ -65,24 +63,23 @@ public final class BrItems {
 
                  // -- Gravel + Coal -> Graphite
                  if (configs.registerGraphiteCoalCraftingRecipes)
-                     GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
-                             new ItemStack(Items.COAL, 1, 0)));
+                     RecipeHelper.addShapedOreDictRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
+                             new ItemStack(Items.COAL, 1, 0));
 
                  // -- Gravel + Charcoal -> Graphite
                  if (configs.registerGraphiteCharcoalCraftingRecipes)
-                     GameRegistry.addRecipe(new ShapedOreRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
-                             new ItemStack(Items.COAL, 1, 1)));
+                     RecipeHelper.addShapedOreDictRecipe(ingotGraphite, "GCG", 'G', Blocks.GRAVEL, 'C',
+                             new ItemStack(Items.COAL, 1, 1));
 
                  // -- Yellorium ingot + Sand -> Cyanite
                  if (configs.enableCyaniteFromYelloriumRecipe)
-                     GameRegistry.addRecipe(new ShapelessOreRecipe(ingotCyanite, configs.recipeYelloriumIngotName, Blocks.SAND));
+                     RecipeHelper.addShapelessOreDictRecipe(ingotCyanite, configs.recipeYelloriumIngotName, Blocks.SAND);
 
 
                  // TEMPORARY recipe for the blutonium ingot
 
-                 GameRegistry.addRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1), "CCC", "C C", "CCC",
+                 RecipeHelper.addShapedRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1), "CCC", "C C", "CCC",
                          'C', ingotCyanite);
-                */
              }
         });
 
@@ -107,19 +104,16 @@ public final class BrItems {
 
             @Override
             public void registerRecipes() {
-                // TODO: waiting for Forge new recipies system
-                /*
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                    GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "ARA", "IGI",
+                    RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "ARA", "IGI",
                             'I', "ingotIron", 'G', "ingotGraphite",
-                            'A', "ingotGold", 'R', Items.REDSTONE));
+                            'A', "ingotGold", 'R', Items.REDSTONE);
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                    GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "ARA", "IGI",
+                    RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "ARA", "IGI",
                             'I', "ingotSteel", 'G', "ingotGraphite",
-                            'A', "ingotGold", 'R', Items.REDSTONE));
-                            */
+                            'A', "ingotGold", 'R', Items.REDSTONE);
             }
         });
 
@@ -128,19 +122,16 @@ public final class BrItems {
 
             @Override
             public void registerRecipes() {
-                // TODO: waiting for Forge new recipies system
-                /*
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                    GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "ARA", "IGI",
+                    RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "IGI", "ARA", "IGI",
                             'I', "ingotIron", 'G', "ingotGraphite",
-                            'A', "ingotGold", 'R', Items.COMPARATOR));
+                            'A', "ingotGold", 'R', Items.COMPARATOR);
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                    GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "ARA", "IGI",
+                    RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "IGI", "ARA", "IGI",
                             'I', "ingotSteel", 'G', "ingotGraphite",
-                            'A', "ingotGold", 'R', Items.COMPARATOR));
-                            */
+                            'A', "ingotGold", 'R', Items.COMPARATOR);
             }
         });
 

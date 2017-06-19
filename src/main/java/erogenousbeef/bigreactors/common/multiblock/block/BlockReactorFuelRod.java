@@ -8,6 +8,7 @@ import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -36,16 +37,14 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 
 	@Override
 	public void registerRecipes() {
-		// TODO: waiting for Forge new recipies system
-        /*
+
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",
-				'I', "ingotIron", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",
+				'I', "ingotIron", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
 
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-			GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "ICI", "IUI", "ICI",
-				'I', "ingotSteel", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
-		*/
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "ICI", "IUI", "ICI",
+				'I', "ingotSteel", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
 	}
 
 	@Override

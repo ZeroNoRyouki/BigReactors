@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
@@ -40,16 +41,14 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 
 	@Override
 	public void registerRecipes() {
-		// TODO: waiting for Forge new recipies system
-        /*
+
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-			GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
+            RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
 				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
 
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-			GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
+            RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
 				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
-				*/
 	}
 
 	/**

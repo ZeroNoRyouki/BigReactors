@@ -9,6 +9,7 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineP
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.BlockFacings;
 import it.zerono.mods.zerocore.lib.PropertyBlockFacings;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -98,11 +99,8 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 			final ItemStack output = this.createItemStack(tier, 1);
 			final ItemStack casing = casingBlock.createItemStack(tier, 1);
 
-			// TODO: waiting for Forge new recipies system
-        	/*
 			for (String glass : glassTypes)
-				GameRegistry.addRecipe(new ShapedOreRecipe(output, "GCG", 'G', glass, 'C', casing));
-			*/
+                RecipeHelper.addShapedOreDictRecipe(output, "GCG", 'G', glass, 'C', casing);
 		}
 	}
 

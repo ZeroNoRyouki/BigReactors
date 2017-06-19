@@ -5,6 +5,7 @@ import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
@@ -26,17 +27,15 @@ public class BlockReactorControlRod extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-        // TODO: waiting for Forge new recipies system
-        /*
+
         if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CGC", "GRG", "CUC",
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CGC", "GRG", "CUC",
                 'G', "ingotGraphite", 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1),
-                'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
+                'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CGC", "GRG", "CUC",
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CGC", "GRG", "CUC",
                 'G', "ingotGraphite", 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1),
-                'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName));
-        */
+                'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
     }
 }

@@ -10,6 +10,7 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineC
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -46,34 +47,31 @@ public class BlockMultiblockController extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-        // TODO: waiting for Forge new recipies system
-        /*
 
         if (PartType.ReactorController == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "GDG", "CRC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "GDG", "CRC",
                         'D', Items.DIAMOND, 'G', BigReactors.CONFIG.recipeYelloriumIngotName,
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE));
+                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "GDG", "CRC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "GDG", "CRC",
                         'D', Items.DIAMOND, 'G', BigReactors.CONFIG.recipeYelloriumIngotName,
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE));
+                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE);
 
         } else if (PartType.TurbineController == this._type) {
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "BDB", "H H",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "BDB", "H H",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND, 'B',
-                        BigReactors.CONFIG.recipeBlutoniumIngotName));
+                        BigReactors.CONFIG.recipeBlutoniumIngotName);
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "BDB", "H H",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "BDB", "H H",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND, 'B',
-                        BigReactors.CONFIG.recipeBlutoniumIngotName));
+                        BigReactors.CONFIG.recipeBlutoniumIngotName);
         }
-        */
     }
 
     @Override

@@ -7,6 +7,7 @@ import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -38,18 +39,16 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
 
     @Override
     public void registerRecipes() {
-        // TODO: waiting for Forge new recipies system
-        /*
+
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-            GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
+            RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND,
                     'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Legacy, 1));
 
         if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-            GameRegistry.addRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
+            RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND,
                     'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Basic, 1));
-        */
     }
 
     @Override

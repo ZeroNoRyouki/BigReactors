@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
@@ -68,8 +69,6 @@ public class BlockBRMetal extends BlockBR {
 
 	@Override
 	public void registerRecipes() {
-		// TODO: waiting for Forge new recipies system
-        /*
 
 		// Metal blocks & ingots
 
@@ -80,26 +79,25 @@ public class BlockBRMetal extends BlockBR {
 			block = this.createItemStack(metal, 1);
 			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
 
-			GameRegistry.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
+            RecipeHelper.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
 			ItemHelper.stackSetSize(ingot, 9);
-			GameRegistry.addShapelessRecipe(ingot, block);
+            RecipeHelper.addShapelessRecipe(ingot, block);
 		}
 
 		// Ludicrite block. Because.
 
 		final ItemStack ludicriteBlock = this.createItemStack(MetalType.Ludicrite, 1);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(ludicriteBlock, "BPB", "ENE", "BPB",
+        RecipeHelper.addShapedOreDictRecipe(ludicriteBlock, "BPB", "ENE", "BPB",
 				'N', Items.NETHER_STAR, 'P', Items.ENDER_PEARL, 'E', Blocks.EMERALD_BLOCK,
-				'B', BigReactors.CONFIG.recipeBlutoniumIngotName));
+				'B', BigReactors.CONFIG.recipeBlutoniumIngotName);
 
 		if (OreDictionaryHelper.doesOreNameExist("blockEnderium")) {
 
 			// Ok, how about some ludicrous shit here. Enderium and blaze rods. Have fun, bucko.
-			GameRegistry.addRecipe(new ShapedOreRecipe(ludicriteBlock, "BRB", "E E", "BRB",
-					'B', BigReactors.CONFIG.recipeBlutoniumIngotName, 'R', Items.BLAZE_ROD, 'E', "blockEnderium"));
+            RecipeHelper.addShapedOreDictRecipe(ludicriteBlock, "BRB", "E E", "BRB",
+					'B', BigReactors.CONFIG.recipeBlutoniumIngotName, 'R', Items.BLAZE_ROD, 'E', "blockEnderium");
 		}
-		*/
 	}
 
 	/**
