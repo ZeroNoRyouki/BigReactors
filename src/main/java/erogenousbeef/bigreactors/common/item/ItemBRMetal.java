@@ -74,6 +74,9 @@ public class ItemBRMetal extends ItemBase {
 	@Override
 	public void getSubItems(CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
 
+		if (creativeTabs != this.getCreativeTab())
+			return;
+
 		if (null == this._subItems) {
 
 			MetalType[] types = MetalType.VALUES;

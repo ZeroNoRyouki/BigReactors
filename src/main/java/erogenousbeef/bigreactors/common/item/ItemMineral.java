@@ -50,6 +50,9 @@ public class ItemMineral extends ItemBase  {
     @Override
     public void getSubItems(CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
 
+        if (creativeTabs != this.getCreativeTab())
+            return;
+
         if (null == this._subItems) {
 
             MineralType[] types = MineralType.VALUES;

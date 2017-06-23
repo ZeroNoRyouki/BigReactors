@@ -50,6 +50,9 @@ public class ItemTieredComponent extends ItemBase {
     @Override
     public void getSubItems(CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
 
+        if (creativeTabs != this.getCreativeTab())
+            return;
+
         if (null == this._subItems) {
 
             PartTier[] types = PartTier.RELEASED_TIERS;
