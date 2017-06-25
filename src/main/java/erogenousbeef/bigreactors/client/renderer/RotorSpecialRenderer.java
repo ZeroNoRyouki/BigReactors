@@ -21,11 +21,8 @@ import org.lwjgl.opengl.GL11;
 
 public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTurbineRotorBearing> {
 
-
-
 	@Override
-	//public void renderTileEntityAt(final TileEntityTurbineRotorBearing bearing, double x, double y, double z, float partialTicks, int destroyStage) {
-	public void func_192841_a(final TileEntityTurbineRotorBearing bearing, double x, double y, double z, float partialTicks, int destroyStage, float p_192841_10_) {
+	public void render(final TileEntityTurbineRotorBearing bearing, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		final MultiblockTurbine turbine = bearing.getTurbine();
 		final RotorInfo rotorInfo = bearing.getRotorInfo();

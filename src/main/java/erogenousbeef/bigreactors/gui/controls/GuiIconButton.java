@@ -38,16 +38,15 @@ public class GuiIconButton extends GuiButton implements IBeefTooltipControl {
      * Draws this button to the screen.
      */
 	@Override
-    //public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-	public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 
         if (this.visible)  {
 
             // Draw the border
 
-			this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition &&
-					mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-        	this.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height,
+			this.hovered = mouseX >= this.x && mouseY >= this.y &&
+					mouseX < this.x + this.width && mouseY < this.y + this.height;
+        	this.drawRect(this.x, this.y, this.x + this.width, this.y + this.height,
 					this.getHoverState(this.hovered) == 2 ? 0xFF5555AA : 0xFF000000);
             this.mouseDragged(mc, mouseX, mouseY);
 
@@ -61,7 +60,7 @@ public class GuiIconButton extends GuiButton implements IBeefTooltipControl {
 
 				mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-				this.drawTexturedModalRect(this.xPosition + 1, this.yPosition + 1, sprite, this.width - 2, this.height - 2);
+				this.drawTexturedModalRect(this.x + 1, this.y + 1, sprite, this.width - 2, this.height - 2);
             }
         }
     }
@@ -69,7 +68,7 @@ public class GuiIconButton extends GuiButton implements IBeefTooltipControl {
 	@Override
 	public boolean isMouseOver(int mouseX, int mouseY) {
 
-		if(mouseX < xPosition || mouseX > xPosition+width || mouseY < yPosition || mouseY > yPosition+height) { return false; }
+		if(mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) { return false; }
 		return true;
 	}
 

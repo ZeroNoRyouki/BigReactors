@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,7 +29,7 @@ public class CommonProxy implements IModInitializationHandler {
 
 	public BlockBR register(BlockBR block) {
 
-		GameRegistry.register(block);
+		ForgeRegistries.BLOCKS.register(block);
 		block.setCreativeTab(BigReactors.TAB);
 		block.onPostRegister();
 		return block;
@@ -36,7 +37,7 @@ public class CommonProxy implements IModInitializationHandler {
 
 	public BlockBRGenericFluid register(BlockBRGenericFluid block) {
 
-		GameRegistry.register(block);
+		ForgeRegistries.BLOCKS.register(block);
 		block.setCreativeTab(BigReactors.TAB);
 		block.onPostRegister();
 		return block;
@@ -44,7 +45,7 @@ public class CommonProxy implements IModInitializationHandler {
 
 	public ItemBase register(ItemBase item) {
 
-		GameRegistry.register(item);
+		ForgeRegistries.ITEMS.register(item);
 		item.setCreativeTab(BigReactors.TAB);
 		item.onPostRegister();
 		return item;

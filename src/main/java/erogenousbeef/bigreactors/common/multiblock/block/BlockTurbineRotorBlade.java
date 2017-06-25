@@ -55,7 +55,7 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
     }
 
     @Override
-    public boolean isFullyOpaque(IBlockState state) {
+    public boolean isBlockNormalCube(IBlockState state) {
         return false;
     }
 

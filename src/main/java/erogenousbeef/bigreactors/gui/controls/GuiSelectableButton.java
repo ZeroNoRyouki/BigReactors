@@ -32,12 +32,11 @@ public class GuiSelectableButton extends GuiButton implements IBeefTooltipContro
 	public boolean isSelected() { return this.selected; }
 
 	@Override
-	//public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-	public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if (this.visible)
         {
 
-            this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             
             int k = this.getHoverState(this.hovered);
             int borderColor = this.selected ? this.selectedColor : 0xFF000000;
@@ -50,22 +49,22 @@ public class GuiSelectableButton extends GuiButton implements IBeefTooltipContro
             	borderColor = this.selected ? this.selectedColor : 0xFF5555AA;
             }
 
-        	this.drawRect(this.xPosition, this.yPosition, this.xPosition+this.width, this.yPosition+this.height, borderColor);
-        	this.drawRect(this.xPosition+1, this.yPosition+1, this.xPosition+this.width-1, this.yPosition+this.height-1, bgColor);
+        	this.drawRect(this.x, this.y, this.x+this.width, this.y+this.height, borderColor);
+        	this.drawRect(this.x+1, this.y+1, this.x+this.width-1, this.y+this.height-1, bgColor);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
 			TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(this.icon.toString());
 
 			mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-            this.drawTexturedModalRect(this.xPosition+1, this.yPosition+1, sprite, this.width-2, this.height-2);
+            this.drawTexturedModalRect(this.x+1, this.y+1, sprite, this.width-2, this.height-2);
             this.mouseDragged(mc, mouseX, mouseY);
         }
 	}
 
 	@Override
 	public boolean isMouseOver(int mouseX, int mouseY) {
-		if(mouseX < xPosition || mouseX > xPosition+width || mouseY < yPosition || mouseY > yPosition+height) { return false; }
+		if(mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) { return false; }
 		return true;
 	}
 

@@ -136,7 +136,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		subInputRodSettingLabel = new BeefGuiLabel(this, "While On", leftX, topY);
 		subInputRodSettingOffLabel = new BeefGuiLabel(this, "While Off", leftX + xSize/2, topY);
 		
-		subOutputValue = new GuiTextField(1, this.fontRendererObj, leftX, topY, 60, 12);
+		subOutputValue = new GuiTextField(1, this.fontRenderer, leftX, topY, 60, 12);
 		subOutputValue.setCanLoseFocus(true);
 		subOutputValue.setMaxStringLength(7);
 		subOutputValue.setText("0");
@@ -146,7 +146,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 		
 		topY += subInputRodSettingLabel.getHeight() + 2;
 		
-		subInputRodSetting = new GuiTextField(2, this.fontRendererObj, leftX, topY, 32, 12);
+		subInputRodSetting = new GuiTextField(2, this.fontRenderer, leftX, topY, 32, 12);
 		subInputRodSetting.setCanLoseFocus(true);
 		subInputRodSetting.setMaxStringLength(3);
 		subInputRodSetting.setText("0");
@@ -154,7 +154,7 @@ public class GuiReactorRedstonePort extends BeefGuiBase {
 
 		subInputRodSettingPctLabel = new BeefGuiLabel(this, "%", leftX + 34, topY + 2);
 
-		subInputRodSettingOff = new GuiTextField(3, this.fontRendererObj, leftX + xSize/2, topY, 32, 12);
+		subInputRodSettingOff = new GuiTextField(3, this.fontRenderer, leftX + xSize/2, topY, 32, 12);
 		subInputRodSettingOff.setCanLoseFocus(true);
 		subInputRodSettingOff.setMaxStringLength(3);
 		subInputRodSettingOff.setText("0");

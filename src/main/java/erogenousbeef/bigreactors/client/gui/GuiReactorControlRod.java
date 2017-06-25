@@ -65,7 +65,7 @@ public class GuiReactorControlRod extends BeefGuiBase {
 		
 		rodNameLabel = new BeefGuiLabel(this, "Name:", leftX, topY + 6);
 		
-		rodName = new GuiTextField(1, fontRendererObj, leftX + 4 + rodNameLabel.getWidth(), topY, 100, 20);
+		rodName = new GuiTextField(1, this.fontRenderer, leftX + 4 + rodNameLabel.getWidth(), topY, 100, 20);
 		rodName.setCanLoseFocus(true);
 		rodName.setMaxStringLength(32);
 		rodName.setText(entity.getName());

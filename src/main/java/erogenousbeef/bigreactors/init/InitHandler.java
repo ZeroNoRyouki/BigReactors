@@ -13,13 +13,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +66,18 @@ public final class InitHandler implements IModInitializationHandler {
         this._proxy = null;
     }
 
+    public void onMissinBlockMappings(RegistryEvent.MissingMappings<Block> event) {
+
+        for (RegistryEvent.MissingMappings.Mapping<Block> mapping : event.getMappings())
+            this._remapBlocks.remap(mapping);
+    }
+
+    public void onMissingItemMapping(RegistryEvent.MissingMappings<Item> event) {
+
+        for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings())
+            this._remapItems.remap(mapping);
+    }
+    /*
     public void onMissingMapping(FMLMissingMappingsEvent event) {
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
@@ -81,7 +93,7 @@ public final class InitHandler implements IModInitializationHandler {
                     break;
             }
         }
-    }
+    }*/
 
     private InitHandler() {
 
@@ -149,19 +161,15 @@ public final class InitHandler implements IModInitializationHandler {
             this._map.put(entry.getRegistryName().getResourcePath(), entry);
         }
 
-        void remap(final FMLMissingMappingsEvent.MissingMapping mapping) {
+        void remap(final RegistryEvent.MissingMappings.Mapping<T> mapping) {
 
-            String candidateName = mapping.resourceLocation.getResourcePath().toLowerCase();
+            String candidateName = mapping.key.getResourcePath().toLowerCase();
 
             if (this._map.containsKey(candidateName)) {
 
                 T replacement = this._map.get(candidateName);
 
-                if (GameRegistry.Type.BLOCK == mapping.type && replacement instanceof Block)
-                    mapping.remap((Block)replacement);
-
-                else if (GameRegistry.Type.ITEM == mapping.type && replacement instanceof Item)
-                    mapping.remap((Item) replacement);
+                mapping.remap(replacement);
             }
         }
 

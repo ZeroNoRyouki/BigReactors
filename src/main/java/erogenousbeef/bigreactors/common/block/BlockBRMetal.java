@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,7 +43,7 @@ public class BlockBRMetal extends BlockBR {
 
 	@Override
 	public void onPostRegister() {
-		GameRegistry.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
+		ForgeRegistries.ITEMS.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
 	}
 
 	@Override

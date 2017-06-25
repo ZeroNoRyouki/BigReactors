@@ -740,7 +740,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 	@Override
 	protected boolean updateServer() {
 
-		this.WORLD.theProfiler.startSection("Extreme Reactors|Turbine");
+		this.WORLD.profiler.startSection("Extreme Reactors|Turbine");
 
 		energyGeneratedLastTick = 0f;
 		fluidConsumedLastTick = 0;
@@ -828,7 +828,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 		int energyRemaining = energyAvailable;
 		if(energyStored > 0 && attachedPowerTaps.size() > 0) {
 
-			this.WORLD.theProfiler.startSection("Extreme Reactors|Turbine|SendPower");
+			this.WORLD.profiler.startSection("Extreme Reactors|Turbine|SendPower");
 
 			// First, try to distribute fairly
 			int splitEnergy = energyRemaining / attachedPowerTaps.size();
@@ -850,20 +850,20 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				}
 			}
 
-			this.WORLD.theProfiler.endSection();
+			this.WORLD.profiler.endSection();
 		}
 		
 		if(energyAvailable != energyRemaining) {
 			reduceStoredEnergy((energyAvailable - energyRemaining));
 		}
 
-		this.WORLD.theProfiler.startSection("Extreme Reactors|Turbine|Tickables");
+		this.WORLD.profiler.startSection("Extreme Reactors|Turbine|Tickables");
 
 		for(ITickableMultiblockPart part : attachedTickables) {
 			part.onMultiblockServerTick();
 		}
 
-		this.WORLD.theProfiler.endStartSection("Extreme Reactors|Turbine|Updates");
+		this.WORLD.profiler.endStartSection("Extreme Reactors|Turbine|Updates");
 		
 		ticksSinceLastUpdate++;
 		if(ticksSinceLastUpdate >= ticksBetweenUpdates) {
@@ -875,8 +875,8 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			markReferenceCoordDirty();
 		}
 
-		this.WORLD.theProfiler.endSection();
-		this.WORLD.theProfiler.endSection(); // main section
+		this.WORLD.profiler.endSection();
+		this.WORLD.profiler.endSection(); // main section
 
 		return energyGeneratedLastTick > 0 || fluidConsumedLastTick > 0;
 	}

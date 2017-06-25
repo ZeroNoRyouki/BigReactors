@@ -70,7 +70,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 		}
 	}
 
-	public FontRenderer getFontRenderer() { return this.fontRendererObj; }
+	public FontRenderer getFontRenderer() { return this.fontRenderer; }
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float gameTicks, int mouseX, int mouseY) {
@@ -105,7 +105,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 			if(tc.isVisible() && tc.isMouseOver(mouseX, mouseY)) {
 				String[] tooltip = tc.getTooltip();
 				if(tooltip != null) {
-					drawHoveringText(Arrays.asList(tooltip), absoluteX, absoluteY, fontRendererObj);
+					drawHoveringText(Arrays.asList(tooltip), absoluteX, absoluteY, this.fontRenderer);
 					break;
 				}
 			}
