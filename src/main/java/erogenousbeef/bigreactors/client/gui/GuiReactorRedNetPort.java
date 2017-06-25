@@ -1,15 +1,5 @@
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-/*
 package erogenousbeef.bigreactors.client.gui;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
@@ -24,7 +14,15 @@ import erogenousbeef.bigreactors.gui.controls.grab.RedNetConfigGrabbable;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
 import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GuiReactorRedNetPort extends BeefGuiBase {
 
@@ -145,7 +143,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 
 		// Populate all the channels with existing settings
 		TileEntityReactorRedNetPort.CircuitType currentCircuitType;
-		for(int i = 0; i < TileEntityReactorRedNetPort.numChannels; i++) {
+		for(int i = 0; i < TileEntityReactorRedNetPort.CHANNELS_COUNT; i++) {
 			currentCircuitType = port.getChannelCircuitType(i);
 			pulseActivated[i] = port.isInputActivatedOnPulse(i);
 			if(currentCircuitType == TileEntityReactorRedNetPort.CircuitType.DISABLED) {
@@ -230,7 +228,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 	private RedNetChange[] getUpdatePacketData() {
 		List<RedNetChange> packetData = new LinkedList<RedNetChange>();
 
-		for(int i = 0; i < TileEntityReactorRedNetPort.numChannels; i++) {
+		for(int i = 0; i < TileEntityReactorRedNetPort.CHANNELS_COUNT; i++) {
 			if(hasSettingChanged(i)) {
 				CircuitType circuitType = grabTargets[i].getCircuitType();
 				RedNetChange change = new RedNetChange(i, circuitType, pulseActivated[i], subSettingCoords[i]);
@@ -371,4 +369,3 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		}
 	}
 }
-*/

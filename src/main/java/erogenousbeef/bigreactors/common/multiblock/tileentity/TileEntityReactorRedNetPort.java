@@ -1,15 +1,20 @@
-/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.CircuitType;
+import erogenousbeef.bigreactors.common.compat.IdReference;
+import erogenousbeef.bigreactors.net.helpers.RedNetChange;
+import it.zerono.mods.zerocore.lib.BlockFacings;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.Optional;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetInputNode;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,17 +23,15 @@ import erogenousbeef.bigreactors.client.gui.GuiReactorRedNetPort;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
-import erogenousbeef.bigreactors.net.helpers.RedNetChange;
-import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.util.WorldHelper;
 
-public class TileEntityReactorRedNetPort extends TileEntityReactorPart implements ITickableMultiblockPart, INeighborUpdatableEntity {
-
-
+@Optional.InterfaceList({
+		@Optional.Interface(iface = "erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart",
+				modid = IdReference.MODID_MINEFACTORYRELOADED),
+})
+public class TileEntityReactorRedNetPort extends TileEntityReactorPart implements ITickableMultiblockPart /*, INeighborUpdatableEntity*/ {
 
 	protected final static int minInputEnumValue = CircuitType.inputActive.ordinal();
 	protected final static int maxInputEnumValue = CircuitType.inputEjectWaste.ordinal();
@@ -40,35 +43,28 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	protected boolean[] inputActivatesOnPulse;
 	protected int[] oldValue;
 
-	public final static int numChannels = 16;
-	
-	IRedNetNetworkContainer redNetwork;
-	IRedNetInputNode redNetInput;
+	public final static int CHANNELS_COUNT = 16;
 
-	int ticksSinceLastUpdate;
+	private int ticksSinceLastUpdate;
 	
 	public TileEntityReactorRedNetPort() {
-		super();
 		
-		channelCircuitTypes = new CircuitType[numChannels];
-		coordMappings = new BlockPos[numChannels];
-		inputActivatesOnPulse = new boolean[numChannels];
-		oldValue = new int[numChannels];
+		channelCircuitTypes = new CircuitType[CHANNELS_COUNT];
+		coordMappings = new BlockPos[CHANNELS_COUNT];
+		inputActivatesOnPulse = new boolean[CHANNELS_COUNT];
+		oldValue = new int[CHANNELS_COUNT];
 
-		for(int i = 0; i < numChannels; i++) {
+		for(int i = 0; i < CHANNELS_COUNT; i++) {
 			channelCircuitTypes[i] = CircuitType.DISABLED;
 			coordMappings[i] = null;
 			inputActivatesOnPulse[i] = false;
 			oldValue[i] = 0;
 		}
-		
-		redNetwork = null;
-		redNetInput = null;
 
 		ticksSinceLastUpdate = 0;
 	}
 	
-	// IMultiblockPart
+	/*// IMultiblockPart
 	@Override
 	public void onAttached(MultiblockControllerBase newController) {
 		super.onAttached(newController);
@@ -85,17 +81,16 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		if(this.worldObj.isRemote) { return; } 
 		
 		checkForConnections(this.worldObj, this.getPos());
+	}*/
+
+	@Override
+	public Object getServerGuiElement(int guiId, EntityPlayer player) {
+		return new ContainerBasic();
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Object getGuiElement(InventoryPlayer inventoryPlayer) {
+	public Object getClientGuiElement(int guiId, EntityPlayer player) {
 		return new GuiReactorRedNetPort(new ContainerBasic(), this);
-	}
-	
-	@Override
-	public Object getContainer(InventoryPlayer inventoryPlayer) {
-		return new ContainerBasic();
 	}
 
 	@Override
@@ -125,9 +120,10 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	}
 
 	// RedNet API
+
 	public int[] getOutputValues() {
-		int[] outputs = new int[numChannels];
-		for(int i = 0; i < numChannels; i++) {
+		int[] outputs = new int[CHANNELS_COUNT];
+		for(int i = 0; i < CHANNELS_COUNT; i++) {
 			outputs[i] = getValueForChannel(i);
 		}
 		
@@ -135,7 +131,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	}
 	
 	public int getValueForChannel(int channel) {
-		if(channel < 0 || channel >= numChannels) { return 0; }
+		if(channel < 0 || channel >= CHANNELS_COUNT) { return 0; }
 		
 		if(!this.isConnected()) { return 0; }
 		
@@ -172,7 +168,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	}
 	
 	public void onInputValueChanged(int channel, int newValue) {
-		if(channel < 0 || channel >= numChannels) { return; }
+		if(channel < 0 || channel >= CHANNELS_COUNT) { return; }
 		CircuitType type = channelCircuitTypes[channel];
 		if(!isInput(type)) { return; }
 		if(!this.isConnected()) { return; }
@@ -221,7 +217,8 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		
 		oldValue[channel] = newValue;
 	}
-	
+
+	/*
 	// Public RedNet helpers for GUI & updates
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
@@ -231,33 +228,52 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	@Override
 	public void onNeighborTileChange(IBlockAccess world, int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
 		checkForConnections(world, x, y, z);
-	}
+	}*/
 	
-	/* *
+	/**
 	 * Updates the connected RedNet network, if there is one.
 	 * Will only send one update per N ticks, where N is a configurable setting.
-	 * /
+	 */
+	@Override
+	@Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
 	public void onMultiblockServerTick() {
-		if(!this.isConnected()) { return; }
 
-		ticksSinceLastUpdate++;
-		if(ticksSinceLastUpdate < BigReactors.ticksPerRedstoneUpdate) { return; }
+		if (!this.isConnected())
+			return;
 
-		ForgeDirection out = getOutwardsDir();
-		
-		if(redNetwork != null) {
-				redNetwork.updateNetwork(worldObj, xCoord+out.offsetX, yCoord+out.offsetY, zCoord+out.offsetZ, out.getOpposite());
+		if (this.ticksSinceLastUpdate++ < BigReactors.CONFIG.ticksPerRedstoneUpdate)
+			return;
+
+		final BlockFacings facings = this.getOutwardsDir();
+		final World world = this.getWorld();
+		final BlockPos partPosition = this.getWorldPosition();
+
+		for (EnumFacing facing : EnumFacing.VALUES) {
+
+			if (facings.isSet(facing)) {
+
+				final BlockPos neighborPosition = partPosition.offset(facing);
+				final IBlockState blockState = world.isBlockLoaded(neighborPosition) ? world.getBlockState(neighborPosition) : null;
+
+				if (null == blockState)
+					continue;
+
+				final Block neighborBlock = blockState.getBlock();
+
+				if (neighborBlock instanceof IRedNetNetworkContainer)
+					((IRedNetNetworkContainer)neighborBlock).updateNetwork(world, neighborPosition, facing.getOpposite());
+
+				if (neighborBlock instanceof IRedNetInputNode)
+					((IRedNetInputNode)neighborBlock).onInputsChanged(world, neighborPosition, facing.getOpposite(),
+							this.getOutputValues());
+			}
 		}
-		
-		if(redNetInput != null) {
-			redNetInput.onInputsChanged(worldObj, xCoord+out.offsetX, yCoord+out.offsetY, zCoord+out.offsetZ, out.getOpposite(), getOutputValues());
-		}
 
-		ticksSinceLastUpdate = 0;
+		this.ticksSinceLastUpdate = 0;
 	}
 
 	public CircuitType getChannelCircuitType(int channel) {
-		if(channel < 0 || channel >= numChannels) { return CircuitType.DISABLED; }
+		if(channel < 0 || channel >= CHANNELS_COUNT) { return CircuitType.DISABLED; }
 		return channelCircuitTypes[channel];
 	}
 
@@ -278,14 +294,14 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	}
 
 	protected TileEntity getMappedTileEntity(int channel) {
-		if(channel < 0 || channel >= numChannels) { return null; }
+		if(channel < 0 || channel >= CHANNELS_COUNT) { return null; }
 
 		BlockPos coord = coordMappings[channel];
 
 		if (coord == null || !WorldHelper.blockChunkExists(this.worldObj.getChunkProvider(), coord))
 			return null;
 		
-		return this.worldObj.getTileEntity(coord.x, coord.y, coord.z);
+		return this.worldObj.getTileEntity(coord);
 	}
 	
 	protected void setControlRodInsertion(int channel, BlockPos position, int newValue) {
@@ -388,7 +404,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	protected void encodeSettings(NBTTagCompound destination) {
 		NBTTagList tagArray = new NBTTagList();
 		
-		for(int i = 0; i < numChannels; i++) {
+		for(int i = 0; i < CHANNELS_COUNT; i++) {
 			tagArray.appendTag(encodeSetting(i));
 		}
 		
@@ -402,13 +418,9 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		}
 	}
 	
-	/* *
+	/**
 	 * Check for a world connection, if we're assembled.
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * /
+	 *//*
 	protected void checkForConnections(IBlockAccess world, int x, int y, int z) {
 		ForgeDirection out = getOutwardsDir();
 
@@ -431,10 +443,9 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 				}
 			}
 		}
-	}
+	}*/
 
 	// Static Helpers
 	public static boolean isInput(CircuitType type) { return type.ordinal() >= minInputEnumValue && type.ordinal() <= maxInputEnumValue; }
 	public static boolean isOutput(CircuitType type) { return type.ordinal() >= minOutputEnumValue && type.ordinal() <= maxOutputEnumValue; }
 }
-*/
