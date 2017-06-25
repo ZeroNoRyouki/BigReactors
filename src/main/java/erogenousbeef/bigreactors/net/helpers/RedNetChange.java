@@ -1,11 +1,11 @@
-/* TODO put back in when MineFactory Reloaded is available for MC 1.9.x
 package erogenousbeef.bigreactors.net.helpers;
 
+import erogenousbeef.bigreactors.common.CircuitType;
 import io.netty.buffer.ByteBuf;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
 import net.minecraft.util.math.BlockPos;
 
 public class RedNetChange {
+
 	int channelID;
 	CircuitType circuitType;
 	boolean pulseOrToggle;
@@ -61,4 +61,3 @@ public class RedNetChange {
 	public BlockPos getCoord() { return coord; }
 	public boolean getPulseOrToggle() { return this.pulseOrToggle; }
 }
-*/
