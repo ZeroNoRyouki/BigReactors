@@ -72,6 +72,7 @@ public class BigReactors implements IModInitializationHandler {
 		StandardReactants.register();
 		MinecraftForge.EVENT_BUS.register(new BREventHandler());
 		MinecraftForge.EVENT_BUS.register(BigReactors.s_proxy);
+        MinecraftForge.EVENT_BUS.register(InitHandler.INSTANCE);
 		BigReactors.s_proxy.onPreInit(event);
 	}
 
@@ -105,7 +106,7 @@ public class BigReactors implements IModInitializationHandler {
 		InitHandler.INSTANCE.onPostInit(event);
 		BigReactors.s_proxy.onPostInit(event);
 	}
-
+        /*
 	@Mod.EventHandler
 	public void onMissinBlockMappings(RegistryEvent.MissingMappings<Block> event) {
 		InitHandler.INSTANCE.onMissinBlockMappings(event);
@@ -114,7 +115,7 @@ public class BigReactors implements IModInitializationHandler {
 	@Mod.EventHandler
 	public void onMissingItemMapping(RegistryEvent.MissingMappings<Item> event) {
 		InitHandler.INSTANCE.onMissingItemMapping(event);
-	}
+	}*/
 
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {

@@ -17,6 +17,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -66,12 +67,14 @@ public final class InitHandler implements IModInitializationHandler {
         this._proxy = null;
     }
 
+    @SubscribeEvent
     public void onMissinBlockMappings(RegistryEvent.MissingMappings<Block> event) {
 
         for (RegistryEvent.MissingMappings.Mapping<Block> mapping : event.getMappings())
             this._remapBlocks.remap(mapping);
     }
 
+    @SubscribeEvent
     public void onMissingItemMapping(RegistryEvent.MissingMappings<Item> event) {
 
         for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings())
