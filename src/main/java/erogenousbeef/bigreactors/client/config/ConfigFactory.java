@@ -12,10 +12,12 @@ public class ConfigFactory implements IModGuiFactory {
     public void initialize(Minecraft minecraftInstance) {
     }
 
+    /*
     @Override
     public Class<? extends GuiScreen> mainConfigGuiClass() {
         return ConfigGui.class;
     }
+    */
 
     @Override
     public boolean hasConfigGui() {
@@ -32,8 +34,10 @@ public class ConfigFactory implements IModGuiFactory {
         return null;
     }
 
+    /*
     @Override
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return null;
     }
+    */
 }
