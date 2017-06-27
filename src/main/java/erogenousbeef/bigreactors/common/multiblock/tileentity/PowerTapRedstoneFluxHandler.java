@@ -1,3 +1,4 @@
+/*
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import cofh.api.energy.IEnergyProvider;
@@ -77,11 +78,11 @@ class PowerTapRedstoneFluxHandler extends PowerTapHandler implements IEnergyProv
 
     // PowerTapHandler
 
-    /**
+    / **
      * Check for a world connection, if we're assembled.
      * @param world
      * @param position
-     */
+     * /
     @Override
     public void checkForConnections(IBlockAccess world, BlockPos position) {
 
@@ -123,3 +124,4 @@ class PowerTapRedstoneFluxHandler extends PowerTapHandler implements IEnergyProv
     private IEnergyReceiver _consumer;
 
 }
+*/

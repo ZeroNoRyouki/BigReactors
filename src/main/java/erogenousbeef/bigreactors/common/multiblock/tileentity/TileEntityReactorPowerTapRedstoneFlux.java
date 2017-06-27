@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
-import cofh.api.energy.IEnergyProvider;
+//import cofh.api.energy.IEnergyProvider;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -8,11 +8,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowerTap implements IEnergyProvider {
+public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowerTap /*implements IEnergyProvider*/ {
 
     public TileEntityReactorPowerTapRedstoneFlux() {
 
-        this._rfHandler = new PowerTapRedstoneFluxHandler(this);
+        //this._rfHandler = new PowerTapRedstoneFluxHandler(this);
         this._forgeHandler = new PowerTapForgeHandler(this);
     }
 
@@ -35,7 +35,7 @@ public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowe
 
     @Override
     public boolean isProviderConnected() {
-        return this._forgeHandler.isProviderConnected() || this._rfHandler.isProviderConnected();
+        return this._forgeHandler.isProviderConnected() /*|| this._rfHandler.isProviderConnected()*/;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowe
         if (this._forgeHandler.isProviderConnected())
             return this._forgeHandler.onProvidePower(units);
 
-        if (this._rfHandler.isProviderConnected())
-            return this._rfHandler.onProvidePower(units);
+        /*if (this._rfHandler.isProviderConnected())
+            return this._rfHandler.onProvidePower(units);*/
 
         return units;
     }
@@ -59,10 +59,10 @@ public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowe
         this._forgeHandler.checkForConnections(world, position);
 
         // if no connection was made, try RF next
-        if (!this._forgeHandler.isProviderConnected())
-            this._rfHandler.checkForConnections(world, position);
+        /*if (!this._forgeHandler.isProviderConnected())
+            this._rfHandler.checkForConnections(world, position);*/
     }
-
+/*
     // IEnergyConnection (RF)
 
     @Override
@@ -86,10 +86,11 @@ public class TileEntityReactorPowerTapRedstoneFlux extends TileEntityReactorPowe
     public int getMaxEnergyStored(EnumFacing from) {
         return this._rfHandler.getMaxEnergyStored(from);
     }
+    */
 
     @CapabilityInject(IEnergyStorage.class)
     private static Capability<IEnergyStorage> CAPAP_FORGE_ENERGYSTORAGE = null;
 
-    private final PowerTapRedstoneFluxHandler _rfHandler;
+    //private final PowerTapRedstoneFluxHandler _rfHandler;
     private final PowerTapForgeHandler _forgeHandler;
 }
