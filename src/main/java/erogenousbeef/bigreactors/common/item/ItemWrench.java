@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.item;
 
-import cofh.api.item.IToolHammer;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.CodeHelper;
@@ -25,7 +24,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemWrench extends ItemBase implements IToolHammer {
+public class ItemWrench extends ItemBase/* implements IToolHammer*/ {
 
     public ItemWrench(String itemName) {
 
@@ -88,11 +87,11 @@ public class ItemWrench extends ItemBase implements IToolHammer {
      * @param pos
      *            Coordinates of the block.
      * @return True if this tool can be used
-     */
+     *//*
     @Override
     public boolean isUsable(ItemStack item, EntityLivingBase user, BlockPos pos) {
         return user instanceof EntityPlayer;
-    }
+    }*/
 
     /**
      * Called to ensure that the tool can be used on an entity.
@@ -104,11 +103,11 @@ public class ItemWrench extends ItemBase implements IToolHammer {
      * @param entity
      *            The entity the tool is being used on.
      * @return True if this tool can be used.
-     */
+     *//*
     @Override
     public boolean isUsable(ItemStack item, EntityLivingBase user, Entity entity) {
         return false;
-    }
+    }*/
 
     /**
      * Callback for when the tool has been used reactively.
@@ -119,10 +118,10 @@ public class ItemWrench extends ItemBase implements IToolHammer {
      *            The entity using the tool.
      * @param pos
      *            Coordinates of the block.
-     */
+     *//*
     @Override
     public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
-    }
+    }*/
 
     /**
      * Callback for when the tool has been used reactively.
@@ -133,10 +132,10 @@ public class ItemWrench extends ItemBase implements IToolHammer {
      *            The entity using the tool.
      * @param entity
      *            The entity the tool is being used on.
-     */
+     *//*
     @Override
     public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
-    }
+    }*/
 
 
 }

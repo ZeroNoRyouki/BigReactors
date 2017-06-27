@@ -1,7 +1,8 @@
 package erogenousbeef.bigreactors.utils;
 
-import cofh.api.item.IToolHammer;
+//import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
@@ -91,11 +92,13 @@ public class StaticUtils {
 
 			Item heldItem = heldItemStack.getItem();
 
-			return null != heldItem && (
+			return null != heldItem &&
+					heldItem == BrItems.wrench
+					/*&& (
 					heldItem instanceof IToolHammer
 					// TODO waiting for BuildCraft 1.9.4+
 					// || (ModHelperBase.useBuildcraftTools && heldItem instanceof IToolWrench)
-					);
+					)*/;
 		}
 		
 		/**
