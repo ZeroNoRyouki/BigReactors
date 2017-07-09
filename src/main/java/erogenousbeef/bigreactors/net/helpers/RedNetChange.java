@@ -20,7 +20,7 @@ public class RedNetChange {
 	
 	public static RedNetChange fromBytes(ByteBuf buf) {
 		int channelID = buf.readInt();
-		CircuitType type = CircuitType.s_Types[buf.readInt()];
+		CircuitType type = CircuitType.TYPES[buf.readInt()];
 		boolean pulseOrToggle = false;
 
 		if(CircuitType.canBeToggledBetweenPulseAndNormal(type)) {

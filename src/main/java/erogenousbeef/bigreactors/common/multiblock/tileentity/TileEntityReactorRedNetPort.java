@@ -7,7 +7,6 @@ import it.zerono.mods.zerocore.lib.BlockFacings;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +16,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetInputNode;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedNetPort;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
@@ -94,29 +91,8 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.writeToNBT(par1NBTTagCompound);
-		encodeSettings(par1NBTTagCompound);
-	}
-	
-	@Override
-	protected void encodeDescriptionPacket(NBTTagCompound packetData) {
-		super.encodeDescriptionPacket(packetData);
-		encodeSettings(packetData);
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.readFromNBT(par1NBTTagCompound);
-		decodeSettings(par1NBTTagCompound);
-	}
-	
-	@Override
-	protected void decodeDescriptionPacket(NBTTagCompound packetData) {
-		super.decodeDescriptionPacket(packetData);
-		decodeSettings(packetData);
+	public boolean canOpenGui(World world, BlockPos posistion, IBlockState state) {
+		return true;
 	}
 
 	// RedNet API
@@ -319,8 +295,32 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 			clearChannel(channel);
 		}
 	}
-	
-	protected NBTTagCompound encodeSetting(int channel) {
+
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataTo(data, syncReason);
+
+		final NBTTagList tagArray = new NBTTagList();
+
+		for (int i = 0; i < CHANNELS_COUNT; ++i)
+			tagArray.appendTag(this.encodeChannelSetting(i));
+
+		data.setTag("redNetConfig", tagArray);
+	}
+
+	@Override
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
+
+		super.syncDataFrom(data, syncReason);
+
+		final NBTTagList tagArray = data.getTagList("redNetConfig", 10);
+
+		for (int i = 0; i < tagArray.tagCount(); ++i)
+			this.decodeChannelSetting(tagArray.getCompoundTagAt(i) );
+	}
+
+	private NBTTagCompound encodeChannelSetting(int channel) {
 		NBTTagCompound entry = new NBTTagCompound();
 		
 		entry.setInteger("channel", channel);
@@ -340,7 +340,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		return entry;
 	}
 
-	protected void decodeSetting(NBTTagCompound settingTag) {
+	private void decodeChannelSetting(NBTTagCompound settingTag) {
 		int channel = settingTag.getInteger("channel");
 		int settingIdx = settingTag.getInteger("setting");
 		
@@ -352,15 +352,9 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 			inputActivatesOnPulse[channel] = settingTag.getBoolean("pulse");
 		}
 
-		if( CircuitType.hasCoordinate(channelCircuitTypes[channel]) ) {
-			if(settingTag.hasKey("x")) {
-				int x, y, z;
-				x = settingTag.getInteger("x");
-				y = settingTag.getInteger("y");
-				z = settingTag.getInteger("z");
-				coordMappings[channel] = new BlockPos(x, y, z);
-			}
-		}
+		if (CircuitType.hasCoordinate(channelCircuitTypes[channel]) &&
+				settingTag.hasKey("x") && settingTag.hasKey("y") && settingTag.hasKey("z"))
+			coordMappings[channel] = new BlockPos(settingTag.getInteger("x"), settingTag.getInteger("y"), settingTag.getInteger("z"));
 	}
 
 	// Receives settings from a client via an update packet
@@ -399,24 +393,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
 		markDirty();
 	}
-	
-	// Helpers
-	protected void encodeSettings(NBTTagCompound destination) {
-		NBTTagList tagArray = new NBTTagList();
-		
-		for(int i = 0; i < CHANNELS_COUNT; i++) {
-			tagArray.appendTag(encodeSetting(i));
-		}
-		
-		destination.setTag("redNetConfig", tagArray);
-	}
-	
-	protected void decodeSettings(NBTTagCompound source) {
-		NBTTagList tagArray = source.getTagList("redNetConfig", 10);
-		for(int i = 0; i < tagArray.tagCount(); i++) {
-			decodeSetting( (NBTTagCompound)tagArray.getCompoundTagAt(i) );
-		}
-	}
+
 	
 	/**
 	 * Check for a world connection, if we're assembled.

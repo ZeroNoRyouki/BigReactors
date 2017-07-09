@@ -1,9 +1,8 @@
-// TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-/*
 package erogenousbeef.bigreactors.gui.controls.grab;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.client.gui.GuiReactorRedNetPort;
+import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 
@@ -12,7 +11,7 @@ public class RedNetConfigGrabTarget extends BeefGuiGrabTarget implements IBeefTo
 	TileEntityReactorRedNetPort port;
 	int channel;
 	String tooltip;
-	TileEntityReactorRedNetPort.CircuitType currentCircuitType;
+	CircuitType currentCircuitType;
 	
 	public RedNetConfigGrabTarget(BeefGuiBase container, int x, int y, TileEntityReactorRedNetPort port, int channel) {
 		super(container, x, y);
@@ -24,7 +23,7 @@ public class RedNetConfigGrabTarget extends BeefGuiGrabTarget implements IBeefTo
 	
 	@Override
 	public void onSlotCleared() {
-		currentCircuitType = TileEntityReactorRedNetPort.CircuitType.DISABLED;
+		currentCircuitType = CircuitType.DISABLED;
 		tooltip = null;
 		
 		if(guiContainer instanceof GuiReactorRedNetPort) {
@@ -52,11 +51,10 @@ public class RedNetConfigGrabTarget extends BeefGuiGrabTarget implements IBeefTo
 	}
 	
 	public int getChannel() { return channel; }
-	public TileEntityReactorRedNetPort.CircuitType getCircuitType() { return this.currentCircuitType; }
+	public CircuitType getCircuitType() { return this.currentCircuitType; }
 
 	@Override
 	public String[] getTooltip() {
 		return new String[] { tooltip };
 	}
 }
-*/
