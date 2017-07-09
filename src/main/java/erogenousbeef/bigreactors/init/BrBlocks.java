@@ -127,6 +127,7 @@ public final class BrBlocks {
         init.register(TileEntityReactorComputerPort.class);
         init.register(TileEntityReactorCoolantPort.class);
         init.register(TileEntityReactorCreativeCoolantPort.class);
+        init.register(TileEntityReactorRedNetPort.class);
 
         init.register(TileEntityTurbinePart.class);
         init.register(TileEntityTurbinePowerTapRedstoneFlux.class);
@@ -139,8 +140,6 @@ public final class BrBlocks {
         init.register(TileEntityTurbineCreativeSteamGenerator.class);
         init.register(TileEntityTurbineComputerPort.class);
         init.register(TileEntityTurbineController.class);
-
-        //init.register(TileEntityReactorRedNetPort.class);
     }
     */
 }
