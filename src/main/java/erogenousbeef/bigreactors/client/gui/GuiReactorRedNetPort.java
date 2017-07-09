@@ -1,10 +1,11 @@
 package erogenousbeef.bigreactors.client.gui;
 
+import erogenousbeef.bigreactors.client.ClientProxy;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.block.BlockReactorPart;
+import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorControlRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
-import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort.CircuitType;
+import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import erogenousbeef.bigreactors.gui.IBeefGuiControl;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiLabel;
 import erogenousbeef.bigreactors.gui.controls.BeefGuiRedNetChannelSelector;
@@ -13,7 +14,7 @@ import erogenousbeef.bigreactors.gui.controls.grab.RedNetConfigGrabTarget;
 import erogenousbeef.bigreactors.gui.controls.grab.RedNetConfigGrabbable;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
-import erogenousbeef.bigreactors.net.message.ReactorRedNetPortChangeMessage;
+import erogenousbeef.bigreactors.net.message.multiblock.ReactorRedNetPortChangeMessage;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -46,9 +47,19 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 			"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray",
 			"LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"
 	};
-	
 
-	
+	public static final String[] grabbableTooltips = {
+			"Input: Toggle reactor on/off",
+			"Input: Change control rod insertion",
+			"Input: Eject Waste",
+			"Output: Fuel Temp (C)",
+			"Output: Casing Temp (C)",
+			"Output: Fuel mix (% fuel, 0-100)",
+			"Output: Fuel amount",
+			"Output: Waste amount",
+			"Output: Energy amount (%)"
+	};
+
 	BeefGuiRedNetChannelSelector[] channelSelectors = new BeefGuiRedNetChannelSelector[numChannels];
 	RedNetConfigGrabTarget[] grabTargets = new RedNetConfigGrabTarget[numChannels];
 	private BlockPos[] subSettingCoords = new BlockPos[numChannels];
@@ -63,7 +74,7 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		xSize = 255;
 		ySize = 214;
 		
-		_guiBackground = new ResourceLocation(BigReactors.GUI_DIRECTORY + "rednetport.png");
+		_guiBackground = BigReactors.createGuiResourceLocation("rednetport.png");
 	}
 
 	@Override
@@ -108,13 +119,12 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 			registerControl(grabTargets[i+1]);
 		}
 		
-		TileEntityReactorRedNetPort.CircuitType[] circuitTypes = TileEntityReactorRedNetPort.CircuitType.values();
-		BlockReactorPart reactorPartBlock = (BlockReactorPart)BigReactors.blockReactorPart;
+		CircuitType[] circuitTypes = CircuitType.values();
 		RedNetConfigGrabbable[] grabbables = new RedNetConfigGrabbable[circuitTypes.length - 1];
 		topY = guiTop + 21;
 		leftX = guiLeft + 156;
 		for(int i = 1; i < circuitTypes.length; i++) {
-			grabbables[i-1] = new RedNetConfigGrabbable(grabbableTooltips[i-1], reactorPartBlock.getRedNetConfigIcon(circuitTypes[i]), circuitTypes[i]);
+			grabbables[i-1] = new RedNetConfigGrabbable(grabbableTooltips[i-1], circuitTypes[i].getIcon(), circuitTypes[i]);
 			BeefGuiGrabSource source = new BeefGuiGrabSource(this, leftX, topY, grabbables[i - 1]);			
 			registerControl(source);
 			leftX += 20;
@@ -142,11 +152,11 @@ public class GuiReactorRedNetPort extends BeefGuiBase {
 		this.buttonList.add(subSettingBackBtn);
 
 		// Populate all the channels with existing settings
-		TileEntityReactorRedNetPort.CircuitType currentCircuitType;
+		CircuitType currentCircuitType;
 		for(int i = 0; i < TileEntityReactorRedNetPort.CHANNELS_COUNT; i++) {
 			currentCircuitType = port.getChannelCircuitType(i);
 			pulseActivated[i] = port.isInputActivatedOnPulse(i);
-			if(currentCircuitType == TileEntityReactorRedNetPort.CircuitType.DISABLED) {
+			if(currentCircuitType == CircuitType.DISABLED) {
 				grabTargets[i].setSlotContents(null);
 			}
 			else {
