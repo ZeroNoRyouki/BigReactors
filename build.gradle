@@ -71,7 +71,7 @@ repositories {
 
     maven {
         name = "ComputerCraft"
-        url "http://maven.zerono.it/"
+        url "http://cc.crzd.me/maven/"
     }
 
     maven {
