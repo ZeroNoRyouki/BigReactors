@@ -4,9 +4,12 @@ import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefGuiControl;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import erogenousbeef.bigreactors.utils.StaticUtils;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.math.MathHelper;
 
 public class BeefGuiRedNetChannelSelector extends BeefGuiControlBase implements IBeefGuiControl,
 		IBeefTooltipControl {
@@ -59,14 +62,14 @@ public class BeefGuiRedNetChannelSelector extends BeefGuiControlBase implements 
 		if(this.selected) {
 			borderColor = 0xff22dd22; // bright green?
 		}
-		this.drawRect(absoluteX, absoluteY, absoluteX+height, absoluteY+height, borderColor);
-		this.drawRect(absoluteX+width-height, absoluteY, absoluteX+width, absoluteY+height, borderColor);
-		this.drawRect(absoluteX+height, barTop, absoluteX+width-height, barTop+barHeight, borderColor);
+		Gui.drawRect(absoluteX, absoluteY, absoluteX+height, absoluteY+height, borderColor);
+		Gui.drawRect(absoluteX+width-height, absoluteY, absoluteX+width, absoluteY+height, borderColor);
+		Gui.drawRect(absoluteX+height, barTop, absoluteX+width-height, barTop+barHeight, borderColor);
 
 		float[] color = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(this.channelIdx));
-		
-		this.drawRect(absoluteX+1, absoluteY+1, absoluteX+height-1, absoluteY+height-1, color[0], color[1], color[2], 1.0f);
-		this.drawRect(absoluteX+width-height+1, absoluteY+1, absoluteX+width-1, absoluteY+height-1, 0xff777777);
+
+		Gui.drawRect(absoluteX+1, absoluteY+1, absoluteX+height-1, absoluteY+height-1, StaticUtils.argb(color[0], color[1], color[2], 1.0f));
+		Gui.drawRect(absoluteX+width-height+1, absoluteY+1, absoluteX+width-1, absoluteY+height-1, 0xff777777);
 	}
 
 	@Override

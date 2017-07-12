@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.gui.controls.grab;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -21,19 +22,22 @@ public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 
 	@Override
 	public void drawForeground(TextureManager renderEngine, int mouseX, int mouseY) {
+
+		//if (true) return;
+
 		if(grabbable != null) {
 
 			renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.color(1f, 1f, 1f, 1f);
 			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
 		}
-		
+
 		if(this.isMouseOver(mouseX, mouseY)) {
 			if(this.guiContainer.getGrabbedItem() != null && isAcceptedGrab(this.guiContainer.getGrabbedItem())) {
-				this.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, invalidHoverColor);
+				Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, invalidHoverColor);
 			}
 			else {
-				this.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, hoverColor);
+				Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, hoverColor);
 			}
 		}
 	}

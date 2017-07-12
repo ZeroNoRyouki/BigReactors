@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.gui.controls.grab;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -32,12 +33,12 @@ public class BeefGuiGrabSource extends BeefGuiControlBase implements IBeefToolti
 			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
 		}
 		else {
-			this.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, 0x66ff0000); // Red error spot			
+			Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, 0x66ff0000); // Red error spot
 		}
-		
+		/**/
 		if(this.isMouseOver(mouseX, mouseY)) {
-			this.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, hoverColor);
-		}
+			Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, hoverColor);
+		}/**/
 	}
 	
 	public IBeefGuiGrabbable getGrabbable() { return grabbable; }
@@ -45,10 +46,10 @@ public class BeefGuiGrabSource extends BeefGuiControlBase implements IBeefToolti
 	@Override
 	public void drawBackground(TextureManager renderEngine, int mouseX, int mouseY) {
 		// Draw Border
-		this.drawRect(absoluteX-1, absoluteY-1, absoluteX+width+1, absoluteY+height+1, 0xff222222);
-		
+		Gui.drawRect(absoluteX-1, absoluteY-1, absoluteX+width+1, absoluteY+height+1, 0xff222222);
+
 		// Draw Background
-		this.drawRect(absoluteX, absoluteY, absoluteX+width, absoluteY+height, 0xff777777);
+		Gui.drawRect(absoluteX, absoluteY, absoluteX+width, absoluteY+height, 0xff777777);
 	}
 	
 	@Override
