@@ -12,10 +12,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class StaticUtils {
+
+	// TODO make a generic function out of this
+	public static int argb(final float red, final float green, final float blue, final float alpha) {
+		return argb(MathHelper.floor_float(red * 255.0F), MathHelper.floor_float(green * 255.0F),
+				MathHelper.floor_float(blue * 255.0F), MathHelper.floor_float(alpha * 255.0F));
+	}
+
+	// TODO make a generic function out of this
+	public static int argb(final int red, final int green, final int blue, final int alpha) {
+
+		int color = (alpha << 8) + red;
+
+		color = (color << 8) + green;
+		color = (color << 8) + blue;
+		return color;
+	}
 
 	public static class Inventory {
 
