@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.gui.controls;
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefListBoxEntry;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.texture.TextureManager;
 
 import java.util.ArrayList;
@@ -45,8 +46,8 @@ public class BeefGuiListBox extends BeefGuiControlBase {
 	
 	@Override
 	public void drawBackground(TextureManager renderEngine, int mouseX, int mouseY) {
-		drawRect(absoluteX, absoluteY, absoluteX+width, absoluteY+height, borderColor);
-		drawRect(absoluteX+margin, absoluteY+margin, absoluteX+width-margin*2, absoluteY+height-margin*2, backgroundColor);
+		Gui.drawRect(absoluteX, absoluteY, absoluteX+width, absoluteY+height, borderColor);
+		Gui.drawRect(absoluteX+margin, absoluteY+margin, absoluteX+width-margin*2, absoluteY+height-margin*2, backgroundColor);
 	}
 
 	@Override
