@@ -51,6 +51,7 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
 	public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {}
 	
 	// Static Helpers
+	/*
 	protected static void drawRect(int xMin, int yMin, int xMax, int yMax, int color)
 	{
 		float a = (float)(color >> 24 & 255) / 255.0F;
@@ -96,6 +97,7 @@ public abstract class BeefGuiControlBase implements IBeefGuiControl {
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
 	}
+	*/
 	/*
 	protected static void drawTexturedModelRectFromIcon(int x, int y, TextureAtlasSprite texture, int width, int height) {
 
