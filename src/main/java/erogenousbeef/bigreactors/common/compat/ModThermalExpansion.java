@@ -1,12 +1,20 @@
 package erogenousbeef.bigreactors.common.compat;
 
+import cofh.api.util.ThermalExpansionHelper;
+import erogenousbeef.bigreactors.common.MetalType;
+import erogenousbeef.bigreactors.common.block.OreType;
+import erogenousbeef.bigreactors.init.BrBlocks;
+import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.util.ItemHelper;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class ModThermalExpansion extends ModCompact {
 
     @Override
     public void onInit(FMLInitializationEvent fmlInitializationEvent) {
-        /*
+
         final ItemStack sandStack = new ItemStack(Blocks.SAND, 1);
         final ItemStack yelloriteOre = BrBlocks.brOre.createItemStack(OreType.Yellorite, 1);
         final ItemStack doubleYelloriumIngots = BrItems.ingotMetals.createItemStack(MetalType.Yellorium, 2);
@@ -42,6 +50,5 @@ public class ModThermalExpansion extends ModCompact {
 
             ThermalExpansionHelper.addSmelterRecipe(200, doubleDust, sandStack, doubleIngot);
         }
-        */
     }
 }

@@ -73,6 +73,16 @@ repositories {
         name = "ComputerCraft"
         url "http://maven.zerono.it/"
     }
+
+    maven {
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    }
+
+    maven {
+        name = "JEI Maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
@@ -81,6 +91,8 @@ dependencies {
     deobfCompile group: "net.darkhax.tesla", name: "Tesla-1.12", version: "${config.tesla_version}"
     //deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
+    compile "cofh:CoFHCore:${config.cofhcore_version}:deobf"
+    compile "mezz.jei:${config.jei_version}"
 }
 
 processResources  {
