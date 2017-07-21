@@ -24,11 +24,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,16 +72,23 @@ public class BlockBRMetal extends BlockBR {
 		// Metal blocks & ingots
 
 		ItemStack block, ingot;
+		final ResourceLocation group = BigReactors.createResourceLocation("metals");
 
 		for (MetalType metal : MetalType.VALUES) {
+
+		    if (MetalType.Ludicrite == metal)
+		        continue;
 
 			block = this.createItemStack(metal, 1);
 			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
 
-            RecipeHelper.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
-			ItemHelper.stackSetSize(ingot, 9);
-            RecipeHelper.addShapelessRecipe(ingot, block);
-		}
+            RecipeHelper.addShapelessRecipe(BigReactors.createResourceLocation(metal.getName() + MetalSize.Block.name()), group,
+                    block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
+
+            ingot = ItemHelper.stackFrom(ingot, 9);
+            RecipeHelper.addShapelessRecipe(BigReactors.createResourceLocation(metal.getName() + MetalSize.Ingot.name()), group,
+                    ingot, block);
+        }
 
 		// Ludicrite block. Because.
 
