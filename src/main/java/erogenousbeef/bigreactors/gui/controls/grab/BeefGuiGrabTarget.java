@@ -2,10 +2,13 @@ package erogenousbeef.bigreactors.gui.controls.grab;
 
 import erogenousbeef.bigreactors.client.gui.BeefGuiBase;
 import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraftforge.fml.common.FMLLog;
 
 public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 
@@ -23,21 +26,25 @@ public abstract class BeefGuiGrabTarget extends BeefGuiControlBase {
 	@Override
 	public void drawForeground(TextureManager renderEngine, int mouseX, int mouseY) {
 
-		//if (true) return;
-
 		if(grabbable != null) {
 
+			//renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			//GlStateManager.color(1f, 1f, 1f, 1f);
+			//this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
+
+			final TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(grabbable.getIcon().toString());
+
 			renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			GlStateManager.color(1f, 1f, 1f, 1f);
-			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
+			this.guiContainer.drawTexturedModalRect(relativeX, relativeY, sprite, width, height);
 		}
 
+		//if (true) return;
+
 		if(this.isMouseOver(mouseX, mouseY)) {
-			if(this.guiContainer.getGrabbedItem() != null && isAcceptedGrab(this.guiContainer.getGrabbedItem())) {
-				Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, invalidHoverColor);
-			}
-			else {
-				Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, hoverColor);
+			if (this.guiContainer.getGrabbedItem() != null && !this.isAcceptedGrab(this.guiContainer.getGrabbedItem())) {
+				Gui.drawRect(this.relativeX, this.relativeY, this.relativeX + this.width, this.relativeY + this.height, invalidHoverColor);
+			} else {
+				Gui.drawRect(this.relativeX, this.relativeY, this.relativeX + this.width, this.relativeY + this.height, hoverColor);
 			}
 		}
 	}

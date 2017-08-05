@@ -48,8 +48,7 @@ public class CommonPacketHandler {
         */
         INSTANCE.registerMessage(ControlRodChangeNameMessage.Handler.class, ControlRodChangeNameMessage.class, 4, Side.SERVER);
         INSTANCE.registerMessage(ControlRodChangeInsertionMessage.Handler.class, ControlRodChangeInsertionMessage.class, 6, Side.SERVER);
-        // TODO Removing support for ComputerCraft and MineFactory Reloaded until they are updated to 1.9.x
-        //INSTANCE.registerMessage(ReactorRedNetPortChangeMessage.Handler.class, ReactorRedNetPortChangeMessage.class, 8, Side.SERVER);
+        INSTANCE.registerMessage(ReactorRedNetPortChangeMessage.Handler.class, ReactorRedNetPortChangeMessage.class, 8, Side.SERVER);
         INSTANCE.registerMessage(ReactorRedstonePortChangeMessage.Handler.class, ReactorRedstonePortChangeMessage.class, 10, Side.SERVER);
         INSTANCE.registerMessage(ReactorCommandEjectMessage.Handler.class, ReactorCommandEjectMessage.class, 12, Side.SERVER);
         INSTANCE.registerMessage(ReactorCommandEjectToPortMessage.Handler.class, ReactorCommandEjectToPortMessage.class, 14, Side.SERVER);
