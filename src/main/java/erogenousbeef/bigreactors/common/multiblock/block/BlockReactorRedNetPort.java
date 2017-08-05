@@ -42,31 +42,12 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice implements IRe
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
-                    'C', 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', "cableRedNet", 'G', "ingotGold"));
+                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', "cableRedNet", 'G', "ingotGold"));
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
             GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
-                    'C', 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', "cableRedNet", 'G', "ingotGold"));
+                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', "cableRedNet", 'G', "ingotGold"));
     }
-
-    /* TODO but back recipe when MineFactory Reloaded is back
-    if (Loader.isModLoaded("MineFactoryReloaded")) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(BrBlocks.reactorRedNetPort.createItemStack(), "CRC", "RGR", "CRC", 'C',
-                "reactorCasing", 'R', "cableRedNet", 'G', "ingotGold"));
-    }
-    */
-
-
-    /*
-    // We do this to skip DISABLED
-    @SideOnly(Side.CLIENT)
-    public IIcon getRedNetConfigIcon(TileEntityReactorRedNetPort.CircuitType circuitType) {
-        if(circuitType == TileEntityReactorRedNetPort.CircuitType.DISABLED) { return null; }
-        else {
-            return _redNetPortConfigIcons[circuitType.ordinal() - 1];
-        }
-    }
-    */
 
     // IConnectableRedNet
 
@@ -136,6 +117,4 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice implements IRe
 
         return te instanceof TileEntityReactorRedNetPort ? (TileEntityReactorRedNetPort)te : null;
     }
-
-    //private IIcon[] _redNetPortConfigIcons = new IIcon[TileEntityReactorRedNetPort.CircuitType.values().length - 1];
 }
