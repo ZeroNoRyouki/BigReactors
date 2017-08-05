@@ -6,7 +6,6 @@ import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureMap;
 
 /**
  * A class for objects which can be clicked
@@ -28,17 +27,15 @@ public class BeefGuiGrabSource extends BeefGuiControlBase implements IBeefToolti
 	public void drawForeground(TextureManager renderEngine, int mouseX, int mouseY) {
 		if(this.grabbable != null) {
 
-			renderEngine.bindTexture( TextureMap.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.color(1f, 1f, 1f, 1f);
 			this.guiContainer.drawTexturedModelRectFromIcon(relativeX, relativeY, grabbable.getIcon(), width, height);
 		}
 		else {
 			Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, 0x66ff0000); // Red error spot
 		}
-		/**/
 		if(this.isMouseOver(mouseX, mouseY)) {
 			Gui.drawRect(this.relativeX, this.relativeY, this.relativeX+this.width, this.relativeY+this.height, hoverColor);
-		}/**/
+		}
 	}
 	
 	public IBeefGuiGrabbable getGrabbable() { return grabbable; }

@@ -1,9 +1,16 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.client.gui.GuiReactorRedNetPort;
+import erogenousbeef.bigreactors.common.BRLog;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CircuitType;
 import erogenousbeef.bigreactors.common.compat.IdReference;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
+import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
 import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,13 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetInputNode;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
-import erogenousbeef.bigreactors.client.gui.GuiReactorRedNetPort;
-import erogenousbeef.bigreactors.common.BRLog;
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import erogenousbeef.bigreactors.gui.container.ContainerBasic;
-import it.zerono.mods.zerocore.util.WorldHelper;
 
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart",
@@ -111,7 +111,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		
 		if(!this.isConnected()) { return 0; }
 		
-		TileEntity te = null;
+		//TileEntity te = null;
 		
 		switch(channelCircuitTypes[channel]) {
 		case outputFuelTemperature:
@@ -126,7 +126,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		case outputWasteAmount:
 			return getReactorController().getWasteAmount();
 		case outputEnergyAmount:
-			int energyStored, energyTotal;
+			//int energyStored, energyTotal;
 			MultiblockReactor reactor = this.getReactorController();
 			if(reactor != null) {
 				return reactor.getEnergyStoredPercentage();

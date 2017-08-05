@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -112,8 +113,8 @@ public abstract class BeefGuiBase extends GuiContainer {
 		}
 		
 		if(this.grabbedItem != null) {
+
 			// Render grabbed item next to mouse
-            this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 			drawTexturedModelRectFromIcon(absoluteX+1, absoluteY+1, this.grabbedItem.getIcon(), 16, 16);
 		}
@@ -121,6 +122,11 @@ public abstract class BeefGuiBase extends GuiContainer {
 
 	public void drawTexturedModelRectFromIcon(int x, int y, ResourceLocation texture, int width, int height) {
 
+		final TextureAtlasSprite sprite = this.mc.getTextureMapBlocks().getAtlasSprite(texture.toString());
+
+		this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		this.drawTexturedModalRect(x, y, sprite, width, height);
+		/*
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder vertexbuffer = tessellator.getBuffer();
 
@@ -136,6 +142,7 @@ public abstract class BeefGuiBase extends GuiContainer {
 		vertexbuffer.pos(x + width, y, 0.0D).tex(maxU, minV).endVertex();
 		vertexbuffer.pos(x, y, 0.0D).tex(minU, minV).endVertex();
 		tessellator.draw();
+		*/
 	}
 	
 	@Override
