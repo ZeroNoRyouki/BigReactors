@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.common.item;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MetalType;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.item.ModItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -17,20 +18,21 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemBRMetal extends ItemBase {
+public class ItemBRMetal extends ModItem {
 
 	public ItemBRMetal(String itemName, MetalSize size) {
 
 		super(itemName);
+        this.setCreativeTab(BigReactors.TAB);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this._size = size;
 		this._subItems = null;
 	}
 
-	@Override
+    @Override
 	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    public void onRegisterModels() {
 
 		ResourceLocation location = this.getRegistryName();
 
@@ -39,8 +41,8 @@ public class ItemBRMetal extends ItemBase {
 					new ModelResourceLocation(location, String.format("metal=%s", metal.getName())));
 	}
 
-	@Override
-	public void registerOreDictionaryEntries() {
+    @Override
+    public void onRegisterOreDictionaryEntries() {
 
 		// Register all generic ingots & dusts
 
@@ -60,14 +62,7 @@ public class ItemBRMetal extends ItemBase {
 	}
 
 	@Override
-	public int getMetadata(int damage)
-	{
-		return damage;
-	}
-
-	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-
 		return super.getUnlocalizedName() + "." + MetalType.fromMeta(stack.getMetadata()).getName();
 	}
 

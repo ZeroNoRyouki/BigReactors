@@ -6,7 +6,7 @@ import erogenousbeef.bigreactors.common.multiblock.IPowerGenerator;
 import erogenousbeef.bigreactors.common.multiblock.IPowerProvider;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

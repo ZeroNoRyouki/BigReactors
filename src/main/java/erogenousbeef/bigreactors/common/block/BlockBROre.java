@@ -5,6 +5,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MineralType;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.lib.block.ModBlock;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,31 +24,35 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBROre extends BlockBR {
+public class BlockBROre extends ModBlock {
 
 	public BlockBROre(String blockName) {
 
 		super(blockName, Material.ROCK);
+        this.setCreativeTab(BigReactors.TAB);
+        this.setHardness(2.0f);
 		this._subBlocks = null;
 	}
 
-	@Override
-	public void onPostRegister() {
-		GameRegistry.register(new ItemBlockOre(this).setRegistryName(this.getRegistryName()));
-	}
+    @Override
+    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
+        registry.register(new ItemBlockOre(this).setRegistryName(this.getRegistryName()));
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onRegisterModels() {
 
 		ResourceLocation location = this.getRegistryName();
 		Item item = Item.getItemFromBlock(this);
@@ -57,17 +62,17 @@ public class BlockBROre extends BlockBR {
 					new ModelResourceLocation(location, String.format("ore=%s", ore.getName())));
 	}
 
-	@Override
-	public void registerOreDictionaryEntries() {
+    @Override
+    public void onRegisterOreDictionaryEntries() {
 
-		ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
+		final ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
 
 		OreDictionary.registerOre("oreYellorite", ore);
 		OreDictionary.registerOre("oreYellorium", ore); // For convenience of mods which fiddle with recipes
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void onRegisterRecipes() {
 
 		// - Yellorium
 

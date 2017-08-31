@@ -1,6 +1,8 @@
 package erogenousbeef.bigreactors.common.item;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MineralType;
+import it.zerono.mods.zerocore.lib.item.ModItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,11 +16,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemMineral extends ItemBase  {
+public class ItemMineral extends ModItem {
 
     public ItemMineral(String itemName) {
 
         super(itemName);
+        this.setCreativeTab(BigReactors.TAB);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this._subItems = null;
@@ -26,7 +29,7 @@ public class ItemMineral extends ItemBase  {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onPostClientRegister() {
+    public void onRegisterModels() {
 
         ResourceLocation location = this.getRegistryName();
 
@@ -36,14 +39,7 @@ public class ItemMineral extends ItemBase  {
     }
 
     @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
-    }
-
-    @Override
     public String getUnlocalizedName(ItemStack stack) {
-
         return super.getUnlocalizedName() + "." + MineralType.fromMeta(stack.getMetadata()).getName();
     }
 

@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.init;
-
+/*
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.BlockBR;
@@ -177,3 +177,4 @@ public final class InitHandler implements IModInitializationHandler {
         INSTANCE = new InitHandler();
     }
 }
+*/

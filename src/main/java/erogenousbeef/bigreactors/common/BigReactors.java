@@ -10,10 +10,8 @@ import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrFluids;
-import erogenousbeef.bigreactors.init.BrItems;
-import erogenousbeef.bigreactors.init.InitHandler;
+import erogenousbeef.bigreactors.init.ObjectsHandler;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
-import it.zerono.mods.zerocore.internal.common.init.ZeroItems;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import it.zerono.mods.zerocore.lib.gui.ModGuiHandler;
 import it.zerono.mods.zerocore.lib.world.IWorldGenWhiteList;
@@ -22,15 +20,19 @@ import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.Calendar;
@@ -60,12 +62,20 @@ public class BigReactors implements IModInitializationHandler {
 		return BigReactors.s_proxy;
 	}
 
+    public static Logger getLogger() {
+
+        if (null == s_modLogger)
+            s_modLogger = LogManager.getLogger(BigReactors.MODID);
+
+        return s_modLogger;
+    }
+
 	@Mod.EventHandler
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {
 
-		CONFIG.onPreInit(event);
-		InitHandler.INSTANCE.onPreInit(event);
+		//CONFIG.onPreInit(event);
+		//InitHandler.INSTANCE.onPreInit(event);
 		StandardReactants.register();
 		MinecraftForge.EVENT_BUS.register(new BREventHandler());
 		MinecraftForge.EVENT_BUS.register(BigReactors.s_proxy);
@@ -76,8 +86,8 @@ public class BigReactors implements IModInitializationHandler {
 	@Override
 	public void onInit(FMLInitializationEvent event) {
 
-		CONFIG.onInit(event);
-		InitHandler.INSTANCE.onInit(event);
+		//CONFIG.onInit(event);
+		//InitHandler.INSTANCE.onInit(event);
 
 		// add world generator for our ores
 		if (CONFIG.enableWorldGen) {
@@ -98,15 +108,15 @@ public class BigReactors implements IModInitializationHandler {
 	@Override
 	public void onPostInit(FMLPostInitializationEvent event) {
 
-		CONFIG.onPostInit(event);
-		InitHandler.INSTANCE.onPostInit(event);
+		//CONFIG.onPostInit(event);
+		//InitHandler.INSTANCE.onPostInit(event);
 		BigReactors.s_proxy.onPostInit(event);
 	}
-
+        /*
 	@Mod.EventHandler
 	public void onMissingMapping(FMLMissingMappingsEvent event) {
 		InitHandler.INSTANCE.onMissingMapping(event);
-	}
+	}*/
 
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {
@@ -268,11 +278,15 @@ public class BigReactors implements IModInitializationHandler {
 		return BigReactors.createResourceLocation("blocks/" + path);
 	}
 
+    private final ObjectsHandler _objectsHandler = new ObjectsHandler(BigReactors.CONFIG);
+
 	@Mod.Instance(MODID)
 	private static BigReactors s_instance;
 
 	@SidedProxy(clientSide = "erogenousbeef.bigreactors.client.ClientProxy", serverSide = "erogenousbeef.bigreactors.common.CommonProxy")
 	private static CommonProxy s_proxy;
+
+    private static Logger s_modLogger;
 
 	/*
 	@Mod.Metadata(MODID)
@@ -309,5 +323,4 @@ public class BigReactors implements IModInitializationHandler {
 	public static void temp_sendStatusMessage(@Nonnull final EntityPlayer player, @Nonnull final ITextComponent message) {
 		getProxy().temp_sendPlayerStatusMessage(player, message);
 	}
-
 }

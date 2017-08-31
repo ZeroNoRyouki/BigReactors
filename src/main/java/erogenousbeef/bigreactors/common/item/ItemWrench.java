@@ -1,9 +1,12 @@
 package erogenousbeef.bigreactors.common.item;
 
 import cofh.api.item.IToolHammer;
+import erogenousbeef.bigreactors.common.BigReactors;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
+import it.zerono.mods.zerocore.lib.item.ModItem;
 import it.zerono.mods.zerocore.util.CodeHelper;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,11 +27,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemWrench extends ItemBase implements IToolHammer {
+public class ItemWrench extends ModItem implements IToolHammer {
 
     public ItemWrench(String itemName) {
 
         super(itemName);
+        this.setCreativeTab(BigReactors.TAB);
         this.setMaxStackSize(1);
     }
 
@@ -67,13 +71,13 @@ public class ItemWrench extends ItemBase implements IToolHammer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onPostClientRegister() {
+    public void onRegisterModels() {
         ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
     }
 
     @Override
-    public void registerRecipes() {
-        GameRegistry.addRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
+    public void onRegisterRecipes() {
+        RecipeHelper.addShapedRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
                 'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.YELLOW.getMetadata()));
     }
 

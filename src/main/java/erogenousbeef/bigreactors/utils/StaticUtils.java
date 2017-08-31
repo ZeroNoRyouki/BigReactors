@@ -2,8 +2,8 @@ package erogenousbeef.bigreactors.utils;
 
 import cofh.api.item.IToolHammer;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
-import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -20,8 +20,8 @@ public class StaticUtils {
 
 	// TODO make a generic function out of this
 	public static int argb(final float red, final float green, final float blue, final float alpha) {
-		return argb(MathHelper.floor_float(red * 255.0F), MathHelper.floor_float(green * 255.0F),
-				MathHelper.floor_float(blue * 255.0F), MathHelper.floor_float(alpha * 255.0F));
+		return argb(MathHelper.floor(red * 255.0F), MathHelper.floor(green * 255.0F),
+				MathHelper.floor(blue * 255.0F), MathHelper.floor(alpha * 255.0F));
 	}
 
 	// TODO make a generic function out of this

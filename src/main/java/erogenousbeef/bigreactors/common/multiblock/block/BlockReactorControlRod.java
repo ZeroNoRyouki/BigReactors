@@ -12,6 +12,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import javax.annotation.Nonnull;
+
 public class BlockReactorControlRod extends BlockMultiblockDevice {
 
     public BlockReactorControlRod(String blockName) {
@@ -25,7 +27,7 @@ public class BlockReactorControlRod extends BlockMultiblockDevice {
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes() {
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CGC", "GRG", "CUC",
