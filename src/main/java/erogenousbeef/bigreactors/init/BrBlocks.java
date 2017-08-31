@@ -13,50 +13,53 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntit
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
+@GameRegistry.ObjectHolder(BigReactors.MODID)
 public final class BrBlocks {
 
     // Ores
-    public static final BlockBROre brOre;
+    public static final BlockBROre brOre = null;
 
     // Metal blocks
-    public static final BlockBRMetal blockMetals;
+    public static final BlockBRMetal blockMetals = null;
 
     // Reactor parts
-    public static final BlockMultiblockGlass reactorGlass;
-    public static final BlockMultiblockCasing reactorCasing;
-    public static final BlockMultiblockController reactorController;
-    public static final BlockMultiblockPowerTap reactorPowerTapRF;
-    public static final BlockMultiblockPowerTap reactorPowerTapTesla;
-    public static final BlockMultiblockIOPort reactorAccessPort;
-    public static final BlockMultiblockIOPort reactorCoolantPort;
-    public static final BlockReactorControlRod reactorControlRod;
-    public static final BlockReactorRedNetPort reactorRedNetPort;
-    public static final BlockMultiblockComputerPort reactorComputerPort;
-    public static final BlockReactorRedstonePort reactorRedstonePort;
-    public static final BlockReactorFuelRod reactorFuelRod;
-    public static final BlockMultiblockIOPort reactorCreativeCoolantPort;
+    public static final BlockMultiblockGlass reactorGlass = null;
+    public static final BlockMultiblockCasing reactorCasing = null;
+    public static final BlockMultiblockController reactorController = null;
+    public static final BlockMultiblockPowerTap reactorPowerTapRF = null;
+    public static final BlockMultiblockPowerTap reactorPowerTapTesla = null;
+    public static final BlockMultiblockIOPort reactorAccessPort = null;
+    public static final BlockMultiblockIOPort reactorCoolantPort = null;
+    public static final BlockReactorControlRod reactorControlRod = null;
+    public static final BlockReactorRedNetPort reactorRedNetPort = null;
+    public static final BlockMultiblockComputerPort reactorComputerPort = null;
+    public static final BlockReactorRedstonePort reactorRedstonePort = null;
+    public static final BlockReactorFuelRod reactorFuelRod = null;
+    public static final BlockMultiblockIOPort reactorCreativeCoolantPort = null;
 
     // Turbine parts
-    public static final BlockMultiblockGlass turbineGlass;
-    public static final BlockMultiblockCasing turbineHousing;
-    public static final BlockMultiblockController turbineController;
-    public static final BlockMultiblockPowerTap turbinePowerTapRF;
-    public static final BlockMultiblockPowerTap turbinePowerTapTesla;
-    public static final BlockMultiblockComputerPort turbineComputerPort;
-    public static final BlockMultiblockIOPort turbineFluidPort;
-    public static final BlockTurbineRotorBearing turbineBearing;
-    public static final BlockTurbineRotorShaft turbineRotorShaft;
-    public static final BlockTurbineRotorBlade turbineRotorBlade;
-    public static final BlockMultiblockIOPort turbineCreativeSteamGenerator;
+    public static final BlockMultiblockGlass turbineGlass = null;
+    public static final BlockMultiblockCasing turbineHousing = null;
+    public static final BlockMultiblockController turbineController = null;
+    public static final BlockMultiblockPowerTap turbinePowerTapRF = null;
+    public static final BlockMultiblockPowerTap turbinePowerTapTesla = null;
+    public static final BlockMultiblockComputerPort turbineComputerPort = null;
+    public static final BlockMultiblockIOPort turbineFluidPort = null;
+    public static final BlockTurbineRotorBearing turbineBearing = null;
+    public static final BlockTurbineRotorShaft turbineRotorShaft = null;
+    public static final BlockTurbineRotorBlade turbineRotorBlade = null;
+    public static final BlockMultiblockIOPort turbineCreativeSteamGenerator = null;
     
     // Devices
     //public static final BlockBRDevice deviceCyaniteRep; // Bye Bye ...
 
     // Fluid blocks
-    public static final BlockBRGenericFluid yellorium;
-    public static final BlockBRGenericFluid cyanite;
+    public static final BlockBRGenericFluid yellorium = null;
+    public static final BlockBRGenericFluid cyanite = null;
 
+    /*
     static void initialize() {
     }
 
@@ -138,4 +141,5 @@ public final class BrBlocks {
         init.register(TileEntityTurbineComputerPort.class);
         init.register(TileEntityTurbineController.class);
     }
+    */
 }

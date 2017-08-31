@@ -13,8 +13,9 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntit
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
-import it.zerono.mods.zerocore.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,6 +32,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import javax.annotation.Nonnull;
 
 public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
@@ -63,41 +67,41 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes() {
 
         if (PartType.ReactorAccessPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", " V ", "CPC",
+                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", " V ", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'V', Blocks.CHEST, 'P', Blocks.PISTON);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "C C", " V ", "CPC",
+                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "C C", " V ", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'V', Blocks.CHEST, 'P', Blocks.PISTON);
 
         } else if (PartType.ReactorCoolantPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "IVI", "CPC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "IVI", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'V', Items.BUCKET, 'P', Blocks.PISTON,
-                        'I', "ingotIron"));
+                        'I', "ingotIron");
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "IVI", "CPC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "IVI", "CPC",
                         'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'V', Items.BUCKET, 'P', Blocks.PISTON,
-                        'I', "ingotSteel"));
+                        'I', "ingotSteel");
 
         } else if (PartType.TurbineFluidPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
+                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'I', "ingotIron",
-                        'V', Items.BUCKET, 'P', Blocks.PISTON));
+                        'V', Items.BUCKET, 'P', Blocks.PISTON);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
+                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'I', "ingotSteel",
-                        'V', Items.BUCKET, 'P', Blocks.PISTON));
+                        'V', Items.BUCKET, 'P', Blocks.PISTON);
         }
     }
 

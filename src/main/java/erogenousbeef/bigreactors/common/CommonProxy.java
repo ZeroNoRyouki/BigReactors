@@ -1,11 +1,9 @@
 package erogenousbeef.bigreactors.common;
 
 import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.item.ItemBase;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -18,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CommonProxy implements IModInitializationHandler {
-
+    /*
 	public BlockBR register(BlockBR block) {
 
 		GameRegistry.register(block);
@@ -47,6 +45,7 @@ public class CommonProxy implements IModInitializationHandler {
 
 		GameRegistry.registerTileEntity(tileEntityClass, BigReactors.MODID + tileEntityClass.getSimpleName());
 	}
+	*/
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {

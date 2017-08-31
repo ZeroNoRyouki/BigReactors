@@ -9,8 +9,10 @@ import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import javax.annotation.Nonnull;
 
 @Optional.InterfaceList({
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = IdReference.MODID_COMPUTERCRAFT)
@@ -45,7 +48,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes() {
 
         if (!CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) &&
                 !CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS))
@@ -54,26 +57,26 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
         if (PartType.ReactorComputerPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "GPG", "CRC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "GPG", "CRC",
                     'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER));
+                    'G', "ingotGold", 'P', Items.REPEATER);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "GPG", "CRC",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "GPG", "CRC",
                     'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER));
+                    'G', "ingotGold", 'P', Items.REPEATER);
 
         } else if (PartType.TurbineComputerPort == this._type) {
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "GPG", "HRH",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "GPG", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER));
+                    'G', "ingotGold", 'P', Items.REPEATER);
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "GPG", "HRH",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "GPG", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER));
+                    'G', "ingotGold", 'P', Items.REPEATER);
         }
     }
 

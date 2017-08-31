@@ -6,6 +6,8 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.block.ModBlock;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
@@ -21,31 +23,33 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockBRMetal extends BlockBR {
+public class BlockBRMetal extends ModBlock {
 
 	public BlockBRMetal(String blockName) {
 
 		super(blockName, Material.IRON);
+        this.setCreativeTab(BigReactors.TAB);
+        this.setHardness(2.0f);
 		this._subBlocks = null;
 	}
 
-	@Override
-	public void onPostRegister() {
-		GameRegistry.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
-	}
+    @Override
+    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
+        registry.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    public void onRegisterModels() {
 
 		ResourceLocation location = this.getRegistryName();
 		Item item = Item.getItemFromBlock(this);
@@ -56,7 +60,7 @@ public class BlockBRMetal extends BlockBR {
 	}
 
 	@Override
-	public void registerOreDictionaryEntries() {
+    public void onRegisterOreDictionaryEntries() {
 
 		MetalType[] metals = MetalType.values();
 		int length = metals.length;
@@ -66,7 +70,7 @@ public class BlockBRMetal extends BlockBR {
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes() {
 
 		// Metal blocks & ingots
 
@@ -74,27 +78,31 @@ public class BlockBRMetal extends BlockBR {
 
 		for (MetalType metal : MetalType.VALUES) {
 
+		    if (MetalType.Ludicrite == metal)
+		        continue;
+
 			block = this.createItemStack(metal, 1);
 			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
 
-			GameRegistry.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
-			ItemHelper.stackSetSize(ingot, 9);
-			GameRegistry.addShapelessRecipe(ingot, block);
-		}
+            RecipeHelper.addShapelessRecipe(block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
+
+            ingot = ItemHelper.stackFrom(ingot, 9);
+            RecipeHelper.addShapelessRecipe(ingot, block);
+        }
 
 		// Ludicrite block. Because.
 
 		final ItemStack ludicriteBlock = this.createItemStack(MetalType.Ludicrite, 1);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(ludicriteBlock, "BPB", "ENE", "BPB",
+        RecipeHelper.addShapedOreDictRecipe(ludicriteBlock, "BPB", "ENE", "BPB",
 				'N', Items.NETHER_STAR, 'P', Items.ENDER_PEARL, 'E', Blocks.EMERALD_BLOCK,
-				'B', BigReactors.CONFIG.recipeBlutoniumIngotName));
+				'B', BigReactors.CONFIG.recipeBlutoniumIngotName);
 
 		if (OreDictionaryHelper.doesOreNameExist("blockEnderium")) {
 
 			// Ok, how about some ludicrous shit here. Enderium and blaze rods. Have fun, bucko.
-			GameRegistry.addRecipe(new ShapedOreRecipe(ludicriteBlock, "BRB", "E E", "BRB",
-					'B', BigReactors.CONFIG.recipeBlutoniumIngotName, 'R', Items.BLAZE_ROD, 'E', "blockEnderium"));
+            RecipeHelper.addShapedOreDictRecipe(ludicriteBlock, "BRB", "E E", "BRB",
+					'B', BigReactors.CONFIG.recipeBlutoniumIngotName, 'R', Items.BLAZE_ROD, 'E', "blockEnderium");
 		}
 	}
 

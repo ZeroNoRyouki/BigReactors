@@ -13,17 +13,21 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineP
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTapTesla;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import javax.annotation.Nonnull;
 
 public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
 
@@ -52,7 +56,7 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes() {
 
         if (PartType.ReactorPowerTap == this._type) {
 
@@ -62,11 +66,11 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
             if (PowerSystem.RedstoneFlux == this._powerSystem) {
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "R R", "CRC",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "R R", "CRC",
                             'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE);
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "R R", "CRC",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "R R", "CRC",
                             'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE);
 
             } else if (PowerSystem.Tesla == this._powerSystem) {
@@ -74,11 +78,11 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
                 ItemStack lapis = new ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.getDyeDamage());
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "R R", "CRC",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "R R", "CRC",
                             'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', lapis);
 
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "R R", "CRC",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "R R", "CRC",
                             'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', lapis);
             }
 
@@ -87,11 +91,11 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
             if (PowerSystem.RedstoneFlux == this._powerSystem) {
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "R R", "HRH",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "R R", "HRH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE);
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE);
 
             } else if (PowerSystem.Tesla == this._powerSystem) {
@@ -99,11 +103,11 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
                 ItemStack lapis = new ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.getDyeDamage());
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "R R", "HRH",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "R R", "HRH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', lapis);
 
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                    GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
+                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', lapis);
             }
         }

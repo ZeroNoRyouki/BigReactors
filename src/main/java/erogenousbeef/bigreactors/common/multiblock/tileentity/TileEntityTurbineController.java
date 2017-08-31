@@ -3,7 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import erogenousbeef.bigreactors.client.gui.GuiTurbineController;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.gui.container.ContainerSlotless;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

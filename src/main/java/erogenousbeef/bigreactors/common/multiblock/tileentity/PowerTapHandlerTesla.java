@@ -4,7 +4,7 @@ import erogenousbeef.bigreactors.common.multiblock.IPowerGenerator;
 import erogenousbeef.bigreactors.common.multiblock.IPowerProvider;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;

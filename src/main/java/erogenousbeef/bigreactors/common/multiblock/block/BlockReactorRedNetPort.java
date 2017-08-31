@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedNetPort;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -14,8 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,7 +22,7 @@ import javax.annotation.Nullable;
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = IdReference.MODID_MINEFACTORYRELOADED)
 })
-public class BlockReactorRedNetPort extends BlockMultiblockDevice implements IRedNetOmniNode {
+public class BlockReactorRedNetPort extends BlockMultiblockDevice /*implements IRedNetOmniNode*/ {
 
     public BlockReactorRedNetPort(String blockName) {
         super(PartType.ReactorRednetPort, blockName);
@@ -34,23 +33,26 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice implements IRe
         return new TileEntityReactorRedNetPort();
     }
 
+    /**
+     * Register all the recipes for this object
+     */
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes() {
 
         if (!CompatManager.isModLoaded(IdReference.MODID_MINEFACTORYRELOADED))
             return;
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
-                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', "cableRedNet", 'G', "ingotGold"));
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
+                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', "cableRedNet", 'G', "ingotGold");
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-            GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
-                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', "cableRedNet", 'G', "ingotGold"));
+            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
+                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', "cableRedNet", 'G', "ingotGold");
     }
 
     // IConnectableRedNet
-
+    /* TODO: re-add when Minefactory Reloaded is out for 1.11.2
     @Override
     @Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
     public RedNetConnectionType getConnectionType(World world, BlockPos position, EnumFacing enumFacing) {
@@ -109,6 +111,7 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice implements IRe
     @Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
     public void onInputChanged(World world, BlockPos position, EnumFacing enumFacing, int inputValue) {
     }
+    */
 
     @Nullable
     private TileEntityReactorRedNetPort getPortTile(@Nonnull final World world, @Nonnull final BlockPos position) {

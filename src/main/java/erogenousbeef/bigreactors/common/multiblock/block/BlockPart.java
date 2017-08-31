@@ -1,16 +1,16 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
+import it.zerono.mods.zerocore.lib.block.ModBlock;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -32,13 +32,15 @@ import javax.annotation.Nonnull;
 /**
  * Base class for a multiblock part
  */
-public class BlockPart extends BlockBR {
+public class BlockPart extends ModBlock {
 
     public BlockPart(PartType type, String blockName, Material material) {
 
         super(blockName, material);
         this._type = type;
+        this.setCreativeTab(BigReactors.TAB);
         this.setSoundType(SoundType.METAL);
+        this.setHardness(2.0f);
     }
 
     public PartType getType() {

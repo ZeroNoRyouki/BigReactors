@@ -4,14 +4,10 @@ import erogenousbeef.bigreactors.client.renderer.RendererReactorFuelRod;
 import erogenousbeef.bigreactors.client.renderer.RotorSpecialRenderer;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
-import erogenousbeef.bigreactors.common.block.BlockBR;
-import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
-import erogenousbeef.bigreactors.common.item.ItemBase;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
 import erogenousbeef.bigreactors.init.BrFluids;
-import it.zerono.mods.zerocore.lib.client.VersionChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -36,6 +32,7 @@ public class ClientProxy extends CommonProxy {
 		CommonBlockIcons = new CommonBlockIconManager();
 	}
 
+	/*
 	@Override
 	public BlockBR register(BlockBR block) {
 
@@ -59,6 +56,7 @@ public class ClientProxy extends CommonProxy {
 		item.onPostClientRegister();
 		return item;
 	}
+	*/
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {

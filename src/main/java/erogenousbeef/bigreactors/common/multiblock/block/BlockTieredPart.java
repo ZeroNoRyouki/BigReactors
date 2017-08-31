@@ -13,10 +13,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +30,13 @@ public class BlockTieredPart extends BlockPart {
     }
 
     @Override
-    public void onPostRegister() {
-        GameRegistry.register(new ItemBlockPartTier(this).setRegistryName(this.getRegistryName()));
+    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
+        registry.register(new ItemBlockPartTier(this).setRegistryName(this.getRegistryName()));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onPostClientRegister() {
+    public void onRegisterModels() {
 
         Item item = Item.getItemFromBlock(this);
         ResourceLocation location = this.getRegistryName();

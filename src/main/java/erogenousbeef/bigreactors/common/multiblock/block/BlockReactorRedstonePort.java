@@ -6,11 +6,13 @@ import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorRedstonePort;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -19,6 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
@@ -39,14 +42,14 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes() {
 
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-			GameRegistry.addRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
+			RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
 				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
 
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-			GameRegistry.addRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
+			RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
 				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
 	}
 

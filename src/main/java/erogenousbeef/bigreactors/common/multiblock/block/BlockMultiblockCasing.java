@@ -8,9 +8,11 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineP
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.PartPosition;
 import it.zerono.mods.zerocore.api.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import javax.annotation.Nonnull;
 
 public class BlockMultiblockCasing extends BlockTieredPart {
 
@@ -40,29 +44,28 @@ public class BlockMultiblockCasing extends BlockTieredPart {
                 throw new IllegalArgumentException("Unrecognized part");
         }
     }
-
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes() {
 
         if (PartType.ReactorCasing == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 4), "IGI", "GUG", "IGI",
-                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BrItems.reactorCasingCores.createItemStack(PartTier.Legacy, 1)));
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 4), "IGI", "GUG", "IGI",
+                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BrItems.reactorCasingCores.createItemStack(PartTier.Legacy, 1));
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
-                    'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.reactorCasingCores.createItemStack(PartTier.Basic, 1)));
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
+                    'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.reactorCasingCores.createItemStack(PartTier.Basic, 1));
 
         } else if (PartType.TurbineHousing == this._type) {
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Legacy, 4), "IGI", "GUG", "IGI",
-                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Legacy, 1)));
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 4), "IGI", "GUG", "IGI",
+                        'I', "ingotIron", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Legacy, 1));
 
             if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                GameRegistry.addRecipe(new ShapedOreRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
-                        'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Basic, 1)));
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 4), "IGI", "GUG", "IGI",
+                        'I', "ingotSteel", 'G', "ingotGraphite", 'U', BrItems.turbineHousingCores.createItemStack(PartTier.Basic, 1));
         }
     }
 
