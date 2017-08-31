@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -19,7 +20,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 // TODO put back in when Minefactory Reloaded is available for MC 1.9.x
@@ -40,7 +43,7 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",

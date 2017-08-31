@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.common.block;
-
+/*
 import it.zerono.mods.zerocore.lib.IGameObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -77,3 +77,4 @@ public abstract class BlockBR extends Block implements IGameObject {
         return state;
     }
 }
+*/

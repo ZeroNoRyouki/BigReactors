@@ -1,11 +1,13 @@
 package erogenousbeef.bigreactors.common.block;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import it.zerono.mods.zerocore.lib.IGameObject;
+import it.zerono.mods.zerocore.lib.init.IGameObject;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -14,6 +16,9 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.annotation.Nonnull;
 
 public class BlockBRGenericFluid extends BlockFluidClassic implements IGameObject {
 
@@ -22,14 +27,17 @@ public class BlockBRGenericFluid extends BlockFluidClassic implements IGameObjec
 		super(fluid, material);
 		this.setRegistryName(blockName);
 		this.setUnlocalizedName(this.getRegistryName().toString());
+        this.setCreativeTab(BigReactors.TAB);
 		fluid.setBlock(this);
 	}
 
-	public void onPostRegister() {
-	}
+    @Override
+    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
+    }
 
-	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onRegisterModels() {
 
 		final ModelResourceLocation location = new ModelResourceLocation(BigReactors.MODID + ":fluid",
 				this.getRegistryName().getResourcePath());
@@ -44,11 +52,11 @@ public class BlockBRGenericFluid extends BlockFluidClassic implements IGameObjec
 	}
 
 	@Override
-	public void registerOreDictionaryEntries() {
+    public void onRegisterOreDictionaryEntries() {
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 	}
 
 	/**

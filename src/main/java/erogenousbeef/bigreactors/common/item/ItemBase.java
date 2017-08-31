@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.common.item;
-
+/*
 import it.zerono.mods.zerocore.lib.IGameObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,3 +47,4 @@ public class ItemBase extends Item implements IGameObject {
 		return metadata;
 	}
 }
+*/

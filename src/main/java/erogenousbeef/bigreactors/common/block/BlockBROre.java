@@ -5,6 +5,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.MineralType;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.lib.block.ModBlock;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -27,28 +29,32 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBROre extends BlockBR {
+public class BlockBROre extends ModBlock {
 
 	public BlockBROre(String blockName) {
 
 		super(blockName, Material.ROCK);
+        this.setCreativeTab(BigReactors.TAB);
+        this.setHardness(2.0f);
 		this._subBlocks = null;
 	}
 
-	@Override
-	public void onPostRegister() {
-		ForgeRegistries.ITEMS.register(new ItemBlockOre(this).setRegistryName(this.getRegistryName()));
-	}
+    @Override
+    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
+        registry.register(new ItemBlockOre(this).setRegistryName(this.getRegistryName()));
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onRegisterModels() {
 
 		ResourceLocation location = this.getRegistryName();
 		Item item = Item.getItemFromBlock(this);
@@ -58,17 +64,17 @@ public class BlockBROre extends BlockBR {
 					new ModelResourceLocation(location, String.format("ore=%s", ore.getName())));
 	}
 
-	@Override
-	public void registerOreDictionaryEntries() {
+    @Override
+    public void onRegisterOreDictionaryEntries() {
 
-		ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
+		final ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
 
 		OreDictionary.registerOre("oreYellorite", ore);
 		OreDictionary.registerOre("oreYellorium", ore); // For convenience of mods which fiddle with recipes
 	}
 
-	@Override
-	public void registerRecipes() {
+    @Override
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
 		// - Yellorium
 

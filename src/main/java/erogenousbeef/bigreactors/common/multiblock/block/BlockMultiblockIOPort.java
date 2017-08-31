@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,6 +32,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.annotation.Nonnull;
 
 public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
@@ -64,7 +68,7 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
         if (PartType.ReactorAccessPort == this._type) {
 

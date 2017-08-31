@@ -11,6 +11,7 @@ import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -22,7 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
@@ -38,7 +41,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",

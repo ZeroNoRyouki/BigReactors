@@ -1,11 +1,9 @@
 package erogenousbeef.bigreactors.common;
 
 import erogenousbeef.bigreactors.api.registry.Reactants;
-import erogenousbeef.bigreactors.common.block.BlockBR;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
-import erogenousbeef.bigreactors.common.item.ItemBase;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 
 public class CommonProxy implements IModInitializationHandler {
-
+    /*
 	public BlockBR register(BlockBR block) {
 
 		ForgeRegistries.BLOCKS.register(block);
@@ -55,6 +53,7 @@ public class CommonProxy implements IModInitializationHandler {
 
 		GameRegistry.registerTileEntity(tileEntityClass, BigReactors.MODID + tileEntityClass.getSimpleName());
 	}
+	*/
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {

@@ -13,6 +13,7 @@ import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumParticleTypes;
@@ -23,7 +24,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockReactorFuelRod extends BlockTieredPart {
@@ -36,7 +39,7 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",

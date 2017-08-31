@@ -12,6 +12,7 @@ import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +20,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.annotation.Nonnull;
 
 public class BlockMultiblockCasing extends BlockTieredPart {
 
@@ -41,9 +45,8 @@ public class BlockMultiblockCasing extends BlockTieredPart {
                 throw new IllegalArgumentException("Unrecognized part");
         }
     }
-
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
         if (PartType.ReactorCasing == this._type) {
 

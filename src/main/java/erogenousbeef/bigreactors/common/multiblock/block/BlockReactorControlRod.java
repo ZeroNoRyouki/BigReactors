@@ -8,10 +8,14 @@ import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.annotation.Nonnull;
 
 public class BlockReactorControlRod extends BlockMultiblockDevice {
 
@@ -26,7 +30,7 @@ public class BlockReactorControlRod extends BlockMultiblockDevice {
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
         if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CGC", "GRG", "CUC",

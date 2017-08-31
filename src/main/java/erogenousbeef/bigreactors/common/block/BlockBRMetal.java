@@ -6,6 +6,7 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
+import it.zerono.mods.zerocore.lib.block.ModBlock;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
@@ -20,33 +21,37 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockBRMetal extends BlockBR {
+public class BlockBRMetal extends ModBlock {
 
 	public BlockBRMetal(String blockName) {
 
 		super(blockName, Material.IRON);
+        this.setCreativeTab(BigReactors.TAB);
+        this.setHardness(2.0f);
 		this._subBlocks = null;
 	}
 
-	@Override
-	public void onPostRegister() {
-		ForgeRegistries.ITEMS.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
-	}
+    @Override
+    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
+        registry.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    public void onRegisterModels() {
 
 		ResourceLocation location = this.getRegistryName();
 		Item item = Item.getItemFromBlock(this);
@@ -57,7 +62,7 @@ public class BlockBRMetal extends BlockBR {
 	}
 
 	@Override
-	public void registerOreDictionaryEntries() {
+    public void onRegisterOreDictionaryEntries() {
 
 		MetalType[] metals = MetalType.values();
 		int length = metals.length;
@@ -67,7 +72,7 @@ public class BlockBRMetal extends BlockBR {
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
 		// Metal blocks & ingots
 

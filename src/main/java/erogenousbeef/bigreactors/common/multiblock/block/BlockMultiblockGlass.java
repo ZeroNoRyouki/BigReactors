@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -32,7 +33,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -46,9 +49,9 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 		this._actualFacings = new boolean[EnumFacing.VALUES.length];
 	}
 
-	@Override
+    @Override
 	@SideOnly(Side.CLIENT)
-	public void onPostClientRegister() {
+    public void onRegisterModels() {
 
 		Item item = Item.getItemFromBlock(this);
 		ResourceLocation name = this.getRegistryName();
@@ -66,7 +69,7 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 	}
 
 	@Override
-	public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
 		final EnumSet<PartTier> tiers;
 		final BlockMultiblockCasing casingBlock;

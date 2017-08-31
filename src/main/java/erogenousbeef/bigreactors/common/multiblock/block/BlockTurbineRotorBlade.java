@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -21,6 +22,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.annotation.Nonnull;
 
 public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineRotorPart {
 
@@ -32,7 +36,7 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CII",

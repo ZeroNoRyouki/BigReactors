@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.init;
-
+/*
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
 import erogenousbeef.bigreactors.common.block.BlockBR;
@@ -7,6 +7,7 @@ import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.item.ItemBase;
 import it.zerono.mods.zerocore.lib.IGameObject;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
+import it.zerono.mods.zerocore.lib.init.GameObjectsHandler;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -80,7 +81,7 @@ public final class InitHandler implements IModInitializationHandler {
         for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings())
             this._remapItems.remap(mapping);
     }
-    /*
+    / *
     public void onMissingMapping(FMLMissingMappingsEvent event) {
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
@@ -96,7 +97,7 @@ public final class InitHandler implements IModInitializationHandler {
                     break;
             }
         }
-    }*/
+    }* /
 
     private InitHandler() {
 
@@ -188,3 +189,4 @@ public final class InitHandler implements IModInitializationHandler {
         INSTANCE = new InitHandler();
     }
 }
+*/

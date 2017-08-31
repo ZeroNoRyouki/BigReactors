@@ -1,7 +1,9 @@
 package erogenousbeef.bigreactors.common.item;
 
+import erogenousbeef.bigreactors.common.BigReactors;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
+import it.zerono.mods.zerocore.lib.item.ModItem;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -12,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -23,12 +26,16 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
-public class ItemWrench extends ItemBase/* implements IToolHammer*/ {
+import javax.annotation.Nonnull;
+
+public class ItemWrench extends ModItem/* implements IToolHammer*/ {
 
     public ItemWrench(String itemName) {
 
         super(itemName);
+        this.setCreativeTab(BigReactors.TAB);
         this.setMaxStackSize(1);
     }
 
@@ -67,12 +74,12 @@ public class ItemWrench extends ItemBase/* implements IToolHammer*/ {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onPostClientRegister() {
+    public void onRegisterModels() {
         ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
     }
 
     @Override
-    public void registerRecipes() {
+    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
         RecipeHelper.addShapedRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
                 'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.YELLOW.getMetadata()));
     }

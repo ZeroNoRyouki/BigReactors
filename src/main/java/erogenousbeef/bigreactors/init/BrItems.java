@@ -16,22 +16,24 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+@GameRegistry.ObjectHolder(BigReactors.MODID)
 public final class BrItems {
 
     // Ingots & dusts
-    public static final ItemBRMetal ingotMetals;
-    public static final ItemBRMetal dustMetals;
-    public static final ItemMineral minerals;
+    public static final ItemBRMetal ingotMetals = null;
+    public static final ItemBRMetal dustMetals = null;
+    public static final ItemMineral minerals = null;
 
     // Reactor components
-    public static final ItemTieredComponent reactorCasingCores;
+    public static final ItemTieredComponent reactorCasingCores = null;
 
     // Turbine components
-    public static final ItemTieredComponent turbineHousingCores;
+    public static final ItemTieredComponent turbineHousingCores = null;
 
     // Miscellanea
-    public static final ItemWrench wrench;
+    public static final ItemWrench wrench = null;
 
+    /*
     static void initialize() {
     }
 
@@ -138,4 +140,5 @@ public final class BrItems {
         // Miscellanea
         wrench = (ItemWrench)init.register(new ItemWrench("wrench"));
     }
+    */
 }
