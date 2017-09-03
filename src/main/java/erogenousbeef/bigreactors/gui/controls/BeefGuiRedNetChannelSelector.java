@@ -5,6 +5,7 @@ import erogenousbeef.bigreactors.gui.BeefGuiControlBase;
 import erogenousbeef.bigreactors.gui.IBeefGuiControl;
 import erogenousbeef.bigreactors.gui.IBeefTooltipControl;
 import erogenousbeef.bigreactors.utils.StaticUtils;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.passive.EntitySheep;
@@ -68,7 +69,7 @@ public class BeefGuiRedNetChannelSelector extends BeefGuiControlBase implements 
 
 		float[] color = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(this.channelIdx));
 
-		Gui.drawRect(absoluteX+1, absoluteY+1, absoluteX+height-1, absoluteY+height-1, StaticUtils.argb(color[0], color[1], color[2], 1.0f));
+		Gui.drawRect(absoluteX+1, absoluteY+1, absoluteX+height-1, absoluteY+height-1, CodeHelper.argb(color[0], color[1], color[2], 1.0f));
 		Gui.drawRect(absoluteX+width-height+1, absoluteY+1, absoluteX+width-1, absoluteY+height-1, 0xff777777);
 	}
 
