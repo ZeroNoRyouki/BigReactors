@@ -10,7 +10,7 @@ import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultibloc
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.helpers.RedNetChange;
 import it.zerono.mods.zerocore.lib.BlockFacings;
-import it.zerono.mods.zerocore.util.WorldHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,8 +21,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetInputNode;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
 
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart",
@@ -214,6 +212,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	@Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
 	public void onMultiblockServerTick() {
 
+		/*
 		if (!this.isConnected())
 			return;
 
@@ -246,6 +245,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		}
 
 		this.ticksSinceLastUpdate = 0;
+		*/
 	}
 
 	public CircuitType getChannelCircuitType(int channel) {
@@ -274,20 +274,20 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 
 		BlockPos coord = coordMappings[channel];
 
-		if (coord == null || !WorldHelper.blockChunkExists(this.worldObj.getChunkProvider(), coord))
+		if (coord == null || !WorldHelper.blockChunkExists(this.getWorld().getChunkProvider(), coord))
 			return null;
 		
-		return this.worldObj.getTileEntity(coord);
+		return this.getWorld().getTileEntity(coord);
 	}
 	
 	protected void setControlRodInsertion(int channel, BlockPos position, int newValue) {
 		if(!this.isConnected()) { return; }
 
 
-		if(!WorldHelper.blockChunkExists(this.worldObj.getChunkProvider(), position))
+		if(!WorldHelper.blockChunkExists(this.getWorld().getChunkProvider(), position))
 			return;
 		
-		TileEntity te = this.worldObj.getTileEntity(position);
+		TileEntity te = this.getWorld().getTileEntity(position);
 		if(te instanceof TileEntityReactorControlRod) {
 			((TileEntityReactorControlRod)te).setControlRodInsertion((short)newValue);
 		}
@@ -376,7 +376,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 				
 				// Validate that we're pointing at the right thing, just in case.
 				if(coord != null) {
-					TileEntity te = worldObj.getTileEntity(coord);
+					TileEntity te = this.getWorld().getTileEntity(coord);
 					if(!(te instanceof TileEntityReactorControlRod)) {
 						BRLog.warning("Invalid tile entity reference at coordinate %s - rednet circuit expected a control rod", coord);
 						coord = null;
@@ -390,7 +390,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 			}
 		}
 
-		WorldHelper.notifyBlockUpdate(this.worldObj, this.getPos(), null, null);
+		WorldHelper.notifyBlockUpdate(this.getWorld(), this.getPos(), null, null);
 		markDirty();
 	}
 
