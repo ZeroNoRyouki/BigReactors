@@ -18,22 +18,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class StaticUtils {
 
-	// TODO make a generic function out of this
-	public static int argb(final float red, final float green, final float blue, final float alpha) {
-		return argb(MathHelper.floor(red * 255.0F), MathHelper.floor(green * 255.0F),
-				MathHelper.floor(blue * 255.0F), MathHelper.floor(alpha * 255.0F));
-	}
-
-	// TODO make a generic function out of this
-	public static int argb(final int red, final int green, final int blue, final int alpha) {
-
-		int color = (alpha << 8) + red;
-
-		color = (color << 8) + green;
-		color = (color << 8) + blue;
-		return color;
-	}
-
 	public static class Inventory {
 
 		public static void dropItems(ItemStackHandler handler, World world, BlockPos position) {
