@@ -20,17 +20,29 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class BrItems {
 
     // Ingots & dusts
+
+    @GameRegistry.ObjectHolder("ingotmetals")
     public static final ItemBRMetal ingotMetals = null;
+
+    @GameRegistry.ObjectHolder("dustmetals")
     public static final ItemBRMetal dustMetals = null;
+
+    @GameRegistry.ObjectHolder("minerals")
     public static final ItemMineral minerals = null;
 
     // Reactor components
+
+    @GameRegistry.ObjectHolder("reactorcasingcores")
     public static final ItemTieredComponent reactorCasingCores = null;
 
     // Turbine components
+
+    @GameRegistry.ObjectHolder("turbinehousingcores")
     public static final ItemTieredComponent turbineHousingCores = null;
 
     // Miscellanea
+
+    @GameRegistry.ObjectHolder("wrench")
     public static final ItemWrench wrench = null;
 
     /*
