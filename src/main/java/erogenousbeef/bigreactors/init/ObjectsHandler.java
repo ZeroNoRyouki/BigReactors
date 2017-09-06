@@ -113,6 +113,7 @@ public class ObjectsHandler extends GameObjectsHandler {
         this.registerTileEntity(BigReactors.MODID, TileEntityReactorComputerPort.class);
         this.registerTileEntity(BigReactors.MODID, TileEntityReactorCoolantPort.class);
         this.registerTileEntity(BigReactors.MODID, TileEntityReactorCreativeCoolantPort.class);
+        this.registerTileEntity(BigReactors.MODID, TileEntityReactorRedNetPort.class);
 
         this.registerTileEntity(BigReactors.MODID, TileEntityTurbinePart.class);
         this.registerTileEntity(BigReactors.MODID, TileEntityTurbinePowerTapRedstoneFlux.class);
