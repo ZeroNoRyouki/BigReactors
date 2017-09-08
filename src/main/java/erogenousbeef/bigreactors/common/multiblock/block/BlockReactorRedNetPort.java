@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,7 +24,7 @@ import javax.annotation.Nullable;
 @Optional.InterfaceList({
 	@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = IdReference.MODID_MINEFACTORYRELOADED)
 })
-public class BlockReactorRedNetPort extends BlockMultiblockDevice /*implements IRedNetOmniNode*/ {
+public class BlockReactorRedNetPort extends BlockMultiblockDevice implements IRedNetOmniNode {
 
     public BlockReactorRedNetPort(String blockName) {
         super(PartType.ReactorRednetPort, blockName);
@@ -52,7 +54,7 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice /*implements I
     }
 
     // IConnectableRedNet
-    /* TODO: re-add when Minefactory Reloaded is out for 1.11.2
+
     @Override
     @Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
     public RedNetConnectionType getConnectionType(World world, BlockPos position, EnumFacing enumFacing) {
@@ -111,7 +113,6 @@ public class BlockReactorRedNetPort extends BlockMultiblockDevice /*implements I
     @Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
     public void onInputChanged(World world, BlockPos position, EnumFacing enumFacing, int inputValue) {
     }
-    */
 
     @Nullable
     private TileEntityReactorRedNetPort getPortTile(@Nonnull final World world, @Nonnull final BlockPos position) {

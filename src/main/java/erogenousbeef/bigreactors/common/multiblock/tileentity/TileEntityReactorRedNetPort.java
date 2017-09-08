@@ -21,6 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetInputNode;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
 
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart",
@@ -211,7 +213,7 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 	@Override
 	@Optional.Method(modid = IdReference.MODID_MINEFACTORYRELOADED)
 	public void onMultiblockServerTick() {
-		/* TODO: re-add when Minefactory Reloaded is out for 1.11.2
+
 		if (!this.isConnected())
 			return;
 
@@ -244,7 +246,6 @@ public class TileEntityReactorRedNetPort extends TileEntityReactorPart implement
 		}
 
 		this.ticksSinceLastUpdate = 0;
-		*/
 	}
 
 	public CircuitType getChannelCircuitType(int channel) {
