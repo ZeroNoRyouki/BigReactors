@@ -1446,6 +1446,23 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		return coords;
 	}
 
+	@Nullable
+	public TileEntityReactorControlRod getControlRodByIndex(int index) {
+
+		if (index < 0 || index > this.attachedControlRods.size())
+			return null;
+
+		int i = 0;
+
+		for (TileEntityReactorControlRod cr : attachedControlRods) {
+
+			if (i++ == index)
+				return cr;
+		}
+
+		return null;
+	}
+
 	public int getFuelAmount() {
 		return fuelContainer.getFuelAmount();
 	}
