@@ -6,21 +6,19 @@ import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
+import erogenousbeef.bigreactors.common.multiblock.computer.MachineComputer;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import javax.annotation.Nonnull;
 
 @Optional.InterfaceList({
         @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = IdReference.MODID_COMPUTERCRAFT)
@@ -84,8 +82,15 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
 
-        TileEntity tileEntity = world.getTileEntity(pos);
+        final TileEntity tileEntity = WorldHelper.getTile(world, pos);
+        MachineComputer computer = null;
 
-        return tileEntity instanceof IPeripheral ? (IPeripheral)tileEntity : null;
+        if (tileEntity instanceof TileEntityReactorComputerPort)
+            computer = ((TileEntityReactorComputerPort)tileEntity).getComputerCraftPeripheral();
+
+        else if (tileEntity instanceof TileEntityTurbineComputerPort)
+            computer = ((TileEntityTurbineComputerPort)tileEntity).getComputerCraftPeripheral();
+
+        return computer instanceof IPeripheral ? (IPeripheral)computer : null;
     }
 }
