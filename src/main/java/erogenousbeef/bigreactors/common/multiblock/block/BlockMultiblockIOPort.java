@@ -94,12 +94,12 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
         } else if (PartType.TurbineFluidPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'I', "ingotIron",
                         'V', Items.BUCKET, 'P', Blocks.PISTON);
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
+                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'I', "ingotSteel",
                         'V', Items.BUCKET, 'P', Blocks.PISTON);
         }
