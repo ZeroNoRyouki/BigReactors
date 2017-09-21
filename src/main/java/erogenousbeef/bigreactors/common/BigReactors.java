@@ -71,6 +71,7 @@ public class BigReactors implements IModInitializationHandler {
 
 		//CONFIG.onPreInit(event);
 		//InitHandler.INSTANCE.onPreInit(event);
+		this._objectsHandler.onPreInit(event);
 		StandardReactants.register();
 		MinecraftForge.EVENT_BUS.register(new BREventHandler());
 		MinecraftForge.EVENT_BUS.register(BigReactors.s_proxy);
@@ -83,6 +84,7 @@ public class BigReactors implements IModInitializationHandler {
 
 		//CONFIG.onInit(event);
 		//InitHandler.INSTANCE.onInit(event);
+		this._objectsHandler.onInit(event);
 
 		// add world generator for our ores
 		if (CONFIG.enableWorldGen) {
@@ -105,13 +107,15 @@ public class BigReactors implements IModInitializationHandler {
 
 		//CONFIG.onPostInit(event);
 		//InitHandler.INSTANCE.onPostInit(event);
+		this._objectsHandler.onPostInit(event);
 		BigReactors.s_proxy.onPostInit(event);
 	}
-        /*
+
 	@Mod.EventHandler
 	public void onMissingMapping(FMLMissingMappingsEvent event) {
-		InitHandler.INSTANCE.onMissingMapping(event);
-	}*/
+		//InitHandler.INSTANCE.onMissingMapping(event);
+		this._objectsHandler.onMissinMappings(event);
+	}
 
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {
