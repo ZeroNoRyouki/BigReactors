@@ -18,11 +18,14 @@ import it.zerono.mods.zerocore.lib.world.IWorldGenWhiteList;
 import it.zerono.mods.zerocore.lib.world.WorldGenMinableOres;
 import it.zerono.mods.zerocore.lib.world.WorldGenWhiteList;
 import it.zerono.mods.zerocore.util.CodeHelper;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -73,13 +76,11 @@ public class BigReactors implements IModInitializationHandler {
 	@Mod.EventHandler
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {
-
-		//CONFIG.onPreInit(event);
-		//InitHandler.INSTANCE.onPreInit(event);
+		
+		this._objectsHandler.onPreInit(event);
 		StandardReactants.register();
 		MinecraftForge.EVENT_BUS.register(new BREventHandler());
 		MinecraftForge.EVENT_BUS.register(BigReactors.s_proxy);
-        //MinecraftForge.EVENT_BUS.register(InitHandler.INSTANCE);
 		BigReactors.s_proxy.onPreInit(event);
 	}
 
@@ -87,8 +88,7 @@ public class BigReactors implements IModInitializationHandler {
 	@Override
 	public void onInit(FMLInitializationEvent event) {
 
-		//CONFIG.onInit(event);
-		//InitHandler.INSTANCE.onInit(event);
+		this._objectsHandler.onInit(event);
 
 		// add world generator for our ores
 		if (CONFIG.enableWorldGen) {
@@ -109,20 +109,9 @@ public class BigReactors implements IModInitializationHandler {
 	@Override
 	public void onPostInit(FMLPostInitializationEvent event) {
 
-		//CONFIG.onPostInit(event);
-		//InitHandler.INSTANCE.onPostInit(event);
+		this._objectsHandler.onPostInit(event);
 		BigReactors.s_proxy.onPostInit(event);
 	}
-        /*
-	@Mod.EventHandler
-	public void onMissinBlockMappings(RegistryEvent.MissingMappings<Block> event) {
-		InitHandler.INSTANCE.onMissinBlockMappings(event);
-	}
-
-	@Mod.EventHandler
-	public void onMissingItemMapping(RegistryEvent.MissingMappings<Item> event) {
-		InitHandler.INSTANCE.onMissingItemMapping(event);
-	}*/
 
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {
