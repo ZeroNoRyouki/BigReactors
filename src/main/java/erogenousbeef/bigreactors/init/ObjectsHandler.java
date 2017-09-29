@@ -145,7 +145,7 @@ public class ObjectsHandler extends GameObjectsHandler {
 
                 // -- Coal -> Graphite
                 if (configs.registerCoalForSmelting)
-                    GameRegistry.addSmelting(Items.COAL, ingotGraphite, 1);
+                    GameRegistry.addSmelting(new ItemStack(Items.COAL, 1, 0), ingotGraphite, 1);
 
                 // -- Charcoal -> Graphite
                 if (configs.registerCharcoalForSmelting)
