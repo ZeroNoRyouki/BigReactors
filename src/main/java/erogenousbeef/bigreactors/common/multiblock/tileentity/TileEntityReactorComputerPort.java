@@ -1,11 +1,14 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.computer.ReactorComputer;
 import erogenousbeef.bigreactors.common.multiblock.computer.ReactorComputerCC;
 import erogenousbeef.bigreactors.common.multiblock.computer.ReactorComputerOC;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import li.cil.oc.api.network.Environment;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,19 +20,20 @@ import javax.annotation.Nullable;
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart", modid = IdReference.MODID_OPENCOMPUTERS),
 })
-public class TileEntityReactorComputerPort extends TileEntityReactorPart implements ITickableMultiblockPart {
+public class TileEntityReactorComputerPort extends TileEntityReactorPart {
+
+	public TileEntityReactorComputerPort() {
+
+		this._ccComputer = CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) ? ReactorComputerCC.create(this) : null;
+		this._ocComputer = CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS) ? ReactorComputerOC.create(this) : null;
+	}
 
 	@Override
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-
-		if (s_openComputersEnabled) {
-
-			if (ReactorComputerOC.isComputerCapability(capability))
-				return true;
-		}
-
-		return super.hasCapability(capability, facing);
+		// Note: this is only needed by OpenComputers, hence the @Optional annotation
+		return (null != this._ocComputer && ReactorComputerOC.isComputerCapability(capability)) ||
+				super.hasCapability(capability, facing);
 	}
 
 	@Nullable
@@ -38,86 +42,68 @@ public class TileEntityReactorComputerPort extends TileEntityReactorPart impleme
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 
-		if (s_openComputersEnabled) {
+		// Note: this is only needed by OpenComputers, hence the @Optional annotation
 
-			if (ReactorComputerOC.isComputerCapability(capability)) {
-
-				if (null == this._ocComputer)
-					this._ocComputer = ReactorComputerOC.createCapability(this);
-
-				return (T)this._ocComputer;
-			}
-		}
+		if (null != this._ocComputer && ReactorComputerOC.isComputerCapability(capability))
+			return (T)this._ocComputer;
 
 		return super.getCapability(capability, facing);
 	}
 
 	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public ReactorComputer getComputerCraftPeripheral() {
-
-		if (null == this._ccComputer)
-			this._ccComputer = new ReactorComputerCC(this);
-
+		// Note: this is only needed by ComputerCraft, hence the @Optional annotation
 		return this._ccComputer;
 	}
 
-	@CapabilityInject(Environment.class)
-	public static void enableOpenComputers(Capability<?> capability) {
-		s_openComputersEnabled = null != capability;
-	}
-
-	/**
-	 * Called once every tick from the reactor's main server tick loop.
-	 */
 	@Override
-	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
-	public void onMultiblockServerTick() {
+	public void onAttached(MultiblockControllerBase newController) {
 
-		// Note: this is only needed by OpenComputers
+		super.onAttached(newController);
 
-		if (s_openComputersEnabled && null != this._ocComputer)
-			this._ocComputer.onServerTick();
+		if (null != this._ccComputer)
+			this._ccComputer.onAttachedToController();
+
+		if (null != this._ocComputer)
+			this._ocComputer.onAttachedToController();
 	}
 
-	/**
-	 * Called from Minecraft's tile entity loop, after all tile entities have been ticked,
-	 * as the chunk in which this tile entity is contained is unloading.
-	 * Happens before the Forge TickEnd event.
-	 *
-	 * @see TileEntity#onChunkUnload()
-	 */
 	@Override
-	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
-	public void onChunkUnload() {
+	public void onDetached(MultiblockControllerBase oldController) {
 
-		// Note: this is only needed by OpenComputers
+		super.onDetached(oldController);
 
-		if (s_openComputersEnabled && null != this._ocComputer)
-			this._ocComputer.onChunkUnload();
+		if (null != this._ccComputer)
+			this._ccComputer.onDetachedFromController();
 
-		super.onChunkUnload();
+		if (null != this._ocComputer)
+			this._ocComputer.onDetachedFromController();
 	}
 
-	/**
-	 * Called when a block is removed by game actions, such as a player breaking the block
-	 * or the block being changed into another block.
-	 *
-	 * @see TileEntity#invalidate()
-	 */
 	@Override
-	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
-	public void invalidate() {
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		// Note: this is only needed by OpenComputers
+		super.syncDataFrom(data, syncReason);
 
-		if (s_openComputersEnabled && null != this._ocComputer)
-			this._ocComputer.onPortRemoved();
+		if (null != this._ccComputer)
+			this._ccComputer.syncDataFrom(data, syncReason);
 
-		super.invalidate();
+		if (null != this._ocComputer)
+			this._ocComputer.syncDataFrom(data, syncReason);
 	}
 
-	private ReactorComputer _ccComputer = null;
-	private ReactorComputer _ocComputer = null;
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-	private static boolean s_openComputersEnabled = false;
+		super.syncDataTo(data, syncReason);
+
+		if (null != this._ccComputer)
+			this._ccComputer.syncDataTo(data, syncReason);
+
+		if (null != this._ocComputer)
+			this._ocComputer.syncDataTo(data, syncReason);
+	}
+
+	private final ReactorComputer _ccComputer;
+	private final ReactorComputer _ocComputer;
 }

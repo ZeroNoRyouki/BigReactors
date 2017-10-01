@@ -18,8 +18,12 @@ import javax.annotation.Nullable;
 })
 public class TurbineComputerCC extends TurbineComputer implements IPeripheral {
 
-    public TurbineComputerCC(@Nonnull TileEntityTurbineComputerPort computerPort) {
+    private TurbineComputerCC(@Nonnull TileEntityTurbineComputerPort computerPort) {
         super(computerPort);
+    }
+
+    public static TurbineComputerCC create(TileEntityTurbineComputerPort tileEntity) {
+        return new TurbineComputerCC(tileEntity);
     }
 
     // IPeripheral

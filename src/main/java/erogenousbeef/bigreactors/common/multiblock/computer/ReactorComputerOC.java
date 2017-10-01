@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.computer;
 
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
+import it.zerono.mods.zerocore.lib.block.ModTileEntity;
 import it.zerono.mods.zerocore.lib.compat.LuaHelper;
 import li.cil.oc.api.API;
 import li.cil.oc.api.Network;
@@ -11,6 +12,7 @@ import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -29,28 +31,69 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return null != ENVIRONMENT_CAPABILITY && ENVIRONMENT_CAPABILITY == capability;
     }
 
-    public static ReactorComputer createCapability(TileEntityReactorComputerPort tileEntity) {
+    public static ReactorComputer create(TileEntityReactorComputerPort tileEntity) {
         return new ReactorComputerOC(tileEntity);
     }
 
     @Override
-    public void onServerTick() {
+    public void onAttachedToController() {
 
-        if (null != this._node && this._node.network() == null)
+        if (null != this._node && this._node.network() == null) {
+
             API.network.joinOrCreateNetwork(this.getComputerPort());
+            this.getComputerPort().markDirty();
+        }
     }
 
     @Override
-    public void onChunkUnload() {
-
-        if (null != this._node)
-            this._node.remove();    }
-
-    @Override
-    public void onPortRemoved() {
+    public void onDetachedFromController() {
 
         if (null != this._node)
             this._node.remove();
+    }
+
+    @Override
+    public void syncDataFrom(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+
+        super.syncDataFrom(data, syncReason);
+
+        if (null != this.node() && data.hasKey(NODE_TAG))
+            this.node().load(data.getCompoundTag(NODE_TAG));
+    }
+
+    @Override
+    public void syncDataTo(NBTTagCompound data, ModTileEntity.SyncReason syncReason) {
+
+        super.syncDataTo(data, syncReason);
+
+        // let's do this like OC' AbstractManagedEnvironment do ...
+
+        if (this.node() != null) {
+
+            // Force joining a network when saving and we're not in one yet, so that
+            // the address is embedded in the saved data that gets sent to the client,
+            // so that that address can be used to associate components on server and
+            // client (for example keyboard and screen/text buffer).
+
+            if (this.node().address() == null) {
+
+                li.cil.oc.api.Network.joinNewNetwork(this.node());
+
+                final NBTTagCompound nodeTag = new NBTTagCompound();
+
+                this.node().save(nodeTag);
+                data.setTag(NODE_TAG, nodeTag);
+
+                this.node().remove();
+
+            } else {
+
+                final NBTTagCompound nodeTag = new NBTTagCompound();
+
+                this.node().save(nodeTag);
+                data.setTag(NODE_TAG, nodeTag);
+            }
+        }
     }
 
     // Callbacks
@@ -272,5 +315,7 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
     @CapabilityInject(Environment.class)
     private static Capability<Environment> ENVIRONMENT_CAPABILITY = null;
 
-    private Node _node;
+    private final Node _node;
+
+    private static final String NODE_TAG = "ocNode";
 }
