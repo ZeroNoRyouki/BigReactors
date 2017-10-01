@@ -77,14 +77,18 @@ public class CreativeTabBR extends CreativeTabs {
 	@SideOnly(Side.CLIENT)
 	private void addToDisplayList(@Nonnull NonNullList<ItemStack> list, @Nullable Block block) {
 
-		if (null != block)
-			block.getSubBlocks(this, list);
+		if (null != block) {
+
+			final ItemStack stack = new ItemStack(block);
+
+			block.getSubBlocks(stack.getItem(), this, list);
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	private void addToDisplayList(@Nonnull NonNullList<ItemStack> list, @Nullable Item item) {
 
 		if (null != item)
-			item.getSubItems(this, list);
+			item.getSubItems(item, this, list);
 	}
 }
