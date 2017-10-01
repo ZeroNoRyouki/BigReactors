@@ -80,10 +80,7 @@ public class BlockBRMetal extends ModBlock {
 		final ResourceLocation group = BigReactors.createResourceLocation("metals");
 
 		for (MetalType metal : MetalType.VALUES) {
-
-		    if (MetalType.Ludicrite == metal)
-		        continue;
-
+			
 			block = this.createItemStack(metal, 1);
 			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
 
