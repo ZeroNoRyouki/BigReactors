@@ -1,15 +1,13 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
+import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputer;
-import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputerCC;
 import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputerOC;
-import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
-import li.cil.oc.api.network.Environment;
-import net.minecraft.tileentity.TileEntity;
+import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.Optional;
 
 import javax.annotation.Nullable;
@@ -17,19 +15,20 @@ import javax.annotation.Nullable;
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart", modid = IdReference.MODID_OPENCOMPUTERS),
 })
-public class TileEntityTurbineComputerPort extends TileEntityTurbinePart  implements ITickableMultiblockPart {
+public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
+
+	public TileEntityTurbineComputerPort() {
+
+		this._ccComputer = CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) ? TurbineComputerOC.create(this) : null;
+		this._ocComputer = CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS) ? TurbineComputerOC.create(this) : null;
+	}
 
 	@Override
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-
-		if (s_openComputersEnabled) {
-
-			if (TurbineComputerOC.isComputerCapability(capability))
-				return true;
-		}
-
-		return super.hasCapability(capability, facing);
+		// Note: this is only needed by OpenComputers, hence the @Optional annotation
+		return (null != this._ocComputer && TurbineComputerOC.isComputerCapability(capability)) ||
+				super.hasCapability(capability, facing);
 	}
 
 	@Nullable
@@ -38,86 +37,68 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart  implem
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 
-		if (s_openComputersEnabled) {
+		// Note: this is only needed by OpenComputers, hence the @Optional annotation
 
-			if (TurbineComputerOC.isComputerCapability(capability)) {
-
-				if (null == this._ocComputer)
-					this._ocComputer = TurbineComputerOC.createCapability(this);
-
-				return (T)this._ocComputer;
-			}
-		}
+		if (null != this._ocComputer && TurbineComputerOC.isComputerCapability(capability))
+			return (T)this._ocComputer;
 
 		return super.getCapability(capability, facing);
 	}
 
 	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
 	public TurbineComputer getComputerCraftPeripheral() {
-
-		if (null == this._ccComputer)
-			this._ccComputer = new TurbineComputerCC(this);
-
+		// Note: this is only needed by ComputerCraft, hence the @Optional annotation
 		return this._ccComputer;
 	}
 
-	@CapabilityInject(Environment.class)
-	public static void enableOpenComputers(Capability<?> capability) {
-		s_openComputersEnabled = null != capability;
-	}
-
-	/**
-	 * Called once every tick from the reactor's main server tick loop.
-	 */
 	@Override
-	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
-	public void onMultiblockServerTick() {
+	public void onAttached(MultiblockControllerBase newController) {
 
-		// Note: this is only needed by Opencomputers
+		super.onAttached(newController);
 
-		if (s_openComputersEnabled && null != this._ocComputer)
-			this._ocComputer.onServerTick();
+		if (null != this._ccComputer)
+			this._ccComputer.onAttachedToController();
+
+		if (null != this._ocComputer)
+			this._ocComputer.onAttachedToController();
 	}
 
-	/**
-	 * Called from Minecraft's tile entity loop, after all tile entities have been ticked,
-	 * as the chunk in which this tile entity is contained is unloading.
-	 * Happens before the Forge TickEnd event.
-	 *
-	 * @see TileEntity#onChunkUnload()
-	 */
 	@Override
-	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
-	public void onChunkUnload() {
+	public void onDetached(MultiblockControllerBase oldController) {
 
-		// Note: this is only needed by Opencomputers
+		super.onDetached(oldController);
 
-		if (s_openComputersEnabled && null != this._ocComputer)
-			this._ocComputer.onChunkUnload();
+		if (null != this._ccComputer)
+			this._ccComputer.onDetachedFromController();
 
-		super.onChunkUnload();
+		if (null != this._ocComputer)
+			this._ocComputer.onDetachedFromController();
 	}
 
-	/**
-	 * Called when a block is removed by game actions, such as a player breaking the block
-	 * or the block being changed into another block.
-	 *
-	 * @see TileEntity#invalidate()
-	 */
 	@Override
-	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
-	public void invalidate() {
+	protected void syncDataFrom(NBTTagCompound data, SyncReason syncReason) {
 
-		// Note: this is only needed by Opencomputers
+		super.syncDataFrom(data, syncReason);
 
-		if (s_openComputersEnabled && null != this._ocComputer)
-			this._ocComputer.onPortRemoved();
+		if (null != this._ccComputer)
+			this._ccComputer.syncDataFrom(data, syncReason);
 
-		super.invalidate();
+		if (null != this._ocComputer)
+			this._ocComputer.syncDataFrom(data, syncReason);
 	}
 
-	private TurbineComputer _ccComputer = null;
-	private TurbineComputer _ocComputer = null;
+	@Override
+	protected void syncDataTo(NBTTagCompound data, SyncReason syncReason) {
 
-	private static boolean s_openComputersEnabled = false;
+		super.syncDataTo(data, syncReason);
+
+		if (null != this._ccComputer)
+			this._ccComputer.syncDataTo(data, syncReason);
+
+		if (null != this._ocComputer)
+			this._ocComputer.syncDataTo(data, syncReason);
+	}
+
+	private final TurbineComputer _ccComputer;
+	private final TurbineComputer _ocComputer;
 }

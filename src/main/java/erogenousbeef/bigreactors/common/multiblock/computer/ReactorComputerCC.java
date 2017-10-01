@@ -18,8 +18,12 @@ import javax.annotation.Nullable;
 })
 public class ReactorComputerCC extends ReactorComputer implements IPeripheral {
 
-    public ReactorComputerCC(@Nonnull TileEntityReactorComputerPort computerPort) {
+    private ReactorComputerCC(@Nonnull TileEntityReactorComputerPort computerPort) {
         super(computerPort);
+    }
+
+    public static ReactorComputer create(TileEntityReactorComputerPort tileEntity) {
+        return new ReactorComputerCC(tileEntity);
     }
 
     // IPeripheral
