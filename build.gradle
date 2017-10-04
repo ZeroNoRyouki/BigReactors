@@ -27,7 +27,7 @@ ext.api_version = "${config.mod_version_api}.${config.api_version_minor}.${confi
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExtremeReactors-${config.minecraft_version}"
 
-ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},)"
+ext.dependencies = "required-after:Forge@[${config.forge_version_minDep},${config.forge_version_maxDep});required-after:zerocore@[${config.zerocore_version},);after:minefactoryreloaded;after:ComputerCraft;after:OpenComputers;after:Mekanism;after:thermalexpansion;after:appliedenergistics2"
 ext.fullVersion = project.config.minecraft_version + '-' + project.version
 
 minecraft {
