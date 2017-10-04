@@ -32,32 +32,6 @@ public class ClientProxy extends CommonProxy {
 		CommonBlockIcons = new CommonBlockIconManager();
 	}
 
-	/*
-	@Override
-	public BlockBR register(BlockBR block) {
-
-		super.register(block);
-		block.onPostClientRegister();
-		return block;
-	}
-
-	@Override
-	public BlockBRGenericFluid register(BlockBRGenericFluid block) {
-
-		super.register(block);
-		block.onPostClientRegister();
-		return block;
-	}
-
-	@Override
-	public ItemBase register(ItemBase item) {
-
-		super.register(item);
-		item.onPostClientRegister();
-		return item;
-	}
-	*/
-
 	@Override
 	public void onPreInit(FMLPreInitializationEvent event) {
 
