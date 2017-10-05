@@ -96,12 +96,19 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
         }
     }
 
-    // Callbacks
+    // Callbacks - Multiblock
+
+    @Callback
+    public Object[] getMultiblockAssembled(Context context, Arguments arguments) throws Exception {
+        return new Object[] { this.getMultiblockAssembled() };
+    }
 
     @Callback
     public Object[] getConnected(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getConnected() };
     }
+
+    // Callbacks - Reactor
 
     @Callback
     public Object[] getActive(Context context, Arguments arguments) throws Exception {
