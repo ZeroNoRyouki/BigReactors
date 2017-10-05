@@ -3,6 +3,7 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
 import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputer;
+import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputerCC;
 import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputerOC;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +20,7 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 
 	public TileEntityTurbineComputerPort() {
 
-		this._ccComputer = CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) ? TurbineComputerOC.create(this) : null;
+		this._ccComputer = CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) ? TurbineComputerCC.create(this) : null;
 		this._ocComputer = CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS) ? TurbineComputerOC.create(this) : null;
 	}
 
