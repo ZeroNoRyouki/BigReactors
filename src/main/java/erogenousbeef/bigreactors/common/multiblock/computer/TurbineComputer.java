@@ -22,9 +22,17 @@ public class TurbineComputer extends MachineComputer {
         return this._computerPort;
     }
 
+    // Multiblock methods
+
+    boolean getMultiblockAssembled() {
+        return this._computerPort.isMachineAssembled();
+    }
+
     boolean getConnected() {
         return this._computerPort.isConnected();
     }
+
+    // Turbine methods
 
     boolean getActive() throws Exception {
         return this.getTurbineControllerOrFail().getActive();

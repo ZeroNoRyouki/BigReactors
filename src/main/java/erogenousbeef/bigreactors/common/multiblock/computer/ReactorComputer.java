@@ -19,9 +19,17 @@ public abstract class ReactorComputer extends MachineComputer {
         return this._computerPort;
     }
 
+    // Multiblock methods
+
+    boolean getMultiblockAssembled() {
+        return this._computerPort.isMachineAssembled();
+    }
+
     boolean getConnected() {
         return this._computerPort.isConnected();
     }
+
+    // Reactor methods
 
     int getEnergyStored() throws Exception {
         return (int)this.getReactorControllerOrFail().getEnergyStored();

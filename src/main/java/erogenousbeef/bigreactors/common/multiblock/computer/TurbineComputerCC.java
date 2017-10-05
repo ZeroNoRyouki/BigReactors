@@ -166,6 +166,11 @@ public class TurbineComputerCC extends TurbineComputer implements IPeripheral {
                 case getEnergyCapacity:
                     return new Object[] { this.getEnergyCapacity() };
 
+                // Multiblock
+
+                case getMultiblockAssembled:
+                    return new Object[] { this.getMultiblockAssembled() };
+
                 default:
                     throw new Exception("Method not implemented");
             }
@@ -205,6 +210,8 @@ public class TurbineComputerCC extends TurbineComputer implements IPeripheral {
         setVentAll,				// No arguments
         setInductorEngaged,		// Required Arg: integer (active)
         getEnergyCapacity, 		// No arguments
+        // Multiblock
+        getMultiblockAssembled,  // No arguments
         ;
 
         public static Boolean isValidIndex(int index) {

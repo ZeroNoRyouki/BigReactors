@@ -192,6 +192,11 @@ public class ReactorComputerCC extends ReactorComputer implements IPeripheral {
                 case getEnergyCapacity:
                     return new Object[] { this.getEnergyCapacity() };
 
+                // Multiblock
+
+                case getMultiblockAssembled:
+                    return new Object[] { this. getMultiblockAssembled() };
+
                 default:
                     throw new Exception("Method not implemented");
             }
@@ -237,6 +242,8 @@ public class ReactorComputerCC extends ReactorComputer implements IPeripheral {
         doEjectWaste,			// No arguments
         doEjectFuel,			// No arguments
         getEnergyCapacity, 		// No arguments
+        // Multiblock
+        getMultiblockAssembled,  // No arguments
         ;
 
         public static Boolean isValidIndex(int index) {
