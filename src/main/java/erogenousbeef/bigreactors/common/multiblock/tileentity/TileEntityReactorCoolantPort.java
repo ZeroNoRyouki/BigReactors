@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
 import erogenousbeef.bigreactors.utils.FluidHelper;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
@@ -16,6 +17,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
+import zero.temp.FluidHandlerForwarder;
 
 public class TileEntityReactorCoolantPort extends TileEntityReactorPart implements /* INeighborUpdatableEntity,*/
 		ITickableMultiblockPart, IInputOutputPort {
@@ -24,6 +27,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 		this._direction = Direction.Input;
 		//this._pumpDestination = null;
+		this._capabilityForwarder = new FluidHandlerForwarder(EmptyFluidHandler.INSTANCE);
 	}
 
 	@Override
@@ -38,6 +42,7 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			return;
 
 		this._direction = direction;
+		this.updateCapabilityForwarder();
 
 		final World world = this.getWorld();
 
@@ -104,18 +109,29 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		/*
 		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability && this.isMachineAssembled()) ||
+				super.hasCapability(capability, facing);
+		*/
+
+		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability) ||
 				super.hasCapability(capability, facing);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-
+		/*
 		MultiblockReactor reactor;
 
 		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability &&
 				null != (reactor = this.getReactorController()) && reactor.isAssembled())
 			return CAPAB_FLUID_HANDLER.cast(reactor.getFluidHandler(this._direction));
+		*/
+
+
+		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability) {
+			return CAPAB_FLUID_HANDLER.cast(this._capabilityForwarder);
+		}
 
 		return super.getCapability(capability, facing);
 	}
@@ -196,9 +212,40 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 	}
 	*/
 
+	@Override
+	public void onAttached(MultiblockControllerBase newController) {
+
+		super.onAttached(newController);
+		this.updateCapabilityForwarder();
+	}
+
+	@Override
+	public void onAssimilated(MultiblockControllerBase newController) {
+
+		super.onAssimilated(newController);
+		this.updateCapabilityForwarder();
+	}
+
+	@Override
+	public void onDetached(MultiblockControllerBase oldController) {
+
+		super.onDetached(oldController);
+		this.updateCapabilityForwarder();
+	}
+
+
+	private void updateCapabilityForwarder() {
+
+		final MultiblockReactor reactor = this.getReactorController();
+
+		this._capabilityForwarder.setHandler(null != reactor ?
+				reactor.getFluidHandler(this.getDirection()) : EmptyFluidHandler.INSTANCE);
+	}
+
 	@CapabilityInject(IFluidHandler.class)
 	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
 	//private IFluidHandler _pumpDestination;
+	private final FluidHandlerForwarder _capabilityForwarder;
 }
