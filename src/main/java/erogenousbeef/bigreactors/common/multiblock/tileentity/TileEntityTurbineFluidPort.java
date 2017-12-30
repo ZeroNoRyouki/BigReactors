@@ -21,6 +21,8 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
+import zero.temp.FluidHandlerForwarder;
 
 public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements /*INeighborUpdatableEntity,*/
 		ITickableMultiblockPart, IInputOutputPort {
@@ -29,6 +31,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		this._direction = Direction.Input;
 		//_pumpDestination = null;
+		this._capabilityForwarder = new FluidHandlerForwarder(EmptyFluidHandler.INSTANCE);
 	}
 
 	@Override
@@ -43,6 +46,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 			return;
 
 		this._direction = direction;
+		this.updateCapabilityForwarder();
 
 		final World world = this.getWorld();
 
@@ -109,18 +113,27 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		/*
 		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability && this.isMachineAssembled()) ||
+				super.hasCapability(capability, facing);
+		*/
+		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability) ||
 				super.hasCapability(capability, facing);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-
+		/*
 		MultiblockTurbine turbine;
 
 		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability &&
 				null != (turbine = this.getTurbine()) && turbine.isAssembled())
 			return CAPAB_FLUID_HANDLER.cast(turbine.getFluidHandler(this._direction));
+		*/
+
+		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability) {
+			return CAPAB_FLUID_HANDLER.cast(this._capabilityForwarder);
+		}
 
 		return super.getCapability(capability, facing);
 	}
@@ -196,9 +209,39 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	}
 	*/
 
+	@Override
+	public void onAttached(MultiblockControllerBase newController) {
+
+		super.onAttached(newController);
+		this.updateCapabilityForwarder();
+	}
+
+	@Override
+	public void onAssimilated(MultiblockControllerBase newController) {
+
+		super.onAssimilated(newController);
+		this.updateCapabilityForwarder();
+	}
+
+	@Override
+	public void onDetached(MultiblockControllerBase oldController) {
+
+		super.onDetached(oldController);
+		this.updateCapabilityForwarder();
+	}
+
+	private void updateCapabilityForwarder() {
+
+		final MultiblockTurbine turbine = this.getTurbine();
+
+		this._capabilityForwarder.setHandler(null != turbine ?
+				turbine.getFluidHandler(this.getDirection()) : EmptyFluidHandler.INSTANCE);
+	}
+
 	@CapabilityInject(IFluidHandler.class)
 	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
 	//private IFluidHandler _pumpDestination;
+	private final FluidHandlerForwarder _capabilityForwarder;
 }
