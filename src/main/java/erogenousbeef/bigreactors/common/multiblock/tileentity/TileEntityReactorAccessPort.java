@@ -152,6 +152,8 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 		final boolean outputItemValid = ItemHelper.stackIsValid(outputItem);
 		int outputItemMaxSize = outputItemValid ? outputItem.getMaxStackSize() : 64;
 
+		outputItemMaxSize = Math.min(outputItemMaxSize, this._wasteInventory.getSlotLimit(0));
+
 		if (outputItemValid && ItemHelper.stackGetSize(outputItem) >= /*getInventoryStackLimit()*/outputItemMaxSize) {
 			// Already full?
 			return 0;
