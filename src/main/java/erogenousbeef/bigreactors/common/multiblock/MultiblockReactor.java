@@ -1104,7 +1104,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			int portCanAdd = port.consumeReactantItem(amountToAdd);
 			if(portCanAdd <= 0) { continue; }
 			
-			amtAdded = fuelContainer.addFuel(portReactantType, portReactantAmount, true);
+			amtAdded = fuelContainer.addFuel(portReactantType, portCanAdd, true);
 		}
 		
 		if(amtAdded > 0) {
