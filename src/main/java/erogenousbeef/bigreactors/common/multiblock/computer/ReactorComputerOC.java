@@ -98,54 +98,72 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
 
     // Callbacks - Multiblock
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getMultiblockAssembled(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getMultiblockAssembled() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getConnected(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getConnected() };
     }
 
     // Callbacks - Reactor
+    /*
+    public static class Test {
+        public int i;
+        public float f;
+        public String s;
+        public double d;
+    }
 
     @Callback
+    public Object[] getTest(Context context, Arguments arguments) throws Exception {
+
+        Test t = new Test();
+        t.i = 42;
+        t.f = 144932.3343f;
+        t.s = "Testing 123";
+        t.d = 877339384833.454;
+        return new Object[] {t};
+    }*/
+
+    @Callback(direct = true)
     public Object[] getActive(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getActive() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFuelTemperature(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFuelTemperature() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getCasingTemperature(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getCasingTemperature() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getEnergyStored(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getEnergyStored() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFuelAmount(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFuelAmount() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getWasteAmount(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getWasteAmount() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFuelAmountMax(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFuelAmountMax() };
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: fuel rod index
     public Object[] getControlRodName(Context context, Arguments arguments) throws Exception {
 
@@ -153,12 +171,12 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return new Object[] { this.getControlRodName(LuaHelper.getIntFromArgs(arguments, 0)) };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getNumberOfControlRods(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getNumberOfControlRods() };
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: control rod index
     public Object[] getControlRodLevel(Context context, Arguments arguments) throws Exception {
 
@@ -166,57 +184,57 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return new Object[] { this.getControlRodLevel(LuaHelper.getIntFromArgs(arguments, 0)) };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getEnergyProducedLastTick(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getEnergyProducedLastTick() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getHotFluidProducedLastTick(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getHotFluidProducedLastTick() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getCoolantAmount(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getCoolantAmount() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getCoolantAmountMax(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getCoolantAmountMax() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getCoolantType(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getCoolantType() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getHotFluidAmount(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getHotFluidAmount() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getHotFluidAmountMax(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getHotFluidAmountMax() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getHotFluidType(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getHotFluidType() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFuelReactivity(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFuelReactivity() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFuelConsumedLastTick(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFuelConsumedLastTick() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getMinimumCoordinate(Context context, Arguments arguments) throws Exception {
 
         final BlockPos coords = this.getMinimumCoordinate();
@@ -224,7 +242,7 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return new Object[]{ coords.getX(), coords.getY(), coords.getZ() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getMaximumCoordinate(Context context, Arguments arguments) throws Exception {
 
         final BlockPos coords = this.getMaximumCoordinate();
@@ -232,7 +250,7 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return new Object[]{ coords.getX(), coords.getY(), coords.getZ() };
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: integer (index)
     public Object[] getControlRodLocation(Context context, Arguments arguments) throws Exception {
 
@@ -240,12 +258,12 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return new Object[] { this.getControlRodLocation(LuaHelper.getIntFromArgs(arguments, 0)) };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] isActivelyCooled(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.isActivelyCooled() };
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: integer (active)
     public Object[] setActive(Context context, Arguments arguments) throws Exception {
 
@@ -254,7 +272,7 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Args: integer (index), integer (insertion)
     public Object[] setControlRodLevel(Context context, Arguments arguments) throws Exception {
 
@@ -263,7 +281,7 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: integer (insertion)
     public Object[] setAllControlRodLevels(Context context, Arguments arguments) throws Exception {
 
@@ -272,7 +290,7 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Args: fuel rod index, string (name)
     public Object[] setControlRodName(Context context, Arguments arguments) throws Exception {
 
@@ -281,21 +299,21 @@ public class ReactorComputerOC extends ReactorComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] doEjectWaste(Context context, Arguments arguments) throws Exception {
 
         this.doEjectWaste();
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] doEjectFuel(Context context, Arguments arguments) throws Exception {
 
         this.doEjectFuel();
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getEnergyCapacity(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getEnergyCapacity() };
     }
