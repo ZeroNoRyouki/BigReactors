@@ -173,7 +173,7 @@ public class BigReactors implements IModInitializationHandler {
 		TurbineCoil.registerBlock("blockPlatinum", 3.0f, 1f, 2.5f);    // Thermal Foundation, lots of mods
 		TurbineCoil.registerBlock("blockShiny", 3.0f, 1f, 2.5f);	// Thermal Foundation
 
-		TurbineCoil.registerBlock("blockManyullyn", 3.0f, 1f, 2.5f);    // Tinkers' Construct
+		TurbineCoil.registerBlock("blockManyullyn", 3.5f, 1f, 2.5f);    // Tinkers' Construct
 
 		TurbineCoil.registerBlock("blockTitanium", 3.1f, 1f, 2.7f);    // Mariculture
 		TurbineCoil.registerBlock("blockEnderium", 3.0f, 1.02f, 3.0f);    // Thermal Foundation, note tiny energy bonus!	(14% at 1000RF/t output)
@@ -188,7 +188,6 @@ public class BigReactors implements IModInitializationHandler {
 			TurbineCoil.registerBlock("blockHaderoth", 3.0f, 1f, 2.0f);
 			TurbineCoil.registerBlock("blockCelenegil", 3.3f, 1f, 2.25f);
 			TurbineCoil.registerBlock("blockTartarite", 3.5f, 1f, 2.5f);
-			TurbineCoil.registerBlock("blockManyullyn", 3.5f, 1f, 2.5f);
 		}
 
 		ReactorInterior.registerBlock("blockIron", 0.50f, 0.75f, 1.40f, IHeatEntity.conductivityIron);
