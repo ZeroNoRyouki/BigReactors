@@ -98,99 +98,99 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
 
     // Callbacks - Multiblock
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getMultiblockAssembled(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getMultiblockAssembled() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getConnected(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getConnected() };
     }
 
     // Callbacks - Reactor
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getActive(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getActive() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getEnergyProducedLastTick(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getEnergyProducedLastTick() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getEnergyStored(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getEnergyStored() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFluidAmountMax(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFluidAmountMax() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFluidFlowRate(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFluidFlowRate() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFluidFlowRateMax(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFluidFlowRateMax() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getFluidFlowRateMaxMax(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getFluidFlowRateMaxMax() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getInputAmount(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getInputAmount() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getInputType(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getInputType() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getOutputAmount(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getOutputAmount() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getOutputType(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getOutputType() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getRotorSpeed(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getRotorSpeed() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getNumberOfBlades(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getNumberOfBlades() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getBladeEfficiency(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getBladeEfficiency() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getRotorMass(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getRotorMass() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getInductorEngaged(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getInductorEngaged() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getMinimumCoordinate(Context context, Arguments arguments) throws Exception {
 
         final BlockPos coords = this.getMinimumCoordinate();
@@ -198,7 +198,7 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
         return new Object[]{ coords.getX(), coords.getY(), coords.getZ() };
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getMaximumCoordinate(Context context, Arguments arguments) throws Exception {
 
         final BlockPos coords = this.getMaximumCoordinate();
@@ -206,7 +206,7 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
         return new Object[]{ coords.getX(), coords.getY(), coords.getZ() };
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: boolean (active)
     public Object[] setActive(Context context, Arguments arguments) throws Exception {
 
@@ -215,7 +215,7 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     // Required Arg: integer (active)
     public Object[] setFluidFlowRateMax(Context context, Arguments arguments) throws Exception {
 
@@ -224,28 +224,28 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] setVentNone(Context context, Arguments arguments) throws Exception {
 
         this.setVentNone();
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] setVentOverflow(Context context, Arguments arguments) throws Exception {
 
         this.setVentOverflow();
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] setVentAll(Context context, Arguments arguments) throws Exception {
 
         this.setVentAll();
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] setInductorEngaged(Context context, Arguments arguments) throws Exception {
 
         LuaHelper.validateArgsCount(arguments, 1);
@@ -253,7 +253,7 @@ public class TurbineComputerOC extends TurbineComputer implements Environment {
         return null;
     }
 
-    @Callback
+    @Callback(direct = true)
     public Object[] getEnergyCapacity(Context context, Arguments arguments) throws Exception {
         return new Object[] { this.getEnergyCapacity() };
     }
