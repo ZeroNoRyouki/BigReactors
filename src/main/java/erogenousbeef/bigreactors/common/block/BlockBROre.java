@@ -24,12 +24,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
+import zero.temp.RecipeHelper2;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,7 +95,7 @@ public class BlockBROre extends ModBlock {
 			product = OreDictionaryHelper.getOre("ingotYellorium");
 		}
 
-		GameRegistry.addSmelting(ore, product, 0.5f);
+		RecipeHelper2.addSmelting(ore, product, 0.5f);
 	}
 
 	/**

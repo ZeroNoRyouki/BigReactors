@@ -7,7 +7,6 @@ import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.lib.block.ModBlock;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
@@ -29,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
+import zero.temp.RecipeHelper2;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -84,26 +84,26 @@ public class BlockBRMetal extends ModBlock {
 			block = this.createItemStack(metal, 1);
 			ingot = BrItems.ingotMetals.createItemStack(metal, 1);
 
-            RecipeHelper.addShapelessRecipe(BigReactors.createResourceLocation(metal.getName() + MetalSize.Block.name()), group,
-                    block, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
+			RecipeHelper2.addShapeless(registry, block,
+					ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
 
-            ingot = ItemHelper.stackFrom(ingot, 9);
-            RecipeHelper.addShapelessRecipe(BigReactors.createResourceLocation(metal.getName() + MetalSize.Ingot.name()), group,
-                    ingot, block);
+			ingot = ItemHelper.stackFrom(ingot, 9);
+			RecipeHelper2.addShapeless(registry, ingot, block);
         }
 
 		// Ludicrite block. Because.
 
 		final ItemStack ludicriteBlock = this.createItemStack(MetalType.Ludicrite, 1);
 
-        RecipeHelper.addShapedOreDictRecipe(ludicriteBlock, "BPB", "ENE", "BPB",
+		RecipeHelper2.addShaped(registry, ludicriteBlock, "BPB", "ENE", "BPB",
 				'N', Items.NETHER_STAR, 'P', Items.ENDER_PEARL, 'E', Blocks.EMERALD_BLOCK,
 				'B', BigReactors.CONFIG.recipeBlutoniumIngotName);
+
 
 		if (OreDictionaryHelper.doesOreNameExist("blockEnderium")) {
 
 			// Ok, how about some ludicrous shit here. Enderium and blaze rods. Have fun, bucko.
-            RecipeHelper.addShapedOreDictRecipe(ludicriteBlock, "BRB", "E E", "BRB",
+			RecipeHelper2.addShaped(registry, ludicriteBlock, "BRB", "E E", "BRB",
 					'B', BigReactors.CONFIG.recipeBlutoniumIngotName, 'R', Items.BLAZE_ROD, 'E', "blockEnderium");
 		}
 	}

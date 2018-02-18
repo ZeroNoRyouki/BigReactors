@@ -2,13 +2,10 @@ package erogenousbeef.bigreactors.common.item;
 
 import erogenousbeef.bigreactors.common.BigReactors;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.item.ModItem;
-import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -23,10 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
+import zero.temp.RecipeHelper2;
 
 import javax.annotation.Nonnull;
 
@@ -80,8 +77,12 @@ public class ItemWrench extends ModItem/* implements IToolHammer*/ {
 
     @Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
+            /*
         RecipeHelper.addShapedRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
                 'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.YELLOW.getMetadata()));
+        */
+        RecipeHelper2.addShaped(registry, this.createItemStack(1), " I ", "WII", "IW ",
+                'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.LIME.getMetadata()));
     }
 
     /**

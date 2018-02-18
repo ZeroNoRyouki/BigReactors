@@ -1,19 +1,10 @@
 package erogenousbeef.bigreactors.init;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MetalType;
-import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemMineral;
 import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
 import erogenousbeef.bigreactors.common.item.ItemWrench;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
-import it.zerono.mods.zerocore.lib.MetalSize;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
-import it.zerono.mods.zerocore.util.OreDictionaryHelper;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @GameRegistry.ObjectHolder(BigReactors.MODID)
