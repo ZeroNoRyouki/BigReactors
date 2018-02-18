@@ -398,7 +398,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	public boolean updateServer() {
 
-		this.WORLD.profiler.startSection("Extreme Reactors|Reactor");
+		this.WORLD.profiler.startSection("Extreme Reactors|Reactor update");
 
 		if(Float.isNaN(this.getReactorHeat())) {
 			this.setReactorHeat(0.0f);
@@ -411,7 +411,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		float newHeat = 0f;
 
-		this.WORLD.profiler.startSection("Extreme Reactors|Reactor|RadiateRod");
+		this.WORLD.profiler.startSection("RadiateRod");
 		
 		if(getActive()) {
 			// Select a control rod to radiate from. Reset the iterator and select a new Y-level if needed.
@@ -440,7 +440,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		// Allow radiation to decay even when reactor is off.
 		radiationHelper.tick(getActive());
 
-		this.WORLD.profiler.endStartSection("Extreme Reactors|Reactor|Waste&Fuel");
+		this.WORLD.profiler.endStartSection("Waste&Fuel");
 
 		// If we can, poop out waste and inject new fuel.
 		if(wasteEjection == WasteEjectionSetting.kAutomatic) {
@@ -449,7 +449,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		
 		refuel();
 
-		this.WORLD.profiler.endSection();
+		this.WORLD.profiler.endStartSection("Heat");
 
 		// Heat Transfer: Fuel Pool <> Reactor Environment
 		float tempDiff = fuelHeat - reactorHeat;
@@ -497,7 +497,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(reactorHeat < 0f) { setReactorHeat(0f); }
 		if(fuelHeat < 0f) { setFuelHeat(0f); }
 
-		this.WORLD.profiler.startSection("Extreme Reactors|Reactor|SendPower");
+		this.WORLD.profiler.endStartSection("SendPower");
 		
 		// Distribute available power
 		long energyAvailable = getEnergyStored();
@@ -527,7 +527,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 			reduceStoredEnergy((energyAvailable - energyRemaining));
 		}
 
-		this.WORLD.profiler.endStartSection("Extreme Reactors|Reactor|Updates");
+		this.WORLD.profiler.endStartSection("Updates");
 
 		// Send updates periodically
 		ticksSinceLastUpdate++;
@@ -539,20 +539,20 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		
 		// TODO: Overload/overheat
 
-		this.WORLD.profiler.endStartSection("Extreme Reactors|Reactor|Tickables");
+		this.WORLD.profiler.endStartSection("Tickables");
 
 		// Update any connected tickables
 		for(ITickableMultiblockPart tickable : attachedTickables) {
 			tickable.onMultiblockServerTick();
 		}
 
-		this.WORLD.profiler.endSection();
+		this.WORLD.profiler.endStartSection("RefCoords");
 
 		if(attachedGlass.size() > 0 && fuelContainer.shouldUpdate()) {
 			markReferenceCoordForUpdate();
 		}
 
-		this.WORLD.profiler.endSection();
+		this.WORLD.profiler.endSection(); // RefCoords
 		this.WORLD.profiler.endSection(); // main section
 		
 		return (oldHeat != this.getReactorHeat() || oldEnergy != this.getEnergyStored());
