@@ -64,10 +64,17 @@ public class BlockBROre extends ModBlock {
     @Override
     public void onRegisterOreDictionaryEntries() {
 
-		final ItemStack ore = this.createItemStack(OreType.Yellorite, 1);
+		ItemStack ore;
 
+		ore = this.createItemStack(OreType.Yellorite, 1);
 		OreDictionary.registerOre("oreYellorite", ore);
 		OreDictionary.registerOre("oreYellorium", ore); // For convenience of mods which fiddle with recipes
+
+		ore = this.createItemStack(OreType.Anglesite, 1);
+		OreDictionary.registerOre("oreAnglesite", ore);
+
+		ore = this.createItemStack(OreType.Benitoite, 1);
+		OreDictionary.registerOre("oreBenitoite", ore);
 	}
 
 	@Override
