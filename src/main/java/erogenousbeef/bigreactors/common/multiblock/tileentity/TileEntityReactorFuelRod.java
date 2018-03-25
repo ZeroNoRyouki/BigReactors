@@ -7,7 +7,6 @@ import erogenousbeef.bigreactors.api.registry.ReactorInterior;
 import erogenousbeef.bigreactors.api.data.RadiationData;
 import erogenousbeef.bigreactors.api.data.RadiationPacket;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
 import it.zerono.mods.zerocore.api.multiblock.validation.IMultiblockValidator;
 import it.zerono.mods.zerocore.util.ItemHelper;
@@ -20,11 +19,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implements IRadiationModerator, IHeatEntity {
-	
+
+	public TileEntityReactorFuelRod() {
+
+		this._controlRod = null;
+		this._rodIndex = -1;
+		this._occluded = false;
+	}
+
 	// IRadiationModerator
 	@Override
 	public void moderateRadiation(RadiationData data, RadiationPacket radiation) {
@@ -33,7 +42,7 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		// Grab control rod insertion and reactor heat
 		MultiblockReactor reactor = getReactorController();
 		float heat = reactor.getFuelHeat();
-		TileEntityReactorControlRod controlRod = this.getAssemblyControlRod();
+		TileEntityReactorControlRod controlRod = this.getControlRod();
 
 		if (null == controlRod)
 			return;
@@ -232,19 +241,48 @@ public class TileEntityReactorFuelRod extends TileEntityReactorPartBase implemen
 		return interiorData.heatConductivity;
 	}
 
-	public void linkToAssembly(final FuelAssembly assembly) {
+	/*public void linkToAssembly(final FuelAssembly assembly) {
 		this._assembly = assembly;
 	}
 
 	@Nullable
 	public FuelAssembly getFuelAssembly() {
 		return this._assembly;
-	}
+	}*/
 
+	/*
 	@Nullable
 	public TileEntityReactorControlRod getAssemblyControlRod() {
 		return null != this._assembly ? this._assembly.getControlRod() : null;
+	}*/
+
+	public void linkToControlRod(@Nonnull final TileEntityReactorControlRod controlRod, final int rodIndex) {
+
+		this._controlRod = controlRod;
+		this._rodIndex = rodIndex;
 	}
 
-	private FuelAssembly _assembly;
+	@Nullable
+	public TileEntityReactorControlRod getControlRod() {
+		return this._controlRod;
+	}
+
+	public int getFuelRodIndex() {
+		return this._rodIndex;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void setOccluded(final boolean occluded) {
+		this._occluded = occluded;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public boolean isOccluded() {
+		return this._occluded;
+	}
+
+	//private FuelAssembly _assembly;
+	private TileEntityReactorControlRod _controlRod;
+	private int _rodIndex;
+	private boolean _occluded;
 }

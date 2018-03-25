@@ -5,7 +5,6 @@ import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
-import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
@@ -84,9 +83,10 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 			TileEntityReactorFuelRod fuelRod = (TileEntityReactorFuelRod) te;
 			MultiblockReactor reactor = fuelRod.getReactorController();
 
-			if (reactor != null && !reactor.isInteriorInvisible() && reactor.getActive() && reactor.getFuelConsumedLastTick() > 0)
+			if (!fuelRod.isOccluded() && reactor != null && !reactor.isInteriorInvisible() && reactor.getActive() && reactor.getFuelConsumedLastTick() > 0) {
 				WorldHelper.spawnVanillaParticles(world, BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CRIT,
 						1, random.nextInt(4) + 1, pos.getX(), pos.getY(), pos.getZ(), 1, 1, 1);
+			}
 		}
 	}
 
@@ -113,12 +113,12 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 
 			boolean assembled = part.isConnected() && part.getMultiblockController().isAssembled();
 			TileEntityReactorFuelRod fuelRod = (TileEntityReactorFuelRod)part;
-			FuelAssembly assembly = fuelRod.getFuelAssembly();
 			FuelRodState rodState = FuelRodState.Disassembled;
 
-			if (assembled && null != assembly) {
+			if (assembled) {
 
-				switch (assembly.getAxis()) {
+				switch (fuelRod.getReactorController().getFuelRodsLayout().getAxis()) {
+
 					case X:
 						rodState = FuelRodState.AssembledEW;
 						break;

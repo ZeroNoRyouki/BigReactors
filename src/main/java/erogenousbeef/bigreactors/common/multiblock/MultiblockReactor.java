@@ -2,17 +2,18 @@ package erogenousbeef.bigreactors.common.multiblock;
 
 import erogenousbeef.bigreactors.api.EnergyConversion;
 import erogenousbeef.bigreactors.api.IHeatEntity;
+import erogenousbeef.bigreactors.api.data.RadiationData;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.api.registry.ReactorInterior;
+import erogenousbeef.bigreactors.client.ClientReactorFuelRodsLayout;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.api.data.RadiationData;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.interfaces.IReactorFuelInfo;
 import erogenousbeef.bigreactors.common.multiblock.helpers.CoolantContainer;
-import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FuelContainer;
 import erogenousbeef.bigreactors.common.multiblock.helpers.RadiationHelper;
+import erogenousbeef.bigreactors.common.multiblock.helpers.ReactorFuelRodsLayout;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.ITickableMultiblockPart;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
@@ -54,6 +55,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -115,7 +117,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	private Set<TileEntityReactorGlass> attachedGlass;
 	private boolean _interiorInvisible;
 
-	private FuelAssembly[] _fuelAssemblies;
+	//private FuelAssembly[] _fuelAssemblies;
+	private ReactorFuelRodsLayout _fuelRodsLayout;
 
 	private boolean _legacyMode;
 
@@ -154,7 +157,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		attachedFuelRods = new HashSet<TileEntityReactorFuelRod>();
 		attachedCoolantPorts = new HashSet<TileEntityReactorCoolantPort>();
 		attachedGlass = new HashSet<TileEntityReactorGlass>();
-		this._fuelAssemblies = null;
+		//this._fuelAssemblies = null;
+		this._fuelRodsLayout = ReactorFuelRodsLayout.DEFAULT;
 		this._interiorInvisible = true;
 		
 		currentFuelRod = null;
@@ -421,12 +425,14 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 			// Radiate from that control rod
 			TileEntityReactorFuelRod source  = currentFuelRod.next();
-			FuelAssembly fuelAssembly = source.getFuelAssembly();
+			/*FuelAssembly fuelAssembly = source.getFuelAssembly();
 			TileEntityReactorControlRod sourceControlRod = (null != fuelAssembly) ? fuelAssembly.getControlRod() : null;
+			*/
+			final TileEntityReactorControlRod sourceControlRod = source.getControlRod();
 
 			if(sourceControlRod != null)
 			{
-				RadiationData radData = radiationHelper.radiate(WORLD, fuelContainer, source, fuelAssembly, getFuelHeat(), getReactorHeat(), attachedControlRods.size());
+				RadiationData radData = radiationHelper.radiate(WORLD, fuelContainer, source, /*fuelAssembly,*/ getFuelHeat(), getReactorHeat(), attachedControlRods.size());
 
 				// Assimilate results of radiation
 				if(radData != null) {
@@ -533,7 +539,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		ticksSinceLastUpdate++;
 		if(ticksSinceLastUpdate >= ticksBetweenUpdates) {
 			ticksSinceLastUpdate = 0;
-            this.updateFuelAssembliesQuota();
+
+			this.WORLD.theProfiler.endStartSection("updateFuelAssembliesQuota");
+            //this.updateFuelAssembliesQuota();
+			this.updateFuelRodsLayout();
+			this.WORLD.theProfiler.endStartSection("sendTickUpdate");
 			sendTickUpdate();
 		}
 		
@@ -906,8 +916,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		// Fuel & waste data
 		fuelContainer.deserialize(buf);
+		/*
 		this.updateFuelAssembliesQuota();
 		this.updateFuelAssembliesReactants();
+		*/
+		this.updateFuelRodsLayout();
 
 
 		if (coolantName.isEmpty())
@@ -1010,7 +1023,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		this.attachedControllers.clear();
 		this.attachedControlRods.clear();
 		currentFuelRod = null;
-		this._fuelAssemblies = null;
+		//this._fuelAssemblies = null;
+		this._fuelRodsLayout = null;
 	}
 	
 	@Override
@@ -1109,8 +1123,11 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		
 		if(amtAdded > 0) {
 
-			if (wasEmpty)
-				this.updateFuelAssembliesReactants();
+			if (wasEmpty) {
+
+				//this.updateFuelAssembliesReactants();
+				this.updateFuelRodsLayout();
+			}
 
 			markReferenceCoordForUpdate();
 			markReferenceCoordDirty();
@@ -1228,7 +1245,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	@Override
 	protected void onMachineAssembled() {
 
-		this.rebuildFuelAssemblies();
+		//this.rebuildFuelAssemblies();
 		this.recalculateDerivedValues();
 
 		// determine machine tier
@@ -1285,7 +1302,31 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		// glass anywhere?
 		this._interiorInvisible = this.attachedGlass.size() == 0;
 
-		this.markMultiblockForRenderUpdate();
+		// build a new fuel rods layout and link all the fuel rods to their control rods
+
+		this._fuelRodsLayout = BigReactors.getProxy().createReactorFuelRodsLayout(this);
+
+		for (final TileEntityReactorControlRod controlRod : this.attachedControlRods) {
+			controlRod.linkToFuelRods(this.getFuelRodsLayout().getRodLength());
+		}
+
+		// set fuel rods occlusion status
+
+		this.getFuelRodsLayout().updateFuelRodsOcclusion(this.attachedFuelRods);
+
+		// re-render the whole reactor
+
+		if(WORLD.isRemote) {
+			// Make sure our fuel rods re-render
+			this.onFuelStatusChanged();
+			this.markMultiblockForRenderUpdate();
+		}
+		else {
+			// Force an update of the client's multiblock information
+			markReferenceCoordForUpdate();
+		}
+
+		//this.markMultiblockForRenderUpdate();
 	}
 
 	@Override
@@ -1339,7 +1380,8 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		
 		surfaceArea = 2 * (xSize * ySize + xSize * zSize + ySize * zSize);
 		reactorHeatLossCoefficient = reactorHeatLossConductivity * surfaceArea;
-		
+
+		/*
 		if(WORLD.isRemote) {
 			// Make sure our fuel rods re-render
 			this.onFuelStatusChanged();
@@ -1347,7 +1389,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		else {
 			// Force an update of the client's multiblock information
 			markReferenceCoordForUpdate();
-		}
+		}*/
 		
 		calculateReactorVolume();
 		
@@ -1533,14 +1575,29 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 	// Client-only
 	protected void onFuelStatusChanged() {
-		if(WORLD.isRemote) {
 
+		if (WorldHelper.calledByLogicalClient(this.WORLD)) {
+
+			/*
             this.updateFuelAssembliesQuota();
 			this.updateFuelAssembliesReactants();
+			*/
+			this.updateFuelRodsLayout();
 
 			// On the client, re-render all the fuel rod blocks when the fuel status changes
-			for(TileEntityReactorFuelRod fuelRod : attachedFuelRods) {
-				WorldHelper.notifyBlockUpdate(this.WORLD, fuelRod.getPos(), null, null);
+
+			ReactorFuelRodsLayout layout = this.getFuelRodsLayout();
+
+			if (layout instanceof ClientReactorFuelRodsLayout) {
+
+				ClientReactorFuelRodsLayout clientLayout = (ClientReactorFuelRodsLayout)layout;
+
+				for (TileEntityReactorFuelRod fuelRod : attachedFuelRods) {
+
+					if (clientLayout.isFuelDataChanged(fuelRod.getFuelRodIndex())) {
+						WorldHelper.notifyBlockUpdate(this.WORLD, fuelRod.getWorldPosition(), null, null);
+					}
+				}
 			}
 		}
 	}
@@ -1578,43 +1635,14 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if (this.energyStored > this._powerSystem.maxCapacity)
 			this.energyStored = this._powerSystem.maxCapacity;
 	}
-
-	public int getFuelAssembliesCount() {
-		return null != this._fuelAssemblies ? this._fuelAssemblies.length : 0;
+	
+	@Nonnull
+	public ReactorFuelRodsLayout getFuelRodsLayout() {
+		return this._fuelRodsLayout;
 	}
 
-	private void rebuildFuelAssemblies() {
-
-		int count = this.attachedControlRods.size();
-		int idx = 0;
-
-		this._fuelAssemblies = new FuelAssembly[count];
-
-		for (TileEntityReactorControlRod controlRod : this.attachedControlRods)
-			this._fuelAssemblies[idx++] = new FuelAssembly(controlRod);
-	}
-
-    private void updateFuelAssembliesQuota() {
-
-		if (null == this._fuelAssemblies)
-			return;
-
-		int count = this._fuelAssemblies.length;
-		int fuelRodsTotalCount = this.attachedFuelRods.size();
-
-		for (int i = 0; i < count; ++i)
-			this._fuelAssemblies[i].updateQuota(this.fuelContainer, fuelRodsTotalCount);
-	}
-
-	private void updateFuelAssembliesReactants() {
-
-		if (null == this._fuelAssemblies)
-			return;
-
-		int count = this._fuelAssemblies.length;
-
-		for (int i = 0; i < count; ++i)
-			this._fuelAssemblies[i].updateReactants(this.fuelContainer);
+	private void updateFuelRodsLayout() {
+		this.getFuelRodsLayout().updateFuelData(this.fuelContainer, this.attachedFuelRods.size());
 	}
 
 	public boolean isInteriorInvisible() {
