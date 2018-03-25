@@ -1,6 +1,6 @@
 package erogenousbeef.bigreactors.common;
 
-import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
+import it.zerono.mods.zerocore.lib.inventory.TileEntityItemStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
