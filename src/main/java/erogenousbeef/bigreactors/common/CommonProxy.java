@@ -4,6 +4,8 @@ import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.helpers.ReactorFuelRodsLayout;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -90,4 +92,8 @@ public class CommonProxy implements IModInitializationHandler {
 			((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(message, ChatType.GAME_INFO));
 	}
 
+	@Nonnull
+	public ReactorFuelRodsLayout createReactorFuelRodsLayout(@Nonnull final MultiblockReactor reactor) {
+		return new ReactorFuelRodsLayout(reactor);
+	}
 }

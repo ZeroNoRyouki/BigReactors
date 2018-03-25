@@ -4,6 +4,8 @@ import erogenousbeef.bigreactors.client.renderer.RendererReactorFuelRod;
 import erogenousbeef.bigreactors.client.renderer.RotorSpecialRenderer;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.CommonProxy;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.helpers.ReactorFuelRodsLayout;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
 import erogenousbeef.bigreactors.gui.BeefGuiIconManager;
@@ -132,4 +134,8 @@ public class ClientProxy extends CommonProxy {
 			Minecraft.getMinecraft().ingameGUI.setOverlayMessage(message, false);
 	}
 
+	@Nonnull
+	public ReactorFuelRodsLayout createReactorFuelRodsLayout(@Nonnull final MultiblockReactor reactor) {
+		return new ClientReactorFuelRodsLayout(reactor);
+	}
 }
