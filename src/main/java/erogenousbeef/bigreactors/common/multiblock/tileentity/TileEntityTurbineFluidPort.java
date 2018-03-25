@@ -7,8 +7,6 @@ import erogenousbeef.bigreactors.utils.FluidHelper;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
 import it.zerono.mods.zerocore.lib.fluid.FluidHandlerForwarder;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -24,7 +22,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	public TileEntityTurbineFluidPort() {
 
 		this._direction = Direction.Input;
-		//_pumpDestination = null;
 		this._capabilityForwarder = new FluidHandlerForwarder(EmptyFluidHandler.INSTANCE);
 	}
 
@@ -48,10 +45,7 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 			WorldHelper.notifyBlockUpdate(world, this.getWorldPosition(), null, null);
 			this.notifyOutwardNeighborsOfStateChange();
-			/*
-			if (direction.isOutput())
-				this.checkForAdjacentTank();
-			*/
+
 			if (markForUpdate)
 				this.markDirty();
 			else
@@ -73,7 +67,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		super.onPostMachineAssembled(multiblockControllerBase);
 		this.notifyOutwardNeighborsOfStateChange();
-		//this.checkForAdjacentTank();
 	}
 
 	@Override
@@ -81,7 +74,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 		super.onPostMachineBroken();
 		this.notifyOutwardNeighborsOfStateChange();
-		//this._pumpDestination = null;
 	}
 
 	@Override
@@ -107,23 +99,12 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		/*
-		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability && this.isMachineAssembled()) ||
-				super.hasCapability(capability, facing);
-		*/
 		return (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability) ||
 				super.hasCapability(capability, facing);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		/*
-		MultiblockTurbine turbine;
-
-		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability &&
-				null != (turbine = this.getTurbine()) && turbine.isAssembled())
-			return CAPAB_FLUID_HANDLER.cast(turbine.getFluidHandler(this._direction));
-		*/
 
 		if (null != CAPAB_FLUID_HANDLER && CAPAB_FLUID_HANDLER == capability) {
 			return CAPAB_FLUID_HANDLER.cast(this._capabilityForwarder);
@@ -135,21 +116,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	// ITickableMultiblockPart
 	@Override
 	public void onMultiblockServerTick() {
-
-		// Try to pump steam out, if an outlet
-		/*
-		if (null == this._pumpDestination || this._direction.isInput())
-			return;
-
-		final IFluidHandler fluidHandler = this.getTurbine().getFluidHandler(Direction.Output);
-		final FluidStack fluidToDrain = fluidHandler.drain(MultiblockTurbine.TANK_SIZE, false);
-		
-		if (fluidToDrain != null && fluidToDrain.amount > 0) {
-
-			fluidToDrain.amount = this._pumpDestination.fill(fluidToDrain, true);
-			fluidHandler.drain(fluidToDrain, true);
-		}
-		*/
 
 		if (this._direction.isInput())
 			return;
@@ -164,44 +130,6 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 			fluidHandler.drain(fluidToDrain, true);
 		}
 	}
-	/*
-	// INeighborUpdatableEntity
-	@Override
-	public void onNeighborBlockChange(World world, BlockPos position, IBlockState stateAtPosition, Block neighborBlock) {
-
-		if (WorldHelper.calledByLogicalServer(this.getWorld()))
-			this.checkForAdjacentTank();
-	}
-	
-	@Override
-	public void onNeighborTileChange(IBlockAccess world, BlockPos position, BlockPos neighbor) {
-
-		if (WorldHelper.calledByLogicalServer(this.getWorld()))
-			this.checkForAdjacentTank();
-	}
-
-	private void checkForAdjacentTank() {
-
-		final World world = this.getWorld();
-		EnumFacing facing = this.getOutwardFacing();
-
-		this._pumpDestination = null;
-
-		if (null == facing || WorldHelper.calledByLogicalClient(world) ||
-				!this.isMachineAssembled() || this._direction.isInput())
-			return;
-
-		TileEntity neighbor = world.getTileEntity(this.getWorldPosition().offset(facing));
-
-		if (null != neighbor) {
-
-			facing = facing.getOpposite();
-
-			if (neighbor.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing))
-				this._pumpDestination = neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-		}
-	}
-	*/
 
 	@Override
 	public void onAttached(MultiblockControllerBase newController) {
@@ -236,6 +164,5 @@ public class TileEntityTurbineFluidPort extends TileEntityTurbinePart implements
 	private static Capability<IFluidHandler> CAPAB_FLUID_HANDLER = null;
 
 	private Direction _direction;
-	//private IFluidHandler _pumpDestination;
 	private final FluidHandlerForwarder _capabilityForwarder;
 }

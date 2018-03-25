@@ -2,10 +2,11 @@ package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
-import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputer;
-import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputerCC;
-import erogenousbeef.bigreactors.common.multiblock.computer.TurbineComputerOC;
+import erogenousbeef.bigreactors.common.multiblock.computer.*;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
+import it.zerono.mods.zerocore.lib.compat.computer.Connector;
+import it.zerono.mods.zerocore.lib.compat.computer.ConnectorComputerCraft;
+import it.zerono.mods.zerocore.lib.compat.computer.ConnectorOpenComputers;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -20,15 +21,20 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 
 	public TileEntityTurbineComputerPort() {
 
-		this._ccComputer = CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) ? TurbineComputerCC.create(this) : null;
-		this._ocComputer = CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS) ? TurbineComputerOC.create(this) : null;
+		final TurbineComputerPeripheral turbinePeripheral = new TurbineComputerPeripheral(this);
+
+		this._ocConnector = CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS) ?
+				ConnectorOpenComputers.create("br_turbine", turbinePeripheral) : null;
+
+		this._ccConnector = CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) ?
+				ConnectorComputerCraft.create("BigReactors-Turbine", turbinePeripheral) : null;
 	}
 
 	@Override
 	@Optional.Method(modid = IdReference.MODID_OPENCOMPUTERS)
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		// Note: this is only needed by OpenComputers, hence the @Optional annotation
-		return (null != this._ocComputer && TurbineComputerOC.isComputerCapability(capability)) ||
+		return (null != this._ocConnector && ConnectorOpenComputers.isComputerCapability(capability)) ||
 				super.hasCapability(capability, facing);
 	}
 
@@ -39,17 +45,17 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 
 		// Note: this is only needed by OpenComputers, hence the @Optional annotation
-
-		if (null != this._ocComputer && TurbineComputerOC.isComputerCapability(capability))
-			return (T)this._ocComputer;
+		if (null != this._ocConnector && ConnectorOpenComputers.isComputerCapability(capability)) {
+			return (T) this._ocConnector;
+		}
 
 		return super.getCapability(capability, facing);
 	}
 
 	@Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
-	public TurbineComputer getComputerCraftPeripheral() {
+	public /*TurbineComputer*/Connector getComputerCraftPeripheral() {
 		// Note: this is only needed by ComputerCraft, hence the @Optional annotation
-		return this._ccComputer;
+		return this._ccConnector;
 	}
 
 	@Override
@@ -57,11 +63,13 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 
 		super.onAttached(newController);
 
-		if (null != this._ccComputer)
-			this._ccComputer.onAttachedToController();
+		if (null != this._ccConnector) {
+			this._ccConnector.onAttachedToController();
+		}
 
-		if (null != this._ocComputer)
-			this._ocComputer.onAttachedToController();
+		if (null != this._ocConnector) {
+			this._ocConnector.onAttachedToController();
+		}
 	}
 
 	@Override
@@ -69,11 +77,13 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 
 		super.onDetached(oldController);
 
-		if (null != this._ccComputer)
-			this._ccComputer.onDetachedFromController();
+		if (null != this._ccConnector) {
+			this._ccConnector.onDetachedFromController();
+		}
 
-		if (null != this._ocComputer)
-			this._ocComputer.onDetachedFromController();
+		if (null != this._ocConnector) {
+			this._ocConnector.onDetachedFromController();
+		}
 	}
 
 	@Override
@@ -81,11 +91,13 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 
 		super.syncDataFrom(data, syncReason);
 
-		if (null != this._ccComputer)
-			this._ccComputer.syncDataFrom(data, syncReason);
+		if (null != this._ccConnector) {
+			this._ccConnector.syncDataFrom(data, syncReason);
+		}
 
-		if (null != this._ocComputer)
-			this._ocComputer.syncDataFrom(data, syncReason);
+		if (null != this._ocConnector) {
+			this._ocConnector.syncDataFrom(data, syncReason);
+		}
 	}
 
 	@Override
@@ -93,13 +105,15 @@ public class TileEntityTurbineComputerPort extends TileEntityTurbinePart {
 
 		super.syncDataTo(data, syncReason);
 
-		if (null != this._ccComputer)
-			this._ccComputer.syncDataTo(data, syncReason);
+		if (null != this._ccConnector) {
+			this._ccConnector.syncDataTo(data, syncReason);
+		}
 
-		if (null != this._ocComputer)
-			this._ocComputer.syncDataTo(data, syncReason);
+		if (null != this._ocConnector) {
+			this._ocConnector.syncDataTo(data, syncReason);
+		}
 	}
 
-	private final TurbineComputer _ccComputer;
-	private final TurbineComputer _ocComputer;
+	private final Connector _ocConnector;
+	private final Connector _ccConnector;
 }
