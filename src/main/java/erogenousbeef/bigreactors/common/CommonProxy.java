@@ -3,6 +3,8 @@ package erogenousbeef.bigreactors.common;
 import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
+import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
+import erogenousbeef.bigreactors.common.multiblock.helpers.ReactorFuelRodsLayout;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -11,6 +13,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class CommonProxy implements IModInitializationHandler {
 
@@ -41,5 +45,10 @@ public class CommonProxy implements IModInitializationHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void setIcons(TextureStitchEvent.Post event) {
+	}
+
+	@Nonnull
+	public ReactorFuelRodsLayout createReactorFuelRodsLayout(@Nonnull final MultiblockReactor reactor) {
+		return new ReactorFuelRodsLayout(reactor);
 	}
 }

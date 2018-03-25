@@ -41,10 +41,10 @@ public class RadiationHelper {
 		fertility = 1f;
 	}
 
-	public RadiationData radiate(World world, FuelContainer fuelContainer, TileEntityReactorFuelRod source, FuelAssembly fuelAssembly,
+	public RadiationData radiate(World world, FuelContainer fuelContainer, TileEntityReactorFuelRod source, /*FuelAssembly fuelAssembly,*/
 								 float fuelHeat, float environmentHeat, int numControlRods) {
 
-		TileEntityReactorControlRod controlRod = fuelAssembly.getControlRod();
+		final TileEntityReactorControlRod controlRod = source.getControlRod();
 
 		// No fuel? No radiation!
 		if(fuelContainer.getFuelAmount() <= 0) { return null; }
@@ -94,7 +94,7 @@ public class RadiationHelper {
 		effectiveRadIntensity *= 0.25f; // We're going to do this four times, no need to repeat
 		RadiationPacket radPacket = new RadiationPacket();
 
-		for (EnumFacing dir : fuelAssembly.getRadiateDirections()) {
+		for (EnumFacing dir : controlRod.getReactorController().getFuelRodsLayout().getRadiateDirections()) {
 
 			radPacket.hardness = radHardness;
 			radPacket.intensity = effectiveRadIntensity;

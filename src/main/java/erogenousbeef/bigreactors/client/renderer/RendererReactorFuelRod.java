@@ -1,19 +1,32 @@
 package erogenousbeef.bigreactors.client.renderer;
 
+import erogenousbeef.bigreactors.client.ClientReactorFuelRodsLayout;
+import erogenousbeef.bigreactors.client.ClientReactorFuelRodsLayout.FuelRodFluidStatus;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.helpers.FuelAssembly;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import erogenousbeef.bigreactors.init.BrFluids;
 import it.zerono.mods.zerocore.lib.BlockFacings;
+import it.zerono.mods.zerocore.lib.client.render.CachedRender;
 import it.zerono.mods.zerocore.lib.client.render.ModRenderHelper;
+import it.zerono.mods.zerocore.lib.math.Colour;
+import it.zerono.mods.zerocore.lib.math.Cuboid;
+import it.zerono.mods.zerocore.lib.math.LightMap;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntityReactorFuelRod> {
@@ -21,116 +34,119 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
     @Override
     public void renderTileEntityAt(TileEntityReactorFuelRod rod, double x, double y, double z, float partialTicks, int destroyStage) {
 
-        final FuelAssembly assembly = rod.getFuelAssembly();
+        if (rod.isOccluded()) {
+            return;
+        }
+
         final MultiblockReactor reactor = rod.getReactorController();
 
-        if (null == assembly || null == reactor || !reactor.isAssembled() || reactor.isInteriorInvisible())
+        if (null == reactor || !reactor.isAssembled() || reactor.isInteriorInvisible()) {
             return;
+        }
 
-        final World world = this.getWorld();
+        final ClientReactorFuelRodsLayout layout = (ClientReactorFuelRodsLayout) reactor.getFuelRodsLayout();
         final BlockPos rodPosition = rod.getWorldPosition();
-        final int rodsCount = assembly.getFueldRodsCount();
-        final EnumFacing.Axis axis = assembly.getAxis();
-        BlockFacings facesToDraw;
 
-        final Fluid fluid = BrFluids.fluidFuelColumn;
-        final int fuelColor = assembly.getFuelColor();
-        final int wasteColor = assembly.getWasteColor();
+        if (EnumFacing.Plane.VERTICAL == layout.getAxis().getPlane()) {
 
-        final float rodCapacity = MultiblockReactor.FuelCapacityPerFuelRod;
-        float wasteHight, fuelHight;
-
-        if (EnumFacing.Axis.Y == axis) {
+            ////////////////////////////////////////////////////////////////////////////////////
+            // Vertical rod
+            ////////////////////////////////////////////////////////////////////////////////////
 
             final int rodIndex = rodPosition.getY() - reactor.getMinimumCoord().getY() - 1;
-            final FuelAssembly.FuelRodData rodData = assembly.getFuelRodData(rodIndex);
-            final boolean gotFuel, gotWaste;
-            int brightness;
+            final ClientReactorFuelRodsLayout.FuelData rodData = layout.getFuelData(rodIndex);
+            final FuelRodFluidStatus fluidStatus = null != rodData ? rodData.getFluidStatus() :
+                    FuelRodFluidStatus.Empty;
 
-            if (null == rodData)
+            if (FuelRodFluidStatus.Empty == fluidStatus) {
+
                 return;
 
-            facesToDraw = BlockFacings.ALL;
+            } else if (FuelRodFluidStatus.Mixed == fluidStatus) {
 
-            wasteHight = rodData.getWasteAmount() / rodCapacity;
-            fuelHight = rodData.getFuelAmount() / rodCapacity;
+                final VertexBuffer vertexBuffer = Tessellator.getInstance().getBuffer();
 
-            gotWaste = wasteHight > 0.0f;
-            gotFuel = fuelHight > 0.0f;
+                vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-            if (gotWaste && gotFuel) {
+                final float offset = MathHelper.sin((this.getWorld().getTotalWorldTime() + partialTicks) * 0.1f) * 0.01f;
+                final LightMap lightMap = this.getFuelLightMap(rodPosition);
+                float wasteHeight = rodData.getWasteHeight() + offset;
+                float fuelHeight = rodData.getFuelHeight() - offset;
+                Cuboid cuboid;
 
-                // both waste & fuel
+                // waste
 
-                final float offset = MathHelper.sin((world.getTotalWorldTime() + partialTicks) * 0.1f) * 0.01f;
+                cuboid = new Cuboid(0.005, 0.0, 0.005, 0.995, Math.min(wasteHeight, 1.0), 0.995);
+                ModRenderHelper.bufferFluidCube(vertexBuffer, cuboid, BlockFacings.HORIZONTAL, layout.getWasteColor(), lightMap,
+                        BrFluids.fluidFuelColumn);
 
-                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
+                // fuel
 
-                // - waste
-                facesToDraw = facesToDraw.set(EnumFacing.DOWN, 0 == rodIndex);
-                facesToDraw = facesToDraw.set(EnumFacing.UP, false);
+                final BlockFacings visibleFaces = BlockFacings.HORIZONTAL
+                        .set(EnumFacing.UP, (layout.getRodLength() - 1 == rodIndex) ||
+                                (rodData.getFuelAmount() + (MultiblockReactor.FuelCapacityPerFuelRod * rodIndex)
+                                        >= layout.getFuelQuota()));
 
-                wasteHight += offset;
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
-                        0.005, 0.0, 0.005,
-                        0.995, wasteHight, 0.995,
-                        wasteColor, brightness);
+                cuboid.MIN.Y = Math.max(wasteHeight, 0.0);
+                cuboid.MAX.Y = Math.min(fuelHeight + wasteHeight, 1.0);
 
-                // - fuel
-                facesToDraw = facesToDraw.set(EnumFacing.DOWN, false);
-                facesToDraw = facesToDraw.set(EnumFacing.UP,
-                        (rodsCount -1 == rodIndex) ||
-                        (rodData.getFuelAmount() + (rodCapacity * rodIndex) >= assembly.getFuelQuota()));
+                ModRenderHelper.bufferFluidCube(vertexBuffer, cuboid, visibleFaces, layout.getFuelColor(), lightMap,
+                        BrFluids.fluidFuelColumn);
 
-                fuelHight -= offset;
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
-                        0.005, 0.0, 0.005,
-                        0.995, fuelHight, 0.995,
-                        fuelColor, brightness);
+                // render
 
-            } else if (gotWaste) {
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.translate(x, y, z);
+                this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                Tessellator.getInstance().draw();
+                GlStateManager.translate(-x, -y, -z);
+                RenderHelper.enableStandardItemLighting();
 
-                // only waste
-
-                facesToDraw = facesToDraw.set(EnumFacing.DOWN, 0 == rodIndex);
-                facesToDraw = facesToDraw.set(EnumFacing.UP,
-                                (rodsCount -1 == rodIndex) ||
-                                (rodData.getWasteAmount() + (rodCapacity * rodIndex) >= assembly.getWasteQuota())
-                );
-
-                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
-                        0.005, 0.0, 0.005,
-                        0.995, wasteHight, 0.995,
-                        wasteColor, brightness);
-
-            } else if (gotFuel) {
-
-                // only fuel
-
-                facesToDraw = facesToDraw.set(EnumFacing.DOWN, 0 == rodIndex);
-                facesToDraw = facesToDraw.set(EnumFacing.UP,
-                        (rodsCount -1 == rodIndex) ||
-                                (fuelHight + wasteHight < 1.0f) ||
-                                (fuelHight + (rodCapacity * rodIndex) >= assembly.getFuelQuota())
-
-                );
-
-                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
-                        0.005, 0.0, 0.005,
-                        0.995, fuelHight, 0.995,
-                        fuelColor, brightness);
+                return;
             }
+
+            // not mixed nor empty ...
+
+            CachedRender render = layout.getCachedRender(fluidStatus);
+
+            if (null == render) {
+
+                switch (fluidStatus) {
+
+                    default:
+                    case FullFuelOnly:
+                    case FullWasteOnly:
+
+                        render = new FuelRodCachedRender(BlockFacings.HORIZONTAL, FULL_VERTICAL_CUBE,
+                                FuelRodFluidStatus.FullFuelOnly == fluidStatus ? layout.getFuelColor() : layout.getWasteColor(),
+                                this.getFuelLightMap(rodPosition));
+                        break;
+
+                    case FuelOnly:
+                    case WasteOnly:
+
+                        final float height = FuelRodFluidStatus.FuelOnly == fluidStatus ? rodData.getFuelHeight() : rodData.getWasteHeight();
+
+                        render = new FuelRodCachedRender(BlockFacings.ALL.set(EnumFacing.DOWN, false)
+                                .set(EnumFacing.UP, 1.0 != height),
+                                new Cuboid(0.005, 0.0, 0.005, 0.995, height, 0.995),
+                                FuelRodFluidStatus.FuelOnly == fluidStatus ? layout.getFuelColor() : layout.getWasteColor(),
+                                this.getFuelLightMap(rodPosition));
+                        break;
+                }
+
+                layout.setChachedRender(fluidStatus, render);
+            }
+
+            render.paint(x, y, z);
+
         } else {
 
-            // X or Z axis
+            ////////////////////////////////////////////////////////////////////////////////////
+            // Horizontal rod
+            ////////////////////////////////////////////////////////////////////////////////////
 
-            float myFuelQuota = assembly.getFuelRodFuelQuota();
-            float myWasteQuota = assembly.getFuelRodWasteQuota();
-            final boolean gotFuel, gotWaste;
-            int brightness;
-
+            final EnumFacing.Axis axis = layout.getAxis();
             final double x1, x2, z1, z2;
 
             if (EnumFacing.Axis.X == axis) {
@@ -146,69 +162,125 @@ public class RendererReactorFuelRod extends TileEntitySpecialRenderer<TileEntity
                 x2 = 0.995;
                 z1 = 0.000;
                 z2 = 1.000;
-
             }
 
-            wasteHight = myWasteQuota / rodCapacity;
-            fuelHight = myFuelQuota / rodCapacity;
+            final ClientReactorFuelRodsLayout.FuelData rodData = layout.getFuelData(0);
+            final FuelRodFluidStatus fluidStatus = null != rodData ? rodData.getFluidStatus() :
+                    FuelRodFluidStatus.Empty;
 
-            gotWaste = wasteHight > 0.0f;
-            gotFuel = fuelHight > 0.0f;
+            if (FuelRodFluidStatus.Empty == fluidStatus) {
 
-            if (gotWaste && gotFuel) {
+                return;
 
-                // both waste & fuel
+            } else if (FuelRodFluidStatus.Mixed == fluidStatus) {
 
-                final float offset = MathHelper.sin((world.getTotalWorldTime() + partialTicks) * 0.1f) * 0.01f;
+                final VertexBuffer vertexBuffer = Tessellator.getInstance().getBuffer();
 
-                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
+                vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-                // - waste
-                facesToDraw = BlockFacings.from(true, false, axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.Z,
-                        axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
+                final float offset = MathHelper.sin((this.getWorld().getTotalWorldTime() + partialTicks) * 0.1f) * 0.01f;
+                final LightMap lightMap = this.getFuelLightMap(rodPosition);
+                float wasteHeight = rodData.getWasteHeight() + offset;
+                float fuelHeight = rodData.getFuelHeight() - offset;
+                Cuboid cuboid;
 
-                wasteHight += offset;
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
-                        x1, 0.005, z1,
-                        x2, wasteHight, z2,
-                        wasteColor, brightness);
+                BlockFacings visibleFaces = BlockFacings.from(true, false, axis != EnumFacing.Axis.Z,
+                        axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
 
-                // - fuel
-                facesToDraw = facesToDraw.set(EnumFacing.DOWN, false);
-                facesToDraw = facesToDraw.set(EnumFacing.UP, true);
+                // waste
 
-                fuelHight -= offset;
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
-                        x1, 0.000, z1,
-                        x2, fuelHight - 0.005, z2,
-                        fuelColor, brightness);
+                cuboid = new Cuboid(x1, 0.005, z1, x2, Math.min(wasteHeight, 0.995), z2);
+                ModRenderHelper.bufferFluidCube(vertexBuffer, cuboid, visibleFaces, layout.getWasteColor(), lightMap, BrFluids.fluidFuelColumn);
 
-            } else if (gotWaste) {
+                // fuel
 
-                // only waste
+                visibleFaces = visibleFaces.set(EnumFacing.DOWN, false).set(EnumFacing.UP, true);
+                cuboid.MIN.Y = Math.max(wasteHeight, 0.0);
+                cuboid.MAX.Y = Math.min(fuelHeight - 0.005, 0.995);
+                ModRenderHelper.bufferFluidCube(vertexBuffer, cuboid, visibleFaces, layout.getFuelColor(), lightMap, BrFluids.fluidFuelColumn);
 
-                facesToDraw = BlockFacings.from(true, true, axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.Z,
-                        axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
+                // render
 
-                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y, z,
-                        x1, 0.005, z1,
-                        x2, wasteHight - 0.005, z2,
-                        wasteColor, brightness);
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.translate(x, y, z);
+                this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                Tessellator.getInstance().draw();
+                GlStateManager.translate(-x, -y, -z);
+                RenderHelper.enableStandardItemLighting();
 
-            } else if (gotFuel) {
-
-                // only fuel
-
-                facesToDraw = BlockFacings.from(true, true, axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.Z,
-                        axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
-
-                brightness = world.getCombinedLight(rodPosition, fluid.getLuminosity());
-                ModRenderHelper.renderFluidCube(fluid, facesToDraw, x, y + wasteHight, z,
-                        x1, 0.005, z1,
-                        x2, fuelHight - 0.005, z2,
-                        fuelColor, brightness);
+                return;
             }
+
+            // not mixed nor empty ...
+
+            CachedRender render = layout.getCachedRender(fluidStatus);
+
+            final BlockFacings visibleFaces = BlockFacings.from(true, true, axis != EnumFacing.Axis.Z,
+                    axis != EnumFacing.Axis.Z, axis != EnumFacing.Axis.X, axis != EnumFacing.Axis.X);
+
+            if (null == render) {
+
+                switch (fluidStatus) {
+
+                    default:
+                    case FullFuelOnly:
+                    case FullWasteOnly:
+
+                        render = new FuelRodCachedRender(visibleFaces,
+                                new Cuboid(x1, 0.005, z1, x2, 0.995, z2),
+                                FuelRodFluidStatus.FullFuelOnly == fluidStatus ? layout.getFuelColor() : layout.getWasteColor(),
+                                this.getFuelLightMap(rodPosition));
+                        break;
+
+                    case FuelOnly:
+                    case WasteOnly:
+
+                        final Colour colour = FuelRodFluidStatus.FuelOnly == fluidStatus ? layout.getFuelColor() : layout.getWasteColor();
+                        final float height = FuelRodFluidStatus.FuelOnly == fluidStatus ? rodData.getFuelHeight() : rodData.getWasteHeight();
+
+                        render = new FuelRodCachedRender(visibleFaces,
+                                new Cuboid(x1, 0.005, z1, x2, height - 0.005, z2),
+                                colour, this.getFuelLightMap(rodPosition));
+                        break;
+                }
+
+                layout.setChachedRender(fluidStatus, render);
+            }
+
+            render.paint(x, y, z);
         }
+    }
+
+    private LightMap getFuelLightMap(@Nonnull final BlockPos position) {
+        return LightMap.fromCombinedLight(this.getWorld().getCombinedLight(position, BrFluids.fluidFuelColumn.getLuminosity()));
+    }
+
+    private static final Cuboid FULL_VERTICAL_CUBE = new Cuboid(0.005, 0.0, 0.005, 0.995, 1, 0.995);
+
+    private static class FuelRodCachedRender extends CachedRender {
+
+        public FuelRodCachedRender(@Nonnull final BlockFacings visibleFaces, @Nonnull final Cuboid cuboid,
+                                   final Colour argbColour, @Nonnull final LightMap lightMap) {
+
+            this._visibleFaces = visibleFaces;
+            this._cuboid = cuboid;
+            this._colour = argbColour;
+            this._lightMap = lightMap;
+        }
+
+        @Override
+        protected ResourceLocation getTexture() {
+            return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        }
+
+        @Override
+        protected void buildRender() {
+            ModRenderHelper.paintFluidCube(this._cuboid, this._visibleFaces, this._colour, this._lightMap, BrFluids.fluidFuelColumn);
+        }
+
+        private final BlockFacings _visibleFaces;
+        private final Cuboid _cuboid;
+        private final Colour _colour;
+        private final LightMap _lightMap;
     }
 }

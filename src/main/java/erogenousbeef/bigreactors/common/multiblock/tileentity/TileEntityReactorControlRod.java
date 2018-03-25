@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.tileentity;
 
 import erogenousbeef.bigreactors.client.gui.GuiReactorControlRod;
+import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.gui.container.ContainerBasic;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.ControlRodUpdateMessage;
@@ -10,6 +11,7 @@ import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -239,6 +241,27 @@ public class TileEntityReactorControlRod extends TileEntityReactorPart {
 		
 		if(!this.name.isEmpty()) {
 			data.setString("name", this.name);
+		}
+	}
+
+	public void linkToFuelRods(final int fuelRodsCount) {
+
+		final EnumFacing direction = this.getOutwardFacing().getOpposite();
+		BlockPos lookupPosition = this.getWorldPosition();
+		TileEntity te;
+
+		for (int i = 0; i < fuelRodsCount; ++i) {
+
+			lookupPosition = lookupPosition.offset(direction);
+			te = this.getWorld().getTileEntity(lookupPosition);
+
+			if (!(te instanceof TileEntityReactorFuelRod)) {
+
+				BigReactors.getLogger().error("Missing a Fuel Rod where there should be one!");
+				break;
+			}
+
+			((TileEntityReactorFuelRod)te).linkToControlRod(this, i);
 		}
 	}
 }
