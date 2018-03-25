@@ -4,12 +4,12 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
-import erogenousbeef.bigreactors.common.multiblock.computer.MachineComputer;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
 import erogenousbeef.bigreactors.init.BrBlocks;
+import it.zerono.mods.zerocore.lib.compat.computer.Connector;
 import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
@@ -87,13 +87,13 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {
 
         final TileEntity tileEntity = WorldHelper.getTile(world, pos);
-        MachineComputer computer = null;
+        Connector computer = null;
 
-        if (tileEntity instanceof TileEntityReactorComputerPort)
-            computer = ((TileEntityReactorComputerPort)tileEntity).getComputerCraftPeripheral();
-
-        else if (tileEntity instanceof TileEntityTurbineComputerPort)
-            computer = ((TileEntityTurbineComputerPort)tileEntity).getComputerCraftPeripheral();
+        if (tileEntity instanceof TileEntityReactorComputerPort) {
+            computer = ((TileEntityReactorComputerPort) tileEntity).getComputerCraftPeripheral();
+        } else if (tileEntity instanceof TileEntityTurbineComputerPort) {
+            computer = ((TileEntityTurbineComputerPort) tileEntity).getComputerCraftPeripheral();
+        }
 
         return computer instanceof IPeripheral ? (IPeripheral)computer : null;
     }
