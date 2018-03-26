@@ -61,7 +61,7 @@ repositories {
 
     maven {
         name "Tesla"
-        url "https://maven.epoxide.org/"
+        url 'http://maven.mcmoddev.com'
     }
 
     maven {
@@ -88,8 +88,8 @@ repositories {
 dependencies {
 
     compile group: "it.zerono.mods.zerocore", name: "zerocore", version: "${config.zerocore_version}"
-    deobfCompile group: "net.darkhax.tesla", name: "Tesla-1.12.2", version: "${config.tesla_version}"
     deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
+    compile "net.darkhax.tesla:Tesla-1.12.2:${config.tesla_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
     compile "cofh:CoFHCore:${config.cofhcore_version}:deobf"
     compile "mezz.jei:${config.jei_version}"
