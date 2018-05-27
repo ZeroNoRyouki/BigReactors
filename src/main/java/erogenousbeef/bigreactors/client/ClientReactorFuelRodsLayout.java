@@ -77,7 +77,7 @@ public class ClientReactorFuelRodsLayout extends ReactorFuelRodsLayout {
     }
 
     @Override
-    public void updateFuelData(@Nonnull final FuelContainer fuelData, final int fuelRodsTotalCount) {
+    public void updateFuelData(@Nonnull final FuelContainer fuelData, int fuelRodsTotalCount) {
 
         // fuel/waste colors
 
@@ -94,7 +94,9 @@ public class ClientReactorFuelRodsLayout extends ReactorFuelRodsLayout {
 
         // fuel/waste quota for each fuel rod
 
-        final int fuelRodsCount = this.getRodLength();
+        final int fuelRodsCount = Math.max(1, this.getRodLength());
+
+        fuelRodsTotalCount = Math.max(1, fuelRodsTotalCount);
 
         this._totalFuelQuota = fuelData.getFuelAmount() / fuelRodsTotalCount * fuelRodsCount;
         this._totalWasteQuota = fuelData.getWasteAmount() / fuelRodsTotalCount * fuelRodsCount;
