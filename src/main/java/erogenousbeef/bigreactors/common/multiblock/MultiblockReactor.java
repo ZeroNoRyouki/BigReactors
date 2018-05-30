@@ -1576,7 +1576,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 	// Client-only
 	protected void onFuelStatusChanged() {
 
-		if (WorldHelper.calledByLogicalClient(this.WORLD)) {
+		if (WorldHelper.calledByLogicalClient(this.WORLD) && this.isAssembled()) {
 
 			/*
             this.updateFuelAssembliesQuota();

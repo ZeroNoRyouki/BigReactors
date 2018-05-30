@@ -23,15 +23,15 @@ public class ReactorFuelRodsLayout {
 
             default:
             case X:
-                this._rodLength = maxCoord.getX() - minCoord.getX() - 1;
+                this._rodLength = Math.max(1, maxCoord.getX() - minCoord.getX() - 1);
                 break;
 
             case Y:
-                this._rodLength = maxCoord.getY() - minCoord.getY() - 1;
+                this._rodLength = Math.max(1, maxCoord.getY() - minCoord.getY() - 1);
                 break;
 
             case Z:
-                this._rodLength = maxCoord.getZ() - minCoord.getZ() - 1;
+                this._rodLength = Math.max(1, maxCoord.getZ() - minCoord.getZ() - 1);
                 break;
         }
     }
