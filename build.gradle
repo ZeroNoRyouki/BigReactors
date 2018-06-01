@@ -80,8 +80,14 @@ repositories {
     }
 
     maven {
-        name = "JEI Maven"
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
         url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
     }
 }
 
@@ -92,7 +98,11 @@ dependencies {
     compile "net.darkhax.tesla:Tesla-1.12.2:${config.tesla_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
     compile "cofh:CoFHCore:${config.cofhcore_version}:deobf"
-    compile "mezz.jei:${config.jei_version}"
+
+    // compile against the JEI API but do not include it at runtime
+    deobfProvided "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}:api"
+    // at runtime, use the full JEI jar
+    runtime "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
 }
 
 processResources  {
