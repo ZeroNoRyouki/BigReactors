@@ -176,7 +176,7 @@ public class Config extends ConfigHandler {
             if (this.yelloriteOreEnableWorldGen) {
 
                 BigReactors.WORLDGEN_ORES.clearOres();
-                BigReactors.WORLDGEN_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Yellorite),
+                BigReactors.WORLDGEN_ORES.addOre(BrBlocks.oreYellorite.getDefaultState(),
                         Blocks.STONE.getDefaultState(), 11, this.yelloriteOreMaxY,
                         this.yelloriteOrePerCluster, this.yelloriteOreMaxClustersPerChunk);
 
@@ -187,7 +187,7 @@ public class Config extends ConfigHandler {
 
             if (this.benitoiteOreEnableWorldGen) {
 
-                final IBlockState ore = BrBlocks.brOre.getStateFromType(OreType.Benitoite);
+                final IBlockState ore = BrBlocks.oreBenitoite.getDefaultState();
                 final IBlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 
                 BigReactors.NETHER_ORES.clearOres();
@@ -198,7 +198,7 @@ public class Config extends ConfigHandler {
             if (this.anglesiteOreEnableWorldGen) {
 
                 BigReactors.END_ORES.clearOres();
-                BigReactors.END_ORES.addOre(BrBlocks.brOre.getStateFromType(OreType.Anglesite),
+                BigReactors.END_ORES.addOre(BrBlocks.oreAnglesite.getDefaultState(),
                         Blocks.END_STONE.getDefaultState(), 10, 90, this.anglesiteOrePerCluster, this.anglesiteOreMaxClustersPerChunk);
             }
         }

@@ -51,7 +51,10 @@ public class ObjectsHandler extends GameObjectsHandler {
         BrFluids.initialize();
 
         // Ores
-        registry.register(new BlockBROre("brore"));
+        //registry.register(new BlockBROre("brore"));
+        registry.register(new BlockBROre("oreyellorite"));
+        registry.register(new BlockBROre("oreanglesite"));
+        registry.register(new BlockBROre("orebenitoite"));
 
         // Metal blocks
         registry.register(new BlockBRMetal("blockmetals"));

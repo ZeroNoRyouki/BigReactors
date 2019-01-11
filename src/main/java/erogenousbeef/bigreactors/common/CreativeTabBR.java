@@ -22,7 +22,7 @@ public class CreativeTabBR extends CreativeTabs {
 
 	@SideOnly(Side.CLIENT)
 	public ItemStack getTabIconItem() {
-		return BrBlocks.brOre.createItemStack(OreType.Yellorite, 1);
+		return BrBlocks.oreYellorite.createItemStack();
 	}
 
 	/**
@@ -34,7 +34,9 @@ public class CreativeTabBR extends CreativeTabs {
 	@SideOnly(Side.CLIENT)
 	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 
-		this.addToDisplayList(list, BrBlocks.brOre);
+		this.addToDisplayList(list, BrBlocks.oreYellorite);
+        this.addToDisplayList(list, BrBlocks.oreAnglesite);
+        this.addToDisplayList(list, BrBlocks.oreBenitoite);
 		this.addToDisplayList(list, BrItems.minerals);
 		this.addToDisplayList(list, BrItems.ingotMetals);
 		this.addToDisplayList(list, BrItems.dustMetals);

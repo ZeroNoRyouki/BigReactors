@@ -16,7 +16,7 @@ public class ModMekanism extends ModCompact {
     @Override
     public void onInit(FMLInitializationEvent fmlInitializationEvent) {
 
-        final ItemStack yelloriteOre = BrBlocks.brOre.createItemStack(OreType.Yellorite, 1);
+        final ItemStack yelloriteOre = BrBlocks.oreYellorite.createItemStack();
 
         // yellorite ore -> 2x yellorium dust
         this.addEnrichmentChamberRecipe(yelloriteOre, BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2));

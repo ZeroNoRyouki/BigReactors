@@ -12,7 +12,7 @@ public class ModMineFactoryReloaded extends ModCompact {
     public void onInit(FMLInitializationEvent fmlInitializationEvent) {
 
 
-        final ItemStack yelloriteOre = BrBlocks.brOre.createItemStack(OreType.Yellorite, 1);
+        final ItemStack yelloriteOre = BrBlocks.oreYellorite.createItemStack();
 
         // Add yellorite to yellow focus list.
         addOreToMiningLaserFocus(yelloriteOre, 2);

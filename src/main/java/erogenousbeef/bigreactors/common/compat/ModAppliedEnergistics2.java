@@ -13,7 +13,7 @@ public class ModAppliedEnergistics2 extends ModCompact {
     @Override
     public void onInit(FMLInitializationEvent fmlInitializationEvent) {
 
-        this.addGrinderRecipe(BrBlocks.brOre.createItemStack(OreType.Yellorite, 1),
+        this.addGrinderRecipe(BrBlocks.oreYellorite.createItemStack(),
                 BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2), 4);
 
         for (MetalType metal: MetalType.VALUES)
