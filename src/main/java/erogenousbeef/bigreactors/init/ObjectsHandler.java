@@ -17,6 +17,8 @@ import erogenousbeef.bigreactors.common.multiblock.block.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
+import erogenousbeef.bigreactors.init.flattening.BlockReplacer;
+import erogenousbeef.bigreactors.init.flattening.ItemReplacer;
 import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
 import it.zerono.mods.zerocore.lib.init.GameObjectsHandler;
@@ -30,6 +32,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraftforge.common.util.ModFixs;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import zero.temp.RecipeHelper2;
@@ -39,7 +46,13 @@ import javax.annotation.Nonnull;
 public class ObjectsHandler extends GameObjectsHandler {
 
     public ObjectsHandler(ConfigHandler... configs) {
+
         super(configs);
+
+        this._blockReplacer = new BlockReplacer(DATA_VERSION);
+        this._itemReplacer = new ItemReplacer(DATA_VERSION);
+        this.addBlockRemapper(this._blockReplacer);
+        this.addItemRemapper(this._itemReplacer);
     }
 
     @Override
@@ -196,7 +209,9 @@ public class ObjectsHandler extends GameObjectsHandler {
         });
 
         // Minerals
-        registry.register(new ItemMineral("minerals"));
+        //registry.register(new ItemMineral("minerals"));
+        registry.register(new ItemMineral("mineralanglesite"));
+        registry.register(new ItemMineral("mineralbenitoite"));
 
         // Reactor components
         registry.register(new ItemTieredComponent("reactorcasingcores") {
@@ -253,4 +268,47 @@ public class ObjectsHandler extends GameObjectsHandler {
         if (!OreDictionaryHelper.doesOreNameExist("blockIce"))
             OreDictionary.registerOre("blockIce", new ItemStack(Blocks.ICE, 1));
     }
+
+    @Override
+    public void onInit(FMLInitializationEvent event) {
+
+        super.onInit(event);
+
+        final ModFixs fixs = FMLCommonHandler.instance().getDataFixer().init(BigReactors.MODID, DATA_VERSION);
+
+        fixs.registerFix(FixTypes.CHUNK, this._blockReplacer);
+        fixs.registerFix(FixTypes.ITEM_INSTANCE, this._itemReplacer);
+        this.registerMissingBlocksReplacements();
+        this.registerMissingItemsReplacements();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void registerMissingBlocksReplacements() {
+
+        ResourceLocation missingId = BigReactors.createResourceLocation("brore");
+
+        this._blockReplacer.addReplacement(missingId, 0, BrBlocks.oreYellorite);
+        this._blockReplacer.addReplacement(missingId, 1, BrBlocks.oreAnglesite);
+        this._blockReplacer.addReplacement(missingId, 2, BrBlocks.oreBenitoite);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void registerMissingItemsReplacements() {
+
+        ResourceLocation missingId;
+
+        missingId = BigReactors.createResourceLocation("brore");
+        this._itemReplacer.addReplacement(missingId, (short)0, Item.getItemFromBlock(BrBlocks.oreYellorite));
+        this._itemReplacer.addReplacement(missingId, (short)1, Item.getItemFromBlock(BrBlocks.oreAnglesite));
+        this._itemReplacer.addReplacement(missingId, (short)2, Item.getItemFromBlock(BrBlocks.oreBenitoite));
+
+        missingId = BigReactors.createResourceLocation("minerals");
+        this._itemReplacer.addReplacement(missingId, (short)0, BrItems.mineralAnglesite);
+        this._itemReplacer.addReplacement(missingId, (short)1, BrItems.mineralBenitoite);
+    }
+
+    private static final int DATA_VERSION = 1;
+
+    private final BlockReplacer _blockReplacer;
+    private final ItemReplacer _itemReplacer;
 }

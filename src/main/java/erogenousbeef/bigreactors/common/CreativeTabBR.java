@@ -37,7 +37,8 @@ public class CreativeTabBR extends CreativeTabs {
 		this.addToDisplayList(list, BrBlocks.oreYellorite);
         this.addToDisplayList(list, BrBlocks.oreAnglesite);
         this.addToDisplayList(list, BrBlocks.oreBenitoite);
-		this.addToDisplayList(list, BrItems.minerals);
+		this.addToDisplayList(list, BrItems.mineralAnglesite);
+		this.addToDisplayList(list, BrItems.mineralBenitoite);
 		this.addToDisplayList(list, BrItems.ingotMetals);
 		this.addToDisplayList(list, BrItems.dustMetals);
 		this.addToDisplayList(list, BrBlocks.blockMetals);

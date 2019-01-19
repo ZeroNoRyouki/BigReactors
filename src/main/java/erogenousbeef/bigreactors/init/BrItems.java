@@ -18,8 +18,15 @@ public final class BrItems {
     @GameRegistry.ObjectHolder("dustmetals")
     public static final ItemBRMetal dustMetals = null;
 
+    /*
     @GameRegistry.ObjectHolder("minerals")
     public static final ItemMineral minerals = null;
+    */
+    @GameRegistry.ObjectHolder("mineralanglesite")
+    public static final ItemMineral mineralAnglesite = null;
+
+    @GameRegistry.ObjectHolder("mineralbenitoite")
+    public static final ItemMineral mineralBenitoite = null;
 
     // Reactor components
 

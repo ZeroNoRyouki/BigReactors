@@ -2,25 +2,18 @@ package erogenousbeef.bigreactors.common.block;
 
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MineralType;
-import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.block.ModBlock;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -33,8 +26,6 @@ import zero.temp.RecipeHelper2;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class BlockBROre extends ModBlock {
@@ -44,26 +35,15 @@ public class BlockBROre extends ModBlock {
 		super(blockName, Material.ROCK);
         this.setCreativeTab(BigReactors.TAB);
         this.setHardness(2.0f);
-		//this._subBlocks = null;
 	}
-    /*
-    @Override
-    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
-        registry.register(new ItemBlockOre(this).setRegistryName(this.getRegistryName()));
-    }*/
-    /*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onRegisterModels() {
 
-		ResourceLocation location = this.getRegistryName();
-		Item item = Item.getItemFromBlock(this);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRegisterModels() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
+	}
 
-		for (OreType ore : OreType.values())
-			ModelLoader.setCustomModelResourceLocation(item, ore.toMeta(),
-					new ModelResourceLocation(location, String.format("ore=%s", ore.getName())));
-	}*/
-
+	@SuppressWarnings("ConstantConditions")
     @Override
     public void onRegisterOreDictionaryEntries() {
 
@@ -110,70 +90,21 @@ public class BlockBROre extends ModBlock {
 		RecipeHelper2.addSmelting(ore, product, 0.5f);
 	}
 
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 *//*
-	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-
-		if (null == this._subBlocks) {
-
-			OreType[] types = OreType.VALUES;
-			int length = types.length;
-
-			this._subBlocks = new ArrayList<>(length);
-
-			for (int i = 0; i < length; ++i)
-				this._subBlocks.add(new ItemStack(this, 1, types[i].toMeta()));
-		}
-
-		list.addAll(this._subBlocks);
-	}*/
-    /*
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(Properties.ORE, OreType.fromMeta(meta));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(Properties.ORE).toMeta();
-	}*/
-
-
+	@SuppressWarnings("ConstantConditions")
 	@Nullable
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        // TODO FIX drops
-        /*
-		OreType type = state.getValue(Properties.ORE);
-		MineralType mineral = type.getMineralDropped();
 
-		return null == mineral ? super.getItemDropped(state, rand, fortune) : BrItems.minerals;
-		*/
 		final Block ore = state.getBlock();
 
-		switch (ore) {
+		if (BrBlocks.oreAnglesite == ore) {
+			return BrItems.mineralAnglesite;
+		} else if (BrBlocks.oreBenitoite == ore) {
+			return BrItems.mineralBenitoite;
+		}
 
-            case BrBlocks.oreAnglesite:
-                return BrItems.minerals; // FIX to return anglesite crystal
-
-            case BrBlocks.oreBenitoite:
-                return BrItems.minerals; // FIX to return benitoite crystal
-
-        }
-
-        return BrBlocks.oreYellorite;
+		return super.getItemDropped(state, rand, fortune);
 	}
-    /*
-	@Override
-	public int damageDropped(IBlockState state) {
-
-		OreType type = state.getValue(Properties.ORE);
-		MineralType mineral = type.getMineralDropped();
-
-		return null == mineral ? super.damageDropped(state) : mineral.toMeta();
-	}*/
 
 	/**
 	 * Called when a user uses the creative pick block button on this block
@@ -183,42 +114,6 @@ public class BlockBROre extends ModBlock {
 	 */
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		//return this.createItemStack(state.getValue(Properties.ORE), 1);
-        return this.createItemStack();
+		return this.createItemStack();
 	}
-    /*
-	public ItemStack createItemStack(OreType type, int amount) {
-		return new ItemStack(this, amount, type.toMeta());
-	}*/
-    /*
-	public IBlockState getStateFromType(OreType type) {
-		return this.getDefaultState().withProperty(Properties.ORE, type);
-	}*/
-    /*
-	@Override
-	protected void buildBlockState(BlockStateContainer.Builder builder) {
-		builder.add(Properties.ORE);
-	}*/
-    /*
-	private static class ItemBlockOre extends ItemBlock {
-
-		public ItemBlockOre(Block block) {
-
-			super(block);
-			this.setHasSubtypes(true);
-			this.setMaxDamage(0);
-		}
-
-		@Override
-		public String getUnlocalizedName(ItemStack stack) {
-			return super.getUnlocalizedName() + "." + OreType.fromMeta(stack.getMetadata()).getName();
-		}
-
-		@Override
-		public int getMetadata(int meta) {
-			return meta;
-		}
-	}*/
-
-	//private List<ItemStack> _subBlocks;
 }

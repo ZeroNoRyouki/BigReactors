@@ -46,8 +46,8 @@ item.bigreactors:turbinehousingcores.legacy.name=Turbine Housing Core (Legacy)
 item.bigreactors:turbinehousingcores.basic.name=Turbine Housing Core (Basic)
 
 # Items - minerals
-item.bigreactors:minerals.anglesite.name=Anglesite (PbSO4)
-item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
+item.bigreactors:mineralanglesite.name=Anglesite (PbSO4)
+item.bigreactors:mineralbenitoite.name=Benitoite (BaTiSi3O9)
 
 # Items - miscellanea
 item.bigreactors:wrench.name=Extreme Wrench
@@ -63,9 +63,9 @@ tile.bigreactors:blockmetals.ludicrite.name=Ludicrite Block
 tile.bigreactors:blockmetals.steel.name=Steel Block
 
 # Blocks - ores
-tile.bigreactors:brore.yellorite.name=Yellorite Ore
-tile.bigreactors:brore.anglesite.name=Anglesite Ore
-tile.bigreactors:brore.benitoite.name=Benitoite Ore
+tile.bigreactors:oreyellorite.name=Yellorite Ore
+tile.bigreactors:oreanglesite.name=Anglesite Ore
+tile.bigreactors:orebenitoite.name=Benitoite Ore
 
 # Blocks - reactor parts (legacy)
 tile.bigreactors:reactorglass.legacy.name=Reactor Glass (Legacy)

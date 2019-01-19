@@ -1,19 +1,11 @@
 package erogenousbeef.bigreactors.common.item;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MineralType;
 import it.zerono.mods.zerocore.lib.item.ModItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ItemMineral extends ModItem {
 
@@ -21,51 +13,12 @@ public class ItemMineral extends ModItem {
 
         super(itemName);
         this.setCreativeTab(BigReactors.TAB);
-        this.setHasSubtypes(true);
         this.setMaxDamage(0);
-        this._subItems = null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void onRegisterModels() {
-
-        ResourceLocation location = this.getRegistryName();
-
-        for (MineralType mineral : MineralType.values())
-            ModelLoader.setCustomModelResourceLocation(this, mineral.toMeta(),
-                    new ModelResourceLocation(location, String.format("mineral=%s", mineral.getName())));
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + MineralType.fromMeta(stack.getMetadata()).getName();
-    }
-
-    @Override
-    public void getSubItems(CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
-
-        if (creativeTabs != this.getCreativeTab())
-            return;
-
-        if (null == this._subItems) {
-
-            MineralType[] types = MineralType.VALUES;
-            int length = types.length;
-
-            this._subItems = new ArrayList<>(length);
-
-            for (int i = 0; i < length; ++i)
-                this._subItems.add(new ItemStack(this, 1, types[i].toMeta()));
-        }
-
-        list.addAll(this._subItems);
-    }
-
-    public ItemStack createItemStack(MineralType mineral, int amount) {
-
-        return new ItemStack(this, amount, mineral.toMeta());
-    }
-
-    private List<ItemStack> _subItems;
 }
