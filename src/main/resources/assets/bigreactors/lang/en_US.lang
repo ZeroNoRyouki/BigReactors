@@ -24,20 +24,20 @@ tile.fluid.cyanite.still.name=Fluid Cyanite
 tile.fluid.blutonium.still.name=Fluid Blutonium
 
 # Items - ingots
-item.bigreactors:ingotmetals.yellorium.name=Yellorium Ingot
-item.bigreactors:ingotmetals.cyanite.name=Cyanite Ingot
-item.bigreactors:ingotmetals.blutonium.name=Blutonium Ingot
-item.bigreactors:ingotmetals.graphite.name=Graphite Bar
-item.bigreactors:ingotmetals.ludicrite.name=Ludicrite Ingot
-item.bigreactors:ingotmetals.steel.name=Steel Ingot
+item.bigreactors:ingotyellorium.name=Yellorium Ingot
+item.bigreactors:ingotcyanite.name=Cyanite Ingot
+item.bigreactors:ingotblutonium.name=Blutonium Ingot
+item.bigreactors:ingotgraphite.name=Graphite Bar
+item.bigreactors:ingotludicrite.name=Ludicrite Ingot
+item.bigreactors:ingotsteel.name=Steel Ingot
 
 # Items - dusts
-item.bigreactors:dustmetals.yellorium.name=Yellorium Dust
-item.bigreactors:dustmetals.cyanite.name=Cyanite Dust
-item.bigreactors:dustmetals.blutonium.name=Blutonium Dust
-item.bigreactors:dustmetals.graphite.name=Graphite Dust
-item.bigreactors:dustmetals.ludicrite.name=Ludicrite Dust
-item.bigreactors:dustmetals.steel.name=Steel Dust
+item.bigreactors:dustyellorium.name=Yellorium Dust
+item.bigreactors:dustcyanite.name=Cyanite Dust
+item.bigreactors:dustblutonium.name=Blutonium Dust
+item.bigreactors:dustgraphite.name=Graphite Dust
+item.bigreactors:dustludicrite.name=Ludicrite Dust
+item.bigreactors:duststeel.name=Steel Dust
 
 # Items - reactor casing cores
 item.bigreactors:reactorcasingcores.legacy.name=Reactor Casing Core (Legacy)
@@ -55,12 +55,12 @@ item.bigreactors:wrench.machine.coords=The machine start at %1$d, %2$d, %3$d and
 item.bigreactors:wrench.machine.update=Machine client/server sync requested
 
 # Blocks - metal blocks / ores
-tile.bigreactors:blockmetals.yellorium.name=Yellorium Block
-tile.bigreactors:blockmetals.cyanite.name=Cyanite Block
-tile.bigreactors:blockmetals.blutonium.name=Blutonium Block
-tile.bigreactors:blockmetals.graphite.name=Graphite Block
-tile.bigreactors:blockmetals.ludicrite.name=Ludicrite Block
-tile.bigreactors:blockmetals.steel.name=Steel Block
+tile.bigreactors:blockyellorium.name=Yellorium Block
+tile.bigreactors:blockcyanite.name=Cyanite Block
+tile.bigreactors:blockblutonium.name=Blutonium Block
+tile.bigreactors:blockgraphite.name=Graphite Block
+tile.bigreactors:blockludicrite.name=Ludicrite Block
+tile.bigreactors:blocksteel.name=Steel Block
 
 # Blocks - ores
 tile.bigreactors:oreyellorite.name=Yellorite Ore

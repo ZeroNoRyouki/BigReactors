@@ -1,81 +1,30 @@
 package erogenousbeef.bigreactors.common.block;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MetalType;
-import erogenousbeef.bigreactors.common.Properties;
-import erogenousbeef.bigreactors.init.BrBlocks;
-import erogenousbeef.bigreactors.init.BrItems;
-import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.lib.block.ModBlock;
-import it.zerono.mods.zerocore.util.ItemHelper;
-import it.zerono.mods.zerocore.util.OreDictionaryHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
-import zero.temp.RecipeHelper2;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlockBRMetal extends ModBlock {
 
-	public BlockBRMetal(String blockName) {
+	public BlockBRMetal(@Nonnull final String blockName, @Nonnull final String oreDictionaryName) {
 
-		super(blockName, Material.IRON);
+		super(blockName, Material.IRON, oreDictionaryName);
         this.setCreativeTab(BigReactors.TAB);
         this.setHardness(2.0f);
-		this._subBlocks = null;
-	}
-
-    @Override
-    public void onRegisterItemBlocks(@Nonnull IForgeRegistry<Item> registry) {
-        registry.register(new ItemBlockMetal(this).setRegistryName(this.getRegistryName()));
-    }
-
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void onRegisterModels() {
-
-		ResourceLocation location = this.getRegistryName();
-		Item item = Item.getItemFromBlock(this);
-
-		for (MetalType metal : MetalType.values())
-			ModelLoader.setCustomModelResourceLocation(item, metal.toMeta(),
-					new ModelResourceLocation(location, String.format("metal=%s", metal.getName())));
-	}
-
-	@Override
-    public void onRegisterOreDictionaryEntries() {
-
-		MetalType[] metals = MetalType.values();
-		int length = metals.length;
-
-		for (int i = 0; i < length; ++i)
-			OreDictionary.registerOre(metals[i].getOreDictionaryName(MetalSize.Block), this.createItemStack(metals[i], 1));
 	}
 
 	@Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
 
-		// Metal blocks & ingots
+		//TODO add recipes
+		BigReactors.getLogger().warn("ADD RECIPES for Metals");
 
+		// Metal blocks & ingots
+		/*
 		ItemStack block, ingot;
 		final ResourceLocation group = BigReactors.createResourceLocation("metals");
 
@@ -106,75 +55,6 @@ public class BlockBRMetal extends ModBlock {
 			RecipeHelper2.addShaped(registry, ludicriteBlock, "BRB", "E E", "BRB",
 					'B', BigReactors.CONFIG.recipeBlutoniumIngotName, 'R', Items.BLAZE_ROD, 'E', "blockEnderium");
 		}
+		*/
 	}
-
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
-	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-
-		if (null == this._subBlocks) {
-
-			MetalType[] types = MetalType.VALUES;
-			int length = types.length;
-
-			this._subBlocks = new ArrayList<>(length);
-
-			for (int i = 0; i < length; ++i)
-				this._subBlocks.add(new ItemStack(this, 1, types[i].toMeta()));
-		}
-
-		list.addAll(this._subBlocks);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(Properties.METAL, MetalType.fromMeta(meta));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(Properties.METAL).toMeta();
-	}
-
-	@Override
-	public int damageDropped(IBlockState state) {
-		return this.getMetaFromState(state);
-	}
-
-	public ItemStack createItemStack(MetalType type, int amount) {
-		return new ItemStack(this, amount, type.toMeta());
-	}
-
-	public static boolean isMetal(IBlockState state, MetalType metal) {
-		return BrBlocks.blockMetals == state.getBlock() && state.getValue(Properties.METAL) == metal;
-	}
-
-	@Override
-	protected void buildBlockState(BlockStateContainer.Builder builder) {
-		builder.add(Properties.METAL);
-	}
-
-	private static class ItemBlockMetal extends ItemBlock {
-
-		public ItemBlockMetal(Block block) {
-
-			super(block);
-			this.setHasSubtypes(true);
-			this.setMaxDamage(0);
-		}
-
-		@Override
-		public String getUnlocalizedName(ItemStack stack) {
-			return super.getUnlocalizedName() + "." + MetalType.fromMeta(stack.getMetadata()).getName();
-		}
-
-		@Override
-		public int getMetadata(int meta) {
-			return meta;
-		}
-	}
-
-	private List<ItemStack> _subBlocks;
 }

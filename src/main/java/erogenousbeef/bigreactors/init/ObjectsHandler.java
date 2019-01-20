@@ -1,11 +1,9 @@
 package erogenousbeef.bigreactors.init;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.block.BlockBRMetal;
 import erogenousbeef.bigreactors.common.block.BlockBROre;
-import erogenousbeef.bigreactors.common.config.Config;
 import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemMineral;
 import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
@@ -64,13 +62,18 @@ public class ObjectsHandler extends GameObjectsHandler {
         BrFluids.initialize();
 
         // Ores
-        //registry.register(new BlockBROre("brore"));
-        registry.register(new BlockBROre("oreyellorite"));
-        registry.register(new BlockBROre("oreanglesite"));
-        registry.register(new BlockBROre("orebenitoite"));
+        registry.register(new BlockBROre("oreyellorite", "oreYellorite"));
+        registry.register(new BlockBROre("oreanglesite", "oreAnglesite"));
+        registry.register(new BlockBROre("orebenitoite", "oreBenitoite" ));
 
         // Metal blocks
-        registry.register(new BlockBRMetal("blockmetals"));
+        //registry.register(new BlockBRMetal("blockmetals"));
+        registry.register(new BlockBRMetal("blockyellorium", "blockYellorium"));
+        registry.register(new BlockBRMetal("blockcyanite", "blockCyanite"));
+        registry.register(new BlockBRMetal("blockgraphite", "blockGraphite"));
+        registry.register(new BlockBRMetal("blockblutonium", "blockBlutonium"));
+        registry.register(new BlockBRMetal("blockludicrite", "blockLudicrite"));
+        registry.register(new BlockBRMetal("blocksteel", "blockSteel"));
 
         // Reactor parts
         registry.register(new BlockMultiblockCasing(PartType.ReactorCasing, "reactorcasing"));
@@ -146,6 +149,14 @@ public class ObjectsHandler extends GameObjectsHandler {
     protected void onRegisterItems(@Nonnull IForgeRegistry<Item> registry) {
 
         // Ingots
+        registry.register(new ItemBRMetal("ingotyellorium", "ingotYellorium"));
+        registry.register(new ItemBRMetal("ingotcyanite", "ingotCyanite"));
+        registry.register(new ItemBRMetal("ingotgraphite", "ingotGraphite"));
+        registry.register(new ItemBRMetal("ingotblutonium", "ingotBlutonium"));
+        registry.register(new ItemBRMetal("ingotludicrite", "ingotLudicrite"));
+        registry.register(new ItemBRMetal("ingotsteel", "ingotSteel"));
+
+        /*TODO fix recipes!!!
         registry.register(new ItemBRMetal("ingotmetals", MetalSize.Ingot) {
 
             @Override
@@ -187,13 +198,15 @@ public class ObjectsHandler extends GameObjectsHandler {
                 }
 
                 // TEMPORARY recipe for the blutonium ingot
-                RecipeHelper2.addShaped(registry, BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1),
+                RecipeHelper2.addShaped(registry, BrItems.ingotBlutonium.createItemStack(),
                         "CCC", "C C", "CCC",
                         'C', ingotCyanite);
             }
         });
+        */
 
         // Dusts
+        /*TODO fix recipes!!!
         registry.register(new ItemBRMetal("dustmetals", MetalSize.Dust) {
 
             @Override
@@ -207,6 +220,13 @@ public class ObjectsHandler extends GameObjectsHandler {
                 }
             }
         });
+        */
+        registry.register(new ItemBRMetal("dustyellorium", "dustYellorium"));
+        registry.register(new ItemBRMetal("dustcyanite", "dustCyanite"));
+        registry.register(new ItemBRMetal("dustgraphite", "dustGraphite"));
+        registry.register(new ItemBRMetal("dustblutonium", "dustBlutonium"));
+        registry.register(new ItemBRMetal("dustludicrite", "dustLudicrite"));
+        registry.register(new ItemBRMetal("duststeel", "dustSteel"));
 
         // Minerals
         //registry.register(new ItemMineral("minerals"));
@@ -258,7 +278,21 @@ public class ObjectsHandler extends GameObjectsHandler {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     protected void onRegisterOreDictionaryEntries() {
+
+        // oreYellorium : for convenience of mods which fiddle with recipes
+        OreDictionary.registerOre("oreYellorium", BrBlocks.oreYellorite.createItemStack());
+
+        // Uranium and Plutonium aliases
+        if (BigReactors.CONFIG.registerYelloriumAsUranium) {
+
+            OreDictionary.registerOre("ingotUranium", BrItems.ingotYellorium.createItemStack());
+            OreDictionary.registerOre("dustUranium", BrItems.dustYellorium.createItemStack());
+
+            OreDictionary.registerOre("ingotPlutonium", BrItems.ingotBlutonium.createItemStack());
+            OreDictionary.registerOre("dustPlutonium", BrItems.dustBlutonium.createItemStack());
+        }
 
         // Patch up vanilla being stupid - most mods already do this, so it's usually a no-op
 
@@ -285,11 +319,20 @@ public class ObjectsHandler extends GameObjectsHandler {
     @SuppressWarnings("ConstantConditions")
     private void registerMissingBlocksReplacements() {
 
-        ResourceLocation missingId = BigReactors.createResourceLocation("brore");
+        ResourceLocation missingId;
 
+        missingId = BigReactors.createResourceLocation("brore");
         this._blockReplacer.addReplacement(missingId, 0, BrBlocks.oreYellorite);
         this._blockReplacer.addReplacement(missingId, 1, BrBlocks.oreAnglesite);
         this._blockReplacer.addReplacement(missingId, 2, BrBlocks.oreBenitoite);
+
+        missingId = BigReactors.createResourceLocation("blockmetals");
+        this._blockReplacer.addReplacement(missingId, 0, BrBlocks.blockYellorium);
+        this._blockReplacer.addReplacement(missingId, 1, BrBlocks.blockCyanite);
+        this._blockReplacer.addReplacement(missingId, 2, BrBlocks.blockGraphite);
+        this._blockReplacer.addReplacement(missingId, 3, BrBlocks.blockBlutonium);
+        this._blockReplacer.addReplacement(missingId, 4, BrBlocks.blockLudicrite);
+        this._blockReplacer.addReplacement(missingId, 5, BrBlocks.blockSteel);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -298,13 +341,37 @@ public class ObjectsHandler extends GameObjectsHandler {
         ResourceLocation missingId;
 
         missingId = BigReactors.createResourceLocation("brore");
-        this._itemReplacer.addReplacement(missingId, (short)0, Item.getItemFromBlock(BrBlocks.oreYellorite));
-        this._itemReplacer.addReplacement(missingId, (short)1, Item.getItemFromBlock(BrBlocks.oreAnglesite));
-        this._itemReplacer.addReplacement(missingId, (short)2, Item.getItemFromBlock(BrBlocks.oreBenitoite));
+        this._itemReplacer.addReplacement(missingId, 0, Item.getItemFromBlock(BrBlocks.oreYellorite));
+        this._itemReplacer.addReplacement(missingId, 1, Item.getItemFromBlock(BrBlocks.oreAnglesite));
+        this._itemReplacer.addReplacement(missingId, 2, Item.getItemFromBlock(BrBlocks.oreBenitoite));
 
         missingId = BigReactors.createResourceLocation("minerals");
-        this._itemReplacer.addReplacement(missingId, (short)0, BrItems.mineralAnglesite);
-        this._itemReplacer.addReplacement(missingId, (short)1, BrItems.mineralBenitoite);
+        this._itemReplacer.addReplacement(missingId, 0, BrItems.mineralAnglesite);
+        this._itemReplacer.addReplacement(missingId, 1, BrItems.mineralBenitoite);
+
+        missingId = BigReactors.createResourceLocation("blockmetals");
+        this._itemReplacer.addReplacement(missingId, 0, Item.getItemFromBlock(BrBlocks.blockYellorium));
+        this._itemReplacer.addReplacement(missingId, 1, Item.getItemFromBlock(BrBlocks.blockCyanite));
+        this._itemReplacer.addReplacement(missingId, 2, Item.getItemFromBlock(BrBlocks.blockGraphite));
+        this._itemReplacer.addReplacement(missingId, 3, Item.getItemFromBlock(BrBlocks.blockBlutonium));
+        this._itemReplacer.addReplacement(missingId, 4, Item.getItemFromBlock(BrBlocks.blockLudicrite));
+        this._itemReplacer.addReplacement(missingId, 5, Item.getItemFromBlock(BrBlocks.blockSteel));
+
+        missingId = BigReactors.createResourceLocation("ingotmetals");
+        this._itemReplacer.addReplacement(missingId, 0, BrItems.ingotYellorium);
+        this._itemReplacer.addReplacement(missingId, 1, BrItems.ingotCyanite);
+        this._itemReplacer.addReplacement(missingId, 2, BrItems.ingotGraphite);
+        this._itemReplacer.addReplacement(missingId, 3, BrItems.ingotBlutonium);
+        this._itemReplacer.addReplacement(missingId, 4, BrItems.ingotLudicrite);
+        this._itemReplacer.addReplacement(missingId, 5, BrItems.ingotSteel);
+
+        missingId = BigReactors.createResourceLocation("dustmetals");
+        this._itemReplacer.addReplacement(missingId, 0, BrItems.dustYellorium);
+        this._itemReplacer.addReplacement(missingId, 1, BrItems.dustCyanite);
+        this._itemReplacer.addReplacement(missingId, 2, BrItems.dustGraphite);
+        this._itemReplacer.addReplacement(missingId, 3, BrItems.dustBlutonium);
+        this._itemReplacer.addReplacement(missingId, 4, BrItems.dustLudicrite);
+        this._itemReplacer.addReplacement(missingId, 5, BrItems.dustSteel);
     }
 
     private static final int DATA_VERSION = 1;

@@ -24,10 +24,28 @@ public final class BrBlocks {
     @GameRegistry.ObjectHolder("orebenitoite")
     public static final BlockBROre oreBenitoite = null;
 
-
     // Metal blocks
+    /*
     @GameRegistry.ObjectHolder("blockmetals")
     public static final BlockBRMetal blockMetals = null;
+    */
+    @GameRegistry.ObjectHolder("blockyellorium")
+    public static final BlockBRMetal blockYellorium = null;
+
+    @GameRegistry.ObjectHolder("blockcyanite")
+    public static final BlockBRMetal blockCyanite = null;
+
+    @GameRegistry.ObjectHolder("blockgraphite")
+    public static final BlockBRMetal blockGraphite = null;
+
+    @GameRegistry.ObjectHolder("blockblutonium")
+    public static final BlockBRMetal blockBlutonium = null;
+
+    @GameRegistry.ObjectHolder("blockludicrite")
+    public static final BlockBRMetal blockLudicrite = null;
+
+    @GameRegistry.ObjectHolder("blocksteel")
+    public static final BlockBRMetal blockSteel = null;
 
     // Reactor parts
 

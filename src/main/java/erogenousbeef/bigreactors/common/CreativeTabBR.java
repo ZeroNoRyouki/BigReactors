@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common;
 
-import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.block.Block;
@@ -39,9 +38,28 @@ public class CreativeTabBR extends CreativeTabs {
         this.addToDisplayList(list, BrBlocks.oreBenitoite);
 		this.addToDisplayList(list, BrItems.mineralAnglesite);
 		this.addToDisplayList(list, BrItems.mineralBenitoite);
-		this.addToDisplayList(list, BrItems.ingotMetals);
-		this.addToDisplayList(list, BrItems.dustMetals);
-		this.addToDisplayList(list, BrBlocks.blockMetals);
+
+		this.addToDisplayList(list, BrItems.ingotYellorium);
+		this.addToDisplayList(list, BrItems.ingotCyanite);
+		this.addToDisplayList(list, BrItems.ingotCyanite);
+		this.addToDisplayList(list, BrItems.ingotBlutonium);
+		this.addToDisplayList(list, BrItems.ingotLudicrite);
+		this.addToDisplayList(list, BrItems.ingotSteel);
+
+		this.addToDisplayList(list, BrItems.dustYellorium);
+		this.addToDisplayList(list, BrItems.dustCyanite);
+		this.addToDisplayList(list, BrItems.dustGraphite);
+		this.addToDisplayList(list, BrItems.dustBlutonium);
+		this.addToDisplayList(list, BrItems.dustLudicrite);
+		this.addToDisplayList(list, BrItems.dustSteel);
+
+		this.addToDisplayList(list, BrBlocks.blockYellorium);
+		this.addToDisplayList(list, BrBlocks.blockCyanite);
+		this.addToDisplayList(list, BrBlocks.blockGraphite);
+		this.addToDisplayList(list, BrBlocks.blockBlutonium);
+		this.addToDisplayList(list, BrBlocks.blockLudicrite);
+		this.addToDisplayList(list, BrBlocks.blockSteel);
+
 		this.addToDisplayList(list, BrItems.wrench);
 
 		// Reactor parts

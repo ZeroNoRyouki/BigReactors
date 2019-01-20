@@ -1,7 +1,5 @@
 package erogenousbeef.bigreactors.common.compat;
 
-import erogenousbeef.bigreactors.common.MetalType;
-import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.item.ItemStack;
@@ -14,24 +12,25 @@ import javax.annotation.Nonnull;
 public class ModMekanism extends ModCompact {
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onInit(FMLInitializationEvent fmlInitializationEvent) {
 
         final ItemStack yelloriteOre = BrBlocks.oreYellorite.createItemStack();
 
         // yellorite ore -> 2x yellorium dust
-        this.addEnrichmentChamberRecipe(yelloriteOre, BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2));
+        this.addEnrichmentChamberRecipe(yelloriteOre, BrItems.dustYellorium.createItemStack(2));
 
         // yellorium ingot -> yellorium dust
-        this.addCrusherRecipe(BrItems.ingotMetals.createItemStack(MetalType.Yellorium, 1), BrItems.dustMetals.createItemStack(MetalType.Yellorium, 1));
+        this.addCrusherRecipe(BrItems.ingotYellorium.createItemStack(), BrItems.dustYellorium.createItemStack());
 
         // cyanite ingot -> cyanite dust
-        this.addCrusherRecipe(BrItems.ingotMetals.createItemStack(MetalType.Cyanite, 1), BrItems.dustMetals.createItemStack(MetalType.Cyanite, 1));
+        this.addCrusherRecipe(BrItems.ingotCyanite.createItemStack(), BrItems.dustCyanite.createItemStack());
 
         // graphite ingot -> graphite dust
-        this.addCrusherRecipe(BrItems.ingotMetals.createItemStack(MetalType.Graphite, 1), BrItems.dustMetals.createItemStack(MetalType.Graphite, 1));
+        this.addCrusherRecipe(BrItems.ingotGraphite.createItemStack(), BrItems.dustGraphite.createItemStack());
 
         // blutonium ingot -> blutonium dust
-        this.addCrusherRecipe(BrItems.ingotMetals.createItemStack(MetalType.Blutonium, 1), BrItems.dustMetals.createItemStack(MetalType.Blutonium, 1));
+        this.addCrusherRecipe(BrItems.ingotBlutonium.createItemStack(), BrItems.dustBlutonium.createItemStack());
     }
 
     private void addEnrichmentChamberRecipe(@Nonnull ItemStack input, @Nonnull ItemStack output) {

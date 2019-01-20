@@ -1,7 +1,5 @@
 package erogenousbeef.bigreactors.common.compat;
 
-import erogenousbeef.bigreactors.common.MetalType;
-import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
 import net.minecraft.item.ItemStack;
@@ -11,14 +9,17 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 public class ModAppliedEnergistics2 extends ModCompact {
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onInit(FMLInitializationEvent fmlInitializationEvent) {
 
-        this.addGrinderRecipe(BrBlocks.oreYellorite.createItemStack(),
-                BrItems.dustMetals.createItemStack(MetalType.Yellorium, 2), 4);
+        this.addGrinderRecipe(BrBlocks.oreYellorite.createItemStack(), BrItems.dustYellorium.createItemStack(2), 4);
 
-        for (MetalType metal: MetalType.VALUES)
-            this.addGrinderRecipe(BrItems.ingotMetals.createItemStack(metal, 1),
-                    BrItems.dustMetals.createItemStack(metal, 1), 2);
+        this.addGrinderRecipe(BrItems.ingotYellorium.createItemStack(), BrItems.dustYellorium.createItemStack(), 2);
+        this.addGrinderRecipe(BrItems.ingotCyanite.createItemStack(), BrItems.dustCyanite.createItemStack(), 2);
+        this.addGrinderRecipe(BrItems.ingotGraphite.createItemStack(), BrItems.dustGraphite.createItemStack(), 2);
+        this.addGrinderRecipe(BrItems.ingotBlutonium.createItemStack(), BrItems.dustBlutonium.createItemStack(), 2);
+        this.addGrinderRecipe(BrItems.ingotLudicrite.createItemStack(), BrItems.dustLudicrite.createItemStack(), 2);
+        this.addGrinderRecipe(BrItems.ingotSteel.createItemStack(), BrItems.dustSteel.createItemStack(), 2);
     }
 
     private void addGrinderRecipe(ItemStack input, ItemStack output, int turns) {

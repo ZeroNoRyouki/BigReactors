@@ -5,15 +5,14 @@ import erogenousbeef.bigreactors.api.registry.Reactants;
 import erogenousbeef.bigreactors.client.gui.GuiReactorAccessPort;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.ItemHandlerWrapper;
-import erogenousbeef.bigreactors.common.MetalType;
 import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
-import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -225,7 +224,7 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 		if (ItemHelper.stackIsEmpty(newItem)) {
 			BRLog.warning("Could not find item for oredict entry %s, using cyanite instead.", bestMapping.getSource());
-			newItem = BrItems.ingotMetals.createItemStack(MetalType.Cyanite, 1);
+			newItem = BrItems.ingotCyanite.createItemStack();
 		}
 		else {
 			newItem = ItemHelper.stackFrom(newItem); // Don't stomp the oredict
