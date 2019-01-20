@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.common;
-
+/*
 import net.minecraft.util.IStringSerializable;
 
 public enum MineralType implements IStringSerializable {
@@ -7,9 +7,9 @@ public enum MineralType implements IStringSerializable {
     Anglesite(0),
     Benitoite(1);
 
-    /**
+    / **
      * All the enum values indexed by the meta-data value
-     */
+     * /
     public static final MineralType[] VALUES;
 
     MineralType(int meta) {
@@ -52,3 +52,4 @@ public enum MineralType implements IStringSerializable {
             VALUES[mineral.toMeta()] = mineral;
     }
 }
+*/

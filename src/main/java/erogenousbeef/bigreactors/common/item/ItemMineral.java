@@ -15,10 +15,4 @@ public class ItemMineral extends ModItem {
         this.setCreativeTab(BigReactors.TAB);
         this.setMaxDamage(0);
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onRegisterModels() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
-    }
 }

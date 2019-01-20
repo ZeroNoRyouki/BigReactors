@@ -4,8 +4,6 @@ import erogenousbeef.bigreactors.api.data.CoilPartData;
 import erogenousbeef.bigreactors.api.registry.TurbineCoil;
 import erogenousbeef.bigreactors.common.BRLog;
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.MetalType;
-import erogenousbeef.bigreactors.common.block.BlockBRMetal;
 import erogenousbeef.bigreactors.common.multiblock.block.ITurbineRotorPart;
 import erogenousbeef.bigreactors.common.multiblock.helpers.FloatUpdateTracker;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.IActivateable;
@@ -26,9 +24,9 @@ import it.zerono.mods.zerocore.lib.IDebugMessages;
 import it.zerono.mods.zerocore.lib.IDebuggable;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
 import it.zerono.mods.zerocore.lib.config.IConfigListener;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
-import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -1342,7 +1340,7 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 			oreName = "blockGold";
 
 		// is it Ludicrite?
-		else if (BlockBRMetal.isMetal(coilState, MetalType.Ludicrite))
+		else if (BrBlocks.blockLudicrite == block)
 			oreName = "blockLudicrite";
 
 		// fall back to the Ore Dictionary

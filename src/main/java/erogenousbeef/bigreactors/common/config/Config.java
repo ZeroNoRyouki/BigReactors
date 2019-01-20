@@ -1,7 +1,6 @@
 package erogenousbeef.bigreactors.common.config;
 
 import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
 import net.minecraft.block.state.IBlockState;

@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common.compat;
 
-import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

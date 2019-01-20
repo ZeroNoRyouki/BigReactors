@@ -1,6 +1,5 @@
 package erogenousbeef.bigreactors.common;
 
-import erogenousbeef.bigreactors.common.block.OreType;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
 import erogenousbeef.bigreactors.common.multiblock.RotorShaftState;
@@ -18,8 +17,6 @@ public final class Properties {
     public static final PropertyEnum<PowerTapState> POWERTAPSTATE = PropertyEnum.create("powerstate", PowerTapState.class);
     public static final PropertyEnum<FuelRodState> FUELRODSTATE = PropertyEnum.create("fuelrodstate", FuelRodState.class);
     public static final PropertyBool LIT = PropertyBool.create("lit");
-    public static final PropertyEnum<MetalType> METAL = PropertyEnum.create("metal", MetalType.class);
-    //public static final PropertyEnum<OreType> ORE = PropertyEnum.create("ore", OreType.class);
     public static final PropertyEnum<RotorShaftState> ROTORSHAFTSTATE = PropertyEnum.create("state", RotorShaftState.class);
     public static final PropertyEnum<RotorBladeState> ROTORBLADESTATE = PropertyEnum.create("state", RotorBladeState.class);
 

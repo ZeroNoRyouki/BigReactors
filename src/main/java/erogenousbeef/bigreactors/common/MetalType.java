@@ -1,8 +1,6 @@
 package erogenousbeef.bigreactors.common;
 
-import it.zerono.mods.zerocore.lib.MetalSize;
-import net.minecraft.util.IStringSerializable;
-
+/*
 public enum MetalType implements IStringSerializable {
 
     Yellorium(0),
@@ -14,7 +12,7 @@ public enum MetalType implements IStringSerializable {
 
     /**
      * All the enum values indexed by the meta-data value
-     */
+     * /
     public static final MetalType[] VALUES;
 
     MetalType(int meta) {
@@ -62,3 +60,4 @@ public enum MetalType implements IStringSerializable {
             VALUES[metal.toMeta()] = metal;
     }
 }
+*/

@@ -126,10 +126,10 @@ public class BigReactors implements IModInitializationHandler {
 
 		Reactants.registerSolid("ingotBlutonium", StandardReactants.blutonium);
 
-		Reactants.registerSolid(BrBlocks.blockMetals.createItemStack(MetalType.Yellorium, 1),
+		Reactants.registerSolid(BrBlocks.blockYellorium.createItemStack(),
 				StandardReactants.yellorium, Reactants.standardSolidReactantAmount * 9);
 
-		Reactants.registerSolid(BrBlocks.blockMetals.createItemStack(MetalType.Blutonium, 1),
+		Reactants.registerSolid(BrBlocks.blockBlutonium.createItemStack(),
 				StandardReactants.blutonium, Reactants.standardSolidReactantAmount * 9);
 
 		// Register fluid => reactant mappings
