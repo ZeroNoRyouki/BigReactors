@@ -20,6 +20,7 @@ import erogenousbeef.bigreactors.init.flattening.ItemReplacer;
 import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
 import it.zerono.mods.zerocore.lib.init.GameObjectsHandler;
+import it.zerono.mods.zerocore.lib.item.ModItem;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -287,11 +288,11 @@ public class ObjectsHandler extends GameObjectsHandler {
         // Uranium and Plutonium aliases
         if (BigReactors.CONFIG.registerYelloriumAsUranium) {
 
-            OreDictionary.registerOre("ingotUranium", BrItems.ingotYellorium.createItemStack());
-            OreDictionary.registerOre("dustUranium", BrItems.dustYellorium.createItemStack());
+            OreDictionary.registerOre("ingotUranium", ((ItemBRMetal)this.getTrackedItem("ingotyellorium")).createItemStack());
+            OreDictionary.registerOre("dustUranium", ((ItemBRMetal)this.getTrackedItem("dustyellorium")).createItemStack());
 
-            OreDictionary.registerOre("ingotPlutonium", BrItems.ingotBlutonium.createItemStack());
-            OreDictionary.registerOre("dustPlutonium", BrItems.dustBlutonium.createItemStack());
+            OreDictionary.registerOre("ingotPlutonium", ((ItemBRMetal)this.getTrackedItem("ingotblutonium")).createItemStack());
+            OreDictionary.registerOre("dustPlutonium", ((ItemBRMetal)this.getTrackedItem("dustblutonium")).createItemStack());
         }
 
         // Patch up vanilla being stupid - most mods already do this, so it's usually a no-op
