@@ -3,11 +3,9 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockReactor;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorFuelRod;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,7 +24,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class BlockReactorFuelRod extends BlockTieredPart {
+public class BlockReactorFuelRod extends /*BlockTieredPart*/BlockPart {
 
 	public BlockReactorFuelRod(String blockName) {
 
@@ -37,7 +35,8 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 
 	@Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+		//TODO fix recipes!
+		/*
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",
 				'I', "ingotIron", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
@@ -45,6 +44,7 @@ public class BlockReactorFuelRod extends BlockTieredPart {
 		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "ICI", "IUI", "ICI",
 				'I', "ingotSteel", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
+				*/
 	}
 
 	@Override

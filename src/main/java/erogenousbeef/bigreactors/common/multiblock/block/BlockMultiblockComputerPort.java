@@ -2,18 +2,13 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
-import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.common.compat.IdReference;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorComputerPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineComputerPort;
-import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.compat.computer.Connector;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -51,7 +46,8 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
 
     @Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+        //TODO fix recipe!
+        /*
         if (!CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) &&
                 !CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS))
             return;
@@ -80,6 +76,7 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
                     'G', "ingotGold", 'P', Items.REPEATER);
         }
+        */
     }
 
     @Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)

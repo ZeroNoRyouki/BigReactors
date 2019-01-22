@@ -6,12 +6,6 @@
         "y": 90
     },
     "variants":{  
-		"tier":{  
-            "legacy":{
-            },
-            "basic":{ 
-            }
-        },
         "state":{
           "hidden": {
             "model": "bigreactors:transparentblock"
@@ -63,7 +57,7 @@
           }
         },
         "inventory":{  
-            "transform":"forge:default-item"
+            "transform":"forge:default-block"
         }
     }
 }

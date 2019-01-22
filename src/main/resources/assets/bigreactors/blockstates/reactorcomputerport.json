@@ -3,7 +3,7 @@
     "defaults":{  
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
-            "machine":"bigreactors:blocks/reactor/legacy/computerport.png",
+            "machine":"bigreactors:blocks/reactor/legacy/computerport",
             "particle":"#machine",
             "down":"#machine",
             "up":"#machine",
@@ -15,20 +15,6 @@
         "model":"cube"
     },
     "variants":{  
-        "tier":{  
-            "legacy":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machine":"bigreactors:blocks/reactor/legacy/computerport"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/basic/plate",
-					"machine":"bigreactors:blocks/reactor/basic/computerport"
-                }
-            }
-        },
         "afstate":{  
             "disassembled":{  
             },

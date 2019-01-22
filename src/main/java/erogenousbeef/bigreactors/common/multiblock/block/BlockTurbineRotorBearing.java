@@ -1,16 +1,11 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.client.particle.SteamParticle;
 import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBearing;
-import erogenousbeef.bigreactors.init.BrBlocks;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -20,7 +15,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -42,7 +36,8 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
 
     @Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+        //TODO fix recipe!
+        /*
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND,
@@ -52,6 +47,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
             RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
                     'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND,
                     'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Basic, 1));
+                    */
     }
 
     @Override

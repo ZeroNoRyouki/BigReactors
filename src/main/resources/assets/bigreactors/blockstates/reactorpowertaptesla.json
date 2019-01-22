@@ -4,6 +4,7 @@
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
             "machineA":"bigreactors:blocks/reactor/legacy/powertaptesla.disconnected",
+			"machineB":"bigreactors:blocks/reactor/legacy/powertaptesla.connected",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -16,23 +17,6 @@
         "model":"cube"
     },
     "variants":{  
-        "tier":{  
-            "legacy":{  
-				"transform":"forge:default-block",
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machineA":"bigreactors:blocks/reactor/legacy/powertaptesla.disconnected",
-                    "machineB":"bigreactors:blocks/reactor/legacy/powertaptesla.connected"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/basic/plate",
-                    "machineA":"bigreactors:blocks/reactor/basic/powertaptesla.disconnected",
-                    "machineB":"bigreactors:blocks/reactor/basic/powertaptesla.connected"
-                }
-            }
-        },
         "afstate":{  
             "disassembled":{  
             },

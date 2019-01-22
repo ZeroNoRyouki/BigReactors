@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
-
+/*
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
@@ -89,9 +89,9 @@ public class BlockTieredPart extends BlockPart {
         return new ItemStack(this, amount, tier.toMeta());
     }
 
-    /**
+    / **
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
+     * /
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
 
@@ -127,3 +127,4 @@ public class BlockTieredPart extends BlockPart {
 
     private List<ItemStack> _subBlocks;
 }
+*/

@@ -15,20 +15,6 @@
         "model":"cube"
     },
     "variants":{  
-        "tier":{  
-            "legacy":{  
-				"textures":{  
-                    "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-                    "machine":"bigreactors:blocks/turbine/legacy/creativesteamgenerator"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/turbine/basic/housing.plate",
-                    "machine":"bigreactors:blocks/turbine/basic/creativesteamgenerator"
-                }
-            }
-        },
         "afstate":{  
             "disassembled":{  
             },

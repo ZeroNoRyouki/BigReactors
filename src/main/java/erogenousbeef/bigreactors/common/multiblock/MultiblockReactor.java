@@ -1249,7 +1249,7 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		this.recalculateDerivedValues();
 
 		// determine machine tier
-
+		/*
 		PartTier candidateTier = null;
 
 		for (IMultiblockPart part: this.connectedParts) {
@@ -1271,6 +1271,9 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 
 		this._partsTier = candidateTier;
 		this._legacyMode = PartTier.Legacy == candidateTier;
+		*/
+		this._partsTier = PartTier.Legacy;
+		this._legacyMode = true;
 
 		// determine machine power system
 

@@ -21,11 +21,11 @@ public class ItemTieredComponent extends ModItem {
 
         super(itemName);
         this.setCreativeTab(BigReactors.TAB);
-        this.setHasSubtypes(true);
+        //this.setHasSubtypes(true);
         this.setMaxDamage(0);
-        this._subItems = null;
+        //this._subItems = null;
     }
-
+    /*
     @Override
     @SideOnly(Side.CLIENT)
     public void onRegisterModels() {
@@ -73,5 +73,5 @@ public class ItemTieredComponent extends ModItem {
         return new ItemStack(this, amount, tier.toMeta());
     }
 
-    private List<ItemStack> _subItems;
+    private List<ItemStack> _subItems;*/
 }

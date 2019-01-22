@@ -1,5 +1,5 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
-
+/*
 import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -24,3 +24,4 @@ class ItemBlockPartTier extends ItemBlock {
         return meta;
     }
 }
+*/

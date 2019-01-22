@@ -239,7 +239,8 @@ public class ObjectsHandler extends GameObjectsHandler {
 
             @Override
             public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+                //TODO fix recipes!
+                /*
                 if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy)) {
                     RecipeHelper2.addShaped(registry, this.createItemStack(PartTier.Legacy, 1),
                             "IGI", "ARA", "IGI",
@@ -251,6 +252,7 @@ public class ObjectsHandler extends GameObjectsHandler {
                             "IGI", "ARA", "IGI",
                             'I', "ingotSteel", 'G', "ingotGraphite", 'A', "ingotGold", 'R', Items.REDSTONE);
                 }
+                */
             }
         });
 
@@ -259,7 +261,8 @@ public class ObjectsHandler extends GameObjectsHandler {
 
             @Override
             public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+                //TODO fix recipes!
+                /*
                 if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy)) {
                     RecipeHelper2.addShaped(registry, this.createItemStack(PartTier.Legacy, 1),
                             "IGI", "ARA", "IGI",
@@ -271,6 +274,7 @@ public class ObjectsHandler extends GameObjectsHandler {
                             "IGI", "ARA", "IGI",
                             'I', "ingotSteel", 'G', "ingotGraphite", 'A', "ingotGold", 'R', Items.COMPARATOR);
                 }
+                */
             }
         });
 

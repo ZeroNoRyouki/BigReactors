@@ -1,9 +1,11 @@
 {  
     "forge_marker":1,
     "defaults":{  
-        "textures":{  
+        "textures":{
             "plate":"bigreactors:blocks/reactor/legacy/plate",
-            "machineA":"bigreactors:blocks/reactor/legacy/controller.off.png",
+            "machineA":"bigreactors:blocks/reactor/legacy/controller.off",
+			"machineB":"bigreactors:blocks/reactor/legacy/controller.active",
+			"machineC":"bigreactors:blocks/reactor/legacy/controller.idle",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -16,24 +18,6 @@
         "model":"cube"
     },
     "variants":{  
-        "tier":{  
-            "legacy":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machineA":"bigreactors:blocks/reactor/legacy/controller.off",
-                    "machineB":"bigreactors:blocks/reactor/legacy/controller.active",
-					"machineC":"bigreactors:blocks/reactor/legacy/controller.idle"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/basic/plate",
-                    "machineA":"bigreactors:blocks/reactor/basic/controller.off",
-                    "machineB":"bigreactors:blocks/reactor/basic/controller.active",
-					"machineC":"bigreactors:blocks/reactor/basic/controller.idle"
-                }
-            }
-        },
         "afstate":{  
             "disassembled":{  
             },

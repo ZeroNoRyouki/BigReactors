@@ -2,7 +2,6 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorAccessPort;
@@ -10,18 +9,14 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorC
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineFluidPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
-import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.utils.StaticUtils;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
-import it.zerono.mods.zerocore.util.ItemHelper;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
+import it.zerono.mods.zerocore.util.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
@@ -30,8 +25,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
@@ -69,7 +62,8 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
 
     @Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+        //TODO fix recipe!
+        /*
         if (PartType.ReactorAccessPort == this._type) {
 
             if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
@@ -104,6 +98,7 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'I', "ingotSteel",
                         'V', Items.BUCKET, 'P', Blocks.PISTON);
         }
+        */
     }
 
     @Override

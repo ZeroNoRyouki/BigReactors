@@ -15,21 +15,6 @@
         "model":"cube"
     },
     "variants":{  
-        "tier":{  
-            "legacy":{  
-				"transform":"forge:default-block",
-                "textures":{  
-                    "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-                    "machine":"bigreactors:blocks/turbine/legacy/computerport"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/turbine/basic/housing.plate",
-                    "machineB":"bigreactors:blocks/turbine/basic/computerport"
-                }
-            }
-        },
         "afstate":{  
             "disassembled":{  
             },

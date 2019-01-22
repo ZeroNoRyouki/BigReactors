@@ -1,9 +1,7 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.IPowerProvider;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.interfaces.INeighborUpdatableEntity;
@@ -11,21 +9,15 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorP
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorPowerTapTesla;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTapRedstoneFlux;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePowerTapTesla;
-import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
@@ -58,7 +50,8 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
 
     @Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+        //TODO fix recipe!
+        /*
         if (PartType.ReactorPowerTap == this._type) {
 
             if (!BigReactors.CONFIG.enableReactorPowerTapRecipe)
@@ -112,6 +105,7 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
                         'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', lapis);
             }
         }
+        */
     }
 
     /**

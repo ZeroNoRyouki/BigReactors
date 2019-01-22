@@ -4,12 +4,6 @@
       "model":"bigreactors:turbine/rotor_shaft_z_4c"
     },
     "variants":{  
-		"tier":{  
-            "legacy":{
-            },
-            "basic":{ 
-            }
-        },
 		"state":{
             "hidden": {
                 "model": "bigreactors:transparentblock"

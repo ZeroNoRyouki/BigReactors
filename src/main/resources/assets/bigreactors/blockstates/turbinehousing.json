@@ -19,26 +19,6 @@
         "model":"cube"
     },
     "variants":{  
-		"tier":{  
-            "legacy":{
-                "textures":{  
-                    "plate":"bigreactors:blocks/turbine/legacy/housing.plate",
-					"face":"bigreactors:blocks/turbine/legacy/housing.face",
-					"eastwest":"bigreactors:blocks/turbine/legacy/housing.eastwest",
-					"updown":"bigreactors:blocks/turbine/legacy/housing.updown",
-					"corner":"bigreactors:blocks/turbine/legacy/housing.corner"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/turbine/basic/housing.plate",
-					"face":"bigreactors:blocks/turbine/basic/housing.face",
-					"eastwest":"bigreactors:blocks/turbine/basic/housing.eastwest",
-					"updown":"bigreactors:blocks/turbine/basic/housing.updown",
-					"corner":"bigreactors:blocks/turbine/basic/housing.corner"
-                }
-            }
-        },
         "casing":{  
             "single":{  
                 "textures":{  

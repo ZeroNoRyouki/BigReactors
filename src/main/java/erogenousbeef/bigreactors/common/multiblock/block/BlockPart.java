@@ -8,9 +8,9 @@ import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
 import it.zerono.mods.zerocore.api.multiblock.validation.ValidationError;
 import it.zerono.mods.zerocore.lib.block.ModBlock;
 import it.zerono.mods.zerocore.lib.block.ModTileEntity;
+import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
-import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -46,19 +46,6 @@ public class BlockPart extends ModBlock {
     public PartType getType() {
         return this._type;
     }
-
-    /*
-    @Override
-    public void onPostRegister() {
-
-        super.onPostRegister();
-
-        String name = this._type.oreDictionaryName;
-
-        if (name.length() > 0)
-            OreDictionary.registerOre(name, this.createItemStack());
-
-    }*/
 
     /**
      * Called throughout the code as a replacement for block instanceof BlockContainer

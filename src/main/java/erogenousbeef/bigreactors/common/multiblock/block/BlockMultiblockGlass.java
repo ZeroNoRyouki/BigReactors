@@ -1,46 +1,29 @@
 package erogenousbeef.bigreactors.common.multiblock.block;
 
-import erogenousbeef.bigreactors.common.BigReactors;
-import erogenousbeef.bigreactors.common.Properties;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityReactorGlass;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbinePartGlass;
-import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.lib.BlockFacings;
 import it.zerono.mods.zerocore.lib.PropertyBlockFacings;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
-import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 
-public class BlockMultiblockGlass extends BlockTieredPart {
+public class BlockMultiblockGlass extends /*BlockTieredPart*/BlockPart {
 
 	public BlockMultiblockGlass(PartType type, String blockName) {
 
@@ -48,7 +31,7 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 		this.setSoundType(SoundType.GLASS);
 		this._actualFacings = new boolean[EnumFacing.VALUES.length];
 	}
-
+	/*
     @Override
 	@SideOnly(Side.CLIENT)
     public void onRegisterModels() {
@@ -66,11 +49,12 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 
 			ModelLoader.setCustomModelResourceLocation(item, tier.toMeta(), new ModelResourceLocation(location, "inventory"));
 		}
-	}
+	}*/
 
 	@Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+		//TODO fix recipe!
+		/*
 		final EnumSet<PartTier> tiers;
 		final BlockMultiblockCasing casingBlock;
 		final boolean useGlassReinforced = BigReactors.CONFIG.requireObsidianGlass && OreDictionaryHelper.doesOreNameExist("glassReinforced");
@@ -105,6 +89,7 @@ public class BlockMultiblockGlass extends BlockTieredPart {
 			for (String glass : glassTypes)
                 RecipeHelper.addShapedOreDictRecipe(output, "GCG", 'G', glass, 'C', casing);
 		}
+		*/
 	}
 
 	@Override

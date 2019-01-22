@@ -2,13 +2,11 @@ package erogenousbeef.bigreactors.common.multiblock.block;
 
 import erogenousbeef.bigreactors.common.Properties;
 import erogenousbeef.bigreactors.common.multiblock.MultiblockTurbine;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.RotorBladeState;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.TileEntityTurbineRotorBlade;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockTileEntityBase;
-import it.zerono.mods.zerocore.lib.crafting.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -20,13 +18,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
 
-public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineRotorPart {
+public class BlockTurbineRotorBlade extends /*BlockTieredPart*/BlockPart implements ITurbineRotorPart {
 
     public BlockTurbineRotorBlade(String blockName) {
 
@@ -37,7 +33,8 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
 
     @Override
     public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
+        //TODO fix recipes!
+        /*
         if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CII",
                     'C', "ingotCyanite", 'I', "ingotIron");
@@ -45,6 +42,7 @@ public class BlockTurbineRotorBlade extends BlockTieredPart implements ITurbineR
         if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
             RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CII",
                     'C', "ingotCyanite", 'I', "ingotIron");
+                    */
     }
 
     @Override

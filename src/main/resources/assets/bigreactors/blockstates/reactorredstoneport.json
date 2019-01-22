@@ -4,6 +4,7 @@
         "textures":{  
             "plate":"bigreactors:blocks/reactor/legacy/plate",
             "machineA":"bigreactors:blocks/reactor/legacy/redstoneport.unlit",
+			"machineB":"bigreactors:blocks/reactor/legacy/redstoneport.lit",
             "machine":"#machineA",
             "particle":"#machine",
             "down":"#machine",
@@ -16,23 +17,6 @@
         "model":"cube"
     },
     "variants":{  
-        "tier":{  
-            "legacy":{  
-				"transform":"forge:default-block",
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/legacy/plate",
-                    "machineA":"bigreactors:blocks/reactor/legacy/redstoneport.unlit",
-                    "machineB":"bigreactors:blocks/reactor/legacy/redstoneport.lit"
-                }
-            },
-            "basic":{  
-                "textures":{  
-                    "plate":"bigreactors:blocks/reactor/basic/plate",
-                    "machineA":"bigreactors:blocks/reactor/basic/redstoneport.unlit",
-                    "machineB":"bigreactors:blocks/reactor/basic/redstoneport.lit"
-                }
-            }
-        },
         "afstate":{  
             "disassembled":{  
             },

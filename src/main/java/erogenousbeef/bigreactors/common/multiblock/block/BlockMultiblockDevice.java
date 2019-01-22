@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
 
 import javax.annotation.Nonnull;
 
-public class BlockMultiblockDevice extends BlockTieredPart {
+public class BlockMultiblockDevice extends /*BlockTieredPart*/BlockPart {
 
     public BlockMultiblockDevice(PartType type, String blockName) {
 
