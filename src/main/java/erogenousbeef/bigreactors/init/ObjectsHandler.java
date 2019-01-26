@@ -8,7 +8,6 @@ import erogenousbeef.bigreactors.common.item.ItemBRMetal;
 import erogenousbeef.bigreactors.common.item.ItemMineral;
 import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
 import erogenousbeef.bigreactors.common.item.ItemWrench;
-import erogenousbeef.bigreactors.common.multiblock.PartTier;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.common.multiblock.block.*;
@@ -17,10 +16,8 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntit
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
 import erogenousbeef.bigreactors.init.flattening.BlockReplacer;
 import erogenousbeef.bigreactors.init.flattening.ItemReplacer;
-import it.zerono.mods.zerocore.lib.MetalSize;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
 import it.zerono.mods.zerocore.lib.init.GameObjectsHandler;
-import it.zerono.mods.zerocore.lib.item.ModItem;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -150,6 +147,7 @@ public class ObjectsHandler extends GameObjectsHandler {
     protected void onRegisterItems(@Nonnull IForgeRegistry<Item> registry) {
 
         // Ingots
+        //registry.register(new ItemBRMetal("ingotmetals", MetalSize.Ingot));
         registry.register(new ItemBRMetal("ingotyellorium", "ingotYellorium"));
         registry.register(new ItemBRMetal("ingotcyanite", "ingotCyanite"));
         registry.register(new ItemBRMetal("ingotgraphite", "ingotGraphite"));
@@ -157,71 +155,8 @@ public class ObjectsHandler extends GameObjectsHandler {
         registry.register(new ItemBRMetal("ingotludicrite", "ingotLudicrite"));
         registry.register(new ItemBRMetal("ingotsteel", "ingotSteel"));
 
-        /*TODO fix recipes!!!
-        registry.register(new ItemBRMetal("ingotmetals", MetalSize.Ingot) {
-
-            @Override
-            public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
-                final Config configs = BigReactors.CONFIG;
-                final ItemStack ingotGraphite = OreDictionaryHelper.getOre("ingotGraphite");
-                final ItemStack ingotCyanite = OreDictionaryHelper.getOre("ingotCyanite");
-
-                // Graphite & Cyanite
-
-                // -- Coal -> Graphite
-                if (configs.registerCoalForSmelting)
-                    RecipeHelper2.addSmelting(new ItemStack(Items.COAL, 1, 0), ingotGraphite, 1);
-
-                // -- Charcoal -> Graphite
-                if (configs.registerCharcoalForSmelting)
-                    RecipeHelper2.addSmelting(new ItemStack(Items.COAL, 1, 1), ingotGraphite, 1);
-
-                // -- Gravel + Coal -> Graphite
-                if (configs.registerGraphiteCoalCraftingRecipes) {
-
-                    RecipeHelper2.addShaped(registry, ingotGraphite,
-                            "GCG", RecipeHelper2.EMPTY_ROW3, RecipeHelper2.EMPTY_ROW3,
-                            'G', Blocks.GRAVEL, 'C', new ItemStack(Items.COAL, 1, 0));
-                }
-
-                // -- Gravel + Charcoal -> Graphite
-                if (configs.registerGraphiteCharcoalCraftingRecipes) {
-
-                    RecipeHelper2.addShaped(registry, ingotGraphite,
-                            "GCG", RecipeHelper2.EMPTY_ROW3, RecipeHelper2.EMPTY_ROW3,
-                            'G', Blocks.GRAVEL, 'C', new ItemStack(Items.COAL, 1, 1));
-                }
-
-                // -- Yellorium ingot + Sand -> Cyanite
-                if (configs.enableCyaniteFromYelloriumRecipe) {
-                    RecipeHelper2.addShapeless(registry, ingotCyanite, configs.recipeYelloriumIngotName, Blocks.SAND);
-                }
-
-                // TEMPORARY recipe for the blutonium ingot
-                RecipeHelper2.addShaped(registry, BrItems.ingotBlutonium.createItemStack(),
-                        "CCC", "C C", "CCC",
-                        'C', ingotCyanite);
-            }
-        });
-        */
-
         // Dusts
-        /*TODO fix recipes!!!
-        registry.register(new ItemBRMetal("dustmetals", MetalSize.Dust) {
-
-            @Override
-            public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
-                for (MetalType metal : MetalType.VALUES) {
-
-                    // smelt dust into ingot
-                    RecipeHelper2.addSmelting(BrItems.dustMetals.createItemStack(metal, 1),
-                            BrItems.ingotMetals.createItemStack(metal, 1), 0.0f);
-                }
-            }
-        });
-        */
+        //registry.register(new ItemBRMetal("dustmetals", MetalSize.Dust));
         registry.register(new ItemBRMetal("dustyellorium", "dustYellorium"));
         registry.register(new ItemBRMetal("dustcyanite", "dustCyanite"));
         registry.register(new ItemBRMetal("dustgraphite", "dustGraphite"));
@@ -235,48 +170,10 @@ public class ObjectsHandler extends GameObjectsHandler {
         registry.register(new ItemMineral("mineralbenitoite"));
 
         // Reactor components
-        registry.register(new ItemTieredComponent("reactorcasingcores") {
-
-            @Override
-            public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-                //TODO fix recipes!
-                /*
-                if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy)) {
-                    RecipeHelper2.addShaped(registry, this.createItemStack(PartTier.Legacy, 1),
-                            "IGI", "ARA", "IGI",
-                            'I', "ingotIron", 'G', "ingotGraphite", 'A', "ingotGold", 'R', Items.REDSTONE);
-                }
-
-                if (PartTier.REACTOR_TIERS.contains(PartTier.Basic)) {
-                    RecipeHelper2.addShaped(registry, this.createItemStack(PartTier.Basic, 1),
-                            "IGI", "ARA", "IGI",
-                            'I', "ingotSteel", 'G', "ingotGraphite", 'A', "ingotGold", 'R', Items.REDSTONE);
-                }
-                */
-            }
-        });
+        registry.register(new ItemTieredComponent("reactorcasingcores"));
 
         // Turbine components
-        registry.register(new ItemTieredComponent("turbinehousingcores") {
-
-            @Override
-            public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-                //TODO fix recipes!
-                /*
-                if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy)) {
-                    RecipeHelper2.addShaped(registry, this.createItemStack(PartTier.Legacy, 1),
-                            "IGI", "ARA", "IGI",
-                            'I', "ingotIron", 'G', "ingotGraphite", 'A', "ingotGold", 'R', Items.COMPARATOR);
-                }
-
-                if (PartTier.TURBINE_TIERS.contains(PartTier.Basic)) {
-                    RecipeHelper2.addShaped(registry, this.createItemStack(PartTier.Basic, 1),
-                            "IGI", "ARA", "IGI",
-                            'I', "ingotSteel", 'G', "ingotGraphite", 'A', "ingotGold", 'R', Items.COMPARATOR);
-                }
-                */
-            }
-        });
+        registry.register(new ItemTieredComponent("turbinehousingcores"));
 
         // Miscellanea
         registry.register(new ItemWrench("wrench"));
@@ -306,6 +203,62 @@ public class ObjectsHandler extends GameObjectsHandler {
 
         if (!OreDictionaryHelper.doesOreNameExist("blockIce"))
             OreDictionary.registerOre("blockIce", new ItemStack(Blocks.ICE, 1));
+    }
+
+    /**
+     * Register all the recipes for the blocks and items of this mod
+     * Override in your subclass to register your recipes with the provided registry
+     *
+     * @param registry the recipes registry
+     */
+    @Override
+    @SuppressWarnings("ConstantConditions")
+    protected void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
+
+        // # Yellorite ore -> Yellorium ingot
+
+        ItemStack result;
+
+        if (BigReactors.CONFIG.registerYelloriteSmeltToUranium) {
+
+            result = OreDictionaryHelper.getOre("ingotUranium");
+
+            if (null == result) {
+
+                BigReactors.getLogger().warn("Config value registerYelloriteSmeltToUranium is set to True, but there are no ores registered as ingotUranium in the ore dictionary! Falling back to using standard yellorium only.");
+                result = OreDictionaryHelper.getOre("ingotYellorium");
+            }
+
+        } else {
+
+            result = OreDictionaryHelper.getOre("ingotYellorium");
+        }
+
+        RecipeHelper2.addSmelting(BrBlocks.oreYellorite.createItemStack(), result, 0.5f);
+
+        // Dusts -> ingots
+
+        RecipeHelper2.addSmelting(BrItems.dustYellorium.createItemStack(), BrItems.ingotYellorium.createItemStack(), 0.0f);
+        RecipeHelper2.addSmelting(BrItems.dustCyanite.createItemStack(), BrItems.ingotCyanite.createItemStack(), 0.0f);
+        RecipeHelper2.addSmelting(BrItems.dustGraphite.createItemStack(), BrItems.ingotGraphite.createItemStack(), 0.0f);
+        RecipeHelper2.addSmelting(BrItems.dustBlutonium.createItemStack(), BrItems.ingotBlutonium.createItemStack(), 0.0f);
+        RecipeHelper2.addSmelting(BrItems.dustLudicrite.createItemStack(), BrItems.ingotLudicrite.createItemStack(), 0.0f);
+        RecipeHelper2.addSmelting(BrItems.dustSteel.createItemStack(), BrItems.ingotSteel.createItemStack(), 0.0f);
+
+        // Graphite
+
+        result = OreDictionaryHelper.getOre("ingotGraphite");
+
+        // # Coal -> Graphite
+        if (BigReactors.CONFIG.registerCoalForSmelting) {
+            RecipeHelper2.addSmelting(new ItemStack(Items.COAL, 1, 0), result, 1);
+        }
+
+        // # Charcoal -> Graphite
+        if (BigReactors.CONFIG.registerCharcoalForSmelting) {
+            RecipeHelper2.addSmelting(new ItemStack(Items.COAL, 1, 1), result, 1);
+        }
+
     }
 
     @Override

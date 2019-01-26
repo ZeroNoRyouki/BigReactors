@@ -1,0 +1,35 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "result":{
+      "item":"bigreactors:blockgraphite"
+   },
+   "ingredients":[
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      },
+      {
+         "item":"bigreactors:ingotgraphite"
+      }
+   ]
+}

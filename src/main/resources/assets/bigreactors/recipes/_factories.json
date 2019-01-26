@@ -1,0 +1,9 @@
+{
+	"ingredients": {
+		"config_yellorium_ingot": "erogenousbeef.bigreactors.common.recipe.factory.UraniumCompat$YelloriumIngot",
+		"config_blutonium_ingot": "erogenousbeef.bigreactors.common.recipe.factory.UraniumCompat$BlutoniumIngot"
+	},
+	"conditions": {
+		"config": "erogenousbeef.bigreactors.common.recipe.factory.ConfigCondition"
+	}
+}

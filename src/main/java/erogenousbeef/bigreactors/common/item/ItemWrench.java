@@ -6,11 +6,6 @@ import it.zerono.mods.zerocore.lib.item.ModItem;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -18,10 +13,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.IForgeRegistry;
-import zero.temp.RecipeHelper2;
-
-import javax.annotation.Nonnull;
 
 public class ItemWrench extends ModItem/* implements IToolHammer*/ {
 
@@ -63,16 +54,6 @@ public class ItemWrench extends ModItem/* implements IToolHammer*/ {
         }
 
         return EnumActionResult.PASS;
-    }
-
-    @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-            /*
-        RecipeHelper.addShapedRecipe(new ItemStack(this, 1, 0), " I ", "WII", "IW ",
-                'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.YELLOW.getMetadata()));
-        */
-        RecipeHelper2.addShaped(registry, this.createItemStack(1), " I ", "WII", "IW ",
-                'I', Items.IRON_INGOT, 'W', new ItemStack(Blocks.WOOL, 1, EnumDyeColor.LIME.getMetadata()));
     }
 
     /**

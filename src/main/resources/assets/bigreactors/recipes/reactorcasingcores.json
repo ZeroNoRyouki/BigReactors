@@ -1,0 +1,29 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactorcasingcores"
+   },
+   "pattern":[
+      "IGI",
+      "DRD",
+      "IGI"
+   ],
+   "key":{
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "G":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGraphite"
+      },
+      "D":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGold"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      }
+   }
+}

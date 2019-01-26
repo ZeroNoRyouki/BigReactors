@@ -1,0 +1,21 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "conditions":[
+      {
+         "type":"bigreactors:config",
+         "config":"enableCyaniteFromYelloriumRecipe"
+      }
+   ],
+   "result":{
+      "item":"bigreactors:ingotcyanite"
+   },
+   "ingredients":[
+      {
+         "type":"forge:ore_dict",
+         "ore":"sand"
+      },
+      {
+         "type":"bigreactors:config_yellorium_ingot"
+      }
+   ]
+}

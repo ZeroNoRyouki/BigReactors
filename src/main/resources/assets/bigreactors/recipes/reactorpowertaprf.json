@@ -1,0 +1,30 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "conditions":[
+      {
+         "type":"bigreactors:config",
+         "config":"enableReactorPowerTapRecipe"
+      }
+   ],
+   "result":{
+      "item":"bigreactors:reactorpowertaprf"
+   },
+   "pattern":[
+      "CRC",
+      "RBR",
+      "CRC"
+   ],
+   "key":{
+      "C":{
+         "item":"bigreactors:reactorcasing"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      },
+      "B":{
+         "type":"forge:ore_dict",
+         "ore":"blockRedstone"
+      }
+   }
+}

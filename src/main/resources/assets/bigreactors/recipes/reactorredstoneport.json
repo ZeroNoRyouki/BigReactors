@@ -1,0 +1,24 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactorredstoneport"
+   },
+   "pattern":[
+      "CRC",
+      "RGR",
+      "CRC"
+   ],
+   "key":{
+      "C":{
+         "item":"bigreactors:reactorcasing"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      },	  
+      "G":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGold"
+      }
+   }
+}

@@ -1,0 +1,21 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:wrench"
+   },
+   "pattern":[
+      " I ",
+      "WII",
+      "IW "
+   ],
+   "key":{
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "W":{
+         "item":"minecraft:wool",
+         "data":5
+      }
+   }
+}

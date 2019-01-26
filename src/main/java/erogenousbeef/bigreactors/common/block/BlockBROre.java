@@ -10,11 +10,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,34 +25,6 @@ public class BlockBROre extends ModBlock {
 		super(blockName, Material.ROCK, oreDictionaryName);
         this.setCreativeTab(BigReactors.TAB);
         this.setHardness(2.0f);
-	}
-
-    @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-		//TODO fix recipes!!!
-		/*
-		// - Yellorium
-
-		ItemStack product;
-		final ItemStack ore = BrBlocks.oreYellorite.createItemStack();
-
-		if (BigReactors.CONFIG.registerYelloriteSmeltToUranium) {
-
-			product = OreDictionaryHelper.getOre("ingotUranium");
-
-			if (null == product) {
-
-				BRLog.warning("Config value registerYelloriteSmeltToUranium is set to True, but there are no ores registered as ingotUranium in the ore dictionary! Falling back to using standard yellorium only.");
-				product = OreDictionaryHelper.getOre("ingotYellorium");
-			}
-
-		} else {
-
-			product = OreDictionaryHelper.getOre("ingotYellorium");
-		}
-
-		RecipeHelper2.addSmelting(ore, product, 0.5f);
-		*/
 	}
 
 	@SuppressWarnings("ConstantConditions")

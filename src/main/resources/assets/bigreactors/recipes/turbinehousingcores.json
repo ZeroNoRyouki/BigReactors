@@ -1,0 +1,28 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinehousingcores"
+   },
+   "pattern":[
+      "IGI",
+      "ARA",
+      "IGI"
+   ],
+   "key":{
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "G":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGraphite"
+      },
+      "A":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGold"
+      },
+      "R":{
+         "item":"minecraft:comparator"
+      }
+   }
+}

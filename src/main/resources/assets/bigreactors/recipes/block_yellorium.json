@@ -1,0 +1,35 @@
+{  
+   "type":"minecraft:crafting_shapeless",
+   "result":{  
+      "item":"bigreactors:blockyellorium"
+   },
+   "ingredients":[  
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      },
+      {  
+         "item":"bigreactors:ingotyellorium"
+      }
+   ]
+}

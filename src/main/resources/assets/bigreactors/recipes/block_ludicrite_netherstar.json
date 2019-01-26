@@ -1,0 +1,27 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:blockludicrite"
+   },
+   "pattern":[
+      "BPB",
+      "ENE",
+      "BPB"
+   ],
+   "key":{
+      "B":{
+         "type":"bigreactors:config_blutonium_ingot"
+      },
+      "P":{
+         "type":"forge:ore_dict",
+         "ore":"enderpearl"
+      },
+      "E":{
+         "type":"forge:ore_dict",
+         "ore":"blockEmerald"
+      },
+      "N":{
+         "item":"minecraft:nether_star"
+      }
+   }
+}

@@ -1,0 +1,35 @@
+{  
+   "type":"minecraft:crafting_shapeless",
+   "result":{  
+      "item":"bigreactors:blocksteel"
+   },
+   "ingredients":[  
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      },
+      {  
+         "item":"bigreactors:ingotsteel"
+      }
+   ]
+}

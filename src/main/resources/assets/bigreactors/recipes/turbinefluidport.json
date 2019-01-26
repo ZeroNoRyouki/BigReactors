@@ -1,0 +1,29 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinefluidport"
+   },
+   "pattern":[
+      "HOH",
+      "IVI",
+      "HPH"
+   ],
+   "key":{
+      "H":{
+         "item":"bigreactors:turbinehousing"
+      },
+      "V":{
+         "item":"minecraft:bucket"
+      },
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "P":{
+         "item":"minecraft:piston"
+      },
+      "O":{
+         "item":"minecraft:hopper"
+      }
+   }
+}

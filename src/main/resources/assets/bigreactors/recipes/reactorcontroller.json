@@ -1,0 +1,30 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactorcontroller"
+   },
+   "pattern":[
+      "CTC",
+      "YDY",
+      "CRC"
+   ],
+   "key":{
+      "C":{
+         "item":"bigreactors:reactorcasing"
+      },
+      "Y":{
+         "type":"bigreactors:config_yellorium_ingot"
+      },
+      "D":{
+         "type":"forge:ore_dict",
+         "ore":"gemDiamond"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      },
+      "T":{
+         "item":"minecraft:comparator"
+      }
+   }
+}

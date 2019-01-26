@@ -1,0 +1,21 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinerotorshaft"
+   },
+   "pattern":[
+      " I ",  
+      "ICI",
+      " I "
+   ],
+   "key":{
+	  "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+	  "C":{
+         "type":"forge:ore_dict",
+         "ore":"ingotCyanite"
+      }
+   }
+}

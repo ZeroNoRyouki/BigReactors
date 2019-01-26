@@ -48,66 +48,6 @@ public class BlockMultiblockPowerTap extends BlockMultiblockDevice {
         }
     }
 
-    @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipe!
-        /*
-        if (PartType.ReactorPowerTap == this._type) {
-
-            if (!BigReactors.CONFIG.enableReactorPowerTapRecipe)
-                return;
-
-            if (PowerSystem.RedstoneFlux == this._powerSystem) {
-
-                if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "R R", "CRC",
-                            'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE);
-
-                if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "R R", "CRC",
-                            'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE);
-
-            } else if (PowerSystem.Tesla == this._powerSystem) {
-
-                ItemStack lapis = new ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.getDyeDamage());
-
-                if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "R R", "CRC",
-                            'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', lapis);
-
-                if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "R R", "CRC",
-                            'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', lapis);
-            }
-
-        } else if (PartType.TurbinePowerPort == this._type) {
-
-            if (PowerSystem.RedstoneFlux == this._powerSystem) {
-
-                if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "R R", "HRH",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE);
-
-                if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE);
-
-            } else if (PowerSystem.Tesla == this._powerSystem) {
-
-                ItemStack lapis = new ItemStack(Items.DYE, 1, EnumDyeColor.BLUE.getDyeDamage());
-
-                if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "R R", "HRH",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', lapis);
-
-                if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                    RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "R R", "HRH",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', lapis);
-            }
-        }
-        */
-    }
-
     /**
      * Called when a tile entity on a side of this block changes is created or is destroyed.
      * @param world The world

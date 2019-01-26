@@ -31,66 +31,6 @@ public class BlockMultiblockGlass extends /*BlockTieredPart*/BlockPart {
 		this.setSoundType(SoundType.GLASS);
 		this._actualFacings = new boolean[EnumFacing.VALUES.length];
 	}
-	/*
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void onRegisterModels() {
-
-		Item item = Item.getItemFromBlock(this);
-		ResourceLocation name = this.getRegistryName();
-		String domain = name.getResourceDomain();
-		String path = name.getResourcePath();
-
-		ModelLoader.setCustomStateMapper(this, (new StateMap.Builder()).withName(Properties.TIER).withSuffix("_" + path).build());
-
-		for (PartTier tier: PartTier.RELEASED_TIERS) {
-
-			ResourceLocation location = new ResourceLocation(domain, tier.getName() + "_" + path);
-
-			ModelLoader.setCustomModelResourceLocation(item, tier.toMeta(), new ModelResourceLocation(location, "inventory"));
-		}
-	}*/
-
-	@Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-		//TODO fix recipe!
-		/*
-		final EnumSet<PartTier> tiers;
-		final BlockMultiblockCasing casingBlock;
-		final boolean useGlassReinforced = BigReactors.CONFIG.requireObsidianGlass && OreDictionaryHelper.doesOreNameExist("glassReinforced");
-		final boolean useGlassHardened = BigReactors.CONFIG.requireObsidianGlass && OreDictionaryHelper.doesOreNameExist("blockGlassHardened");
-		final List<String> glassTypes = new ArrayList<>();
-
-		if (PartType.ReactorGlass == this._type) {
-
-			tiers = PartTier.REACTOR_TIERS;
-			casingBlock = BrBlocks.reactorCasing;
-
-		} else {
-
-			tiers = PartTier.TURBINE_TIERS;
-			casingBlock = BrBlocks.turbineHousing;
-		}
-
-		if (useGlassReinforced)
-			glassTypes.add("glassReinforced");
-
-		if (useGlassHardened)
-			glassTypes.add("blockGlassHardened");
-
-		if (!useGlassReinforced && !useGlassHardened)
-			glassTypes.add("blockGlassColorless");
-
-		for (PartTier tier : tiers) {
-
-			final ItemStack output = this.createItemStack(tier, 1);
-			final ItemStack casing = casingBlock.createItemStack(tier, 1);
-
-			for (String glass : glassTypes)
-                RecipeHelper.addShapedOreDictRecipe(output, "GCG", 'G', glass, 'C', casing);
-		}
-		*/
-	}
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {

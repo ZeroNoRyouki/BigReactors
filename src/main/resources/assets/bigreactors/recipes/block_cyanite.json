@@ -1,0 +1,35 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "result":{
+      "item":"bigreactors:blockcyanite"
+   },
+   "ingredients":[
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      },
+      {
+         "item":"bigreactors:ingotcyanite"
+      }
+   ]
+}

@@ -1,0 +1,30 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinecontroller"
+   },
+   "pattern":[
+      "HTH",
+      "BDB",
+      "HRH"
+   ],
+   "key":{
+      "H":{
+         "item":"bigreactors:turbinehousing"
+      },
+      "B":{
+         "type":"bigreactors:config_blutonium_ingot"
+      },
+      "D":{
+         "type":"forge:ore_dict",
+         "ore":"gemDiamond"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      },
+      "T":{
+         "item":"minecraft:comparator"
+      }
+   }
+}

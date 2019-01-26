@@ -1,0 +1,24 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "conditions":[
+      {
+         "type":"bigreactors:config",
+         "config":"useGlassReinforced"
+      }
+   ],
+   "result":{
+      "item":"bigreactors:reactorglass"
+   },
+   "pattern":[
+      "GCG"
+   ],
+   "key":{
+      "C":{
+         "item":"bigreactors:reactorcasing"
+      },
+      "G":{
+         "type":"forge:ore_dict",
+         "ore":"glassReinforced"
+      }
+   }
+}

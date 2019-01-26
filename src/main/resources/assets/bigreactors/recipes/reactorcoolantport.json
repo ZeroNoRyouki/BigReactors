@@ -1,0 +1,29 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactorcoolantport"
+   },
+   "pattern":[
+      "COC",
+      "IVI",
+      "CPC"
+   ],
+   "key":{
+      "C":{
+         "item":"bigreactors:reactorcasing"
+      },
+      "V":{
+         "item":"minecraft:bucket"
+      },
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "P":{
+         "item":"minecraft:piston"
+      },
+      "O":{
+         "item":"minecraft:hopper"
+      }
+   }
+}

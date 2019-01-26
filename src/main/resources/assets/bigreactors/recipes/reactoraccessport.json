@@ -1,0 +1,30 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactoraccessport"
+   },
+   "pattern":[
+      "COC",
+      "IVI",
+      "CPC"
+   ],
+   "key":{
+      "C":{
+         "item":"bigreactors:reactorcasing"
+      },
+      "V":{
+         "type":"forge:ore_dict",
+         "ore":"chestWood"
+      },
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "P":{
+         "item":"minecraft:piston"
+      },
+      "O":{
+         "item":"minecraft:hopper"
+      }
+   }
+}

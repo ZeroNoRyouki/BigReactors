@@ -1,0 +1,30 @@
+{  
+   "type":"minecraft:crafting_shaped",
+   "result":{  
+      "item":"bigreactors:reactorcontrolrod"
+   },
+   "pattern":[  
+      "CPC",
+      "GRG",
+      "CYC"
+   ],
+   "key":{  
+      "C":{  
+         "item":"bigreactors:reactorcasing"
+      },
+      "P":{  
+         "item":"minecraft:piston"
+      },
+      "Y":{  
+         "type":"bigreactors:config_yellorium_ingot"
+      },
+      "G":{  
+         "type":"forge:ore_dict",
+         "ore":"ingotGraphite"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      }
+   }
+}

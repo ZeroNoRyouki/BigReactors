@@ -32,20 +32,6 @@ public class BlockTurbineRotorBlade extends /*BlockTieredPart*/BlockPart impleme
     }
 
     @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipes!
-        /*
-        if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CII",
-                    'C', "ingotCyanite", 'I', "ingotIron");
-
-        if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CII",
-                    'C', "ingotCyanite", 'I', "ingotIron");
-                    */
-    }
-
-    @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityTurbineRotorBlade();
     }

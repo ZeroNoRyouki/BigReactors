@@ -34,20 +34,6 @@ public class BlockReactorFuelRod extends /*BlockTieredPart*/BlockPart {
 	}
 
 	@Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-		//TODO fix recipes!
-		/*
-		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "ICI", "IUI", "ICI",
-				'I', "ingotIron", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
-
-		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "ICI", "IUI", "ICI",
-				'I', "ingotSteel", 'C', "ingotGraphite", 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
-				*/
-	}
-
-	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}

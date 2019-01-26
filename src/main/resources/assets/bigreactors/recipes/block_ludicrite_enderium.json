@@ -1,0 +1,29 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "conditions":[
+      {
+         "type":"zerocore:oreregistered",
+         "ore":"blockEnderium"
+      }
+   ],
+   "result":{
+      "item":"bigreactors:blockludicrite"
+   },
+   "pattern":[
+      "BRB",
+      "E E",
+      "BRB"
+   ],
+   "key":{
+      "B":{
+         "type":"bigreactors:config_blutonium_ingot"
+      },
+      "E":{
+         "type":"forge:ore_dict",
+         "ore":"blockEnderium"
+      },
+      "R":{
+         "item":"minecraft:blaze_rod"
+      }
+   }
+}

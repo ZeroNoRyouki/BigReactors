@@ -1,0 +1,25 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactorcasing",
+	  "count":4
+   },
+   "pattern":[
+      "IGI",
+      "GUG",
+      "IGI"
+   ],
+   "key":{
+      "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "G":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGraphite"
+      },
+      "U":{
+         "item":"bigreactors:reactorcasingcores"
+      }
+   }
+}

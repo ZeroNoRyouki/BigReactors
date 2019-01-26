@@ -35,22 +35,6 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     }
 
     @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipe!
-        /*
-        if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-            RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
-                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND,
-                    'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Legacy, 1));
-
-        if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-            RecipeHelper.addShapedRecipe(BrBlocks.turbineBearing.createItemStack(), "HRH", "DDD", "HRH",
-                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND,
-                    'R', BrBlocks.turbineRotorShaft.createItemStack(PartTier.Basic, 1));
-                    */
-    }
-
-    @Override
     public BlockRenderLayer getBlockLayer() {
         // allow correct brightness of the rotor TESR
         return BlockRenderLayer.CUTOUT;

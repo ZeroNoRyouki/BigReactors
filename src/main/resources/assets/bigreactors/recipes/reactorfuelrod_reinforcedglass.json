@@ -1,0 +1,34 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:reactorfuelrod"
+   },
+   "conditions":[
+      {
+         "type":"bigreactors:config",
+         "config":"useGlassReinforced"
+      }
+   ],
+   "pattern":[
+      "IGI",
+      "XYX",
+      "IGI"
+   ],
+   "key":{
+	  "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+      "Y":{
+         "type":"bigreactors:config_yellorium_ingot"
+      },
+	  "G":{
+         "type":"forge:ore_dict",
+         "ore":"ingotGraphite"
+      },
+      "X":{
+         "type":"forge:ore_dict",
+         "ore":"glassReinforced"
+      }
+   }
+}

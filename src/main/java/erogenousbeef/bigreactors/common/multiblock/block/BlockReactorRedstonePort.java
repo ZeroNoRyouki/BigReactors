@@ -37,21 +37,6 @@ public class BlockReactorRedstonePort extends BlockMultiblockDevice /* implement
 		return new TileEntityReactorRedstonePort();
 	}
 
-	@Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-
-		//TODO fix recipe!
-		/*
-		if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-            RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "RGR", "CRC",
-				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
-
-		if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-            RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "RGR", "CRC",
-				'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE, 'G', Items.GOLD_INGOT);
-				*/
-	}
-
 	/**
      * A randomly called display update to be able to add particles or other items for display
      */

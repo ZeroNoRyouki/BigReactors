@@ -44,41 +44,6 @@ public class BlockMultiblockComputerPort extends BlockMultiblockDevice implement
         }
     }
 
-    @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipe!
-        /*
-        if (!CompatManager.isModLoaded(IdReference.MODID_COMPUTERCRAFT) &&
-                !CompatManager.isModLoaded(IdReference.MODID_OPENCOMPUTERS))
-            return;
-
-        if (PartType.ReactorComputerPort == this._type) {
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CRC", "GPG", "CRC",
-                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER);
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CRC", "GPG", "CRC",
-                    'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER);
-
-        } else if (PartType.TurbineComputerPort == this._type) {
-
-            if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "HRH", "GPG", "HRH",
-                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER);
-
-            if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "HRH", "GPG", "HRH",
-                    'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE,
-                    'G', "ingotGold", 'P', Items.REPEATER);
-        }
-        */
-    }
-
     @Optional.Method(modid = IdReference.MODID_COMPUTERCRAFT)
     @Override
     public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side) {

@@ -41,37 +41,6 @@ public class BlockMultiblockController extends BlockMultiblockDevice {
     }
 
     @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipe!
-        /*
-        if (PartType.ReactorController == this._type) {
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "GDG", "CRC",
-                        'D', Items.DIAMOND, 'G', BigReactors.CONFIG.recipeYelloriumIngotName,
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'R', Items.REDSTONE);
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "GDG", "CRC",
-                        'D', Items.DIAMOND, 'G', BigReactors.CONFIG.recipeYelloriumIngotName,
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'R', Items.REDSTONE);
-
-        } else if (PartType.TurbineController == this._type) {
-
-            if (PartTier.TURBINE_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "BDB", "H H",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'D', Items.DIAMOND, 'B',
-                        BigReactors.CONFIG.recipeBlutoniumIngotName);
-
-            if (PartTier.TURBINE_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "BDB", "H H",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'D', Items.DIAMOND, 'B',
-                        BigReactors.CONFIG.recipeBlutoniumIngotName);
-        }
-        */
-    }
-
-    @Override
     protected void buildBlockState(BlockStateContainer.Builder builder) {
 
         super.buildBlockState(builder);

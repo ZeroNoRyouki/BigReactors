@@ -1,0 +1,19 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinerotorblade"
+   },
+   "pattern":[
+      "CII"
+   ],
+   "key":{
+	  "I":{
+         "type":"forge:ore_dict",
+         "ore":"ingotIron"
+      },
+	  "C":{
+         "type":"forge:ore_dict",
+         "ore":"ingotCyanite"
+      }
+   }
+}

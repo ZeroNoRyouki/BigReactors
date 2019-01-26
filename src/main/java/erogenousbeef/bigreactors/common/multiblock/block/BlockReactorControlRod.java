@@ -21,20 +21,4 @@ public class BlockReactorControlRod extends BlockMultiblockDevice {
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityReactorControlRod();
     }
-
-    @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipe!
-        /*
-        if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "CGC", "GRG", "CUC",
-                'G', "ingotGraphite", 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1),
-                'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
-
-        if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-            RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "CGC", "GRG", "CUC",
-                'G', "ingotGraphite", 'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1),
-                'R', Items.REDSTONE, 'U', BigReactors.CONFIG.recipeYelloriumIngotName);
-                */
-    }
 }

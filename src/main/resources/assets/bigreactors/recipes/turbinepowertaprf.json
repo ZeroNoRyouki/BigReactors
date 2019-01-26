@@ -1,0 +1,24 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinepowertaprf"
+   },
+   "pattern":[
+      "HRH",
+      "RBR",
+      "HRH"
+   ],
+   "key":{
+      "H":{
+         "item":"bigreactors:turbinehousing"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"dustRedstone"
+      },
+      "B":{
+         "type":"forge:ore_dict",
+         "ore":"blockRedstone"
+      }
+   }
+}

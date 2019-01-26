@@ -1,0 +1,35 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "result":{
+      "item":"bigreactors:blockludicrite"
+   },
+   "ingredients":[
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      },
+      {
+         "item":"bigreactors:ingotludicrite"
+      }
+   ]
+}

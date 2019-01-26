@@ -1,0 +1,23 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "result":{
+      "item":"bigreactors:turbinebearing"
+   },
+   "pattern":[
+      "HSH",
+      "DDD",
+      "HSH"
+   ],
+   "key":{
+      "H":{
+         "item":"bigreactors:turbinehousing"
+      },
+      "D":{
+         "type":"forge:ore_dict",
+         "ore":"gemDiamond"
+      },
+      "S":{
+         "item":"bigreactors:turbinerotorshaft"
+      }
+   }
+}

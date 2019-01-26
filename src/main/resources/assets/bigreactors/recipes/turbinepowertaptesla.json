@@ -1,0 +1,30 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "conditions":[
+      {
+         "type":"zerocore:modloaded",
+         "modid":"tesla"
+      }
+   ],
+   "result":{
+      "item":"bigreactors:turbinepowertaptesla"
+   },
+   "pattern":[
+      "HRH",
+      "RBR",
+      "HRH"
+   ],
+   "key":{
+      "H":{
+         "item":"bigreactors:turbinehousing"
+      },
+      "R":{
+         "type":"forge:ore_dict",
+         "ore":"gemLapis"
+      },
+      "B":{
+         "type":"forge:ore_dict",
+         "ore":"blockLapis"
+      }
+   }
+}

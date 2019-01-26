@@ -61,47 +61,6 @@ public class BlockMultiblockIOPort extends BlockMultiblockDevice {
     }
 
     @Override
-    public void onRegisterRecipes(@Nonnull IForgeRegistry<IRecipe> registry) {
-        //TODO fix recipe!
-        /*
-        if (PartType.ReactorAccessPort == this._type) {
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", " V ", "CPC",
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'V', Blocks.CHEST, 'P', Blocks.PISTON);
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedRecipe(this.createItemStack(PartTier.Basic, 1), "C C", " V ", "CPC",
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'V', Blocks.CHEST, 'P', Blocks.PISTON);
-
-        } else if (PartType.ReactorCoolantPort == this._type) {
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "C C", "IVI", "CPC",
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Legacy, 1), 'V', Items.BUCKET, 'P', Blocks.PISTON,
-                        'I', "ingotIron");
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "C C", "IVI", "CPC",
-                        'C', BrBlocks.reactorCasing.createItemStack(PartTier.Basic, 1), 'V', Items.BUCKET, 'P', Blocks.PISTON,
-                        'I', "ingotSteel");
-
-        } else if (PartType.TurbineFluidPort == this._type) {
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Legacy))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Legacy, 1), "H H", "IVI", "HPH",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Legacy, 1), 'I', "ingotIron",
-                        'V', Items.BUCKET, 'P', Blocks.PISTON);
-
-            if (PartTier.REACTOR_TIERS.contains(PartTier.Basic))
-                RecipeHelper.addShapedOreDictRecipe(this.createItemStack(PartTier.Basic, 1), "H H", "IVI", "HPH",
-                        'H', BrBlocks.turbineHousing.createItemStack(PartTier.Basic, 1), 'I', "ingotSteel",
-                        'V', Items.BUCKET, 'P', Blocks.PISTON);
-        }
-        */
-    }
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
 

@@ -1,0 +1,35 @@
+{
+   "type":"minecraft:crafting_shapeless",
+   "result":{
+      "item":"bigreactors:blockblutonium"
+   },
+   "ingredients":[
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      },	  
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      },
+      {
+         "item":"bigreactors:ingotblutonium"
+      }	  
+   ]
+}

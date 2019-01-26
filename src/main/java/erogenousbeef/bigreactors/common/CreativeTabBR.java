@@ -41,7 +41,7 @@ public class CreativeTabBR extends CreativeTabs {
 
 		this.addToDisplayList(list, BrItems.ingotYellorium);
 		this.addToDisplayList(list, BrItems.ingotCyanite);
-		this.addToDisplayList(list, BrItems.ingotCyanite);
+		this.addToDisplayList(list, BrItems.ingotGraphite);
 		this.addToDisplayList(list, BrItems.ingotBlutonium);
 		this.addToDisplayList(list, BrItems.ingotLudicrite);
 		this.addToDisplayList(list, BrItems.ingotSteel);

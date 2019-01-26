@@ -1,0 +1,27 @@
+{
+   "type":"minecraft:crafting_shaped",
+   "conditions":[
+      {
+         "type":"bigreactors:config",
+         "config":"registerGraphiteCharcoalCraftingRecipes"
+      }
+   ],
+   "result":{
+      "item":"bigreactors:ingotgraphite"
+   },
+   "pattern":[
+      "GCG",
+      "   ",
+      "   "
+   ],
+   "key":{
+      "G":{
+         "type":"forge:ore_dict",
+         "ore":"gravel"
+      },
+      "C":{
+         "item":"minecraft:coal",
+		 "data":1
+      }
+   }
+}
