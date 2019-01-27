@@ -16,8 +16,10 @@ import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntit
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
 import erogenousbeef.bigreactors.init.flattening.BlockReplacer;
 import erogenousbeef.bigreactors.init.flattening.ItemReplacer;
+import erogenousbeef.bigreactors.init.flattening.TileEntityNameFixer;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
 import it.zerono.mods.zerocore.lib.init.GameObjectsHandler;
+import it.zerono.mods.zerocore.lib.init.fixer.IGameObjectDataWalker;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -28,6 +30,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraftforge.common.util.ModFixs;
@@ -38,15 +41,18 @@ import net.minecraftforge.registries.IForgeRegistry;
 import zero.temp.RecipeHelper2;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Locale;
 
 public class ObjectsHandler extends GameObjectsHandler {
 
     public ObjectsHandler(ConfigHandler... configs) {
 
-        super(configs);
+        super(DATA_VERSION, configs);
 
         this._blockReplacer = new BlockReplacer(DATA_VERSION);
         this._itemReplacer = new ItemReplacer(DATA_VERSION);
+        this._teFixer = new TileEntityNameFixer(DATA_VERSION, "minecraft:bigreactors");
         this.addBlockRemapper(this._blockReplacer);
         this.addItemRemapper(this._itemReplacer);
     }
@@ -114,33 +120,44 @@ public class ObjectsHandler extends GameObjectsHandler {
     }
 
     @Override
+    protected void registerTileEntity(@Nonnull Class<? extends TileEntity> tileEntityClass,
+                                      @Nullable final IGameObjectDataWalker walker) {
+
+        super.registerTileEntity(tileEntityClass, walker);
+
+        final String name = tileEntityClass.getSimpleName().toLowerCase(Locale.ROOT);
+
+        this._teFixer.addReplacement("minecraft:bigreactors" + name, new ResourceLocation(this.getModId(), name));
+    }
+
+    @Override
     protected void onRegisterTileEntities() {
 
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorPart.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorGlass.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorController.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorPowerTapRedstoneFlux.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorPowerTapTesla.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorAccessPort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorFuelRod.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorControlRod.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorRedstonePort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorComputerPort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorCoolantPort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorCreativeCoolantPort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityReactorRedNetPort.class);
+        this.registerTileEntity(TileEntityReactorPart.class);
+        this.registerTileEntity(TileEntityReactorGlass.class);
+        this.registerTileEntity(TileEntityReactorController.class);
+        this.registerTileEntity(TileEntityReactorPowerTapRedstoneFlux.class);
+        this.registerTileEntity(TileEntityReactorPowerTapTesla.class);
+        this.registerTileEntity(TileEntityReactorAccessPort.class, TileEntityReactorAccessPort.getObjectDataWalker());
+        this.registerTileEntity(TileEntityReactorFuelRod.class);
+        this.registerTileEntity(TileEntityReactorControlRod.class);
+        this.registerTileEntity(TileEntityReactorRedstonePort.class);
+        this.registerTileEntity(TileEntityReactorComputerPort.class);
+        this.registerTileEntity(TileEntityReactorCoolantPort.class);
+        this.registerTileEntity(TileEntityReactorCreativeCoolantPort.class);
+        this.registerTileEntity(TileEntityReactorRedNetPort.class);
 
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbinePart.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbinePowerTapRedstoneFlux.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbinePowerTapTesla.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineFluidPort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbinePartGlass.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineRotorBearing.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineRotorShaft.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineRotorBlade.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineCreativeSteamGenerator.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineComputerPort.class);
-        this.registerTileEntity(BigReactors.MODID, TileEntityTurbineController.class);
+        this.registerTileEntity(TileEntityTurbinePart.class);
+        this.registerTileEntity(TileEntityTurbinePowerTapRedstoneFlux.class);
+        this.registerTileEntity(TileEntityTurbinePowerTapTesla.class);
+        this.registerTileEntity(TileEntityTurbineFluidPort.class);
+        this.registerTileEntity(TileEntityTurbinePartGlass.class);
+        this.registerTileEntity(TileEntityTurbineRotorBearing.class);
+        this.registerTileEntity(TileEntityTurbineRotorShaft.class);
+        this.registerTileEntity(TileEntityTurbineRotorBlade.class);
+        this.registerTileEntity(TileEntityTurbineCreativeSteamGenerator.class);
+        this.registerTileEntity(TileEntityTurbineComputerPort.class);
+        this.registerTileEntity(TileEntityTurbineController.class);
     }
 
     @Override
@@ -270,6 +287,7 @@ public class ObjectsHandler extends GameObjectsHandler {
 
         fixs.registerFix(FixTypes.CHUNK, this._blockReplacer);
         fixs.registerFix(FixTypes.ITEM_INSTANCE, this._itemReplacer);
+        fixs.registerFix(FixTypes.BLOCK_ENTITY, this._teFixer);
         this.registerMissingBlocksReplacements();
         this.registerMissingItemsReplacements();
     }
@@ -336,4 +354,5 @@ public class ObjectsHandler extends GameObjectsHandler {
 
     private final BlockReplacer _blockReplacer;
     private final ItemReplacer _itemReplacer;
+    private final TileEntityNameFixer _teFixer;
 }

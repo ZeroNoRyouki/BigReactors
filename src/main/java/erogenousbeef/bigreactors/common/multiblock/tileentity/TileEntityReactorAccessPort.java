@@ -9,6 +9,7 @@ import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.lib.init.fixer.IGameObjectDataWalker;
 import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;
@@ -19,6 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.datafix.DataFixesManager;
+import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,6 +30,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 // TODO cleanup
@@ -276,6 +280,22 @@ public class TileEntityReactorAccessPort extends TileEntityReactorPart implement
 
 			data.setBoolean("inlet", Direction.Input == this._direction);
 		}
+	}
+
+	@Nonnull
+	public static IGameObjectDataWalker getObjectDataWalker() {
+		return (fixer, compound, version) -> {
+
+			if (compound.hasKey("invI")) {
+				DataFixesManager.processInventory(fixer, compound.getCompoundTag("invI"), version, "Items");
+			}
+
+			if (compound.hasKey("invO")) {
+				DataFixesManager.processInventory(fixer, compound.getCompoundTag("invO"), version, "Items");
+			}
+
+			return compound;
+		};
 	}
 
 	@Override
