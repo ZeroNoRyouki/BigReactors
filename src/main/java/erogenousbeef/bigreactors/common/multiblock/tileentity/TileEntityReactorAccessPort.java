@@ -9,7 +9,7 @@ import erogenousbeef.bigreactors.common.data.StandardReactants;
 import erogenousbeef.bigreactors.common.multiblock.IInputOutputPort;
 import erogenousbeef.bigreactors.gui.container.ContainerReactorAccessPort;
 import erogenousbeef.bigreactors.init.BrItems;
-import it.zerono.mods.zerocore.lib.init.fixer.IGameObjectDataWalker;
+import it.zerono.mods.zerocore.lib.data.fixer.IGameObjectDataWalker;
 import it.zerono.mods.zerocore.lib.item.TileEntityItemStackHandler;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.ItemHelper;

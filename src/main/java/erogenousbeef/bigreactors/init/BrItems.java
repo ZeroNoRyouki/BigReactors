@@ -11,10 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class BrItems {
 
     // Ingots & dusts
-    /*
-    @GameRegistry.ObjectHolder("ingotmetals")
-    public static final ItemBRMetal ingotMetals = null;
-    */
+
     @GameRegistry.ObjectHolder("ingotyellorium")
     public static final ItemBRMetal ingotYellorium = null;
 
@@ -32,12 +29,6 @@ public final class BrItems {
 
     @GameRegistry.ObjectHolder("ingotsteel")
     public static final ItemBRMetal ingotSteel = null;
-
-
-    /*
-    @GameRegistry.ObjectHolder("dustmetals")
-    public static final ItemBRMetal dustMetals = null;
-    */
 
     @GameRegistry.ObjectHolder("dustyellorium")
     public static final ItemBRMetal dustYellorium = null;
@@ -57,13 +48,8 @@ public final class BrItems {
     @GameRegistry.ObjectHolder("duststeel")
     public static final ItemBRMetal dustSteel = null;
 
-
-
     // Minerals
-    /*
-    @GameRegistry.ObjectHolder("minerals")
-    public static final ItemMineral minerals = null;
-    */
+
     @GameRegistry.ObjectHolder("mineralanglesite")
     public static final ItemMineral mineralAnglesite = null;
 

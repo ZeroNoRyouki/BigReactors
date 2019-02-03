@@ -11,10 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class BrBlocks {
 
     // Ores
-    /*
-    @GameRegistry.ObjectHolder("brore")
-    public static final BlockBROre brOre = null;
-    */
+
     @GameRegistry.ObjectHolder("oreyellorite")
     public static final BlockBROre oreYellorite = null;
 
@@ -25,10 +22,7 @@ public final class BrBlocks {
     public static final BlockBROre oreBenitoite = null;
 
     // Metal blocks
-    /*
-    @GameRegistry.ObjectHolder("blockmetals")
-    public static final BlockBRMetal blockMetals = null;
-    */
+
     @GameRegistry.ObjectHolder("blockyellorium")
     public static final BlockBRMetal blockYellorium = null;
 

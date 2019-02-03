@@ -14,12 +14,12 @@ import erogenousbeef.bigreactors.common.multiblock.block.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.*;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityReactorCreativeCoolantPort;
 import erogenousbeef.bigreactors.common.multiblock.tileentity.creative.TileEntityTurbineCreativeSteamGenerator;
-import erogenousbeef.bigreactors.init.flattening.BlockReplacer;
-import erogenousbeef.bigreactors.init.flattening.ItemReplacer;
-import erogenousbeef.bigreactors.init.flattening.TileEntityNameFixer;
 import it.zerono.mods.zerocore.lib.config.ConfigHandler;
+import it.zerono.mods.zerocore.lib.data.fixer.BlockReplacer;
+import it.zerono.mods.zerocore.lib.data.fixer.ItemReplacer;
+import it.zerono.mods.zerocore.lib.data.fixer.TileEntityNameFixer;
 import it.zerono.mods.zerocore.lib.init.GameObjectsHandler;
-import it.zerono.mods.zerocore.lib.init.fixer.IGameObjectDataWalker;
+import it.zerono.mods.zerocore.lib.data.fixer.IGameObjectDataWalker;
 import it.zerono.mods.zerocore.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -33,9 +33,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.FixTypes;
-import net.minecraftforge.common.util.ModFixs;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import zero.temp.RecipeHelper2;
@@ -71,7 +68,6 @@ public class ObjectsHandler extends GameObjectsHandler {
         registry.register(new BlockBROre("orebenitoite", "oreBenitoite" ));
 
         // Metal blocks
-        //registry.register(new BlockBRMetal("blockmetals"));
         registry.register(new BlockBRMetal("blockyellorium", "blockYellorium"));
         registry.register(new BlockBRMetal("blockcyanite", "blockCyanite"));
         registry.register(new BlockBRMetal("blockgraphite", "blockGraphite"));
@@ -164,7 +160,6 @@ public class ObjectsHandler extends GameObjectsHandler {
     protected void onRegisterItems(@Nonnull IForgeRegistry<Item> registry) {
 
         // Ingots
-        //registry.register(new ItemBRMetal("ingotmetals", MetalSize.Ingot));
         registry.register(new ItemBRMetal("ingotyellorium", "ingotYellorium"));
         registry.register(new ItemBRMetal("ingotcyanite", "ingotCyanite"));
         registry.register(new ItemBRMetal("ingotgraphite", "ingotGraphite"));
@@ -173,7 +168,6 @@ public class ObjectsHandler extends GameObjectsHandler {
         registry.register(new ItemBRMetal("ingotsteel", "ingotSteel"));
 
         // Dusts
-        //registry.register(new ItemBRMetal("dustmetals", MetalSize.Dust));
         registry.register(new ItemBRMetal("dustyellorium", "dustYellorium"));
         registry.register(new ItemBRMetal("dustcyanite", "dustCyanite"));
         registry.register(new ItemBRMetal("dustgraphite", "dustGraphite"));
@@ -182,7 +176,6 @@ public class ObjectsHandler extends GameObjectsHandler {
         registry.register(new ItemBRMetal("duststeel", "dustSteel"));
 
         // Minerals
-        //registry.register(new ItemMineral("minerals"));
         registry.register(new ItemMineral("mineralanglesite"));
         registry.register(new ItemMineral("mineralbenitoite"));
 
@@ -278,6 +271,21 @@ public class ObjectsHandler extends GameObjectsHandler {
 
     }
 
+    /**
+     * Register all your IDataFixer and IDataWalker
+     */
+    @Override
+    protected void onRegisterDataFixers() {
+
+        super.onRegisterDataFixers();
+
+        this.registerDataFixer(FixTypes.CHUNK, this._blockReplacer);
+        this.registerDataFixer(FixTypes.ITEM_INSTANCE, this._itemReplacer);
+        this.registerDataFixer(FixTypes.BLOCK_ENTITY, this._teFixer);
+        this.registerMissingBlocksReplacements();
+        this.registerMissingItemsReplacements();
+    }
+/*
     @Override
     public void onInit(FMLInitializationEvent event) {
 
@@ -290,7 +298,7 @@ public class ObjectsHandler extends GameObjectsHandler {
         fixs.registerFix(FixTypes.BLOCK_ENTITY, this._teFixer);
         this.registerMissingBlocksReplacements();
         this.registerMissingItemsReplacements();
-    }
+    }*/
 
     @SuppressWarnings("ConstantConditions")
     private void registerMissingBlocksReplacements() {
