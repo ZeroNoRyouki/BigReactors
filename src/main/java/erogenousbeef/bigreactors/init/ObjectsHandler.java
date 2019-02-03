@@ -4,9 +4,7 @@ import erogenousbeef.bigreactors.common.BigReactors;
 import erogenousbeef.bigreactors.common.block.BlockBRGenericFluid;
 import erogenousbeef.bigreactors.common.block.BlockBRMetal;
 import erogenousbeef.bigreactors.common.block.BlockBROre;
-import erogenousbeef.bigreactors.common.item.ItemBRMetal;
-import erogenousbeef.bigreactors.common.item.ItemMineral;
-import erogenousbeef.bigreactors.common.item.ItemTieredComponent;
+import erogenousbeef.bigreactors.common.item.ItemGeneric;
 import erogenousbeef.bigreactors.common.item.ItemWrench;
 import erogenousbeef.bigreactors.common.multiblock.PartType;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
@@ -160,30 +158,30 @@ public class ObjectsHandler extends GameObjectsHandler {
     protected void onRegisterItems(@Nonnull IForgeRegistry<Item> registry) {
 
         // Ingots
-        registry.register(new ItemBRMetal("ingotyellorium", "ingotYellorium"));
-        registry.register(new ItemBRMetal("ingotcyanite", "ingotCyanite"));
-        registry.register(new ItemBRMetal("ingotgraphite", "ingotGraphite"));
-        registry.register(new ItemBRMetal("ingotblutonium", "ingotBlutonium"));
-        registry.register(new ItemBRMetal("ingotludicrite", "ingotLudicrite"));
-        registry.register(new ItemBRMetal("ingotsteel", "ingotSteel"));
+        registry.register(new ItemGeneric("ingotyellorium", "ingotYellorium"));
+        registry.register(new ItemGeneric("ingotcyanite", "ingotCyanite"));
+        registry.register(new ItemGeneric("ingotgraphite", "ingotGraphite"));
+        registry.register(new ItemGeneric("ingotblutonium", "ingotBlutonium"));
+        registry.register(new ItemGeneric("ingotludicrite", "ingotLudicrite"));
+        registry.register(new ItemGeneric("ingotsteel", "ingotSteel"));
 
         // Dusts
-        registry.register(new ItemBRMetal("dustyellorium", "dustYellorium"));
-        registry.register(new ItemBRMetal("dustcyanite", "dustCyanite"));
-        registry.register(new ItemBRMetal("dustgraphite", "dustGraphite"));
-        registry.register(new ItemBRMetal("dustblutonium", "dustBlutonium"));
-        registry.register(new ItemBRMetal("dustludicrite", "dustLudicrite"));
-        registry.register(new ItemBRMetal("duststeel", "dustSteel"));
+        registry.register(new ItemGeneric("dustyellorium", "dustYellorium"));
+        registry.register(new ItemGeneric("dustcyanite", "dustCyanite"));
+        registry.register(new ItemGeneric("dustgraphite", "dustGraphite"));
+        registry.register(new ItemGeneric("dustblutonium", "dustBlutonium"));
+        registry.register(new ItemGeneric("dustludicrite", "dustLudicrite"));
+        registry.register(new ItemGeneric("duststeel", "dustSteel"));
 
         // Minerals
-        registry.register(new ItemMineral("mineralanglesite"));
-        registry.register(new ItemMineral("mineralbenitoite"));
+        registry.register(new ItemGeneric("mineralanglesite"));
+        registry.register(new ItemGeneric("mineralbenitoite"));
 
         // Reactor components
-        registry.register(new ItemTieredComponent("reactorcasingcores"));
+        registry.register(new ItemGeneric("reactorcasingcores"));
 
         // Turbine components
-        registry.register(new ItemTieredComponent("turbinehousingcores"));
+        registry.register(new ItemGeneric("turbinehousingcores"));
 
         // Miscellanea
         registry.register(new ItemWrench("wrench"));
@@ -199,11 +197,11 @@ public class ObjectsHandler extends GameObjectsHandler {
         // Uranium and Plutonium aliases
         if (BigReactors.CONFIG.registerYelloriumAsUranium) {
 
-            OreDictionary.registerOre("ingotUranium", ((ItemBRMetal)this.getTrackedItem("ingotyellorium")).createItemStack());
-            OreDictionary.registerOre("dustUranium", ((ItemBRMetal)this.getTrackedItem("dustyellorium")).createItemStack());
+            OreDictionary.registerOre("ingotUranium", ((ItemGeneric)this.getTrackedItem("ingotyellorium")).createItemStack());
+            OreDictionary.registerOre("dustUranium", ((ItemGeneric)this.getTrackedItem("dustyellorium")).createItemStack());
 
-            OreDictionary.registerOre("ingotPlutonium", ((ItemBRMetal)this.getTrackedItem("ingotblutonium")).createItemStack());
-            OreDictionary.registerOre("dustPlutonium", ((ItemBRMetal)this.getTrackedItem("dustblutonium")).createItemStack());
+            OreDictionary.registerOre("ingotPlutonium", ((ItemGeneric)this.getTrackedItem("ingotblutonium")).createItemStack());
+            OreDictionary.registerOre("dustPlutonium", ((ItemGeneric)this.getTrackedItem("dustblutonium")).createItemStack());
         }
 
         // Patch up vanilla being stupid - most mods already do this, so it's usually a no-op
@@ -285,20 +283,6 @@ public class ObjectsHandler extends GameObjectsHandler {
         this.registerMissingBlocksReplacements();
         this.registerMissingItemsReplacements();
     }
-/*
-    @Override
-    public void onInit(FMLInitializationEvent event) {
-
-        super.onInit(event);
-
-        final ModFixs fixs = FMLCommonHandler.instance().getDataFixer().init(BigReactors.MODID, DATA_VERSION);
-
-        fixs.registerFix(FixTypes.CHUNK, this._blockReplacer);
-        fixs.registerFix(FixTypes.ITEM_INSTANCE, this._itemReplacer);
-        fixs.registerFix(FixTypes.BLOCK_ENTITY, this._teFixer);
-        this.registerMissingBlocksReplacements();
-        this.registerMissingItemsReplacements();
-    }*/
 
     @SuppressWarnings("ConstantConditions")
     private void registerMissingBlocksReplacements() {

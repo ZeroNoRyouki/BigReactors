@@ -1,8 +1,6 @@
 package erogenousbeef.bigreactors.common.item;
 
-import erogenousbeef.bigreactors.common.BigReactors;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
-import it.zerono.mods.zerocore.lib.item.ModItem;
 import it.zerono.mods.zerocore.lib.world.WorldHelper;
 import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,12 +12,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-public class ItemWrench extends ModItem/* implements IToolHammer*/ {
+public class ItemWrench extends ItemGeneric/* implements IToolHammer*/ {
 
     public ItemWrench(String itemName) {
 
         super(itemName);
-        this.setCreativeTab(BigReactors.TAB);
         this.setMaxStackSize(1);
     }
 
