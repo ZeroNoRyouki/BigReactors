@@ -25,30 +25,30 @@ tile.fluid.cyanite.still.name=Cianite
 tile.fluid.blutonium.still.name=Blutonium Liquido
 
 # Items - ingots
-item.bigreactors:ingotmetals.yellorium.name=Lingotto di Yellorium
-item.bigreactors:ingotmetals.cyanite.name=Lingotto di Cianite
-item.bigreactors:ingotmetals.blutonium.name=Lingotto di Blutonium
-item.bigreactors:ingotmetals.graphite.name=Lingotto di Grafite
-item.bigreactors:ingotmetals.ludicrite.name=Lingotto di Ludicrite
-item.bigreactors:ingotmetals.steel.name=Lingotto di Acciaio
+item.bigreactors:ingotyellorium.name=Lingotto di Yellorium
+item.bigreactors:ingotcyanite.name=Lingotto di Cianite
+item.bigreactors:ingotblutonium.name=Lingotto di Blutonium
+item.bigreactors:ingotgraphite.name=Lingotto di Grafite
+item.bigreactors:ingotludicrite.name=Lingotto di Ludicrite
+item.bigreactors:ingotsteel.name=Lingotto di Acciaio
 
 # Items - dusts
-item.bigreactors:dustmetals.yellorium.name=Polvere di Yellorium
-item.bigreactors:dustmetals.cyanite.name=Polvere di Cianite
-item.bigreactors:dustmetals.blutonium.name=Polvere di Blutonium
-item.bigreactors:dustmetals.graphite.name=Polvere di Grafite
-item.bigreactors:dustmetals.ludicrite.name=Polvere di Ludicrite
-item.bigreactors:dustmetals.steel.name=Polvere di Acciaio
+item.bigreactors:dustyellorium.name=Polvere di Yellorium
+item.bigreactors:dustcyanite.name=Polvere di Cianite
+item.bigreactors:dustblutonium.name=Polvere di Blutonium
+item.bigreactors:dustgraphite.name=Polvere di Grafite
+item.bigreactors:dustludicrite.name=Polvere di Ludicrite
+item.bigreactors:duststeel.name=Polvere di Acciaio
 
 # Items - reactor casing cores
-item.bigreactors:reactorcasingcores.legacy.name=Telaio dell'involucro del Reattore (Originale)
+item.bigreactors:reactorcasingcores.name=Telaio dell'involucro del Reattore (Originale)
 item.bigreactors:reactorcasingcores.basic.name=Telaio dell'involucro del Reattore (Base)
-item.bigreactors:turbinehousingcores.legacy.name=Telaio dell'involucro della Turbina (Originale)
+item.bigreactors:turbinehousingcores.name=Telaio dell'involucro della Turbina (Originale)
 item.bigreactors:turbinehousingcores.basic.name=Telaio dell'involucro della Turbina (Base)
 
 # Items - minerals
-item.bigreactors:minerals.anglesite.name=Anglesite (PbSO4)
-item.bigreactors:minerals.benitoite.name=Benitoite (BaTiSi3O9)
+item.bigreactors:mineralanglesite.name=Anglesite (PbSO4)
+item.bigreactors:mineralbenitoite.name=Benitoite (BaTiSi3O9)
 
 # Items - miscellanea
 item.bigreactors:wrench.name=Chiave inglese
@@ -56,32 +56,32 @@ item.bigreactors:wrench.machine.coords=La struttura inizia a %1$d, %2$d, %3$d e 
 item.bigreactors:wrench.machine.update=Richiesta sincronizzazione client/server della struttura
 
 # Blocks - metal blocks / ores
-tile.bigreactors:blockmetals.yellorium.name=Blocco di Yellorium
-tile.bigreactors:blockmetals.cyanite.name=Blocco di Cianite
-tile.bigreactors:blockmetals.blutonium.name=Blocco di Blutonium
-tile.bigreactors:blockmetals.graphite.name=Blocco di Grafite
-tile.bigreactors:blockmetals.ludicrite.name=Blocco di Ludicrite
-tile.bigreactors:blockmetals.steel.name=Blocco di Acciaio
+tile.bigreactors:blockyellorium.name=Blocco di Yellorium
+tile.bigreactors:blockcyanite.name=Blocco di Cianite
+tile.bigreactors:blockblutonium.name=Blocco di Blutonium
+tile.bigreactors:blockgraphite.name=Blocco di Grafite
+tile.bigreactors:blockludicrite.name=Blocco di Ludicrite
+tile.bigreactors:blocksteel.name=Blocco di Acciaio
 
 # Blocks - ores
-tile.bigreactors:brore.yellorite.name=Yellorite grezza
-tile.bigreactors:brore.anglesite.name=Anglesite grezza
-tile.bigreactors:brore.benitoite.name=Benitoite grezza
+tile.bigreactors:oreyellorite.name=Yellorite grezza
+tile.bigreactors:oreanglesite.name=Anglesite grezza
+tile.bigreactors:orebenitoite.name=Benitoite grezza
 
 # Blocks - reactor parts (Originale)
-tile.bigreactors:reactorglass.legacy.name=Vetro del Reattore (Originale)
-tile.bigreactors:reactorcasing.legacy.name=Involucro del Reattore (Originale)
-tile.bigreactors:reactorcontroller.legacy.name=Pannello di controllo del Reattore (Originale)
-tile.bigreactors:reactorpowertaprf.legacy.name=Porta di energia Redstone Flux del Reattore (Originale)
-tile.bigreactors:reactorpowertaptesla.legacy.name=Porta di energia Tesla del Reattore (Originale)
-tile.bigreactors:reactoraccessport.legacy.name=Porta di accesso del Reattore (Originale)
-tile.bigreactors:reactorcoolantport.legacy.name=Porta di accesso Fluidi del Reattore (Originale)
-tile.bigreactors:reactorcontrolrod.legacy.name=Barre di controllo del reattore (Originale)
-tile.bigreactors:reactorcomputerport.legacy.name=Interfaccia per computer del Reattore (Originale)
-tile.bigreactors:reactorredstoneport.legacy.name=Interfaccia Redstone del Reattore (Originale)
-tile.bigreactors:reactorfuelrod.legacy.name=Barra di combustibile del Reattore (Originale)
-tile.bigreactors:reactorrednetport.legacy.name=Interfaccia RedNet del Reattore (Originale)
-tile.bigreactors:reactorcreativecoolantport.legacy.name=Porta di accesso Fluidi del Reattore Modalità Creativa (Originale)
+tile.bigreactors:reactorglass.name=Vetro del Reattore (Originale)
+tile.bigreactors:reactorcasing.name=Involucro del Reattore (Originale)
+tile.bigreactors:reactorcontroller.name=Pannello di controllo del Reattore (Originale)
+tile.bigreactors:reactorpowertaprf.name=Porta di energia Redstone Flux del Reattore (Originale)
+tile.bigreactors:reactorpowertaptesla.name=Porta di energia Tesla del Reattore (Originale)
+tile.bigreactors:reactoraccessport.name=Porta di accesso del Reattore (Originale)
+tile.bigreactors:reactorcoolantport.name=Porta di accesso Fluidi del Reattore (Originale)
+tile.bigreactors:reactorcontrolrod.name=Barre di controllo del reattore (Originale)
+tile.bigreactors:reactorcomputerport.name=Interfaccia per computer del Reattore (Originale)
+tile.bigreactors:reactorredstoneport.name=Interfaccia Redstone del Reattore (Originale)
+tile.bigreactors:reactorfuelrod.name=Barra di combustibile del Reattore (Originale)
+tile.bigreactors:reactorrednetport.name=Interfaccia RedNet del Reattore (Originale)
+tile.bigreactors:reactorcreativecoolantport.name=Porta di accesso Fluidi del Reattore Modalità Creativa (Originale)
 
 # Blocks - reactor parts (Base)
 tile.bigreactors:reactorglass.basic.name=Vetro del Reattore (Base)
@@ -99,17 +99,17 @@ tile.bigreactors:reactorrednetport.basic.name=Interfaccia RedNet del Reattore (B
 tile.bigreactors:reactorcreativecoolantport.basic.name=Porta di accesso Fluidi del Reattore Modalità Creativa (Base)
 
 # Blocks - turbine parts (Originale)
-tile.bigreactors:turbineglass.legacy.name=Vetro della Turbina (Originale)
-tile.bigreactors:turbinehousing.legacy.name=Involucro della Turbina (Originale)
-tile.bigreactors:turbinecontroller.legacy.name=Pannello di controllo della Turbina (Originale)
-tile.bigreactors:turbinepowertaprf.legacy.name=Porta di energia Redstone Flux della Turbina (Originale)
-tile.bigreactors:turbinepowertaptesla.legacy.name=Porta di energia Tesla della Turbina (Originale)
-tile.bigreactors:turbinecomputerport.legacy.name=Interfaccia per computer della Turbina (Originale)
-tile.bigreactors:turbinefluidport.legacy.name=Porta di accesso Fluidi della Turbina (Originale)
-tile.bigreactors:turbinebearing.legacy.name=Cuscinetto del rotore della Turbina (Originale)
-tile.bigreactors:turbinecreativesteamgenerator.legacy.name=Generatore di vapore della Turbina Modalità Creativa (Originale)
-tile.bigreactors:turbinerotorshaft.legacy.name=Asta del rotore della Turbina (Originale)
-tile.bigreactors:turbinerotorblade.legacy.name=Pala del rotore della Turbina (Originale)
+tile.bigreactors:turbineglass.name=Vetro della Turbina (Originale)
+tile.bigreactors:turbinehousing.name=Involucro della Turbina (Originale)
+tile.bigreactors:turbinecontroller.name=Pannello di controllo della Turbina (Originale)
+tile.bigreactors:turbinepowertaprf.name=Porta di energia Redstone Flux della Turbina (Originale)
+tile.bigreactors:turbinepowertaptesla.name=Porta di energia Tesla della Turbina (Originale)
+tile.bigreactors:turbinecomputerport.name=Interfaccia per computer della Turbina (Originale)
+tile.bigreactors:turbinefluidport.name=Porta di accesso Fluidi della Turbina (Originale)
+tile.bigreactors:turbinebearing.name=Cuscinetto del rotore della Turbina (Originale)
+tile.bigreactors:turbinecreativesteamgenerator.name=Generatore di vapore della Turbina Modalità Creativa (Originale)
+tile.bigreactors:turbinerotorshaft.name=Asta del rotore della Turbina (Originale)
+tile.bigreactors:turbinerotorblade.name=Pala del rotore della Turbina (Originale)
 
 # Blocks - turbine parts (Base)
 tile.bigreactors:turbineglass.basic.name=Vetro della Turbina (Base)
