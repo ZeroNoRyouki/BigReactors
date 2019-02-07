@@ -31,9 +31,9 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 			return;
 
 		float angle = RotorSpecialRenderer.getRotorAngle(bearing, turbine);
-		final int dX = rotorInfo.rotorDirection.getFrontOffsetX();
-		final int dY = rotorInfo.rotorDirection.getFrontOffsetY();
-		final int dZ = rotorInfo.rotorDirection.getFrontOffsetZ();
+		final int dX = rotorInfo.rotorDirection.getXOffset();
+		final int dY = rotorInfo.rotorDirection.getYOffset();
+		final int dZ = rotorInfo.rotorDirection.getZOffset();
 		final float rotationOffsetX = 0 == dX ? 0.5f : 0.0f;
 		final float rotationOffsetY = 0 == dY ? 0.5f : 0.0f;
 		final float rotationOffsetZ = 0 == dZ ? 0.5f : 0.0f;
@@ -104,9 +104,9 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 		final BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		final IBlockState defaultShaftState = BrBlocks.turbineRotorShaft.getDefaultState();
 		final EnumFacing[] bladeDirections = RotorShaftState.getBladesDirections(info.rotorDirection.getAxis());
-		final int dX = info.rotorDirection.getFrontOffsetX();
-		final int dY = info.rotorDirection.getFrontOffsetY();
-		final int dZ = info.rotorDirection.getFrontOffsetZ();
+		final int dX = info.rotorDirection.getXOffset();
+		final int dY = info.rotorDirection.getYOffset();
+		final int dZ = info.rotorDirection.getZOffset();
 
 		RotorBladeState[] currentBladeStates;
 		int[] currentBladeLengths;
@@ -141,9 +141,9 @@ public class RotorSpecialRenderer extends TileEntitySpecialRenderer<TileEntityTu
 										   final BlockRendererDispatcher renderer, final float brightness) {
 
 		final IBlockState blockState = BrBlocks.turbineRotorBlade.getDefaultState().withProperty(Properties.ROTORBLADESTATE, bladeState);
-		final int dX = bladeDir.getFrontOffsetX();
-		final int dY = bladeDir.getFrontOffsetY();
-		final int dZ = bladeDir.getFrontOffsetZ();
+		final int dX = bladeDir.getXOffset();
+		final int dY = bladeDir.getYOffset();
+		final int dZ = bladeDir.getZOffset();
 
 		for (int bladeIdx = 0; bladeIdx < bladeLength; ++bladeIdx) {
 

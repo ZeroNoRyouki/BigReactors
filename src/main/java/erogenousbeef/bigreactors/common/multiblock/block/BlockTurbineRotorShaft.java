@@ -37,7 +37,7 @@ public class BlockTurbineRotorShaft extends /*BlockTieredPart*/BlockPart impleme
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		// allow correct brightness of the rotor TESR
 		return BlockRenderLayer.CUTOUT;
 	}

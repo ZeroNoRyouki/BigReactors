@@ -36,8 +36,12 @@ public class BlockTurbineRotorBlade extends /*BlockTieredPart*/BlockPart impleme
         return new TileEntityTurbineRotorBlade();
     }
 
+    /**
+     * Gets the render layer this block will render on. SOLID for solid blocks, CUTOUT or CUTOUT_MIPPED for on-off
+     * transparency (glass, reeds), TRANSLUCENT for fully blended transparency (stained glass)
+     */
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         // allow correct brightness of the rotor TESR
         return BlockRenderLayer.CUTOUT;
     }

@@ -113,7 +113,7 @@ public final class RecipeHelper2 {
                 }
             }
 
-            newRecipe = new ShapelessRecipes(name.getResourceDomain(), result, RecipeHelper2.buildIngredientsList(recipe));
+            newRecipe = new ShapelessRecipes(name.getNamespace(), result, RecipeHelper2.buildIngredientsList(recipe));
         }
 
         newRecipe.setRegistryName(name);
@@ -123,13 +123,13 @@ public final class RecipeHelper2 {
     private static ResourceLocation getNameForRecipe(@Nonnull final IForgeRegistry<IRecipe> registry, ItemStack output) {
 
         final String callingModId = CodeHelper.getModIdFromActiveModContainer();
-        final ResourceLocation baseName = new ResourceLocation(callingModId, output.getItem().getRegistryName().getResourcePath());
+        final ResourceLocation baseName = new ResourceLocation(callingModId, output.getItem().getRegistryName().getPath());
 
         ResourceLocation recipeName = baseName;
         int index = 0;
 
         while (registry.containsKey(recipeName)) {
-            recipeName = new ResourceLocation(callingModId, baseName.getResourcePath() + "_" + index++);
+            recipeName = new ResourceLocation(callingModId, baseName.getPath() + "_" + index++);
         }
 
         return recipeName;

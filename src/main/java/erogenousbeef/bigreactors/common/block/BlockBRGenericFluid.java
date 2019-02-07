@@ -26,7 +26,7 @@ public class BlockBRGenericFluid extends BlockFluidClassic implements IGameObjec
 
 		super(fluid, material);
 		this.setRegistryName(blockName);
-		this.setUnlocalizedName(this.getRegistryName().toString());
+		this.setTranslationKey(this.getRegistryName().toString());
         this.setCreativeTab(BigReactors.TAB);
 		fluid.setBlock(this);
 	}
@@ -40,7 +40,7 @@ public class BlockBRGenericFluid extends BlockFluidClassic implements IGameObjec
     public void onRegisterModels() {
 
 		final ModelResourceLocation location = new ModelResourceLocation(BigReactors.MODID + ":fluid",
-				this.getRegistryName().getResourcePath());
+				this.getRegistryName().getPath());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 

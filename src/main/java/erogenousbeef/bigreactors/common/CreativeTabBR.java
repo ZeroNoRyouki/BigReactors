@@ -20,7 +20,7 @@ public class CreativeTabBR extends CreativeTabs {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return BrBlocks.oreYellorite.createItemStack();
 	}
 

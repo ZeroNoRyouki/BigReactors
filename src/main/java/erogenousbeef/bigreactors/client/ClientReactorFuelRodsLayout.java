@@ -178,7 +178,7 @@ public class ClientReactorFuelRodsLayout extends ReactorFuelRodsLayout {
                 final BlockPos checkPosition = rodPosition.offset(directions[i]);
 
                 if (fuelRod.getWorld().isAirBlock(checkPosition) ||
-                    fuelRod.getWorld().getBlockState(checkPosition).getBlock().getBlockLayer() != BlockRenderLayer.SOLID) {
+                    fuelRod.getWorld().getBlockState(checkPosition).getBlock().getRenderLayer() != BlockRenderLayer.SOLID) {
 
                     occluded = false;
                     break;

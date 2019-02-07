@@ -91,7 +91,7 @@ public class Reactants {
 
 		if (null == oreDictNames) {
 
-			FMLLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getUnlocalizedName());
+			FMLLog.warning("Reactants.registerSolid: Could not resolve ore dict name for %s", itemStack.getTranslationKey());
 			return null;
 		}
 

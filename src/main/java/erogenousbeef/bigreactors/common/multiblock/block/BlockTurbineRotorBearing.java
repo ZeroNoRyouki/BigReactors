@@ -35,7 +35,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         // allow correct brightness of the rotor TESR
         return BlockRenderLayer.CUTOUT;
     }
@@ -97,9 +97,9 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
                 final BlockPos minCoord = turbine.getMinimumCoord().add(1, 1, 1);
                 final BlockPos maxCoord = turbine.getMaximumCoord().add(-1, -1, -1);
                 final EnumFacing inwardsDir = bearing.getOutwardFacing().getOpposite();
-                final int offsetX = inwardsDir.getFrontOffsetX();
-                final int offsetY = inwardsDir.getFrontOffsetY();
-                final int offsetZ = inwardsDir.getFrontOffsetZ();
+                final int offsetX = inwardsDir.getXOffset();
+                final int offsetY = inwardsDir.getYOffset();
+                final int offsetZ = inwardsDir.getZOffset();
                 final EnumParticleTypes particle = BigReactors.VALENTINES_DAY ? EnumParticleTypes.HEART : EnumParticleTypes.CLOUD;
 
                 int minX = minCoord.getX();

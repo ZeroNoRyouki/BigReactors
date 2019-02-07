@@ -261,7 +261,7 @@ public class TileEntityReactorRedstonePort extends TileEntityReactorPartBase imp
 	 */
 	private boolean isReceivingRedstonePowerFrom(World world, BlockPos position, EnumFacing facing) {
 
-		return world.isBlockIndirectlyGettingPowered(position) > 0 ||
+		return world.getRedstonePowerFromNeighbors(position) > 0 ||
 				world.getRedstonePower(position, facing) > 0;
 		/*
 		// This is because of bugs in vanilla redstone wires
