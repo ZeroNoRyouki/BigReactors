@@ -31,13 +31,13 @@ ext.dependencies = "required-after:forge@[${config.forge_version_minDep},${confi
 ext.fullVersion = project.config.minecraft_version + '-' + project.version
 
 minecraft {
-    version = "${config.forge_version}"
+    version = "${config.minecraft_version}-${config.forge_version}"
 
-	if (file("../../run/run-${config.minecraft_version}").exists()) {
-		runDir = "../../run/run-${config.minecraft_version}"
-	} else {
-		runDir = "run"
-	}
+    if (file("../../run/run-${config.minecraft_version}").exists()) {
+        runDir = "../../run/run-${config.minecraft_version}"
+    } else {
+        runDir = "run"
+    }
 
     mappings = "${config.minecraft_mappings}"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
