@@ -14,6 +14,7 @@ import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrFluids;
 import erogenousbeef.bigreactors.net.CommonPacketHandler;
 import erogenousbeef.bigreactors.net.message.multiblock.TurbineUpdateMessage;
+import erogenousbeef.bigreactors.utils.StaticUtils;
 import io.netty.buffer.ByteBuf;
 import it.zerono.mods.zerocore.api.multiblock.IMultiblockPart;
 import it.zerono.mods.zerocore.api.multiblock.MultiblockControllerBase;
@@ -824,41 +825,19 @@ public class MultiblockTurbine extends RectangularMultiblockControllerBase imple
 				}
 			}
 		}
-		
-		int energyAvailable = (int)getEnergyStored();
-		int energyRemaining = energyAvailable;
-		if(energyStored > 0 && attachedPowerTaps.size() > 0) {
 
-			this.WORLD.profiler.startSection("SendPower");
+		this.WORLD.profiler.startSection("SendPower");
 
-			// First, try to distribute fairly
-			int splitEnergy = energyRemaining / attachedPowerTaps.size();
+		// Distribute available power
 
-			for(TileEntityTurbinePowerTap powerTap : attachedPowerTaps) {
-				if(energyRemaining <= 0) { break; }
-				if(powerTap == null || !powerTap.isConnected()) { continue; }
+		final long energyAvailable = this.getEnergyStored();
+		final long energyRemaining = StaticUtils.PowerGenerators.distributePower(energyAvailable, this.attachedPowerTaps);
 
-				energyRemaining -= splitEnergy - powerTap.onProvidePower(splitEnergy);
-			}
-
-			// Next, just hose out whatever we can, if we have any left
-			if(energyRemaining > 0) {
-				for(TileEntityTurbinePowerTap powerTap : attachedPowerTaps) {
-					if(energyRemaining <= 0) { break; }
-					if(powerTap == null || !powerTap.isConnected()) { continue; }
-
-					energyRemaining = (int)powerTap.onProvidePower(energyRemaining);
-				}
-			}
-
-			this.WORLD.profiler.endSection();
-		}
-		
 		if(energyAvailable != energyRemaining) {
 			reduceStoredEnergy((energyAvailable - energyRemaining));
 		}
 
-		this.WORLD.profiler.startSection("Tickables");
+		this.WORLD.profiler.endStartSection("Tickables");
 
 		for(ITickableMultiblockPart part : attachedTickables) {
 			part.onMultiblockServerTick();

@@ -1,6 +1,7 @@
 package erogenousbeef.bigreactors.utils;
 
 //import cofh.api.item.IToolHammer;
+import erogenousbeef.bigreactors.common.multiblock.IPowerProvider;
 import erogenousbeef.bigreactors.common.multiblock.PowerSystem;
 import erogenousbeef.bigreactors.init.BrItems;
 import it.zerono.mods.zerocore.util.ItemHelper;
@@ -16,6 +17,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nonnull;
+import java.util.Set;
 
 public class StaticUtils {
 
@@ -347,4 +351,37 @@ public class StaticUtils {
 		}
 	}
 	*/
+
+	public static class PowerGenerators {
+
+		/**
+		 * Distribute the given amount of energy equally between the providers
+		 *
+		 * @param energyAmount	the amount of energy
+		 * @param providers		the providers
+		 * @return the amount of energy remaining
+		 */
+		public static long distributePower(long energyAmount, @Nonnull final Set<? extends IPowerProvider> providers) {
+
+			if (energyAmount > 0 && providers.size() > 0) {
+
+				final long energyPerProvider = energyAmount / providers.size();
+
+				for (final IPowerProvider powerTap : providers) {
+
+					if (!powerTap.isProviderConnected()) {
+						continue;
+					}
+
+					energyAmount -= energyPerProvider - powerTap.onProvidePower(energyPerProvider);
+
+					if (energyAmount <= 0) {
+						break;
+					}
+				}
+			}
+
+			return energyAmount;
+		}
+	}
 }

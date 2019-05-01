@@ -504,31 +504,12 @@ public class MultiblockReactor extends RectangularMultiblockControllerBase imple
 		if(fuelHeat < 0f) { setFuelHeat(0f); }
 
 		this.WORLD.profiler.endStartSection("SendPower");
-		
+
 		// Distribute available power
-		long energyAvailable = getEnergyStored();
-		long energyRemaining = energyAvailable;
-		if(attachedPowerTaps.size() > 0 && energyRemaining > 0) {
-			// First, try to distribute fairly
-			long splitEnergy = energyRemaining / attachedPowerTaps.size();
-			for(TileEntityReactorPowerTap powerTap : attachedPowerTaps) {
-				if(energyRemaining <= 0) { break; }
-				if(!powerTap.isConnected()) { continue; }
 
-				energyRemaining -= splitEnergy - powerTap.onProvidePower(splitEnergy);
-			}
+		final long energyAvailable = this.getEnergyStored();
+		final long energyRemaining = StaticUtils.PowerGenerators.distributePower(energyAvailable, this.attachedPowerTaps);
 
-			// Next, just hose out whatever we can, if we have any left
-			if(energyRemaining > 0) {
-				for(TileEntityReactorPowerTap powerTap : attachedPowerTaps) {
-					if(energyRemaining <= 0) { break; }
-					if(!powerTap.isConnected()) { continue; }
-
-					energyRemaining = powerTap.onProvidePower(energyRemaining);
-				}
-			}
-		}
-		
 		if(energyAvailable != energyRemaining) {
 			reduceStoredEnergy((energyAvailable - energyRemaining));
 		}
