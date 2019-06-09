@@ -54,24 +54,7 @@ public class BlockTurbineRotorBearing extends BlockMultiblockDevice {
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
-
-    @Override
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-
-        final TileEntity te = world.getTileEntity(pos);
-
-        if (te instanceof TileEntityTurbineRotorBearing) {
-
-            final TileEntityTurbineRotorBearing bearing = (TileEntityTurbineRotorBearing)te;
-
-            if (bearing.isConnected() && bearing.getTurbine().getActive())
-                return bearing.getAABB();
-        }
-
-        return super.getCollisionBoundingBox(state, world, pos);
-    }
-
+    
     /**
      * A randomly called display update to be able to add particles or other items for display
      */

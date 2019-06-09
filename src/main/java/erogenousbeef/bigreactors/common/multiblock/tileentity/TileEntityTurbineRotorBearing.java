@@ -41,7 +41,7 @@ public class TileEntityTurbineRotorBearing extends
 	@SideOnly(Side.CLIENT)
 	public void setAngle(float newAngle) { angle = newAngle; }
 
-	protected AxisAlignedBB boundingBox;
+	protected AxisAlignedBB _renderBoundingBox;
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -75,13 +75,11 @@ public class TileEntityTurbineRotorBearing extends
 		this.clearDisplayList();
 		this.rotorInfo = null;
 	}
-	
-	public AxisAlignedBB getAABB() { return boundingBox; }
-/**/
+
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return null != this.boundingBox ? this.boundingBox : super.getRenderBoundingBox();
-	}/**/
+		return null != this._renderBoundingBox ? this._renderBoundingBox : super.getRenderBoundingBox();
+	}
 
 	private void calculateRotorInfo() {
 
@@ -94,7 +92,7 @@ public class TileEntityTurbineRotorBearing extends
 		final BlockPos maxCoord = turbine.getMaximumCoord();
 		final World world = this.getWorld();
 
-		this.boundingBox = new AxisAlignedBB(minCoord.getX(), minCoord.getY(), minCoord.getZ(),
+		this._renderBoundingBox = new AxisAlignedBB(minCoord.getX(), minCoord.getY(), minCoord.getZ(),
 										maxCoord.getX() + 1, maxCoord.getY() + 1, maxCoord.getZ() + 1);
 		
 		if (WorldHelper.calledByLogicalClient(world)) {
