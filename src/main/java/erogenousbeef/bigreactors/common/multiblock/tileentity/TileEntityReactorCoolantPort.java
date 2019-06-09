@@ -60,6 +60,12 @@ public class TileEntityReactorCoolantPort extends TileEntityReactorPart implemen
 			world.markBlockRangeForRenderUpdate(this.getWorldPosition(), this.getWorldPosition());
 			this.notifyNeighborsOfTileChange();
 		}
+
+		final MultiblockReactor reactor = this.getReactorController();
+
+		if (null != reactor) {
+		    reactor.onCoolantPortChanged();
+        }
 	}
 
 	@Override
