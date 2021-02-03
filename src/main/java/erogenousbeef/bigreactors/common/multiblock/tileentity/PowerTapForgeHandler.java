@@ -150,7 +150,7 @@ public class PowerTapForgeHandler extends PowerTapHandler implements IEnergyStor
         final boolean isConnected = this._consumer != null;
         final World partWorld = this._part.getWorld();
 
-        if (wasConnected != isConnected && WorldHelper.calledByLogicalClient(partWorld))
+        if (wasConnected != isConnected && !WorldHelper.calledByLogicalClient(partWorld))
             WorldHelper.notifyBlockUpdate(partWorld, this._part.getWorldPosition(), null, null);
     }
 
