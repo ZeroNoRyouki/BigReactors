@@ -70,6 +70,11 @@ repositories {
         name = "ComputerCraft"
         url "http://cc.crzd.me/maven/"
     }
+
+    maven {
+        name "Patchouli"
+        url 'https://maven.blamejared.com'
+    }
 }
 
 dependencies {
@@ -79,6 +84,7 @@ dependencies {
     deobfCompile group: "li.cil.oc", name: "OpenComputers", version: "${config.opencomputers_version}"
     compile "net.darkhax.tesla:Tesla-1.12.2:${config.tesla_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
+    compile "vazkii.patchouli:Patchouli:${config.patchouli_version}"
 }
 
 processResources  {
