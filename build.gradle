@@ -52,11 +52,6 @@ configurations {
 repositories {
 
     maven {
-        name "Tesla"
-        url 'http://maven.mcmoddev.com'
-    }
-
-    maven {
         name "Tesla (backup)"
         url 'http://mmdmaven.blamejared.com'
     }
