@@ -2,6 +2,7 @@ package erogenousbeef.bigreactors.common.compat;
 
 import erogenousbeef.bigreactors.common.BRLog;
 import it.zerono.mods.zerocore.lib.IModInitializationHandler;
+import it.zerono.mods.zerocore.lib.NonNullSupplier;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -27,6 +28,40 @@ public final class CompatManager implements IModInitializationHandler {
 
     public static boolean isApiLoaded(@Nonnull String api) {
         return ModAPIManager.INSTANCE.hasAPI(api);
+    }
+
+
+    public static void ifPresent(@Nonnull String modId, @Nonnull Runnable present) {
+
+        if (isModLoaded(modId)) {
+            present.run();
+        }
+    }
+
+    public static void ifPresent(@Nonnull String modId, @Nonnull NonNullSupplier<Runnable> present) {
+
+        if (isModLoaded(modId)) {
+            present.get().run();
+        }
+    }
+
+    public static void ifPresentOrElse(@Nonnull String modId, @Nonnull Runnable present, @Nonnull Runnable notPresent) {
+
+        if (isModLoaded(modId)) {
+            present.run();
+        } else {
+            notPresent.run();
+        }
+    }
+
+    public static void ifPresentOrElse(@Nonnull String modId, @Nonnull NonNullSupplier<Runnable> present,
+                                @Nonnull NonNullSupplier<Runnable> notPresent) {
+
+        if (isModLoaded(modId)) {
+            present.get().run();
+        } else {
+            notPresent.get().run();
+        }
     }
 
     @Override

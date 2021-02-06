@@ -1,7 +1,10 @@
 package erogenousbeef.bigreactors.common;
 
+import erogenousbeef.bigreactors.common.compat.CompatManager;
 import erogenousbeef.bigreactors.init.BrBlocks;
 import erogenousbeef.bigreactors.init.BrItems;
+import it.zerono.mods.zerocore.lib.compat.ModIDs;
+import it.zerono.mods.zerocore.util.CodeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -9,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.patchouli.api.PatchouliAPI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,6 +36,8 @@ public class CreativeTabBR extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+
+        CompatManager.ifPresent(ModIDs.MODID_PATCHOULI, () -> list.add(PatchouliAPI.instance.getBookStack("bigreactors:erguide")));
 
 		this.addToDisplayList(list, BrBlocks.oreYellorite);
         this.addToDisplayList(list, BrBlocks.oreAnglesite);
