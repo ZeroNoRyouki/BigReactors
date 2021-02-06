@@ -70,6 +70,18 @@ repositories {
         name "Patchouli"
         url 'https://maven.blamejared.com'
     }
+
+    maven {
+        // JEI
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+
+    maven {
+        // JEI mirror
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
+    }
 }
 
 dependencies {
@@ -80,6 +92,9 @@ dependencies {
     compile "net.darkhax.tesla:Tesla-1.12.2:${config.tesla_version}"
     compile group: "dan200.computercraft", name: "ComputerCraft", version: "${config.computercraft_version}"
     compile "vazkii.patchouli:Patchouli:${config.patchouli_version}"
+
+    // pull JEI in the dev env
+    runtime "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
 }
 
 processResources  {
