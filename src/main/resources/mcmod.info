@@ -6,7 +6,7 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://zerono.it/extreme-reactors",
-  "updateUrl": "",
+  "updateUrl": "https://raw.githubusercontent.com/ZeroNoRyouki/ForgeUpdate/master/er1.12.json",
   "authorList": ["ErogenousBeef", "ZeroNoRyouki", "ABookFreak"],
   "credits": "powercrystals, skyboy, King_Lemming, & Calclavia for example code",
   "logoFile": "",
