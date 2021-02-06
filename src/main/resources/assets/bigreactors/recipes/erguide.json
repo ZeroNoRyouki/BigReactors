@@ -1,0 +1,25 @@
+{
+    "type":"forge:ore_shapeless",
+    "ingredients":[
+        {
+            "type":"bigreactors:config_yellorium_ingot"
+        },
+        {
+            "item":"minecraft:book"
+        }
+    ],
+    "result":{
+        "item":"patchouli:guide_book",
+        "data":0,
+        "count":1,
+        "nbt":{
+            "patchouli:book":"bigreactors:erguide"
+        }
+    },
+    "conditions":[
+        {
+            "type":"forge:mod_loaded",
+            "modid":"patchouli"
+        }
+    ]
+}
